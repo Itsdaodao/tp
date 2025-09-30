@@ -9,6 +9,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
+### Wang Daohang
+
+<img src="images/itsdaodao.png" width="200px">
+
+[[github](http://github.com/itsdaodao)] [[portfolio](team/itsdaodao.md)]
+
+* Role: Developer
+* Responsibilities: Testing
+=======
 ### Harvinder Arjun Singh S/O Sukhwant Singh
 <img src="images/harjun751.png" width="200px">
 
@@ -27,3 +36,4 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Developer
 * Responsibilities: Deliverables and Deadlines
+
