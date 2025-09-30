@@ -42,17 +42,17 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/moshimoshimochi.png" width="200px">
 
 [[github](http://github.com/MoshiMoshiMochi)]
-[[portfolio](images/moshimoshimochi.md)]
+[[portfolio](team/moshimoshimochi.md)]
 
 * Role: Developer
 * Responsibilities: Deliverables and Deadlines
 
 ### Derek Qua
 
-<img src="images/Derekqua.png" width="200px">
+<img src="images/derekqua.png" width="200px">
 
 [[github](https://github.com/Derekqua)]
-[[portfolio](team/Derekqua.md)]
+[[portfolio](team/derekqua.md)]
 
 * Role: Developer
-* Responsibilities: Documentation, Code quality
+* Responsibilities: Documentation
