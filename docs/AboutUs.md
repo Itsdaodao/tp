@@ -11,10 +11,10 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Thaddaeus Chua
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/moshimoshimochi.png" width="200px">
 
 [[github](http://github.com/MoshiMoshiMochi)]
-[[portfolio](team/moshimoshimochi.md)]
+[[portfolio](images/moshimoshimochi.md)]
 
 * Role: Developer
 * Responsibilities: Deliverables and Deadlines
