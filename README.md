@@ -1,4 +1,4 @@
-[![CI Status](https://github.com/AY2526S1-CS2103-F12-2/tp/actions/workflows/gradle.yml/badge.svg)](https://github.com/se-edu/addressbook-level3/actions)
+[![CI Status](https://github.com/AY2526S1-CS2103-F12-2/tp/actions/workflows/gradle.yml/badge.svg)](https://github.com/AY2526S1-CS2103-F12-2/tp/actions/workflows/gradle.yml)
 
 ![Ui](docs/images/Ui.png)
 
