@@ -47,3 +47,12 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Developer
 * Responsibilities: Deliverables and Deadlines
 
+### Derek Qua
+
+<img src="images/Derekqua.png" width="200px">
+
+[[github](https://github.com/Derekqua)]
+[[portfolio](team/Derekqua.md)]
+
+* Role: Developer
+* Responsibilities: Documentation, Code quality
