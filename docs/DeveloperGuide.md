@@ -281,12 +281,49 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 | Priority | As a …​                                    | I want to …​                     | So that I can…​                                                        |
 | -------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------------------------------- |
-| `* * *`  | new user                                   | see usage instructions         | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person               |                                                                        |
-| `* * *`  | user                                       | delete a person                | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name          | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details   | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name           | locate a person easily                                                 |
+| `* * *` | beginner user                 |	add a contact	        | i can retrieve it when I want	|
+| `* * *` | beginner user                 |	add a phone number to a contact	        | I can easily message or call them when I need it	|
+| `* * *` | beginner user                 |	tag my contacts	        | I can easily group my contacts	|
+| `* * *` | beginner user                 |	list out all the contacts within my contact book	        | I can get an overview of everyone I've added so far	|
+| `* * *` | beginner user                 |	delete a contact	        | I can declutter my contacts list if necessary	|
+| `* * *` | beginner user                 |	look for list of available commands that I can use	        | I can know what commands I can use without memorizing	|
+| `* * `  | beginner user                 |	add a telegram handle to a contact	        | I can easily access my contact's telegram when i need it	|
+| `* * `  | beginner user                 |	update a contact	        | I can update the details of my contacts when they change	|
+| `* * `  | student                       |	search for a contact by name	        | i can quickly find their contact details	|
+| `* * `  | intermediate user             |	add all contact information all just with one line	        | I don't need to do so manually using mutiple updates	|
+| `* * `  | beginner user                 |	delete a tag	        | I can remove outdated tags	|
+| `* * `  | student                       |	quickly scroll through using arrow keys in an alphabetical list 	        | i find someone without typing.	|
+| `* * `  | impatient user                |	load my contacts within 2 seconds	        | I do not need to wait too long to access my contacts	|
+| `* * `  | beginner user                 |	see the recently accessed contacts	        | I can know who I recently contacted	|
+| `* * `  | beginner user                 |	add an email address to a contact	        | I can easily email them when I need it	|
+| `* * `  | beginner user                 |	set a preferred mode of communication to a contact	        | I can reach them at their preferred platform when |
+| `* * `  | beginner user                 |	add a contact to my favourites list	        | I can easily access them	|
+| `* * `  | beginner user                 |	see my favourites list	        | I can contact a favourite friend	|
+| `* * `  | student                       |	be able to group contacts by teams	        | i can access all members in one place.	|
+| `* * `  | advanced user                 |	be able to add multiple tags to a contact	        | i can find my groups quickly.	|
+| `* * `  | intermediate user             |	access the github page of a contact	        | I can easily view their user activity and repos	|
+| `* * `  | beginner user                 |	filter my contacts by tags and name	        | I can find my contact(s) easier	|
+| `* * `  | beginner user                 |	get more details with each commands and flags	        | I am able to learn how to properly use each command/flag	|
+| `* * `  | student                       |	back up my contacts to a CSV	        | i dont lose my contacts if the device fails.	|
+| `* * `  | student                       |	import a list of contacts from a CSV or file	        | I can quickly add contacts to another device.	|
+| `* * `  | advanced user                 |	create customizable shortcuts	        | I can increase the speed of using the application	|
+| `* * `  | advanced user                 |	view a list of my shortcuts	        | I can see an overview of my customizations	|
+| `* * `  | advanced user                 |	create my own shortcuts	        | I can quickly type out long commands instantly	|
+| `* * `  | intermediate user             |	access my command history through arrow keys	        | I can execute repeated operations quickly	|
+| `* * `  | intermediate user             |	press "Tab" to auto-complete the command that I am typing out	        | I can quickly finish the command that I am typing.	|
+| `* * `  | intermediate user             |	see hint text of what command would be autocompleted if I press "tab"	        | I have visual feedback before I autocomplete a command	|
+| `* * `  | intermediate user             |	revert the last command	        | I can undo any mistakes	|
+| `* * `  | beginner user                 |	be able to rename my tags	        | I mass edit contacts with the same tag	|
+| `* * `  | beginner user                 |	 add the github handle to a contact	        | I can easily access their github page in the future	|
+| `* * `  | beginner user                 |	delete all contacts associated with a tag	        | I can remove irrelevant contacts from my list	|
+| `*`     | beginner user                 |	go through a tutorial of the app	        | I can familiarize myself on how to use the app.|
+| `*`     | beginner user                 |	read the documentation	        | I can get started on using the app|
+| `*`     | beginner user                 |	import existing contacts from a .vcf file	        | I do not need to re-type all of my existing contacts|
+| `*`     | student                       |	launch my telegram chat with the contact person through the app	        | I can start chatting with my contacts on telegram quickly|
+| `*`     | student                       |	launch my email app quickly through the app	        | I can start writing email to my contacts quickly|
+| `*`     | student                       |	delete contacts by date time query	        | my address book is clean.|
+| `*`     | advanced user                 |	use DevBooks inside of my command console	        | I don't need to open the application to perform an operation|
+| `*`     | aesthetic-minded individual   |	customize the theme of the application	        | it's more personal to me|
 
 *{More to be added}*
 
