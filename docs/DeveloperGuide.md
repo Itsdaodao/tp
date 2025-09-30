@@ -260,15 +260,19 @@ _{Explain here how the data archiving feature will be implemented}_
 
 ### Product scope
 
-**Target user profile**:
+**Target user profile**: NUS School of Computing Students
+* He is a student in SOC
+* He likes things to be fast and efficient
+* Need to find connections
+* Often needs to find students taking the same module for group work
+* Often need to contact groupmates
+* Loves using telegram for communication
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: 
+DevBooks provides fast digital access to students in NUS SOC, making it easier to 
+contact any student using their preferred mode of communication. Allow students to find project mates from the 
+same project group easily and view the development profile of their contact.
 
 
 ### User stories
