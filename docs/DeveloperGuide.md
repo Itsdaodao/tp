@@ -329,32 +329,30 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `Devbooks` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: UC01 - Add Contact**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  Devbooks prompts for command
+2.  User input add command with required contact information
+3.  Devbooks saves contact and show success message
+4.  Devbooks shows the updated contact list
 
     Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. User input add command with invalid contact information
 
-  Use case ends.
+    * 2a1. Devbooks shows an error message
+    * 2a2. User input new add command
 
-* 3a. The given index is invalid.
+      Steps 2a1-2a2 are repeated until the add command and contact information entered are correct.
 
-    * 3a1. AddressBook shows an error message.
+      Use case resumes from step 3.
 
-      Use case resumes at step 2.
-
-*{More to be added}*
 
 ### Non-Functional Requirements
 
