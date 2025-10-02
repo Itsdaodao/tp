@@ -366,8 +366,16 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Glossary
 
+* **CLI (command line interface)**: A text-based interface where users type commands to interact with the system.
+* **Development profile**: A user's GitHub profile used to store, manage, and showcase software development projects.
+* **Digital access**: The ability to access DevBooks and retrieve information without needing any internet connection
+* **Flag/ Parameter**: A prefix in a command (e.g. n/, p/, t/) used to specify values for different fields.
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
+* **NUS SOC**: National University of Singapore, School of Computing
+* **Preferred Mode of communication**: Telegram, Email or Phone
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Project mates/ Project group**: A project group is a team of students from the same module who work together on an assigned project. A project mate is a member of that group.
+* **Tag**: A Label assigned to contacts for easy grouping and searching
 
 --------------------------------------------------------------------------------------------------------------------
 
