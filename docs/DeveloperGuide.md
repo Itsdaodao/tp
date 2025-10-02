@@ -361,7 +361,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-
+4.  Should only be used by a single user (i.e. not a multi-user product).
+5.  Should store data locally and in a human editable text file.
+6.  Should not use a DBMS to store data.
+7.  Should work without requiring an installer.
+8.  Should not depend on a specific remote server.
+9.  Should be packaged into a single JAR file.
+10. Should be able to load within 5 seconds. 
 *{More to be added}*
 
 ### Glossary
