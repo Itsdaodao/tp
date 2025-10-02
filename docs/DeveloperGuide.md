@@ -329,32 +329,142 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `Devbooks` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: UC01 - Add Contact**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  Devbooks prompts for command
+2.  User input add command with required contact information
+3.  Devbooks saves contact and show success message
+4.  Devbooks shows the updated contact list
 
     Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. User input add command with invalid contact information
+
+    * 2a1. Devbooks shows an error message
+    * 2a2. User input new add command with contact information
+
+      Steps 2a1-2a2 are repeated until the add command and contact information entered are correct.
+
+      Use case resumes from step 3.
+
+* 2b. Duplicated contact information found
+
+    * 2b1. Devbooks shows an error message
+    * 2b2. User input new add command with contact information
+
+      Steps 2b1-2b2 are repeated until the new contact information does not duplicate with existing contacts.
+
+      Use case resumes from step 3.
+
+
+**Use case: UC02 - Edit Contact**
+
+**MSS**
+
+1.  User edits contact in list
+2.  Devbook detects correct data in the entered data
+3.  Devbook updates the contact and displays the newly updated contact
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Devbook detects an error in the entered data.
+
+    * 1a1. Devbook prompts the user for the correct data.
+    * 1a2. Beginner user enters new data.
+
+      Steps 1a1-1a2 are repeated until the data entered are correct.
+
+      Use case resumes from step 2.
+
+
+**Use case: UC05 - Delete Contact**
+
+**MSS**
+
+1.  User inputs delete command with desired information to delete
+2.  Devbooks shows a confirmation prompt
+3.  User confirms intent to delete 
+4.  Devbooks deletes the contact
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Devbooks does not find a corresponding user to delete
+
+    * 1a1. Devbooks shows an error message
+
+      Use case ends.
+
+* 3a. User inputs an invalid confirmation prompt
+
+    * 3a1. Devbooks shows an error message
+    * 3a2. Devbooks re-prompts for confirmation
+
+      Steps 3a1-3a2 are repeated until the data entered are correct.
+
+      Use case resumes from step 4.
+
+
+**Use case: UC09 – Find Contact by Name**
+
+**MSS**
+
+1.  User inputs a find command with keyword(s) to search
+2.  Devbooks validates the input and searches for matching contacts
+3.  Devbooks displays the matching contacts
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. User inputs an invalid search format
+
+    * 2a1. Devbooks shows an error message
+    * 2a2. Devbooks prompts for keywords
+    * 2a3. User inputs find command with keyword(s) to search
+
+    Steps 2a1–2a3 are repeated until valid input is provided.
+
+    Use case resumes from step 3.
+
+
+**Use case: UC06 – Show list of commands**
+
+**MSS**
+
+1.  User inputs a help command to look up all commands available
+2.  Devbook lists out all the commands with its uses
+3.  Devbook prompts the user to select an available command for more details
+4.  User chooses specific help commands to look up details of one specific command.
+5.  Devbooks shows the specific instructions and guide on how to use that command
+
+    Use case ends.
+
+**Extensions**
+
+* 3a. User did not select any commands to view command details
 
   Use case ends.
 
-* 3a. The given index is invalid.
+* 4a. User inputs a commands that does not exist in list of commands
 
-    * 3a1. AddressBook shows an error message.
+    * 4a1. Devbooks shows an error message
+    * 4a2. Devbooks prompts user to select available command
+    * 4a3. User selects a command from list of available command
 
-      Use case resumes at step 2.
+  Steps 4a1–4a3 are repeated until available command is selected.
 
-*{More to be added}*
+  Use case resumes from step 5.
+
 
 ### Non-Functional Requirements
 
