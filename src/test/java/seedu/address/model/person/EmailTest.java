@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
+import java.util.Objects;
+
 import org.junit.jupiter.api.Test;
 
 public class EmailTest {
@@ -87,5 +89,11 @@ public class EmailTest {
 
         // different values -> returns false
         assertFalse(email.equals(new Email("other.valid@email")));
+    }
+
+    @Test
+    public void toString_null_returnsEmptyString() {
+        Email email = new Email();
+        assert(Objects.equals(email.toString(), ""));
     }
 }
