@@ -33,7 +33,7 @@ public class PersonBuilder {
     public PersonBuilder() {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
-        email = new Email(DEFAULT_EMAIL);
+        email = new Email();
         address = new Address(DEFAULT_ADDRESS);
         tags = new HashSet<>();
     }
@@ -78,6 +78,14 @@ public class PersonBuilder {
      */
     public PersonBuilder withPhone(String phone) {
         this.phone = new Phone(phone);
+        return this;
+    }
+
+    /**
+     * Sets a default {@code Email} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withEmail() {
+        this.email = new Email(DEFAULT_EMAIL);
         return this;
     }
 
