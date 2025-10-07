@@ -9,11 +9,6 @@ import org.junit.jupiter.api.Test;
 public class EmailTest {
 
     @Test
-    public void constructor_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new Email(null));
-    }
-
-    @Test
     public void constructor_invalidEmail_throwsIllegalArgumentException() {
         String invalidEmail = "";
         assertThrows(IllegalArgumentException.class, () -> new Email(invalidEmail));
@@ -21,9 +16,6 @@ public class EmailTest {
 
     @Test
     public void isValidEmail() {
-        // null email
-        assertThrows(NullPointerException.class, () -> Email.isValidEmail(null));
-
         // blank email
         assertFalse(Email.isValidEmail("")); // empty string
         assertFalse(Email.isValidEmail(" ")); // spaces only
@@ -53,6 +45,7 @@ public class EmailTest {
         assertFalse(Email.isValidEmail("peterjack@example.c")); // top level domain has less than two chars
 
         // valid email
+        assertTrue(Email.isValidEmail(null)); // empty email
         assertTrue(Email.isValidEmail("PeterJack_1190@example.com")); // underscore in local part
         assertTrue(Email.isValidEmail("PeterJack.1190@example.com")); // period in local part
         assertTrue(Email.isValidEmail("PeterJack+1190@example.com")); // '+' symbol in local part
@@ -67,11 +60,21 @@ public class EmailTest {
     }
 
     @Test
+    public void isEmpty() {
+        Email email = new Email();
+        assertTrue(email.isEmpty());
+    }
+
+    @Test
     public void equals() {
         Email email = new Email("valid@email");
+        Email emptyEmail = new Email();
 
         // same values -> returns true
         assertTrue(email.equals(new Email("valid@email")));
+
+        // same null values -> returns true
+        assertTrue(emptyEmail.equals(new Email(null)));
 
         // same object -> returns true
         assertTrue(email.equals(email));

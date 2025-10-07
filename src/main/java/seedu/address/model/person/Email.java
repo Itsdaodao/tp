@@ -1,7 +1,8 @@
 package seedu.address.model.person;
 
-import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
+
+import java.util.Objects;
 
 /**
  * Represents a Person's email in the address book.
@@ -34,12 +35,18 @@ public class Email {
     public final String value;
 
     /**
+     * Constructs an empty {@code Email} with null value.
+     */
+    public Email() {
+        value = null;
+    }
+
+    /**
      * Constructs an {@code Email}.
      *
-     * @param email A valid email address.
+     * @param email A valid nullable email address.
      */
     public Email(String email) {
-        requireNonNull(email);
         checkArgument(isValidEmail(email), MESSAGE_CONSTRAINTS);
         value = email;
     }
@@ -48,11 +55,26 @@ public class Email {
      * Returns if a given string is a valid email.
      */
     public static boolean isValidEmail(String test) {
+        // Email can be empty, hence null value is acceptable
+        if (test == null) {
+            return true;
+        }
+
         return test.matches(VALIDATION_REGEX);
+    }
+
+    /**
+     * Returns if email value is null value
+     */
+    public boolean isEmpty() {
+        return value == null;
     }
 
     @Override
     public String toString() {
+        if (value == null) {
+            return "";
+        }
         return value;
     }
 
@@ -68,7 +90,7 @@ public class Email {
         }
 
         Email otherEmail = (Email) other;
-        return value.equals(otherEmail.value);
+        return Objects.equals(value, otherEmail.value);
     }
 
     @Override
