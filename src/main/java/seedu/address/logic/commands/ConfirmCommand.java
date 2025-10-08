@@ -8,13 +8,13 @@ import seedu.address.model.Model;
  * Represents a command that confirms a pending operation.
  */
 public class ConfirmCommand extends Command {
+    public static final String MESSAGE_OPERATION_CANCELLED = "Operation cancelled.";
+    public static final String MESSAGE_INVALID_CONFIRMATION_INPUT = "Invalid Input.\n%s";
+
     private final String input;
     private final Runnable onComplete;
     private final ConfirmationPendingResult pendingOperation;
 
-    public static String MESSAGE_OPERATION_CANCELLED = "Operation cancelled.";
-
-    public static String MESSAGE_INVALID_CONFIRMATION_INPUT = "Invalid Input.\n%s";
 
     /**
      * Creates a ConfirmCommand to confirm a pending operation.

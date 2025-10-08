@@ -35,7 +35,7 @@ public class LogicManager implements Logic {
     private final Storage storage;
     private final AddressBookParser addressBookParser;
 
-    public State state;
+    private final State state;
 
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
@@ -55,7 +55,7 @@ public class LogicManager implements Logic {
         if (state.isAwaitingUserConfirmation()) {
             command = new ConfirmCommand(
                 commandText,
-                () -> state.clearAwaitingUserConfirmation(),
+                state::clearAwaitingUserConfirmation,
                 state.getPendingOperation()
             );
         } else {

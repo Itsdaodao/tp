@@ -46,8 +46,7 @@ public class DeleteCommand extends Command {
         return new ConfirmationPendingResult(
                 String.format(MESSAGE_DELETE_PERSON_CONFIRM, Messages.format(personToDelete)),
                 false,
-                false,
-                () -> {
+                false, () -> {
                     model.deletePerson(personToDelete);
                     return new CommandResult(
                             String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete))

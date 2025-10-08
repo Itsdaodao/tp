@@ -1,6 +1,5 @@
 package seedu.address.logic;
 
-import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.ConfirmationPendingResult;
 
 /**
@@ -20,7 +19,7 @@ public class StateManager implements State {
     }
 
     @Override
-    public boolean isAwaitingUserConfirmation(){
+    public boolean isAwaitingUserConfirmation() {
         return awaitingUserConfirmation;
     }
 
@@ -38,7 +37,7 @@ public class StateManager implements State {
 
     @Override
     public ConfirmationPendingResult getPendingOperation() {
-        if (!this.awaitingUserConfirmation){
+        if (!this.awaitingUserConfirmation) {
             return null;
         }
         return pendingOperation;
