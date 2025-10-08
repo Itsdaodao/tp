@@ -53,7 +53,7 @@ public class LogicManagerTest {
                 new JsonAddressBookStorage(temporaryFolder.resolve("addressBook.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
         StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
-        logic = new LogicManager(model, storage);
+        logic = new LogicManager(model, storage, new StateManager());
     }
 
     @Test
@@ -230,7 +230,7 @@ public class LogicManagerTest {
                 new JsonUserPrefsStorage(temporaryFolder.resolve("ExceptionUserPrefs.json"));
         StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
 
-        logic = new LogicManager(model, storage);
+        logic = new LogicManager(model, storage, new StateManager());
 
         // Triggers the saveAddressBook method by executing an add command
         String addCommand = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
@@ -271,7 +271,7 @@ public class LogicManagerTest {
         Path prefsPath = temporaryFolder.resolve("prefsWriteTest.json");
 
         TrackingStorageManager trackingStorage = new TrackingStorageManager(bookPath, prefsPath);
-        logic = new LogicManager(model, trackingStorage);
+        logic = new LogicManager(model, trackingStorage, new StateManager());
 
         CommandResult result = logic.execute(inputCommand);
         String feedback = result.getFeedbackToUser();
@@ -299,7 +299,7 @@ public class LogicManagerTest {
         Path prefsPath = temporaryFolder.resolve("prefsNoWriteTest.json");
 
         TrackingStorageManager trackingStorage = new TrackingStorageManager(bookPath, prefsPath);
-        logic = new LogicManager(model, trackingStorage);
+        logic = new LogicManager(model, trackingStorage, new StateManager());
 
         CommandResult result = logic.execute(inputCommand);
         assertEquals(expectedMessage, result.getFeedbackToUser());

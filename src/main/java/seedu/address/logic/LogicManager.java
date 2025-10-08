@@ -36,14 +36,14 @@ public class LogicManager implements Logic {
     private final AddressBookParser addressBookParser;
 
     public State state;
-    
+
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
      */
-    public LogicManager(Model model, Storage storage) {
+    public LogicManager(Model model, Storage storage, State state) {
         this.model = model;
         this.storage = storage;
-        this.state = new StateManager();
+        this.state = state;
         addressBookParser = new AddressBookParser();
     }
 
