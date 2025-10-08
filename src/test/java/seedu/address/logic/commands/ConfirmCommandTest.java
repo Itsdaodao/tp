@@ -4,14 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-import static seedu.address.testutil.TypicalPersons.AMY;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.logic.LogicManager;
-import seedu.address.logic.LogicManagerTest;
-import seedu.address.logic.State;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -65,14 +61,12 @@ public class ConfirmCommandTest {
     @Test
     public void toStringMethod() {
         ConfirmationPendingResult pendingOperation = new ConfirmationPendingResult(
-                "Delete?", false, false,
-                () -> {
-                    return new CommandResult("Deleted!");
-                }
+                "Delete?", false, false, () ->
+                new CommandResult("Deleted!")
         );
         String userInput = "n";
         ConfirmCommand confirmCommand = new ConfirmCommand(userInput, () -> {}, pendingOperation);
-        String expected = ConfirmCommand.class.getCanonicalName() + "{pendingOperation=" + pendingOperation +", "
+        String expected = ConfirmCommand.class.getCanonicalName() + "{pendingOperation=" + pendingOperation + ", "
                 + "userInput=" + userInput + "}";
         assertEquals(expected, confirmCommand.toString());
     }
@@ -80,8 +74,7 @@ public class ConfirmCommandTest {
     private static ConfirmCommand createConfirmCommandWithDeletePending(Model model, Person person, String input,
                                                                         String result, String feedback) {
         ConfirmationPendingResult pendingOperation = new ConfirmationPendingResult(
-                feedback, false, false,
-                () -> {
+                feedback, false, false, () -> {
                     model.deletePerson(person);
                     return new CommandResult(result);
                 }
