@@ -20,4 +20,13 @@ public class ClearCommand extends Command {
         model.setAddressBook(new AddressBook());
         return new CommandResult(MESSAGE_SUCCESS);
     }
+
+    /**
+     * @inheritDoc
+     * @return <code>true</code> as ClearCommand modifies the address book
+     */
+    @Override
+    public boolean requiresWrite() {
+        return true;
+    }
 }

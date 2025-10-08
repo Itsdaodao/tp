@@ -120,6 +120,15 @@ public class EditCommand extends Command {
                 && editPersonDescriptor.equals(otherEditCommand.editPersonDescriptor);
     }
 
+    /**
+     * @inheritDoc
+     * @return <code>true</code> as AddCommand modifies the address book
+     */
+    @Override
+    public boolean requiresWrite() {
+        return true;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)

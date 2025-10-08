@@ -17,4 +17,13 @@ public abstract class Command {
      */
     public abstract CommandResult execute(Model model) throws CommandException;
 
+    /**
+     * Returns true if the command modifies the address book.
+     * By default, commands do not modify the address book.
+     *
+     * @return true if the command modifies the address book.
+     */
+    public boolean requiresWrite() {
+        return false;
+    };
 }
