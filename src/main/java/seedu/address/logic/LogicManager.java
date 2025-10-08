@@ -10,6 +10,8 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.ConfirmCommand;
+import seedu.address.logic.commands.ConfirmationPendingResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.AddressBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -33,21 +35,33 @@ public class LogicManager implements Logic {
     private final Storage storage;
     private final AddressBookParser addressBookParser;
 
+    public State state;
+    
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
      */
     public LogicManager(Model model, Storage storage) {
         this.model = model;
         this.storage = storage;
+        this.state = new StateManager();
         addressBookParser = new AddressBookParser();
     }
 
     @Override
     public CommandResult execute(String commandText) throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
-
         CommandResult commandResult;
-        Command command = addressBookParser.parseCommand(commandText);
+        Command command;
+        if (state.isAwaitingUserConfirmation()) {
+            command = new ConfirmCommand(
+                commandText,
+                () -> state.executePendingOperation(),
+                () -> state.cancelPendingOperation(),
+                state.getConfirmationMessage()
+            );
+        } else {
+            command = addressBookParser.parseCommand(commandText);
+        }
         commandResult = command.execute(model);
 
         // Save the current address book state to storage only if the command modifies the data
@@ -59,6 +73,12 @@ public class LogicManager implements Logic {
             } catch (IOException ioe) {
                 throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
             }
+        }
+
+        if (commandResult instanceof ConfirmationPendingResult pendingResult) {
+            state.setAwaitingUserConfirmation(
+                pendingResult
+            );
         }
 
         return commandResult;
