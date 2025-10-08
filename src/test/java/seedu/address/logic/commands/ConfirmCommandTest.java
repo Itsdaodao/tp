@@ -4,15 +4,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalPersons.AMY;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.LogicManager;
+import seedu.address.logic.LogicManagerTest;
+import seedu.address.logic.State;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
 
+/**
+ * Contains unit tests for {@code ConfirmCommand}.
+ */
 public class ConfirmCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 

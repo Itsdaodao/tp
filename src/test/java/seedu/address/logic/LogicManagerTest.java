@@ -189,6 +189,30 @@ public class LogicManagerTest {
         assertCommandDoesNotTriggerWrite(listCommand, ListCommand.MESSAGE_SUCCESS, model);
     }
 
+    // Integration test
+    @Test
+    public void execute_deleteCommandThenConfirmCommand_deletesUserAndWrites() throws Exception {
+        // Arrange - create state with pending confirmation
+        model.addPerson(AMY);
+        int index = 1;
+        String deleteCommand = "delete " + index;
+        State state = new StateManager();
+        TrackingStorageManager trackingStorage = getTestStorageManager();
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.deletePerson(AMY);
+
+        // act - execute confirm command
+        LogicManager lm = new LogicManager(model, trackingStorage, state);
+        lm.execute(deleteCommand);
+        lm.execute("y");
+
+
+        // Assert - check that contact deleted and write triggered
+        assertEquals(expectedModel, model);
+        assertTrue(trackingStorage.saveCalled,
+                "Expected saveAddressBook() to be called but it was not.");
+    }
+
     /**
      * Executes the command and confirms that
      * - no exceptions are thrown <br>
