@@ -75,6 +75,15 @@ public class AddCommand extends Command {
         return toAdd.equals(otherAddCommand.toAdd);
     }
 
+    /**
+     * @inheritDoc
+     * @return <code>true</code> as AddCommand modifies the address book
+     */
+    @Override
+    public boolean requiresWrite() {
+        return true;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
