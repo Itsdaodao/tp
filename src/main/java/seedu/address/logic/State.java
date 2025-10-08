@@ -21,23 +21,15 @@ public interface State {
     boolean isAwaitingUserConfirmation();
 
     /**
-     * Executes the pending operation.
-     * Calling this method will update the state to no longer be awaiting user confirmation.
-     * @return the result of previously-pending operation execution.
+     * Returns the operation that is pending user confirmation.
+     * @return the pending operation, or null if no operation is pending.
      */
-    CommandResult executePendingOperation();
+    ConfirmationPendingResult getPendingOperation();
 
     /**
-     * Cancels the pending operation.
-     * Calling this method will update the state to no longer be awaiting user confirmation.
-     * @return Command Result indicating that the operation was cancelled.
+     * Clears the state to reflect that the app is no longer waiting for user confirmation.
      */
-    CommandResult cancelPendingOperation();
-
-    /**
-     * Returns the confirmation message for the pending operation.
-     */
-    String getConfirmationMessage();
+    void clearAwaitingUserConfirmation();
 
     /**
      * Updates state to reflect that the app is waiting for user confirmation.

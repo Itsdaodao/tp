@@ -31,34 +31,16 @@ public class StateManager implements State {
     }
 
     @Override
-    public String getConfirmationMessage() {
-        if (awaitingUserConfirmation && pendingOperation != null) {
-            return pendingOperation.getFeedbackToUser();
-        } else {
-            throw new RuntimeException("No pending confirmation!");
-        }
+    public void clearAwaitingUserConfirmation() {
+        this.awaitingUserConfirmation = false;
+        this.pendingOperation = null;
     }
 
     @Override
-    public CommandResult executePendingOperation() {
-        if (awaitingUserConfirmation && pendingOperation != null) {
-            CommandResult res = pendingOperation.executeOnConfirm();
-            awaitingUserConfirmation = false;
-            pendingOperation = null;
-            return res;
-        } else {
-            throw new RuntimeException("No operation to execute!");
+    public ConfirmationPendingResult getPendingOperation() {
+        if (!this.awaitingUserConfirmation){
+            return null;
         }
-    }
-
-    @Override
-    public CommandResult cancelPendingOperation() {
-        if (awaitingUserConfirmation) {
-            awaitingUserConfirmation = false;
-            pendingOperation = null;
-            return new CommandResult("Operation cancelled.");
-        } else {
-            throw new RuntimeException("No operation to cancel!");
-        }
+        return pendingOperation;
     }
 }

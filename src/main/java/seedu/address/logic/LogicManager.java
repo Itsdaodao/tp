@@ -55,9 +55,8 @@ public class LogicManager implements Logic {
         if (state.isAwaitingUserConfirmation()) {
             command = new ConfirmCommand(
                 commandText,
-                () -> state.executePendingOperation(),
-                () -> state.cancelPendingOperation(),
-                state.getConfirmationMessage()
+                () -> state.clearAwaitingUserConfirmation(),
+                state.getPendingOperation()
             );
         } else {
             command = addressBookParser.parseCommand(commandText);

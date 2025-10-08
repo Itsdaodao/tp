@@ -71,15 +71,6 @@ public class DeleteCommand extends Command {
         return targetIndex.equals(otherDeleteCommand.targetIndex);
     }
 
-    /**
-     * @inheritDoc
-     * @return <code>true</code> as DeleteCommand modifies the address book
-     */
-    @Override
-    public boolean requiresWrite() {
-        return true;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this)
