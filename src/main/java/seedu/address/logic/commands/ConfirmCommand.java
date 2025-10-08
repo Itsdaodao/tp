@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 
@@ -52,5 +53,13 @@ public class ConfirmCommand extends Command {
     @Override
     public boolean requiresWrite() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("pendingOperation", pendingOperation)
+                .add("userInput", input)
+                .toString();
     }
 }
