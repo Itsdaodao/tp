@@ -21,7 +21,7 @@ public abstract class Command {
      * Returns true if the command modifies the address book.
      * By default, commands do not modify the address book.
      *
-     * @return true if the command modifies the address book.
+     * @return <code>false</code> as this command does not modify the address book
      */
     public boolean requiresWrite() {
         return false;
