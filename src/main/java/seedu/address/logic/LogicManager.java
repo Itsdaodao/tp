@@ -10,6 +10,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.ConfirmationPendingResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.AddressBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -33,12 +34,15 @@ public class LogicManager implements Logic {
     private final Storage storage;
     private final AddressBookParser addressBookParser;
 
+    private final State state;
+
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
      */
-    public LogicManager(Model model, Storage storage) {
+    public LogicManager(Model model, Storage storage, State state) {
         this.model = model;
         this.storage = storage;
+        this.state = state;
         addressBookParser = new AddressBookParser();
     }
 
@@ -46,19 +50,17 @@ public class LogicManager implements Logic {
     public CommandResult execute(String commandText) throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
-        CommandResult commandResult;
-        Command command = addressBookParser.parseCommand(commandText);
-        commandResult = command.execute(model);
+        // Get command based on input and execute
+        Command command = buildCommand(commandText);
+        CommandResult commandResult = command.execute(model);
 
-        // Save the current address book state to storage only if the command modifies the data
-        if (command.requiresWrite()) {
-            try {
-                storage.saveAddressBook(model.getAddressBook());
-            } catch (AccessDeniedException e) {
-                throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
-            } catch (IOException ioe) {
-                throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
-            }
+        saveIfRequired(command);
+
+        if (commandResult instanceof ConfirmationPendingResult pendingResult) {
+            // Set the state to indicate that app is waiting for confirmation
+            state.setAwaitingUserConfirmation(
+                pendingResult
+            );
         }
 
         return commandResult;
@@ -87,5 +89,42 @@ public class LogicManager implements Logic {
     @Override
     public void setGuiSettings(GuiSettings guiSettings) {
         model.setGuiSettings(guiSettings);
+    }
+
+    /**
+     * Parses the command text and returns the corresponding Command object.
+     * If the application is awaiting user confirmation, it creates a ConfirmCommand instead.
+     *
+     * @param commandText The command text input by the user.
+     * @return The Command object to be executed.
+     * @throws ParseException If the command text is invalid.
+     */
+    private Command buildCommand(String commandText) throws ParseException {
+        if (state.isAwaitingUserConfirmation()) {
+            return addressBookParser.parseConfirmationCommand(
+                    commandText, state::clearAwaitingUserConfirmation, state.getPendingOperation()
+            );
+        }
+        return addressBookParser.parseCommand(commandText);
+    }
+
+    /**
+     * Saves the current address book to storage if the command modifies the data.
+     *
+     * @param command The command that was executed.
+     * @throws CommandException If there was an error during saving.
+     */
+    private void saveIfRequired(Command command) throws CommandException {
+        if (!command.requiresWrite()) {
+            return;
+        }
+        // Save using the current model state
+        try {
+            storage.saveAddressBook(model.getAddressBook());
+        } catch (AccessDeniedException e) {
+            throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
+        } catch (IOException ioe) {
+            throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
+        }
     }
 }

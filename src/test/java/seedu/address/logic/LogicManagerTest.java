@@ -21,6 +21,7 @@ import org.junit.jupiter.api.io.TempDir;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.ConfirmationPendingResult;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ListCommand;
@@ -52,7 +53,7 @@ public class LogicManagerTest {
                 new JsonAddressBookStorage(temporaryFolder.resolve("addressBook.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
         StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
-        logic = new LogicManager(model, storage);
+        logic = new LogicManager(model, storage, new StateManager());
     }
 
     @Test
@@ -121,17 +122,52 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_deleteCommand_triggersWrite() throws Exception {
+    public void execute_deleteCommand_doesNotTriggerWrite() throws Exception {
         model.addPerson(AMY);
         int index = 1;
         String deleteCommand = "delete " + index;
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        expectedModel.deletePerson(expectedModel.getFilteredPersonList().get(0));
 
-        assertCommandTriggersWrite(deleteCommand,
-                String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, AMY),
-                expectedModel);
+        String expected = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_CONFIRM, Messages.format(AMY));
+        assertCommandDoesNotTriggerWrite(deleteCommand, expected, expectedModel);
+    }
+
+    @Test
+    public void execute_deletionConfirmationCommand_triggersWrite() throws Exception {
+        // Arrange - create state with pending confirmation
+        model.addPerson(AMY);
+        State state = createPendingDeleteConfirmationState(model, AMY);
+        TrackingStorageManager trackingStorage = getTestStorageManager();
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.deletePerson(AMY);
+
+        // act - execute confirm command
+        LogicManager lm = new LogicManager(model, trackingStorage, state);
+        lm.execute("y");
+
+
+        // Assert - check that contact deleted and write triggered
+        assertTrue(trackingStorage.saveCalled,
+                "Expected saveAddressBook() to be called but it was not.");
+    }
+
+    @Test
+    public void execute_deletionCancelCommand_triggersWrite() throws Exception {
+        // Arrange - create state with pending confirmation
+        model.addPerson(AMY);
+        State state = createPendingDeleteConfirmationState(model, AMY);
+        TrackingStorageManager trackingStorage = getTestStorageManager();
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+
+        // act - execute confirm command
+        LogicManager lm = new LogicManager(model, trackingStorage, state);
+        lm.execute("n");
+
+
+        // Assert - check that contact deleted and write triggered
+        assertTrue(trackingStorage.saveCalled,
+                "Expected saveAddressBook() to be called but it was not.");
     }
 
     @Test
@@ -147,6 +183,30 @@ public class LogicManagerTest {
     public void execute_listCommand_doesNotTriggerWrite() throws Exception {
         String listCommand = ListCommand.COMMAND_WORD;
         assertCommandDoesNotTriggerWrite(listCommand, ListCommand.MESSAGE_SUCCESS, model);
+    }
+
+    // Integration test
+    @Test
+    public void execute_deleteCommandThenConfirmCommand_deletesUserAndWrites() throws Exception {
+        // Arrange - create state with pending confirmation
+        model.addPerson(AMY);
+        int index = 1;
+        String deleteCommand = "delete " + index;
+        State state = new StateManager();
+        TrackingStorageManager trackingStorage = getTestStorageManager();
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.deletePerson(AMY);
+
+        // act - execute confirm command
+        LogicManager lm = new LogicManager(model, trackingStorage, state);
+        lm.execute(deleteCommand);
+        lm.execute("y");
+
+
+        // Assert - check that contact deleted and write triggered
+        assertEquals(expectedModel, model);
+        assertTrue(trackingStorage.saveCalled,
+                "Expected saveAddressBook() to be called but it was not.");
     }
 
     /**
@@ -229,7 +289,7 @@ public class LogicManagerTest {
                 new JsonUserPrefsStorage(temporaryFolder.resolve("ExceptionUserPrefs.json"));
         StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
 
-        logic = new LogicManager(model, storage);
+        logic = new LogicManager(model, storage, new StateManager());
 
         // Triggers the saveAddressBook method by executing an add command
         String addCommand = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
@@ -270,7 +330,7 @@ public class LogicManagerTest {
         Path prefsPath = temporaryFolder.resolve("prefsWriteTest.json");
 
         TrackingStorageManager trackingStorage = new TrackingStorageManager(bookPath, prefsPath);
-        logic = new LogicManager(model, trackingStorage);
+        logic = new LogicManager(model, trackingStorage, new StateManager());
 
         CommandResult result = logic.execute(inputCommand);
         String feedback = result.getFeedbackToUser();
@@ -298,11 +358,31 @@ public class LogicManagerTest {
         Path prefsPath = temporaryFolder.resolve("prefsNoWriteTest.json");
 
         TrackingStorageManager trackingStorage = new TrackingStorageManager(bookPath, prefsPath);
-        logic = new LogicManager(model, trackingStorage);
+        logic = new LogicManager(model, trackingStorage, new StateManager());
 
         CommandResult result = logic.execute(inputCommand);
         assertEquals(expectedMessage, result.getFeedbackToUser());
         assertEquals(expectedModel, model);
         assertEquals(false, trackingStorage.saveCalled, "Expected saveAddressBook() NOT to be called but it was.");
+    }
+
+    private TrackingStorageManager getTestStorageManager() {
+        Path bookPath = temporaryFolder.resolve("writeTest.json");
+        Path prefsPath = temporaryFolder.resolve("prefsWriteTest.json");
+        return new TrackingStorageManager(bookPath, prefsPath);
+    }
+
+    private static State createPendingDeleteConfirmationState(Model model, Person person) {
+        State state = new StateManager();
+        state.setAwaitingUserConfirmation(new ConfirmationPendingResult(
+                "Confirm deletion [y/n] of:\n" + Messages.format(person) + "?",
+                false, false, () -> {
+                    model.deletePerson(person);
+                    return new CommandResult(
+                            String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(person))
+                    );
+                }
+        ));
+        return state;
     }
 }
