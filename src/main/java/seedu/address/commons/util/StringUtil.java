@@ -39,6 +39,55 @@ public class StringUtil {
     }
 
     /**
+     * Returns true if the {@code sentence} starts with the {@code word}.
+     *   Ignores case, but a prefix match is required.
+     *   <br>examples:<pre>
+     *       containsPrefixIgnoreCase("Hans Tho, "Hans") == true
+     *       containsPrefixIgnoreCase("Hans Tho", "THO") == true
+     *       containsPrefixIgnoreCase("Hans Tho", "hans") == true
+     *       containsPrefixIgnoreCase("Hans Tho", "ha") == true
+     *       containsPrefixIgnoreCase("Hans Tho", "s") == false
+     *       </pre>
+     * @param sentence cannot be null
+     * @param keyword cannot be null, cannot be empty, must be a single word
+     */
+    public static boolean containsPrefixIgnoreCase(String sentence, String keyword) {
+        requireNonNull(sentence);
+        requireNonNull(keyword);
+
+        String preppedWord = keyword.trim();
+        checkArgument(!preppedWord.isEmpty(), "Keyword parameter cannot be empty");
+        checkArgument(preppedWord.split("\\s+").length == 1,
+                "keyword parameter should be a single word");
+
+        String preppedSentence = sentence;
+        String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
+
+        return Arrays.stream(wordsInPreppedSentence)
+                .anyMatch(word -> startsWithIgnoreCase(word, preppedWord));
+    }
+
+    /**
+     * Checks if the given text starts with the specified prefix, ignoring case differences.
+     *
+     * <p>Examples:
+     * <pre>
+     * startsWithIgnoreCase("Hans", "h")    // true
+     * startsWithIgnoreCase("Hans", "Ha")   // true
+     * startsWithIgnoreCase("Hans", "han")  // true
+     * startsWithIgnoreCase("Hans", "HANS") // true
+     * startsWithIgnoreCase("Hans", "a")    // false
+     * </pre>
+     *
+     * @param text   the full text to check; must not be null
+     * @param prefix the prefix to test for; must not be null or empty
+     * @return true if the text starts with the prefix (case-insensitive), false otherwise
+     */
+    public static boolean startsWithIgnoreCase(String text, String prefix) {
+        return text.toLowerCase().startsWith(prefix.toLowerCase());
+    }
+
+    /**
      * Returns a detailed message of the t, including the stack trace.
      */
     public static String getDetails(Throwable t) {
