@@ -11,6 +11,9 @@ public class ConfirmCommand extends Command {
     public static final String MESSAGE_OPERATION_CANCELLED = "Operation cancelled.";
     public static final String MESSAGE_INVALID_CONFIRMATION_INPUT = "Invalid Input.\n%s";
 
+    public static final String USER_INPUT_CONFIRM = "y";
+    public static final String USER_INPUT_CANCEL = "n";
+
     private final String input;
     private final Runnable onComplete;
     private final ConfirmationPendingResult pendingOperation;
@@ -26,18 +29,18 @@ public class ConfirmCommand extends Command {
     public ConfirmCommand(String input,
                           Runnable onComplete,
                           ConfirmationPendingResult pendingOperation) {
-        this.input = input;
+        this.input = input.toLowerCase();
         this.pendingOperation = pendingOperation;
         this.onComplete = onComplete;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        if (input.equals("y")) {
+        if (input.equals(USER_INPUT_CONFIRM)) {
             CommandResult res = pendingOperation.executeOnConfirm();
             onComplete.run();
             return res;
-        } else if (input.equals("n")) {
+        } else if (input.equals(USER_INPUT_CANCEL)) {
             onComplete.run();
             return new CommandResult(MESSAGE_OPERATION_CANCELLED);
         } else {

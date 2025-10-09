@@ -101,7 +101,7 @@ public class LogicManager implements Logic {
      */
     private Command buildCommand(String commandText) throws ParseException {
         if (state.isAwaitingUserConfirmation()) {
-            return addressBookParser.createConfirmationCommand(
+            return addressBookParser.parseConfirmationCommand(
                     commandText, state::clearAwaitingUserConfirmation, state.getPendingOperation()
             );
         }

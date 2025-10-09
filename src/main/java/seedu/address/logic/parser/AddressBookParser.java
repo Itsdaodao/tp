@@ -40,7 +40,7 @@ public class AddressBookParser {
      * @param pendingOp the operation that is pending confirmation.
      * @return the command based on the user input
      */
-    public Command createConfirmationCommand(
+    public Command parseConfirmationCommand(
             String userInput, Runnable onComplete, ConfirmationPendingResult pendingOp
     ) {
         return new ConfirmCommand(userInput, onComplete, pendingOp);
