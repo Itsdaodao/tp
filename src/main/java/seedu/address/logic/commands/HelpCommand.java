@@ -18,7 +18,7 @@ public class HelpCommand extends Command {
             + "clear       Clears all contacts from the address book\n"
             + "delete      Deletes a contact from the address book\n"
             + "edit        Edits an existing contact\n"
-            + "exit        Exits the program"
+            + "exit        Exits the program\n"
             + "find        Finds contacts whose names contain any of the given keywords\n"
             + "            Example: find alice bob\n"
             + "help        Shows program usage instructions\n"
