@@ -11,7 +11,8 @@ import java.util.Arrays;
  * Helper functions for handling strings.
  */
 public class StringUtil {
-
+    private static final String ERROR_EMPTY_KEYWORD = "Keyword parameter cannot be empty";
+    private static final String ERROR_MULTIPLE_WORDS = "Keyword parameter should be a single word";
     /**
      * Returns true if the {@code sentence} contains the {@code word}.
      *   Ignores case, but a full word match is required.
@@ -28,8 +29,8 @@ public class StringUtil {
         requireNonNull(word);
 
         String preppedWord = word.trim();
-        checkArgument(!preppedWord.isEmpty(), "Word parameter cannot be empty");
-        checkArgument(preppedWord.split("\\s+").length == 1, "Word parameter should be a single word");
+        checkArgument(!preppedWord.isEmpty(), ERROR_EMPTY_KEYWORD);
+        checkArgument(preppedWord.split("\\s+").length == 1, ERROR_MULTIPLE_WORDS);
 
         String preppedSentence = sentence;
         String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
@@ -48,17 +49,20 @@ public class StringUtil {
      *       containsPrefixIgnoreCase("Hans Tho", "ha") == true
      *       containsPrefixIgnoreCase("Hans Tho", "s") == false
      *       </pre>
-     * @param sentence cannot be null
-     * @param keyword cannot be null, cannot be empty, must be a single word
+     *
+     * @param sentence sentence to search in
+     * @param keyword keyword to match as prefix
+     * @return {@code true} if the sentence contains a word that starts with the keyword; {@code false} otherwise
+     * @throws NullPointerException If {@code sentence} or {@code keyword} is {@code null}.
+     * @throws IllegalArgumentException If {@code keyword} is empty or contains multiple words.
      */
     public static boolean containsPrefixIgnoreCase(String sentence, String keyword) {
         requireNonNull(sentence);
         requireNonNull(keyword);
 
         String preppedWord = keyword.trim();
-        checkArgument(!preppedWord.isEmpty(), "Keyword parameter cannot be empty");
-        checkArgument(preppedWord.split("\\s+").length == 1,
-                "Keyword parameter should be a single word");
+        checkArgument(!preppedWord.isEmpty(), ERROR_EMPTY_KEYWORD);
+        checkArgument(preppedWord.split("\\s+").length == 1, ERROR_MULTIPLE_WORDS);
 
         String preppedSentence = sentence;
         String[] wordsInPreppedSentence = preppedSentence.split("\\s+");

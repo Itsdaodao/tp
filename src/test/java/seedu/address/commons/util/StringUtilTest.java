@@ -9,7 +9,8 @@ import java.io.FileNotFoundException;
 import org.junit.jupiter.api.Test;
 
 public class StringUtilTest {
-
+    private static final String ERROR_EMPTY_KEYWORD = "Keyword parameter cannot be empty";
+    private static final String ERROR_MULTIPLE_WORDS = "Keyword parameter should be a single word";
     //---------------- Tests for isNonZeroUnsignedInteger --------------------------------------
 
     @Test
@@ -61,13 +62,13 @@ public class StringUtilTest {
 
     @Test
     public void containsWordIgnoreCase_emptyWord_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, "Word parameter cannot be empty", ()
+        assertThrows(IllegalArgumentException.class, ERROR_EMPTY_KEYWORD, ()
             -> StringUtil.containsWordIgnoreCase("typical sentence", "  "));
     }
 
     @Test
     public void containsWordIgnoreCase_multipleWords_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, "Word parameter should be a single word", ()
+        assertThrows(IllegalArgumentException.class, ERROR_MULTIPLE_WORDS, ()
             -> StringUtil.containsWordIgnoreCase("typical sentence", "aaa BBB"));
     }
 
@@ -155,13 +156,13 @@ public class StringUtilTest {
 
     @Test
     public void containsPrefixIgnoreCase_emptyWord_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, "Keyword parameter cannot be empty", ()
+        assertThrows(IllegalArgumentException.class, ERROR_EMPTY_KEYWORD, ()
                 -> StringUtil.containsPrefixIgnoreCase("typical sentence", "  "));
     }
 
     @Test
     public void containsPrefixIgnoreCase_multipleWords_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, "Keyword parameter should be a single word", ()
+        assertThrows(IllegalArgumentException.class, ERROR_MULTIPLE_WORDS, ()
                 -> StringUtil.containsPrefixIgnoreCase("typical sentence", "aaa BBB"));
     }
 
