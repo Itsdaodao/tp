@@ -11,6 +11,8 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.ConfirmCommand;
+import seedu.address.logic.commands.ConfirmationPendingResult;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
@@ -29,6 +31,20 @@ public class AddressBookParser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
+
+    /**
+     * Factory method to create a ConfirmCommand to confirm a pending operation.
+     *
+     * @param userInput full user input string
+     * @param onComplete a callback to run after the operation is confirmed or cancelled. Used to update state.
+     * @param pendingOp the operation that is pending confirmation.
+     * @return the command based on the user input
+     */
+    public Command createConfirmationCommand(
+            String userInput, Runnable onComplete, ConfirmationPendingResult pendingOp
+    ) {
+        return new ConfirmCommand(userInput, onComplete, pendingOp);
+    }
 
     /**
      * Parses user input into command for execution.
