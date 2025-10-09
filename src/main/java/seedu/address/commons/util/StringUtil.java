@@ -11,7 +11,8 @@ import java.util.Arrays;
  * Helper functions for handling strings.
  */
 public class StringUtil {
-
+    public static final String ERROR_EMPTY_KEYWORD = "Keyword parameter cannot be empty";
+    public static final String ERROR_MULTIPLE_WORDS = "Keyword parameter should be a single word";
     /**
      * Returns true if the {@code sentence} contains the {@code word}.
      *   Ignores case, but a full word match is required.
@@ -28,14 +29,72 @@ public class StringUtil {
         requireNonNull(word);
 
         String preppedWord = word.trim();
-        checkArgument(!preppedWord.isEmpty(), "Word parameter cannot be empty");
-        checkArgument(preppedWord.split("\\s+").length == 1, "Word parameter should be a single word");
+        checkArgument(!preppedWord.isEmpty(), ERROR_EMPTY_KEYWORD);
+        checkArgument(preppedWord.split("\\s+").length == 1, ERROR_MULTIPLE_WORDS);
 
         String preppedSentence = sentence;
         String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
 
         return Arrays.stream(wordsInPreppedSentence)
                 .anyMatch(preppedWord::equalsIgnoreCase);
+    }
+
+    /**
+     * Returns true if the {@code sentence} starts with the {@code word}.
+     *   Ignores case, but a prefix match is required.
+     *   <br>examples:<pre>
+     *       containsPrefixIgnoreCase("Hans Tho, "Hans") == true
+     *       containsPrefixIgnoreCase("Hans Tho", "THO") == true
+     *       containsPrefixIgnoreCase("Hans Tho", "hans") == true
+     *       containsPrefixIgnoreCase("Hans Tho", "ha") == true
+     *       containsPrefixIgnoreCase("Hans Tho", "s") == false
+     *       </pre>
+     *
+     * @param sentence sentence to search in
+     * @param keyword keyword to match as prefix
+     * @return {@code true} if the sentence contains a word that starts with the keyword; {@code false} otherwise
+     * @throws NullPointerException If {@code sentence} or {@code keyword} is {@code null}.
+     * @throws IllegalArgumentException If {@code keyword} is empty or contains multiple words.
+     */
+    public static boolean containsPrefixIgnoreCase(String sentence, String keyword) {
+        requireNonNull(sentence);
+        requireNonNull(keyword);
+
+        String preppedWord = keyword.trim();
+        checkArgument(!preppedWord.isEmpty(), ERROR_EMPTY_KEYWORD);
+        checkArgument(preppedWord.split("\\s+").length == 1, ERROR_MULTIPLE_WORDS);
+
+        String preppedSentence = sentence;
+        String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
+
+        return Arrays.stream(wordsInPreppedSentence)
+                .anyMatch(word -> startsWithIgnoreCase(word, preppedWord));
+    }
+
+    /**
+     * Checks if the given text starts with the specified prefix, ignoring case differences.
+     *
+     * <p>Examples:
+     * <pre>
+     * startsWithIgnoreCase("Hans", "h")    // true
+     * startsWithIgnoreCase("Hans", "Ha")   // true
+     * startsWithIgnoreCase("Hans", "han")  // true
+     * startsWithIgnoreCase("Hans", "HANS") // true
+     * startsWithIgnoreCase("Hans", "a")    // false
+     * </pre>
+     *
+     * @param text   the full text to check; must not be null
+     * @param prefix the prefix to test for; must not be null or empty
+     * @return true if the text starts with the prefix (case-insensitive), false otherwise
+     */
+    public static boolean startsWithIgnoreCase(String text, String prefix) {
+        requireNonNull(text);
+        requireNonNull(prefix);
+
+        String trimmedText = text.trim();
+        String trimmedPrefix = prefix.trim();
+
+        return trimmedText.toLowerCase().startsWith(trimmedPrefix.toLowerCase());
     }
 
     /**
