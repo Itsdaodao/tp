@@ -11,8 +11,8 @@ import java.util.Arrays;
  * Helper functions for handling strings.
  */
 public class StringUtil {
-    private static final String ERROR_EMPTY_KEYWORD = "Keyword parameter cannot be empty";
-    private static final String ERROR_MULTIPLE_WORDS = "Keyword parameter should be a single word";
+    public static final String ERROR_EMPTY_KEYWORD = "Keyword parameter cannot be empty";
+    public static final String ERROR_MULTIPLE_WORDS = "Keyword parameter should be a single word";
     /**
      * Returns true if the {@code sentence} contains the {@code word}.
      *   Ignores case, but a full word match is required.
