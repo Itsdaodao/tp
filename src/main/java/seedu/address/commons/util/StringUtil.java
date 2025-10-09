@@ -58,7 +58,7 @@ public class StringUtil {
         String preppedWord = keyword.trim();
         checkArgument(!preppedWord.isEmpty(), "Keyword parameter cannot be empty");
         checkArgument(preppedWord.split("\\s+").length == 1,
-                "keyword parameter should be a single word");
+                "Keyword parameter should be a single word");
 
         String preppedSentence = sentence;
         String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
@@ -84,7 +84,13 @@ public class StringUtil {
      * @return true if the text starts with the prefix (case-insensitive), false otherwise
      */
     public static boolean startsWithIgnoreCase(String text, String prefix) {
-        return text.toLowerCase().startsWith(prefix.toLowerCase());
+        requireNonNull(text);
+        requireNonNull(prefix);
+
+        String trimmedText = text.trim();
+        String trimmedPrefix = prefix.trim();
+
+        return trimmedText.toLowerCase().startsWith(trimmedPrefix.toLowerCase());
     }
 
     /**
