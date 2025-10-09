@@ -13,6 +13,7 @@ public interface State {
 
     /**
      * Returns the operation that is pending user confirmation.
+     *
      * @return the pending operation, or null if no operation is pending.
      */
     ConfirmationPendingResult getPendingOperation();
@@ -24,6 +25,7 @@ public interface State {
 
     /**
      * Updates state to reflect that the app is waiting for user confirmation.
+     *
      * @param pendingOperation the operation that is pending confirmation.
      */
     void setAwaitingUserConfirmation(ConfirmationPendingResult pendingOperation);

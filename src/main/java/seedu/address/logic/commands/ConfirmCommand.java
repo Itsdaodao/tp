@@ -18,6 +18,7 @@ public class ConfirmCommand extends Command {
 
     /**
      * Creates a ConfirmCommand to confirm a pending operation.
+     *
      * @param input the user input, any string.
      * @param onComplete a callback to run after the operation is confirmed or cancelled. Used to update state.
      * @param pendingOperation the operation that is pending confirmation.
