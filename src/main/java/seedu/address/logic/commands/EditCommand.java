@@ -55,7 +55,7 @@ public class EditCommand extends Command {
     private final EditPersonDescriptor editPersonDescriptor;
 
     /**
-     * @param index of the person in the filtered person list to edit
+     * @param index                of the person in the filtered person list to edit
      * @param editPersonDescriptor details to edit the person with
      */
     public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
@@ -98,9 +98,9 @@ public class EditCommand extends Command {
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Set<Tag> updatedTags = getUpdatedTags(
-                personToEdit.getTags(),                                                 // get existing tags
-                editPersonDescriptor.getTags().orElse(Collections.emptySet()),          // add these tags
-                editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet())    // remove these tags
+                personToEdit.getTags(), // get existing tags
+                editPersonDescriptor.getTags().orElse(Collections.emptySet()), // add these tags
+                editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet()) // remove these tags
         );
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedTags);
@@ -140,8 +140,8 @@ public class EditCommand extends Command {
     }
 
     /**
-     * @inheritDoc
      * @return <code>true</code> as AddCommand modifies the address book
+     * @inheritDoc
      */
     @Override
     public boolean requiresWrite() {
@@ -167,7 +167,8 @@ public class EditCommand extends Command {
         private Set<Tag> tags;
         private Set<Tag> removedTags;
 
-        public EditPersonDescriptor() {}
+        public EditPersonDescriptor() {
+        }
 
         /**
          * Copy constructor.
@@ -219,8 +220,9 @@ public class EditCommand extends Command {
         public void setTags(Set<Tag> tags) {
             this.tags = (tags != null) ? new HashSet<>(tags) : null;
         }
-        public void setRemovedTags(Set<Tag> rm_tags) {
-            this.removedTags = (rm_tags != null) ? new HashSet<>(rm_tags) : null;
+
+        public void setRemovedTags(Set<Tag> removedTags) {
+            this.removedTags = (removedTags != null) ? new HashSet<>(removedTags) : null;
         }
 
         /**
