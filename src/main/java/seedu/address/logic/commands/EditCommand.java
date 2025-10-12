@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMOVE_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -40,7 +41,8 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "[" + PREFIX_TAG + "(add) TAG]... "
+            + "[" + PREFIX_REMOVE_TAG + "(remove) TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
@@ -95,9 +97,30 @@ public class EditCommand extends Command {
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Set<Tag> updatedTags = getUpdatedTags(
+                personToEdit.getTags(),                                                 // get existing tags
+                editPersonDescriptor.getTags().orElse(Collections.emptySet()),          // add these tags
+                editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet())    // remove these tags
+        );
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedTags);
+    }
+
+    /**
+     * Returns the updated set of tags after applying the additions and removals from the
+     * {@code editPersonDescriptor}.
+     */
+    private static Set<Tag> getUpdatedTags(Set<Tag> baseTags, Set<Tag> tagsToAdd, Set<Tag> tagsToRemove) {
+
+        Set<Tag> updatedTags = new HashSet<>(baseTags);
+
+        assert tagsToAdd != null;
+        assert tagsToRemove != null;
+
+        updatedTags.addAll(tagsToAdd);
+        updatedTags.removeAll(tagsToRemove);
+
+        return updatedTags;
     }
 
     @Override
@@ -142,6 +165,7 @@ public class EditCommand extends Command {
         private Phone phone;
         private Email email;
         private Set<Tag> tags;
+        private Set<Tag> removedTags;
 
         public EditPersonDescriptor() {}
 
@@ -154,6 +178,7 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setTags(toCopy.tags);
+            setRemovedTags(toCopy.removedTags);
         }
 
         /**
@@ -194,6 +219,9 @@ public class EditCommand extends Command {
         public void setTags(Set<Tag> tags) {
             this.tags = (tags != null) ? new HashSet<>(tags) : null;
         }
+        public void setRemovedTags(Set<Tag> rm_tags) {
+            this.removedTags = (rm_tags != null) ? new HashSet<>(rm_tags) : null;
+        }
 
         /**
          * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
@@ -202,6 +230,10 @@ public class EditCommand extends Command {
          */
         public Optional<Set<Tag>> getTags() {
             return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
+        }
+
+        public Optional<Set<Tag>> getRemovedTags() {
+            return (removedTags != null) ? Optional.of(Collections.unmodifiableSet(removedTags)) : Optional.empty();
         }
 
         @Override
