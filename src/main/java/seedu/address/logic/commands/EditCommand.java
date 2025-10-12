@@ -43,8 +43,8 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
-            + "[" + PREFIX_TAG + "(add) TAG]... "
-            + "[" + PREFIX_REMOVE_TAG + "(remove) TAG]...\n"
+            + "[" + PREFIX_TAG + "(add) TAG] "
+            + "[" + PREFIX_REMOVE_TAG + "(remove) TAG] \n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
@@ -78,7 +78,6 @@ public class EditCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        //Person editedPerson = createEditedPersonAndResult(personToEdit, editPersonDescriptor);
 
         Pair<Person, TagUpdateResult> editResult = createEditedPersonAndResult(personToEdit, editPersonDescriptor);
         Person editedPerson = editResult.getKey();
@@ -103,17 +102,13 @@ public class EditCommand extends Command {
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Pair<Person, TagUpdateResult> createEditedPersonAndResult(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    private static Pair<Person, TagUpdateResult> createEditedPersonAndResult(
+            Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
         assert personToEdit != null;
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-//        Set<Tag> updatedTags = getUpdatedTags(
-//                personToEdit.getTags(), // get existing tags
-//                editPersonDescriptor.getTags().orElse(Collections.emptySet()), // add these tags
-//                editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet()) // remove these tags
-//        );
         TagUpdateResult tagUpdateResult = getUpdatedTags(
                 personToEdit.getTags(),
                 editPersonDescriptor.getTags().orElse(Collections.emptySet()),
