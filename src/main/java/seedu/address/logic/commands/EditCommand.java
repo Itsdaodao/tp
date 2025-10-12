@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import javafx.util.Pair;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.commons.util.ToStringBuilder;
@@ -76,7 +78,11 @@ public class EditCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
+        //Person editedPerson = createEditedPersonAndResult(personToEdit, editPersonDescriptor);
+
+        Pair<Person, TagUpdateResult> editResult = createEditedPersonAndResult(personToEdit, editPersonDescriptor);
+        Person editedPerson = editResult.getKey();
+        TagUpdateResult tagUpdateResult = editResult.getValue();
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
@@ -84,43 +90,57 @@ public class EditCommand extends Command {
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
+
+        String resultMessage = String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        if (tagUpdateResult.hasInvalidRemovals()) {
+            resultMessage += "\n" + tagUpdateResult.getInvalidRemovalMessage();
+        }
+
+        return new CommandResult(resultMessage);
     }
 
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    private static Pair<Person, TagUpdateResult> createEditedPersonAndResult(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
         assert personToEdit != null;
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-        Set<Tag> updatedTags = getUpdatedTags(
-                personToEdit.getTags(), // get existing tags
-                editPersonDescriptor.getTags().orElse(Collections.emptySet()), // add these tags
-                editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet()) // remove these tags
+//        Set<Tag> updatedTags = getUpdatedTags(
+//                personToEdit.getTags(), // get existing tags
+//                editPersonDescriptor.getTags().orElse(Collections.emptySet()), // add these tags
+//                editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet()) // remove these tags
+//        );
+        TagUpdateResult tagUpdateResult = getUpdatedTags(
+                personToEdit.getTags(),
+                editPersonDescriptor.getTags().orElse(Collections.emptySet()),
+                editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet())
         );
-
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedTags);
+        Person editedPerson = new Person(updatedName, updatedPhone, updatedEmail, tagUpdateResult.getUpdatedTags());
+        return new Pair<>(editedPerson, tagUpdateResult);
     }
 
     /**
      * Returns the updated set of tags after applying the additions and removals from the
      * {@code editPersonDescriptor}.
      */
-    private static Set<Tag> getUpdatedTags(Set<Tag> baseTags, Set<Tag> tagsToAdd, Set<Tag> tagsToRemove) {
+    private static TagUpdateResult getUpdatedTags(Set<Tag> baseTags, Set<Tag> tagsToAdd, Set<Tag> tagsToRemove) {
+        requireNonNull(baseTags);
+        requireNonNull(tagsToAdd);
+        requireNonNull(tagsToRemove);
 
         Set<Tag> updatedTags = new HashSet<>(baseTags);
+        Set<Tag> invalidRemovals = new HashSet<>(tagsToRemove);
+        invalidRemovals.removeAll(baseTags);
 
-        assert tagsToAdd != null;
-        assert tagsToRemove != null;
 
         updatedTags.addAll(tagsToAdd);
         updatedTags.removeAll(tagsToRemove);
 
-        return updatedTags;
+        return new TagUpdateResult(updatedTags, invalidRemovals);
     }
 
     @Override
@@ -266,6 +286,7 @@ public class EditCommand extends Command {
                             : otherEditPersonDescriptor.removedTags);
         }
 
+
         @Override
         public String toString() {
             return new ToStringBuilder(this)
@@ -274,6 +295,38 @@ public class EditCommand extends Command {
                     .add("email", email)
                     .add("tags", tags)
                     .toString();
+        }
+    }
+
+    /**
+     * Helper result for getUpdatedTags.
+     */
+    private static class TagUpdateResult {
+        private final Set<Tag> updatedTags;
+        private final Set<Tag> invalidRemovals;
+
+        TagUpdateResult(Set<Tag> updatedTags, Set<Tag> invalidRemovals) {
+            this.updatedTags = updatedTags;
+            this.invalidRemovals = invalidRemovals;
+        }
+
+        public Set<Tag> getUpdatedTags() {
+            return updatedTags;
+        }
+
+        public boolean hasInvalidRemovals() {
+            return !invalidRemovals.isEmpty();
+        }
+
+        public String getInvalidRemovalMessage() {
+            assert hasInvalidRemovals();
+
+            String tagsString = invalidRemovals.stream()
+                    .map(Tag::toString)
+                    .collect(Collectors.joining(" "));
+
+            return "The following tags could not be removed as they do not exist: "
+                    + tagsString;
         }
     }
 }

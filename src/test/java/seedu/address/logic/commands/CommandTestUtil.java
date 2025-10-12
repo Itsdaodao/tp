@@ -45,6 +45,9 @@ public class CommandTestUtil {
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
     public static final String REMOVE_TAG_DESC_FRIEND = " " + PREFIX_REMOVE_TAG + VALID_TAG_FRIEND;
+    public static final String REMOVE_TAG_DESC_FRIEND_HUSBAND_DOES_NOT_EXIST =
+            "\n" + "The following tags could not be removed as they do not exist: ["
+                    + VALID_TAG_FRIEND + "] [" + VALID_TAG_HUSBAND + "]";
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
