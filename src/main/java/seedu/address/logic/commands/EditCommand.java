@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMOVE_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -13,7 +14,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import javafx.util.Pair;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.commons.util.ToStringBuilder;
@@ -40,7 +43,8 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "[" + PREFIX_TAG + "(add) TAG] "
+            + "[" + PREFIX_REMOVE_TAG + "(remove) TAG] \n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
@@ -53,7 +57,7 @@ public class EditCommand extends Command {
     private final EditPersonDescriptor editPersonDescriptor;
 
     /**
-     * @param index of the person in the filtered person list to edit
+     * @param index                of the person in the filtered person list to edit
      * @param editPersonDescriptor details to edit the person with
      */
     public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
@@ -74,7 +78,10 @@ public class EditCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
+
+        Pair<Person, TagUpdateResult> editResult = createEditedPersonAndResult(personToEdit, editPersonDescriptor);
+        Person editedPerson = editResult.getKey();
+        TagUpdateResult tagUpdateResult = editResult.getValue();
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
@@ -82,22 +89,53 @@ public class EditCommand extends Command {
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
+
+        String resultMessage = String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        if (tagUpdateResult.hasInvalidRemovals()) {
+            resultMessage += "\n" + tagUpdateResult.getInvalidRemovalMessage();
+        }
+
+        return new CommandResult(resultMessage);
     }
 
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    private static Pair<Person, TagUpdateResult> createEditedPersonAndResult(
+            Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
         assert personToEdit != null;
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        TagUpdateResult tagUpdateResult = getUpdatedTags(
+                personToEdit.getTags(),
+                editPersonDescriptor.getTags().orElse(Collections.emptySet()),
+                editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet())
+        );
+        Person editedPerson = new Person(updatedName, updatedPhone, updatedEmail, tagUpdateResult.getUpdatedTags());
+        return new Pair<>(editedPerson, tagUpdateResult);
+    }
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedTags);
+    /**
+     * Returns the updated set of tags after applying the additions and removals from the
+     * {@code editPersonDescriptor}.
+     */
+    private static TagUpdateResult getUpdatedTags(Set<Tag> baseTags, Set<Tag> tagsToAdd, Set<Tag> tagsToRemove) {
+        requireNonNull(baseTags);
+        requireNonNull(tagsToAdd);
+        requireNonNull(tagsToRemove);
+
+        Set<Tag> updatedTags = new HashSet<>(baseTags);
+        Set<Tag> invalidRemovals = new HashSet<>(tagsToRemove);
+        invalidRemovals.removeAll(baseTags);
+
+
+        updatedTags.addAll(tagsToAdd);
+        updatedTags.removeAll(tagsToRemove);
+
+        return new TagUpdateResult(updatedTags, invalidRemovals);
     }
 
     @Override
@@ -117,8 +155,8 @@ public class EditCommand extends Command {
     }
 
     /**
-     * @inheritDoc
      * @return <code>true</code> as AddCommand modifies the address book
+     * @inheritDoc
      */
     @Override
     public boolean requiresWrite() {
@@ -142,8 +180,10 @@ public class EditCommand extends Command {
         private Phone phone;
         private Email email;
         private Set<Tag> tags;
+        private Set<Tag> removedTags;
 
-        public EditPersonDescriptor() {}
+        public EditPersonDescriptor() {
+        }
 
         /**
          * Copy constructor.
@@ -154,13 +194,14 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setTags(toCopy.tags);
+            setRemovedTags(toCopy.removedTags);
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, tags, removedTags);
         }
 
         public void setName(Name name) {
@@ -195,6 +236,10 @@ public class EditCommand extends Command {
             this.tags = (tags != null) ? new HashSet<>(tags) : null;
         }
 
+        public void setRemovedTags(Set<Tag> removedTags) {
+            this.removedTags = (removedTags != null) ? new HashSet<>(removedTags) : null;
+        }
+
         /**
          * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
          * if modification is attempted.
@@ -202,6 +247,10 @@ public class EditCommand extends Command {
          */
         public Optional<Set<Tag>> getTags() {
             return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
+        }
+
+        public Optional<Set<Tag>> getRemovedTags() {
+            return (removedTags != null) ? Optional.of(Collections.unmodifiableSet(removedTags)) : Optional.empty();
         }
 
         @Override
@@ -219,8 +268,19 @@ public class EditCommand extends Command {
             return Objects.equals(name, otherEditPersonDescriptor.name)
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
-                    && Objects.equals(tags, otherEditPersonDescriptor.tags);
+                    && Objects.equals(tags == null
+                            ? Collections.emptySet()
+                            : tags,
+                    otherEditPersonDescriptor.tags == null
+                            ? Collections.emptySet()
+                            : otherEditPersonDescriptor.tags)
+
+                    && Objects.equals(removedTags == null ? Collections.emptySet() : removedTags,
+                    otherEditPersonDescriptor.removedTags == null
+                            ? Collections.emptySet()
+                            : otherEditPersonDescriptor.removedTags);
         }
+
 
         @Override
         public String toString() {
@@ -230,6 +290,38 @@ public class EditCommand extends Command {
                     .add("email", email)
                     .add("tags", tags)
                     .toString();
+        }
+    }
+
+    /**
+     * Helper result for getUpdatedTags.
+     */
+    private static class TagUpdateResult {
+        private final Set<Tag> updatedTags;
+        private final Set<Tag> invalidRemovals;
+
+        TagUpdateResult(Set<Tag> updatedTags, Set<Tag> invalidRemovals) {
+            this.updatedTags = updatedTags;
+            this.invalidRemovals = invalidRemovals;
+        }
+
+        public Set<Tag> getUpdatedTags() {
+            return updatedTags;
+        }
+
+        public boolean hasInvalidRemovals() {
+            return !invalidRemovals.isEmpty();
+        }
+
+        public String getInvalidRemovalMessage() {
+            assert hasInvalidRemovals();
+
+            String tagsString = invalidRemovals.stream()
+                    .map(Tag::toString)
+                    .collect(Collectors.joining(" "));
+
+            return "The following tags could not be removed as they do not exist: "
+                    + tagsString;
         }
     }
 }
