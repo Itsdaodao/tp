@@ -50,6 +50,11 @@ public class Messages {
                     .append(person.getTelegram());
         }
 
+        if (!person.getGithub().isEmpty()) {
+            builder.append("; Github: ")
+                    .append(person.getGithub());
+        }
+
         builder.append("; Tags: ");
         person.getTags().forEach(builder::append);
         return builder.toString();

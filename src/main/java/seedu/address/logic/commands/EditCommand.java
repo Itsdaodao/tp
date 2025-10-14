@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_GITHUB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMOVE_TAG;
@@ -25,6 +26,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -46,6 +48,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_TELEGRAM + "TELEGRAM] "
+            + "[" + PREFIX_GITHUB + "GITHUB] "
             + "[" + PREFIX_TAG + "(add) TAG] "
             + "[" + PREFIX_REMOVE_TAG + "(remove) TAG] \n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -113,13 +116,14 @@ public class EditCommand extends Command {
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Telegram updatedTelegram = editPersonDescriptor.getTelegram().orElse(personToEdit.getTelegram());
+        Github updatedGithub = editPersonDescriptor.getGithub().orElse(personToEdit.getGithub());
         TagUpdateResult tagUpdateResult = getUpdatedTags(
                 personToEdit.getTags(),
                 editPersonDescriptor.getTags().orElse(Collections.emptySet()),
                 editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet())
         );
         Person editedPerson = new Person(updatedName, updatedPhone, updatedEmail,
-                updatedTelegram, tagUpdateResult.getUpdatedTags());
+                updatedTelegram, updatedGithub, tagUpdateResult.getUpdatedTags());
         return new Pair<>(editedPerson, tagUpdateResult);
     }
 
@@ -185,6 +189,7 @@ public class EditCommand extends Command {
         private Phone phone;
         private Email email;
         private Telegram telegram;
+        private Github github;
         private Set<Tag> tags;
         private Set<Tag> removedTags;
 
@@ -200,6 +205,7 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setTelegram(toCopy.telegram);
+            setGithub(toCopy.github);
             setTags(toCopy.tags);
             setRemovedTags(toCopy.removedTags);
         }
@@ -208,7 +214,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, telegram, tags, removedTags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, telegram, github, tags, removedTags);
         }
 
         public void setName(Name name) {
@@ -241,6 +247,14 @@ public class EditCommand extends Command {
 
         public Optional<Telegram> getTelegram() {
             return Optional.ofNullable(telegram);
+        }
+
+        public void setGithub(Github github) {
+            this.github = github;
+        }
+
+        public Optional<Github> getGithub() {
+            return Optional.ofNullable(github);
         }
 
         /**
@@ -284,6 +298,7 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(telegram, otherEditPersonDescriptor.telegram)
+                    && Objects.equals(github, otherEditPersonDescriptor.github)
                     && Objects.equals(tags == null
                             ? Collections.emptySet()
                             : tags,
@@ -305,6 +320,7 @@ public class EditCommand extends Command {
                     .add("phone", phone)
                     .add("email", email)
                     .add("telegram", telegram)
+                    .add("github", github)
                     .add("tags", tags)
                     .toString();
         }

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -28,19 +29,24 @@ class JsonAdaptedPerson {
     private final String phone;
     private final String email;
     private final String telegram;
+    private final String github;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
      */
     @JsonCreator
-    public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email, @JsonProperty("telegram") String telegram,
+    public JsonAdaptedPerson(@JsonProperty("name") String name,
+                             @JsonProperty("phone") String phone,
+                             @JsonProperty("email") String email,
+                             @JsonProperty("telegram") String telegram,
+                             @JsonProperty("github") String github,
                              @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.telegram = telegram;
+        this.github = github;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -54,6 +60,7 @@ class JsonAdaptedPerson {
         phone = source.getPhone().value;
         email = source.getEmail().value;
         telegram = source.getTelegram().value;
+        github = source.getGithub().value;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -96,8 +103,13 @@ class JsonAdaptedPerson {
         }
         final Telegram modelTelegram = new Telegram(telegram);
 
+        if (!Github.isValidGithub(github)) {
+            throw new IllegalValueException(Github.MESSAGE_CONSTRAINTS);
+        }
+        final Github modelGithub = new Github(github);
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelGithub, modelTags);
     }
 
 }
