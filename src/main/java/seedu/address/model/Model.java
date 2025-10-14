@@ -84,4 +84,16 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    /**
+     * Sorts the filtered person list by name in alphabetical order.
+     */
+    void sortFilteredPersonListByName();
+
+    /**
+     * Sorts the filtered person list by most recently added.
+     */
+    void sortFilteredPersonListByRecentlyAdded();
+
+    void resetSortOrder();
 }

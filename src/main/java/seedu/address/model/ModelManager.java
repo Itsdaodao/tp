@@ -4,11 +4,14 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
@@ -22,6 +25,7 @@ public class ModelManager implements Model {
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+    private final SortedList<Person> sortedPersons;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -34,6 +38,7 @@ public class ModelManager implements Model {
         this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        sortedPersons = new SortedList<>(filteredPersons);
     }
 
     public ModelManager() {
@@ -117,15 +122,42 @@ public class ModelManager implements Model {
      * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
      * {@code versionedAddressBook}
      */
+//    @Override
+//    public ObservableList<Person> getFilteredPersonList() {
+//        return filteredPersons;
+//    }
+
     @Override
     public ObservableList<Person> getFilteredPersonList() {
-        return filteredPersons;
+        return sortedPersons;
     }
 
     @Override
     public void updateFilteredPersonList(Predicate<Person> predicate) {
         requireNonNull(predicate);
         filteredPersons.setPredicate(predicate);
+    }
+
+    @Override
+    public void sortFilteredPersonListByName() {
+        sortedPersons.setComparator((p1, p2) ->
+                p1.getName().fullName.compareToIgnoreCase(p2.getName().fullName));
+    }
+
+    @Override
+    public void sortFilteredPersonListByRecentlyAdded() {
+        sortedPersons.setComparator((p1, p2) -> {
+            // Reverse the original list order: the later element in addressBook list appears first
+            List<Person> originalList = addressBook.getPersonList();
+            int index1 = originalList.indexOf(p1);
+            int index2 = originalList.indexOf(p2);
+            return Integer.compare(index2, index1); // flip the order
+        });
+    }
+
+    @Override
+    public void resetSortOrder() {
+        sortedPersons.setComparator(null);
     }
 
     @Override
