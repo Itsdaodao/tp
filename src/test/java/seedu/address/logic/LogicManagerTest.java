@@ -115,7 +115,7 @@ public class LogicManagerTest {
 
         Person editedPerson = new PersonBuilder(AMY).build();
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
+        expectedModel.setPerson(model.getSortedAndFilteredPersonList().get(0), editedPerson);
 
         assertCommandTriggersWrite(editCommand,
                 String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, editedPerson),
