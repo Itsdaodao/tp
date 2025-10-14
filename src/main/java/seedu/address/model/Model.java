@@ -77,11 +77,29 @@ public interface Model {
     void setPerson(Person target, Person editedPerson);
 
     /** Returns an unmodifiable view of the filtered person list */
-    ObservableList<Person> getFilteredPersonList();
+    ObservableList<Person> getSortedAndFilteredPersonList();
 
     /**
      * Updates the filter of the filtered person list to filter by the given {@code predicate}.
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    /**
+     * Applies alphabetical sorting to the current view of persons.
+     * This does NOT change the underlying AddressBook or filteredPersons,
+     * only the SortedList comparator for the UI.
+     */
+    void applyNameSort();
+
+    /**
+     * Applies "recently added first" sorting to the current view.
+     * This reverses the insertion order of the underlying AddressBook list.
+     */
+    void applyRecentSort();
+
+    /**
+     * Resets the filtered person list to its original order (i.e. the order in which persons were added).
+     */
+    void resetSortOrder();
 }

@@ -12,4 +12,8 @@ public class CliSyntax {
     public static final Prefix PREFIX_TAG = new Prefix("t/");
     public static final Prefix PREFIX_REMOVE_TAG = new Prefix("r/");
 
+    /* Flag definitions (for List Command) */
+    public static final Prefix FLAG_ALPHABETICAL_ORDER = new Prefix("-a");
+    public static final Prefix FLAG_RECENT_ORDER = new Prefix("-r");
+
 }

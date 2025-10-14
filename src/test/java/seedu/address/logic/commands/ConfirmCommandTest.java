@@ -21,7 +21,7 @@ public class ConfirmCommandTest {
 
     @Test
     public void execute_confirmCommandY_performsOperation() {
-        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person personToDelete = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String expectedMessage = "Done!";
         ConfirmCommand confirmCommand = createConfirmCommandWithDeletePending(
                 model, personToDelete, "y", expectedMessage, "Delete user?"
@@ -35,7 +35,7 @@ public class ConfirmCommandTest {
 
     @Test
     public void execute_confirmCommandN_doesNotPerformOperation() {
-        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person personToDelete = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         ConfirmCommand confirmCommand = createConfirmCommandWithDeletePending(
                 model, personToDelete, "n", "Done!", "Delete user?"
         );
@@ -47,7 +47,7 @@ public class ConfirmCommandTest {
 
     @Test
     public void execute_confirmCommandGarbageInput_promptsForInputAgain() {
-        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person personToDelete = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String feedback = "Delete user X?";
         ConfirmCommand confirmCommand = createConfirmCommandWithDeletePending(
                 model, personToDelete, "asdfasdfasddfasdfsasdfasdf", "Done!", feedback
