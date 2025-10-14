@@ -84,4 +84,10 @@ public class TelegramTest {
         Telegram telegram = new Telegram();
         assert(Objects.equals(telegram.toString(), ""));
     }
+
+    @Test
+    public void hashCode_null_returnsZero() {
+        Telegram telegram = new Telegram();
+        assert(Objects.equals(telegram.hashCode(), 0));
+    }
 }
