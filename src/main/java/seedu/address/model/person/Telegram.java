@@ -35,7 +35,7 @@ public class Telegram {
     }
 
     /**
-     * Returns true if a given string is a valid phone number.
+     * Returns true if a given string is a valid Telegram username.
      */
     public static boolean isValidTelegram(String test) {
         // Telegram is optional field, Null value is allowed
