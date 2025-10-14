@@ -8,7 +8,6 @@ import seedu.address.logic.parser.AddCommandParser;
 import seedu.address.logic.parser.DeleteCommandParser;
 import seedu.address.logic.parser.EditCommandParser;
 import seedu.address.logic.parser.FindCommandParser;
-import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
  * Central Registry for all commands in the application.
