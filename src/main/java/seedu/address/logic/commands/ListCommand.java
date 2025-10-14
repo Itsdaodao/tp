@@ -21,6 +21,9 @@ public class ListCommand extends Command {
     public static final String MESSAGE_SUCCESS_ALPHABETICAL_ORDER = MESSAGE_SUCCESS + " in alphabetical order";
     public static final String MESSAGE_SUCCESS_RECENT_ORDER = MESSAGE_SUCCESS + " in order of most recently added";
 
+    /**
+     * Represents the sorting order for listing persons.
+     */
     public enum SortOrder {
         DEFAULT,
         ALPHABETICAL,
@@ -29,6 +32,11 @@ public class ListCommand extends Command {
 
     private final SortOrder sortOrder;
 
+    /**
+     * Creates a ListCommand to list all persons in the address book with the specified sorting order.
+     *
+     * @param sortOrder The sorting order to be applied when listing persons.
+     */
     public ListCommand(SortOrder sortOrder) {
         this.sortOrder = sortOrder;
     }
