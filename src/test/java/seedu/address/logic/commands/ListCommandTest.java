@@ -33,8 +33,54 @@ public class ListCommandTest {
     }
 
     @Test
+    public void execute_listSortedByName_showsSortedList() {
+        expectedModel.applyNameSort();
+        assertCommandSuccess(
+                new ListCommand(SortOrder.ALPHABETICAL),
+                model,
+                ListCommand.MESSAGE_SUCCESS_ALPHABETICAL_ORDER,
+                expectedModel
+        );
+    }
+
+    @Test
+    public void execute_listSortByRecent_showsSortedList() {
+        expectedModel.applyRecentSort();
+        assertCommandSuccess(
+                new ListCommand(SortOrder.RECENT),
+                model,
+                ListCommand.MESSAGE_SUCCESS_RECENT_ORDER,
+                expectedModel
+        );
+    }
+
+    @Test
     public void execute_listIsFiltered_showsEverything() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         assertCommandSuccess(new ListCommand(SortOrder.DEFAULT), model, ListCommand.MESSAGE_SUCCESS, expectedModel);
+    }
+
+    @Test
+    public void execute_listSortedByNameIsFiltered_showsSortedList() {
+        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        expectedModel.applyNameSort();
+        assertCommandSuccess(
+                new ListCommand(SortOrder.ALPHABETICAL),
+                model,
+                ListCommand.MESSAGE_SUCCESS_ALPHABETICAL_ORDER,
+                expectedModel
+        );
+    }
+
+    @Test
+    public void execute_listSortByRecentIsFiltered_showsSortedList() {
+        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        expectedModel.applyRecentSort();
+        assertCommandSuccess(
+                new ListCommand(SortOrder.RECENT),
+                model,
+                ListCommand.MESSAGE_SUCCESS_RECENT_ORDER,
+                expectedModel
+        );
     }
 }

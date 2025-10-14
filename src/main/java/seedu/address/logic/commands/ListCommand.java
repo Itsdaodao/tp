@@ -18,8 +18,8 @@ public class ListCommand extends Command {
             + " -r (recent order)";
     public static final String MESSAGE_INVALID_ORDER = "Kindly choose only one sorting order.";
     public static final String MESSAGE_SUCCESS = "Listed all persons";
-    public static final String ALPHABETICAL_ORDER = " in alphabetical order";
-    public static final String RECENT_ORDER = " in order of most recently added";
+    public static final String MESSAGE_SUCCESS_ALPHABETICAL_ORDER = MESSAGE_SUCCESS + " in alphabetical order";
+    public static final String MESSAGE_SUCCESS_RECENT_ORDER = MESSAGE_SUCCESS + " in order of most recently added";
 
     public enum SortOrder {
         DEFAULT,
@@ -41,10 +41,10 @@ public class ListCommand extends Command {
         switch (sortOrder) {
         case ALPHABETICAL:
             model.applyNameSort();
-            return new CommandResult(MESSAGE_SUCCESS + ALPHABETICAL_ORDER);
+            return new CommandResult(MESSAGE_SUCCESS_ALPHABETICAL_ORDER);
         case RECENT:
             model.applyRecentSort();
-            return new CommandResult(MESSAGE_SUCCESS + RECENT_ORDER);
+            return new CommandResult(MESSAGE_SUCCESS_RECENT_ORDER);
         default:
             model.resetSortOrder();
             return new CommandResult(MESSAGE_SUCCESS);
