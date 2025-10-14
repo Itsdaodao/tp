@@ -14,6 +14,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -26,6 +27,7 @@ class JsonAdaptedPerson {
     private final String name;
     private final String phone;
     private final String email;
+    private final String telegram;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -33,10 +35,12 @@ class JsonAdaptedPerson {
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("email") String email, @JsonProperty("telegram") String telegram,
+                             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.telegram = telegram;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -49,6 +53,7 @@ class JsonAdaptedPerson {
         name = source.getName().fullName;
         phone = source.getPhone().value;
         email = source.getEmail().value;
+        telegram = source.getTelegram().value;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -86,8 +91,13 @@ class JsonAdaptedPerson {
         }
         final Email modelEmail = new Email(email);
 
+        if (!Telegram.isValidTelegram(telegram)) {
+            throw new IllegalValueException(Telegram.MESSAGE_CONSTRAINTS);
+        }
+        final Telegram modelTelegram = new Telegram(telegram);
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelTags);
     }
 
 }
