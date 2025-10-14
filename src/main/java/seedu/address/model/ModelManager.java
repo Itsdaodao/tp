@@ -116,19 +116,14 @@ public class ModelManager implements Model {
         addressBook.setPerson(target, editedPerson);
     }
 
-    //=========== Filtered Person List Accessors =============================================================
+    //=========== Filtered/Sorted Person List Accessors =============================================================
 
     /**
      * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
-     * {@code versionedAddressBook}
+     * {@code versionedAddressBook} which is filtered and optionally sorted.
      */
-//    @Override
-//    public ObservableList<Person> getFilteredPersonList() {
-//        return filteredPersons;
-//    }
-
     @Override
-    public ObservableList<Person> getFilteredPersonList() {
+    public ObservableList<Person> getSortedAndFilteredPersonList() {
         return sortedPersons;
     }
 
@@ -139,13 +134,13 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void sortFilteredPersonListByName() {
+    public void applyNameSort() {
         sortedPersons.setComparator((p1, p2) ->
                 p1.getName().fullName.compareToIgnoreCase(p2.getName().fullName));
     }
 
     @Override
-    public void sortFilteredPersonListByRecentlyAdded() {
+    public void applyRecentSort() {
         sortedPersons.setComparator((p1, p2) -> {
             // Reverse the original list order: the later element in addressBook list appears first
             List<Person> originalList = addressBook.getPersonList();

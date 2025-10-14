@@ -12,6 +12,11 @@ public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
 
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + " (original order)\n "
+            + " -a (alphabetical order)\n"
+            + " -r (recent order)";
+    public static final String MESSAGE_INVALID_ORDER = "Kindly choose only one sorting order.";
     public static final String MESSAGE_SUCCESS = "Listed all persons";
     public static final String ALPHABETICAL_ORDER = " in alphabetical order";
     public static final String RECENT_ORDER = " in order of most recently added";
@@ -35,10 +40,10 @@ public class ListCommand extends Command {
 
         switch (sortOrder) {
         case ALPHABETICAL:
-            model.sortFilteredPersonListByName();
+            model.applyNameSort();
             return new CommandResult(MESSAGE_SUCCESS + ALPHABETICAL_ORDER);
         case RECENT:
-            model.sortFilteredPersonListByRecentlyAdded();
+            model.applyRecentSort();
             return new CommandResult(MESSAGE_SUCCESS + RECENT_ORDER);
         default:
             model.resetSortOrder();
