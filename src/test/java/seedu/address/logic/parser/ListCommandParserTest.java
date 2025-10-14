@@ -17,25 +17,25 @@ public class ListCommandParserTest {
     @Test
     public void parse_noArgs_returnsDefaultOrderListCommand() {
         ListCommand expectedCommand = new ListCommand(SortOrder.DEFAULT);
-        assertParseSuccess(parser,ListCommand.COMMAND_WORD, expectedCommand);
+        assertParseSuccess(parser, ListCommand.COMMAND_WORD, expectedCommand);
     }
 
     @Test
     public void parse_withNonFlagArg_returnsDefaultOrderListCommand() {
         ListCommand expectedCommand = new ListCommand(SortOrder.DEFAULT);
-        assertParseSuccess(parser,ListCommand.COMMAND_WORD + NAME_DESC_AMY, expectedCommand);
+        assertParseSuccess(parser, ListCommand.COMMAND_WORD + NAME_DESC_AMY, expectedCommand);
     }
 
     @Test
     public void parse_withAlphabeticalArg_returnsAlphabeticalOrderListCommand() {
         ListCommand expectedCommand = new ListCommand(SortOrder.ALPHABETICAL);
-        assertParseSuccess(parser,ListCommand.COMMAND_WORD_ALPHABETICAL, expectedCommand);
+        assertParseSuccess(parser, ListCommand.COMMAND_WORD_ALPHABETICAL, expectedCommand);
     }
 
     @Test
     public void parse_withRecentArg_returnsRecentOrderListCommand() {
         ListCommand expectedCommand = new ListCommand(SortOrder.RECENT);
-        assertParseSuccess(parser,ListCommand.COMMAND_WORD_RECENT, expectedCommand);
+        assertParseSuccess(parser, ListCommand.COMMAND_WORD_RECENT, expectedCommand);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class ListCommandParserTest {
         assertParseFailure(
                 parser,
                 ListCommand.COMMAND_WORD + " " + FLAG_ALPHABETICAL_ORDER + " " + FLAG_RECENT_ORDER,
-                ListCommand.MESSAGE_INVALID_ORDER)
-        ;
+                ListCommand.MESSAGE_INVALID_ORDER
+        );
     }
 }
