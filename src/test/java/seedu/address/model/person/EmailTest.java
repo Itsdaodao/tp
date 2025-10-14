@@ -96,4 +96,10 @@ public class EmailTest {
         Email email = new Email();
         assert(Objects.equals(email.toString(), ""));
     }
+
+    @Test
+    public void hashCode_null_returnsZero() {
+        Email email = new Email();
+        assert(Objects.equals(email.hashCode(), 0));
+    }
 }

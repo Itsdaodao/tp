@@ -45,6 +45,11 @@ public class Messages {
                     .append(person.getEmail());
         }
 
+        if (!person.getTelegram().isEmpty()) {
+            builder.append("; Telegram: ")
+                    .append(person.getTelegram());
+        }
+
         builder.append("; Tags: ");
         person.getTags().forEach(builder::append);
         return builder.toString();

@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMOVE_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.Collections;
@@ -27,6 +28,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -43,6 +45,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
+            + "[" + PREFIX_TELEGRAM + "TELEGRAM] "
             + "[" + PREFIX_TAG + "(add) TAG] "
             + "[" + PREFIX_REMOVE_TAG + "(remove) TAG] \n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -109,12 +112,14 @@ public class EditCommand extends Command {
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
+        Telegram updatedTelegram = editPersonDescriptor.getTelegram().orElse(personToEdit.getTelegram());
         TagUpdateResult tagUpdateResult = getUpdatedTags(
                 personToEdit.getTags(),
                 editPersonDescriptor.getTags().orElse(Collections.emptySet()),
                 editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet())
         );
-        Person editedPerson = new Person(updatedName, updatedPhone, updatedEmail, tagUpdateResult.getUpdatedTags());
+        Person editedPerson = new Person(updatedName, updatedPhone, updatedEmail,
+                updatedTelegram, tagUpdateResult.getUpdatedTags());
         return new Pair<>(editedPerson, tagUpdateResult);
     }
 
@@ -179,6 +184,7 @@ public class EditCommand extends Command {
         private Name name;
         private Phone phone;
         private Email email;
+        private Telegram telegram;
         private Set<Tag> tags;
         private Set<Tag> removedTags;
 
@@ -193,6 +199,7 @@ public class EditCommand extends Command {
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
+            setTelegram(toCopy.telegram);
             setTags(toCopy.tags);
             setRemovedTags(toCopy.removedTags);
         }
@@ -201,7 +208,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, tags, removedTags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, telegram, tags, removedTags);
         }
 
         public void setName(Name name) {
@@ -226,6 +233,14 @@ public class EditCommand extends Command {
 
         public Optional<Email> getEmail() {
             return Optional.ofNullable(email);
+        }
+
+        public void setTelegram(Telegram telegram) {
+            this.telegram = telegram;
+        }
+
+        public Optional<Telegram> getTelegram() {
+            return Optional.ofNullable(telegram);
         }
 
         /**
@@ -268,6 +283,7 @@ public class EditCommand extends Command {
             return Objects.equals(name, otherEditPersonDescriptor.name)
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
+                    && Objects.equals(telegram, otherEditPersonDescriptor.telegram)
                     && Objects.equals(tags == null
                             ? Collections.emptySet()
                             : tags,
@@ -288,6 +304,7 @@ public class EditCommand extends Command {
                     .add("name", name)
                     .add("phone", phone)
                     .add("email", email)
+                    .add("telegram", telegram)
                     .add("tags", tags)
                     .toString();
         }
