@@ -35,7 +35,8 @@ public class AddCommandTest {
     @Test
     public void execute_personAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
-        Person validPerson = new PersonBuilder().withEmail().withTelegram().build();
+        Person validPerson = new PersonBuilder()
+                .withEmail().withTelegram().withGithub().build();
 
         CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
 
