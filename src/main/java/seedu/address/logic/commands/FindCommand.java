@@ -26,7 +26,7 @@ public class FindCommand extends Command {
             + COMMAND_WORD + " t/family";
 
     public static final String MESSAGE_MULTIPLE_PREFIXES_NOT_ALLOWED =
-            "WARNING: Both prefixes provided. Only the first prefix is used.";
+            "WARNING: Both prefixes provided. Only the first prefix is used.\n";
 
     private final Predicate<Person> predicate;
     private final boolean showWarning;
@@ -47,7 +47,7 @@ public class FindCommand extends Command {
         requireNonNull(model);
         model.updateFilteredPersonList(predicate);
         String combinedMessage = showWarning
-                ? MESSAGE_MULTIPLE_PREFIXES_NOT_ALLOWED + "\n" + Messages.MESSAGE_PERSONS_LISTED_OVERVIEW
+                ? MESSAGE_MULTIPLE_PREFIXES_NOT_ALLOWED + Messages.MESSAGE_PERSONS_LISTED_OVERVIEW
                 : Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
 
         return new CommandResult(

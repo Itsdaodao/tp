@@ -37,11 +37,13 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_TAG);
 
+        boolean hasNamePrefix = argMultimap.getValue(PREFIX_NAME).isPresent();
+        boolean hasTagPrefix = argMultimap.getValue(PREFIX_TAG).isPresent();
+        boolean hasNoPrefixesPresent = !hasNamePrefix && !hasTagPrefix;
+        boolean hasBothPrefixes = hasNamePrefix && hasTagPrefix;
+
         int nameIndex = args.indexOf(PREFIX_NAME.getPrefix());
         int tagIndex = args.indexOf(PREFIX_TAG.getPrefix());
-
-        boolean hasNoPrefixesPresent = nameIndex == -1 && tagIndex == -1;
-        boolean hasBothPrefixes = nameIndex != -1 && tagIndex != -1;
         boolean isNameBeforeTag = hasBothPrefixes && nameIndex < tagIndex;
 
         if (hasNoPrefixesPresent) {
@@ -54,7 +56,7 @@ public class FindCommandParser implements Parser<FindCommand> {
             activePrefix = isNameBeforeTag ? PREFIX_NAME : PREFIX_TAG;
         } else {
             // Only one prefix exist
-            activePrefix = nameIndex != -1 ? PREFIX_NAME : PREFIX_TAG;
+            activePrefix = hasNamePrefix ? PREFIX_NAME : PREFIX_TAG;
         }
 
         String trimmedArgs = argMultimap.getValue(activePrefix).orElse("").trim();

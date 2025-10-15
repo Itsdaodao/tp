@@ -76,7 +76,7 @@ public class FindCommandTest {
 
     @Test
     public void execute_multiplePrefixes_showsWarningMessage() {
-        String expectedMessage = FindCommand.MESSAGE_MULTIPLE_PREFIXES_NOT_ALLOWED + "\n"
+        String expectedMessage = FindCommand.MESSAGE_MULTIPLE_PREFIXES_NOT_ALLOWED
                 + String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
         boolean showWarning = true;
         NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
