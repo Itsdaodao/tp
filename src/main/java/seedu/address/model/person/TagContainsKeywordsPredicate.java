@@ -15,6 +15,10 @@ import seedu.address.model.tag.Tag;
 public class TagContainsKeywordsPredicate implements Predicate<Person> {
     private final List<String> keywords;
 
+    /**
+     * creates a predicate that checks if a person's tags contains any of the given keyword
+     * @param keywords list of keywords to match; cannot be null
+     */
     public TagContainsKeywordsPredicate(List<String> keywords) {
         requireNonNull(keywords);
         this.keywords = keywords;
