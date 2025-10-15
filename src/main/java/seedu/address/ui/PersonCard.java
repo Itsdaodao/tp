@@ -37,6 +37,10 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label email;
     @FXML
+    private Label telegram;
+    @FXML
+    private Label github;
+    @FXML
     private FlowPane tags;
 
     /**
@@ -48,12 +52,39 @@ public class PersonCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
         phone.setText(person.getPhone().value);
+
+        // Optional Field: Email
         if (person.getEmail().isEmpty()) {
             email.setVisible(false);
+            email.setManaged(false);
         } else {
             email.setVisible(true);
+            email.setManaged(true);
             email.setText(person.getEmail().value);
         }
+
+        // Optional Field: Telegram
+        if (person.getTelegram().isEmpty()) {
+            telegram.setVisible(false);
+            telegram.setManaged(false);
+        } else {
+            String fieldName = "Telegram: ";
+            telegram.setVisible(true);
+            telegram.setManaged(true);
+            telegram.setText(fieldName + person.getTelegram().value);
+        }
+
+        // Optional Field: Github
+        if (person.getGithub().isEmpty()) {
+            github.setVisible(false);
+            github.setManaged(false);
+        } else {
+            String fieldName = "Github: ";
+            github.setVisible(true);
+            github.setManaged(true);
+            github.setText(fieldName + person.getGithub().value);
+        }
+
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));

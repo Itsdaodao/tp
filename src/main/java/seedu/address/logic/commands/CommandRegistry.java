@@ -8,6 +8,7 @@ import seedu.address.logic.parser.AddCommandParser;
 import seedu.address.logic.parser.DeleteCommandParser;
 import seedu.address.logic.parser.EditCommandParser;
 import seedu.address.logic.parser.FindCommandParser;
+import seedu.address.logic.parser.ListCommandParser;
 
 /**
  * Central Registry for all commands in the application.
@@ -23,7 +24,7 @@ public class CommandRegistry {
         commands.put(DeleteCommand.COMMAND_WORD, (args) -> new DeleteCommandParser().parse(args));
         commands.put(ClearCommand.COMMAND_WORD, (args) -> new ClearCommand());
         commands.put(FindCommand.COMMAND_WORD, (args) -> new FindCommandParser().parse(args));
-        commands.put(ListCommand.COMMAND_WORD, (args) -> new ListCommand());
+        commands.put(ListCommand.COMMAND_WORD, (args) -> new ListCommandParser().parse(args));
         commands.put(ExitCommand.COMMAND_WORD, (args) -> new ExitCommand());
         commands.put(HelpCommand.COMMAND_WORD, (args) -> new HelpCommand());
     }

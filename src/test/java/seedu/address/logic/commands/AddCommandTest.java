@@ -35,7 +35,8 @@ public class AddCommandTest {
     @Test
     public void execute_personAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
-        Person validPerson = new PersonBuilder().withEmail().build();
+        Person validPerson = new PersonBuilder()
+                .withEmail().withTelegram().withGithub().build();
 
         CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
 
@@ -149,12 +150,27 @@ public class AddCommandTest {
         }
 
         @Override
-        public ObservableList<Person> getFilteredPersonList() {
+        public ObservableList<Person> getSortedAndFilteredPersonList() {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void applyNameSort() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void applyRecentSort() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void resetSortOrder() {
             throw new AssertionError("This method should not be called.");
         }
     }
