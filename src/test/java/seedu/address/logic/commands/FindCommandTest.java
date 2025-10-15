@@ -34,7 +34,7 @@ public class FindCommandTest {
         NameContainsKeywordsPredicate secondPredicate =
                 new NameContainsKeywordsPredicate(Collections.singletonList("second"));
 
-        FindCommand findFirstCommand = new FindCommand(firstPredicate,false);
+        FindCommand findFirstCommand = new FindCommand(firstPredicate, false);
         FindCommand findSecondCommand = new FindCommand(secondPredicate, false);
 
         // same object -> returns true

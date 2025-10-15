@@ -14,6 +14,7 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailur
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
 import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.FindCommand;
@@ -31,7 +32,8 @@ public class FindCommandParserTest {
 
     @Test
     public void parse_missingPrefix_throwsParseException() {
-        assertParseFailure(parser, VALID_NAME_POPPY, String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, VALID_NAME_POPPY,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -97,18 +99,19 @@ public class FindCommandParserTest {
         assertParseSuccess(parser, TAG_DESC_FRIEND + " " + VALID_TAG_HUSBAND, expectedFindCommand);
 
         // multiple whitespaces between keywords
-        assertParseSuccess(parser, " \n " + TAG_DESC_FRIEND + "\n \t" + VALID_TAG_HUSBAND+ "\t",expectedFindCommand);
+        assertParseSuccess(parser, " \n " + TAG_DESC_FRIEND + "\n \t"
+                + VALID_TAG_HUSBAND + "\t", expectedFindCommand);
     }
 
     @Test
-    public void parse_bothPrefixes_nameBeforeTag_successWithWarning() {
+    public void parse_nameBeforeTag_successWithWarning() {
         FindCommand expectedCommand = new FindCommand(
                 new NameContainsKeywordsPredicate(Arrays.asList(VALID_NAME_POPPY)), true);
         assertParseSuccess(parser, NAME_DESC_POPPY + TAG_DESC_FRIEND, expectedCommand);
     }
 
     @Test
-    public void parse_bothPrefixes_tagBeforeName_successWithWarning() {
+    public void parse_tagBeforeName_successWithWarning() {
         FindCommand expectedCommand = new FindCommand(
                 new TagContainsKeywordsPredicate(Arrays.asList(VALID_TAG_FRIEND)), true);
         assertParseSuccess(parser, TAG_DESC_FRIEND + NAME_DESC_POPPY, expectedCommand);
