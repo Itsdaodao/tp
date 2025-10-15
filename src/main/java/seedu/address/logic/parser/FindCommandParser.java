@@ -1,7 +1,7 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.commands.FindCommand.MESSAGE_MULTIPLE_PREFIXES_NOT_ALLOWED;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
@@ -25,38 +25,52 @@ public class FindCommandParser implements Parser<FindCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public FindCommand parse(String args) throws ParseException {
+        requireNonNull(args);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(
                         args, PREFIX_NAME, PREFIX_TAG
                 );
 
-        boolean hasNamePrefix = argMultimap.getValue(PREFIX_NAME).isPresent();
-        boolean hasTagPrefix = argMultimap.getValue(PREFIX_TAG).isPresent();
+        if (!argMultimap.getPreamble().trim().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
 
-        Prefix activePrefix = hasNamePrefix ? PREFIX_NAME
-                : hasTagPrefix ? PREFIX_TAG
-                : null;
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_TAG);
 
-        if (activePrefix == null) { // no prefix specified
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
-        } else if (hasNamePrefix && hasTagPrefix) { // Disallow using both prefixes together
-            throw new ParseException(
-                    String.format(MESSAGE_MULTIPLE_PREFIXES_NOT_ALLOWED, FindCommand.MESSAGE_USAGE));
+        int nameIndex = args.indexOf(PREFIX_NAME.getPrefix());
+        int tagIndex = args.indexOf(PREFIX_TAG.getPrefix());
+
+        boolean hasNoPrefixesPresent = nameIndex == -1 && tagIndex == -1;
+        boolean hasBothPrefixes = nameIndex != -1 && tagIndex != -1;
+        boolean isNameBeforeTag = hasBothPrefixes && nameIndex < tagIndex;
+
+        if (hasNoPrefixesPresent) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
+
+        Prefix activePrefix;
+        if (hasBothPrefixes) {
+            // Both prefixes exist -> pick the one that appear first
+            activePrefix = isNameBeforeTag ? PREFIX_NAME : PREFIX_TAG;
+        } else {
+            // Only one prefix exist
+            activePrefix = nameIndex != -1 ? PREFIX_NAME : PREFIX_TAG;
         }
 
         String trimmedArgs = argMultimap.getValue(activePrefix).orElse("").trim();
 
         if (trimmedArgs.isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
         String[] keywords = trimmedArgs.split("\\s+");
-        Predicate<Person> predicate = hasNamePrefix
+        Predicate<Person> predicate = activePrefix.equals(PREFIX_NAME)
                 ? new NameContainsKeywordsPredicate(Arrays.asList(keywords))
                 : new TagContainsKeywordsPredicate(Arrays.asList(keywords));
 
-        return new FindCommand(predicate);
+        // Show warning if both prefixes were provided (only the first one will be used)
+        boolean showWarning = hasBothPrefixes;
+
+        return new FindCommand(predicate, showWarning);
     }
 }

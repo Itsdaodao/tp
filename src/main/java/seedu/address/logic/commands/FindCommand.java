@@ -22,27 +22,36 @@ public class FindCommand extends Command {
             + "Parameters: n/KEYWORD [MORE_KEYWORDS]... (to search by name)\n"
             + "            t/KEYWORD [MORE_KEYWORDS]... (to search by tag)\n"
             + "Note: Only one prefix (n/ or t/) can be used at a time\n"
-            + "Example: " + COMMAND_WORD + "n/alice bob charlie\n"
-            + COMMAND_WORD + "t/family";
+            + "Example: " + COMMAND_WORD + " n/alice bob charlie\n"
+            + COMMAND_WORD + " t/family";
 
     public static final String MESSAGE_MULTIPLE_PREFIXES_NOT_ALLOWED =
-            "WARNING: You cannot search by both name and tag at the same time.\n"
-                    + "Only the first prefix will be processed, and the second will be ignored.\n"
-                    + "Example usage:\n" + COMMAND_WORD + " n/alice\n"
-                    + COMMAND_WORD + " t/family";
+            "WARNING: Both prefixes provided. Only the first prefix is used.";
 
     private final Predicate<Person> predicate;
+    private final boolean showWarning;
 
-    public FindCommand(Predicate<Person> predicate) {
+    /**
+     * Constructs a FindCommand with the specified search criteria and warning flag
+     *
+     * @param predicate A condition to check which person to find
+     * @param showWarning whether to show warning if no person match
+     */
+    public FindCommand(Predicate<Person> predicate, Boolean showWarning) {
         this.predicate = predicate;
+        this.showWarning = showWarning;
     }
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredPersonList(predicate);
+        String combinedMessage = showWarning
+                ? MESSAGE_MULTIPLE_PREFIXES_NOT_ALLOWED + "\n" + Messages.MESSAGE_PERSONS_LISTED_OVERVIEW
+                : Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+
         return new CommandResult(
-                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getSortedAndFilteredPersonList().size()));
+                String.format(combinedMessage, model.getSortedAndFilteredPersonList().size()));
     }
 
     @Override
