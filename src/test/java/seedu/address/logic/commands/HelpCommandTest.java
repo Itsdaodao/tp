@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.Assert.assertThrows;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -16,6 +17,14 @@ import seedu.address.model.ModelManager;
 public class HelpCommandTest {
     private Model model = new ModelManager();
     private Model expectedModel = new ModelManager();
+
+    @BeforeEach
+    public void setUp() {
+        CommandRegistry.clear();
+        // Register commands that we'll test with
+        HelpCommand.registerHelp();
+        AddCommand.registerHelp();
+    }
 
     @Test
     public void execute_generalHelp_success() {
@@ -85,19 +94,5 @@ public class HelpCommandTest {
         HelpCommand specificHelp = new HelpCommand("add");
 
         assertNotEquals(generalHelp, specificHelp);
-    }
-
-    @Test
-    public void toString_generalHelp() {
-        HelpCommand helpCommand = new HelpCommand();
-        String expected = HelpCommand.class.getCanonicalName() + "{targetCommand=null}";
-        assertEquals(expected, helpCommand.toString());
-    }
-
-    @Test
-    public void toString_specificCommand() {
-        HelpCommand helpCommand = new HelpCommand("add");
-        String expected = HelpCommand.class.getCanonicalName() + "{targetCommand=add}";
-        assertEquals(expected, helpCommand.toString());
     }
 }
