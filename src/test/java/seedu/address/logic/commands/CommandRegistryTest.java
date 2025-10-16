@@ -171,7 +171,8 @@ public class CommandRegistryTest {
 
     @Test
     public void commandInfo_constructorWithDetailedUsage_setsFieldsCorrectly() {
-        CommandRegistry.CommandInfo info = new CommandRegistry.CommandInfo("test", "description", "example", "detailed");
+        CommandRegistry.CommandInfo info = new CommandRegistry.CommandInfo("test",
+                "description", "example", "detailed");
 
         assertEquals("test", info.getCommandWord());
         assertEquals("description", info.getDescription());
@@ -181,28 +182,28 @@ public class CommandRegistryTest {
     }
 
     @Test
-    public void commandInfo_hasDetailedUsage_withDetailedUsage_returnsTrue() {
+    public void commandInfo_hasDetailedUsageTrue() {
         CommandRegistry.CommandInfo info = new CommandRegistry.CommandInfo("test", "desc", "example", "detailed");
 
         assertTrue(info.hasDetailedUsage());
     }
 
     @Test
-    public void commandInfo_hasDetailedUsage_withoutDetailedUsage_returnsFalse() {
+    public void commandInfo_hasDetailedUsageFalse() {
         CommandRegistry.CommandInfo info = new CommandRegistry.CommandInfo("test", "desc", "example");
 
         assertFalse(info.hasDetailedUsage());
     }
 
     @Test
-    public void commandInfo_hasDetailedUsage_emptyDetailedUsage_returnsFalse() {
+    public void commandInfo_hasDetailedUsageEmpty() {
         CommandRegistry.CommandInfo info = new CommandRegistry.CommandInfo("test", "desc", "example", "");
 
         assertFalse(info.hasDetailedUsage());
     }
 
     @Test
-    public void commandInfo_hasDetailedUsage_nullDetailedUsage_returnsFalse() {
+    public void commandInfo_hasDetailedUsageNull() {
         CommandRegistry.CommandInfo info = new CommandRegistry.CommandInfo("test", "desc", "example", null);
 
         assertFalse(info.hasDetailedUsage());
@@ -259,7 +260,8 @@ public class CommandRegistryTest {
     @Test
     public void formatDetailedCommandHelp_withDetailedUsage_includesDetailedUsage() {
         String detailedUsage = "Detailed usage information";
-        CommandRegistry.CommandInfo info = new CommandRegistry.CommandInfo("test", "Test description", "example", detailedUsage);
+        CommandRegistry.CommandInfo info = new CommandRegistry.CommandInfo("test",
+                "Test description", "example", detailedUsage);
 
         String formatted = getFormattedDetailedCommandHelp(info);
 
@@ -297,7 +299,8 @@ public class CommandRegistryTest {
     // Helper methods to access private formatting methods via reflection
     private String getFormattedCommandHelp(CommandRegistry.CommandInfo info) {
         try {
-            var method = CommandRegistry.class.getDeclaredMethod("formatCommandHelp", CommandRegistry.CommandInfo.class);
+            var method = CommandRegistry.class.getDeclaredMethod("formatCommandHelp",
+                    CommandRegistry.CommandInfo.class);
             method.setAccessible(true);
             return (String) method.invoke(null, info);
         } catch (Exception e) {
@@ -307,7 +310,8 @@ public class CommandRegistryTest {
 
     private String getFormattedDetailedCommandHelp(CommandRegistry.CommandInfo info) {
         try {
-            var method = CommandRegistry.class.getDeclaredMethod("formatDetailedCommandHelp", CommandRegistry.CommandInfo.class);
+            var method = CommandRegistry.class.getDeclaredMethod("formatDetailedCommandHelp",
+                    CommandRegistry.CommandInfo.class);
             method.setAccessible(true);
             return (String) method.invoke(null, info);
         } catch (Exception e) {
