@@ -30,6 +30,12 @@ public class ClearCommand extends Command {
         return true;
     }
 
+    /**
+     * Registers the clear command with the command registry, providing detailed help information
+     * including usage syntax, parameters, and examples for user reference.
+     * This method is called during application initialization to make the command
+     * available in the help system.
+     */
     public static void registerHelp() {
         CommandRegistry.register(
                 COMMAND_WORD,
