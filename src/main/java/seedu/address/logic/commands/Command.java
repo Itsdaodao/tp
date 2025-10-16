@@ -26,4 +26,10 @@ public abstract class Command {
     public boolean requiresWrite() {
         return false;
     };
+
+    /**
+     * Registers this command's help information with the CommandRegistry.
+     * Subclasses should override this method to register their help information.
+     */
+    public static void registerHelp() {}
 }

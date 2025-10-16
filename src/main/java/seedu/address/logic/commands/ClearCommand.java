@@ -29,4 +29,23 @@ public class ClearCommand extends Command {
     public boolean requiresWrite() {
         return true;
     }
+
+    /**
+     * Registers the clear command with the command registry, providing detailed help information
+     * including usage syntax, parameters, and examples for user reference.
+     * This method is called during application initialization to make the command
+     * available in the help system.
+     */
+    public static void registerHelp() {
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Clears all contacts from the address book",
+                "Example: clear",
+                "Usage: clear\n\n"
+                        + "Removes all contacts from the address book.\n\n"
+                        + "Notes:\n"
+                        + "  - This action cannot be undone\n"
+                        + "  - All contact data will be permanently deleted"
+        );
+    }
 }

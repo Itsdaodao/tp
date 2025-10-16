@@ -75,4 +75,27 @@ public class FindCommand extends Command {
                 .add("predicate", predicate)
                 .toString();
     }
+
+    /**
+     * Registers the find command with the command registry, providing detailed help information
+     * including usage syntax, parameters, and examples for user reference.
+     * This method is called during application initialization to make the command
+     * available in the help system.
+     */
+    public static void registerHelp() {
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Finds contacts whose names contain any of the given keywords",
+                "Example: find alice bob charlie",
+                "Usage: find KEYWORD [MORE_KEYWORDS]...\n\n"
+                        + "Finds all contacts whose names contain any of the specified keywords (case-insensitive).\n\n"
+                        + "Parameters:\n"
+                        + "  KEYWORD - One or more keywords to search for (required)\n\n"
+                        + "Notes:\n"
+                        + "  - The search is case-insensitive (e.g., 'alice' matches 'Alice')\n"
+                        + "  - Only the name field is searched\n"
+                        + "  - Contacts matching at least one keyword will be displayed\n"
+                        + "  - Keywords must match full words (e.g., 'Han' won't match 'Hans')"
+        );
+    }
 }

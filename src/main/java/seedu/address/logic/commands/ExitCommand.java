@@ -16,4 +16,21 @@ public class ExitCommand extends Command {
         return new CommandResult(MESSAGE_EXIT_ACKNOWLEDGEMENT, false, true);
     }
 
+    /**
+     * Registers the exit command with the command registry, providing detailed help information
+     * including usage syntax, parameters, and examples for user reference.
+     * This method is called during application initialization to make the command
+     * available in the help system.
+     */
+    public static void registerHelp() {
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Exits the program",
+                "Example: exit",
+                "Usage: exit\n\n"
+                        + "Closes the application and saves all data.\n\n"
+                        + "Notes:\n"
+                        + "  - All changes are automatically saved before exiting"
+        );
+    }
 }

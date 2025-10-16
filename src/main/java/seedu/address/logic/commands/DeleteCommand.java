@@ -76,4 +76,25 @@ public class DeleteCommand extends Command {
                 .add("targetIndex", targetIndex)
                 .toString();
     }
+
+    /**
+     * Registers the delete command with the command registry, providing detailed help information
+     * including usage syntax, parameters, and examples for user reference.
+     * This method is called during application initialization to make the command
+     * available in the help system.
+     */
+    public static void registerHelp() {
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Deletes a contact by index number",
+                "Example: delete 1",
+                "Usage: delete INDEX\n\n"
+                        + "Deletes the contact at the specified index from the address book.\n\n"
+                        + "Parameters:\n"
+                        + "  INDEX - The index number shown in the displayed contact list (required)\n\n"
+                        + "Notes:\n"
+                        + "  - The index must be a positive integer (1, 2, 3, ...)\n"
+                        + "  - The index refers to the contact's position in the currently displayed list"
+        );
+    }
 }
