@@ -1,17 +1,20 @@
-package seedu.address.logic.commands;
+package seedu.address.logic.parser;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import seedu.address.logic.parser.AddCommandParser;
-import seedu.address.logic.parser.DeleteCommandParser;
-import seedu.address.logic.parser.EditCommandParser;
-import seedu.address.logic.parser.FindCommandParser;
-import seedu.address.logic.parser.ListCommandParser;
+import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.ClearCommand;
+import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.EditCommand;
+import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.ListCommand;
 
 /**
- * Central Registry for all commands in the application.
+ * Central Registry for parse-related information used in the application.
  */
 public class CommandRegistry {
     private static final Map<String, CommandFactory> commands;
