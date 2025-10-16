@@ -16,14 +16,7 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
 import seedu.address.logic.LogicManager;
 import seedu.address.logic.StateManager;
-import seedu.address.logic.commands.AddCommand;
-import seedu.address.logic.commands.ClearCommand;
-import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.logic.commands.EditCommand;
-import seedu.address.logic.commands.ExitCommand;
-import seedu.address.logic.commands.FindCommand;
-import seedu.address.logic.commands.HelpCommand;
-import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.CommandRegistry;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
@@ -185,16 +178,7 @@ public class MainApp extends Application {
      */
     private void initCommandRegistry() {
         logger.info("Initializing command registry");
-
-        AddCommand.registerHelp();
-        ClearCommand.registerHelp();
-        DeleteCommand.registerHelp();
-        EditCommand.registerHelp();
-        ExitCommand.registerHelp();
-        FindCommand.registerHelp();
-        HelpCommand.registerHelp();
-        ListCommand.registerHelp();
-
+        CommandRegistry.initialize();
         logger.info("Command registry initialized");
     }
 
