@@ -4,10 +4,17 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.logic.parser.AddCommandParser;
+import seedu.address.logic.parser.DeleteCommandParser;
+import seedu.address.logic.parser.EditCommandParser;
+import seedu.address.logic.parser.FindCommandParser;
+import seedu.address.logic.parser.HelpCommandParser;
+import seedu.address.logic.parser.ListCommandParser;
 
 /**
  * Maintains a registry of all available commands and their help information.
@@ -17,6 +24,7 @@ import seedu.address.commons.core.LogsCenter;
 public class CommandRegistry {
     private static final Logger logger = LogsCenter.getLogger(CommandRegistry.class);
     private static final Map<String, CommandInfo> commands = new HashMap<>();
+    private static final Map<String, CommandFactory> commandFactoryMap = new HashMap<>();
 
     // List of command class names to register
     private static final List<String> COMMAND_CLASS_NAMES = List.of(
@@ -127,6 +135,16 @@ public class CommandRegistry {
             }
         }
 
+        // Instantiate the command factory map
+        commandFactoryMap.put(AddCommand.COMMAND_WORD, (args) -> new AddCommandParser().parse(args));
+        commandFactoryMap.put(EditCommand.COMMAND_WORD, (args) -> new EditCommandParser().parse(args));
+        commandFactoryMap.put(DeleteCommand.COMMAND_WORD, (args) -> new DeleteCommandParser().parse(args));
+        commandFactoryMap.put(ClearCommand.COMMAND_WORD, (args) -> new ClearCommand());
+        commandFactoryMap.put(FindCommand.COMMAND_WORD, (args) -> new FindCommandParser().parse(args));
+        commandFactoryMap.put(ListCommand.COMMAND_WORD, (args) -> new ListCommandParser().parse(args));
+        commandFactoryMap.put(ExitCommand.COMMAND_WORD, (args) -> new ExitCommand());
+        commandFactoryMap.put(HelpCommand.COMMAND_WORD, (args) -> new HelpCommandParser().parse(args));
+
         logger.info("Command registry initialized with " + commands.size() + " commands");
     }
 
@@ -198,6 +216,13 @@ public class CommandRegistry {
     }
 
     /**
+     * Returns a set of all valid command words in the application.
+     */
+    public static Set<String> getCommandWords() {
+        return commands.keySet();
+    }
+
+    /**
      * Formats the help information for a single command in the list view.
      * The format includes the command word aligned to 12 characters, followed by the description.
      * If an example is provided, it is displayed on a new line with proper indentation.
@@ -246,5 +271,13 @@ public class CommandRegistry {
      */
     public static void clear() {
         commands.clear();
+    }
+
+    /**
+     * Returns the CommandFactory associated with the given command word.
+     * Returns null if the command word is not recognized.
+     */
+    public static CommandFactory getCommandFactory(String commandWord) {
+        return commandFactoryMap.get(commandWord);
     }
 }

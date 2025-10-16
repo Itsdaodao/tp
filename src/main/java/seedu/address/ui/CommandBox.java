@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
+import seedu.address.logic.autocomplete.Autocompletor;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -17,18 +18,22 @@ public class CommandBox extends UiPart<Region> {
     private static final String FXML = "CommandBox.fxml";
 
     private final CommandExecutor commandExecutor;
+    private final Autocompletor autocompletor;
 
     @FXML
     private TextField commandTextField;
+    @FXML
+    private TextField commandHintField;
 
     /**
      * Creates a {@code CommandBox} with the given {@code CommandExecutor}.
      */
-    public CommandBox(CommandExecutor commandExecutor) {
+    public CommandBox(CommandExecutor commandExecutor, Autocompletor autocompletor) {
         super(FXML);
         this.commandExecutor = commandExecutor;
-        // calls #setStyleToDefault() whenever there is a change to the text of the command box.
-        commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
+        this.autocompletor = autocompletor;
+        // calls handleInput whenever there is a change to the text of the command box.
+        commandTextField.textProperty().addListener((unused1, unused2, newText) -> handleInput(newText));
     }
 
     /**
@@ -47,6 +52,20 @@ public class CommandBox extends UiPart<Region> {
         } catch (CommandException | ParseException e) {
             setStyleToIndicateCommandFailure();
         }
+    }
+
+    /**
+     * Handles the input in the command box. Resets
+     * style and updates hint text.
+     */
+    private void handleInput(String commandText) {
+        setStyleToDefault();
+        if (commandText.equals("")) {
+            commandHintField.setText("");
+            return;
+        }
+        String hint = autocompletor.getHint(commandText);
+        commandHintField.setText(hint);
     }
 
     /**
