@@ -82,8 +82,7 @@ public class ListCommand extends Command {
         CommandRegistry.register(
                 COMMAND_WORD,
                 "Lists out all contacts",
-                "Example: edit 1 p/91234567 e/johndoe@example.com\n" +
-                        "Example: delete 1"
+                "Example: list -a"
         );
     }
 }
