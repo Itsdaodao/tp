@@ -85,17 +85,20 @@ public class FindCommand extends Command {
     public static void registerHelp() {
         CommandRegistry.register(
                 COMMAND_WORD,
-                "Finds contacts whose names contain any of the given keywords",
-                "Example: find alice bob charlie",
-                "Usage: find KEYWORD [MORE_KEYWORDS]...\n\n"
+                "Finds contacts whose names or tags contain any of the given keywords",
+                "Example: find n/alice bob charlie, find t/family friends",
+                "Usage: find n/KEYWORD [MORE_KEYWORDS]...find t/KEYWORD [MORE_KEYWORDS]...\n\n"
                         + "Finds all contacts whose names contain any of the specified keywords (case-insensitive).\n\n"
                         + "Parameters:\n"
+                        + "  PREFIX - Either 'n/' to search by name or 't/' to search by tag"
                         + "  KEYWORD - One or more keywords to search for (required)\n\n"
                         + "Notes:\n"
+                        + "  - Only one prefix can be used at a time\n"
                         + "  - The search is case-insensitive (e.g., 'alice' matches 'Alice')\n"
                         + "  - Only the name field is searched\n"
                         + "  - Contacts matching at least one keyword will be displayed\n"
-                        + "  - Keywords must match full words (e.g., 'Han' won't match 'Hans')"
+                        + "  - If both prefixes provided. Only the first prefix is used.\n"
+                        + "  - Keywords must match the start of the word (e.g. 'De' matches 'Derek')"
         );
     }
 }
