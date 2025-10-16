@@ -93,4 +93,12 @@ public class AddCommand extends Command {
                 .add("toAdd", toAdd)
                 .toString();
     }
+
+    public static void registerHelp() {
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Adds a contact to the address book",
+                "Example: add n/John Doe p/98765432 e/johnd@example.com t/@johndoe g/john-doe"
+        );
+    }
 }

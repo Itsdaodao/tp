@@ -357,4 +357,12 @@ public class EditCommand extends Command {
                     + tagsString;
         }
     }
+
+    public static void registerHelp() {
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Edits the details of an existing contact by index number",
+                "Example: edit 1 p/91234567 e/johndoe@example.com"
+        );
+    }
 }

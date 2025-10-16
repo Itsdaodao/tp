@@ -16,4 +16,11 @@ public class ExitCommand extends Command {
         return new CommandResult(MESSAGE_EXIT_ACKNOWLEDGEMENT, false, true);
     }
 
+    public static void registerHelp() {
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Exits the program",
+                null
+        );
+    }
 }

@@ -29,4 +29,12 @@ public class ClearCommand extends Command {
     public boolean requiresWrite() {
         return true;
     }
+
+    public static void registerHelp() {
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Clears all contacts from the address book",
+                null
+        );
+    }
 }

@@ -77,4 +77,13 @@ public class ListCommand extends Command {
         ListCommand otherListCommand = (ListCommand) other;
         return otherListCommand.sortOrder == this.sortOrder;
     }
+
+    public static void registerHelp() {
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Lists out all contacts",
+                "Example: edit 1 p/91234567 e/johndoe@example.com\n" +
+                        "Example: delete 1"
+        );
+    }
 }

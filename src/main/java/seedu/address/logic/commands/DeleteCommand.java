@@ -76,4 +76,12 @@ public class DeleteCommand extends Command {
                 .add("targetIndex", targetIndex)
                 .toString();
     }
+
+    public static void registerHelp() {
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Deletes a contact from the address book",
+                null
+        );
+    }
 }

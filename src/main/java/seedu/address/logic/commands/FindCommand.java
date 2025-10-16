@@ -75,4 +75,12 @@ public class FindCommand extends Command {
                 .add("predicate", predicate)
                 .toString();
     }
+
+    public static void registerHelp() {
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Finds contacts whose names contain any of the given keywords",
+                "Example: find alice bob"
+        );
+    }
 }
