@@ -3,7 +3,7 @@ package seedu.address.logic.autocomplete;
 import java.util.List;
 
 import seedu.address.logic.autocomplete.trie.Trie;
-import seedu.address.logic.parser.CommandRegistry;
+import seedu.address.logic.commands.CommandRegistry;
 
 /**
  * Autocompletor class that provides autocomplete hints based on command words.

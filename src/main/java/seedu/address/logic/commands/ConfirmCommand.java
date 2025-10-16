@@ -66,4 +66,9 @@ public class ConfirmCommand extends Command {
                 .add("userInput", input)
                 .toString();
     }
+
+    /**
+     * Internal command does not need a help information.
+     */
+    public static void registerHelp() {}
 }

@@ -5,10 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.CommandRegistry;
 
 public class AutocompletorTest {
     @Test
     public void getHint_partialCommand_returnsFullCommand() {
+        CommandRegistry.register("add", "null", "null");
         Autocompletor completor = new Autocompletor();
         String command = AddCommand.COMMAND_WORD
                 .substring(0, AddCommand.COMMAND_WORD.length() - 1);

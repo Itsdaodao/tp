@@ -357,4 +357,33 @@ public class EditCommand extends Command {
                     + tagsString;
         }
     }
+
+    /**
+     * Registers the edit command with the command registry, providing detailed help information
+     * including usage syntax, parameters, and examples for user reference.
+     * This method is called during application initialization to make the command
+     * available in the help system.
+     */
+    public static void registerHelp() {
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Edits the details of an existing contact by index number",
+                "Example: edit 1 p/91234567 e/johndoe@example.com",
+                "Usage: edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [t/TAG]... [r/TAG]...\n\n"
+                        + "Edits the contact at the specified index. At least one optional field must be provided.\n\n"
+                        + "Parameters:\n"
+                        + "  INDEX       - The index number shown in the displayed contact list (required)\n"
+                        + "  n/NAME      - New name for the contact (optional)\n"
+                        + "  p/PHONE     - New phone number (optional)\n"
+                        + "  e/EMAIL     - New email address (optional)\n"
+                        + "  l/TELEGRAM  - New Telegram username (optional)\n"
+                        + "  g/GITHUB    - New GitHub username (optional)\n"
+                        + "  t/TAG       - Add tag(s) to the contact (optional, can have multiple)\n"
+                        + "  r/TAG       - Remove tag(s) from the contact (optional, can have multiple)\n\n"
+                        + "Notes:\n"
+                        + "  - The index must be a positive integer (1, 2, 3, ...)\n"
+                        + "  - Existing values will be overwritten by the new input values\n"
+                        + "  - Use t/ to add tags and r/ to remove tags"
+        );
+    }
 }

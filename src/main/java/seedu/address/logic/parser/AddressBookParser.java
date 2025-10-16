@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.CommandFactory;
+import seedu.address.logic.commands.CommandRegistry;
 import seedu.address.logic.commands.ConfirmCommand;
 import seedu.address.logic.commands.ConfirmationPendingResult;
 import seedu.address.logic.commands.HelpCommand;

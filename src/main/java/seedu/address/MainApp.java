@@ -16,6 +16,7 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
 import seedu.address.logic.LogicManager;
 import seedu.address.logic.StateManager;
+import seedu.address.logic.commands.CommandRegistry;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
@@ -66,6 +67,8 @@ public class MainApp extends Application {
         logic = new LogicManager(model, storage, new StateManager());
 
         ui = new UiManager(logic);
+
+        initCommandRegistry();
     }
 
     /**
@@ -167,6 +170,16 @@ public class MainApp extends Application {
         }
 
         return initializedPrefs;
+    }
+
+    /**
+     * Initializes the command registry with help information for all commands.
+     * This should be called during application startup.
+     */
+    private void initCommandRegistry() {
+        logger.info("Initializing command registry");
+        CommandRegistry.initialize();
+        logger.info("Command registry initialized");
     }
 
     @Override
