@@ -78,7 +78,16 @@ public class HelpCommand extends Command {
         CommandRegistry.register(
                 COMMAND_WORD,
                 "Shows program usage instructions",
-                "Example: help"
+                "Example: help\n"
+                        + "            Example: help add",
+                "Usage: help [COMMAND_NAME]\n\n"
+                        + "Shows general help for all commands, or detailed help for a specific command.\n\n"
+                        + "Parameters:\n"
+                        + "  COMMAND_NAME (optional) - The name of the command to get detailed help for\n\n"
+                        + "Notes:\n"
+                        + "  - Without parameters, displays a list of all available commands\n"
+                        + "  - With a command name, displays detailed usage information for that command\n"
+                        + "  - Command names are case-insensitive"
         );
     }
 }

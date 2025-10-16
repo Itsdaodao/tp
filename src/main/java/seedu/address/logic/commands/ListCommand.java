@@ -81,8 +81,18 @@ public class ListCommand extends Command {
     public static void registerHelp() {
         CommandRegistry.register(
                 COMMAND_WORD,
-                "Lists out all contacts",
-                "Example: list -a"
+                "Lists all contacts in the address book with optional sorting",
+                "Example: list\n"
+                        + "            Example: list -a\n"
+                        + "            Example: list -r",
+                "Usage: list [-a | -r]\n\n"
+                        + "Lists all contacts in the address book with optional sorting.\n\n"
+                        + "Parameters:\n"
+                        + "  -a (optional) - Sort contacts in alphabetical order by name\n"
+                        + "  -r (optional) - Sort contacts by most recently added\n\n"
+                        + "Notes:\n"
+                        + "  - Without flags, contacts are listed in their default order\n"
+                        + "  - Only one sorting flag can be used at a time"
         );
     }
 }

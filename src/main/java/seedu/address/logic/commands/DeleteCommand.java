@@ -80,8 +80,15 @@ public class DeleteCommand extends Command {
     public static void registerHelp() {
         CommandRegistry.register(
                 COMMAND_WORD,
-                "Deletes a contact from the address book",
-                null
+                "Deletes a contact by index number",
+                "Example: delete 1",
+                "Usage: delete INDEX\n\n"
+                        + "Deletes the contact at the specified index from the address book.\n\n"
+                        + "Parameters:\n"
+                        + "  INDEX - The index number shown in the displayed contact list (required)\n\n"
+                        + "Notes:\n"
+                        + "  - The index must be a positive integer (1, 2, 3, ...)\n"
+                        + "  - The index refers to the contact's position in the currently displayed list"
         );
     }
 }

@@ -98,7 +98,20 @@ public class AddCommand extends Command {
         CommandRegistry.register(
                 COMMAND_WORD,
                 "Adds a contact to the address book",
-                "Example: add n/John Doe p/98765432 e/johnd@example.com t/@johndoe g/john-doe"
+                "Example: add n/John Doe p/98765432 e/johnd@example.com l/@johndoe g/john-doe t/friends",
+                "Usage: add n/NAME p/PHONE [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [t/TAG]...\n\n"
+                        + "Adds a new contact to the address book with the specified details.\n\n"
+                        + "Parameters:\n"
+                        + "  n/NAME      - Full name of the contact (required)\n"
+                        + "  p/PHONE     - Phone number (required)\n"
+                        + "  e/EMAIL     - Email address (optional)\n"
+                        + "  l/TELEGRAM  - Telegram username with @ prefix (optional)\n"
+                        + "  g/GITHUB    - GitHub username (optional)\n"
+                        + "  t/TAG       - Tag(s) to categorize the contact (optional, can have multiple)\n\n"
+                        + "Notes:\n"
+                        + "  - Name and phone are required fields\n"
+                        + "  - You can add multiple tags by repeating t/TAG\n"
+                        + "  - Duplicate contacts (same name) are not allowed"
         );
     }
 }

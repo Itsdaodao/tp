@@ -20,7 +20,11 @@ public class ExitCommand extends Command {
         CommandRegistry.register(
                 COMMAND_WORD,
                 "Exits the program",
-                null
+                "Example: exit",
+                "Usage: exit\n\n"
+                        + "Closes the application and saves all data.\n\n"
+                        + "Notes:\n"
+                        + "  - All changes are automatically saved before exiting"
         );
     }
 }

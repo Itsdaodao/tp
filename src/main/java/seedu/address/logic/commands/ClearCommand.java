@@ -34,7 +34,12 @@ public class ClearCommand extends Command {
         CommandRegistry.register(
                 COMMAND_WORD,
                 "Clears all contacts from the address book",
-                null
+                "Example: clear",
+                "Usage: clear\n\n"
+                        + "Removes all contacts from the address book.\n\n"
+                        + "Notes:\n"
+                        + "  - This action cannot be undone\n"
+                        + "  - All contact data will be permanently deleted"
         );
     }
 }
