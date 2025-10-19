@@ -269,11 +269,10 @@ _{Explain here how the data archiving feature will be implemented}_
 * Loves using telegram for communication
 
 
-**Value proposition**: 
-DevBooks provides fast digital access to students in NUS SOC, making it easier to 
-contact any student using their preferred mode of communication. Allow students to find project mates from the 
+**Value proposition**:
+DevBooks provides fast digital access to students in NUS SOC, making it easier to
+contact any student using their preferred mode of communication. Allow students to find project mates from the
 same project group easily and view the development profile of their contact.
-
 
 ### User stories
 
@@ -391,9 +390,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 1.  User inputs delete command with desired information to delete
 2.  Devbooks shows a confirmation prompt
-3.  User confirms intent to delete 
+3.  User confirms intent to delete
 4.  Devbooks deletes the contact
-
     Use case ends.
 
 **Extensions**
@@ -477,7 +475,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 7.  Should work without requiring an installer.
 8.  Should not depend on a specific remote server.
 9.  Should be packaged into a single JAR file.
-10. Should be able to load within 5 seconds. 
+10. Should be able to load within 5 seconds.
 *{More to be added}*
 
 ### Glossary
