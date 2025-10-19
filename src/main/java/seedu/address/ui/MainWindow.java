@@ -1,14 +1,11 @@
 package seedu.address.ui;
 
-import java.util.Map;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
@@ -26,7 +23,16 @@ import seedu.address.logic.parser.exceptions.ParseException;
  * a menu bar and space where other JavaFX elements can be placed.
  */
 public class MainWindow extends UiPart<Stage> {
+    public static final String ENTER_SCROLL_MODE = "esc";
+    public static final String SCROLL_MODE_NEXT = "k";
+    public static final String SCROLL_MODE_PREVIOUS = "l";
+    public static final String ENTER_INPUT_MODE = "i";
 
+    private static final String ENTER_INPUT_MODE_FEEDBACK = "Entered insert mode.\nPress "
+            + ENTER_SCROLL_MODE + " to return to scroll mode.";
+    private static final String ENTER_SCROLL_MODE_FEEDBACK = "Entered scroll mode.\nPress "
+            + ENTER_INPUT_MODE + " to return to input mode.\n Use [" + SCROLL_MODE_NEXT + "/"
+            + SCROLL_MODE_PREVIOUS + "] to navigate.";
     private static final String FXML = "MainWindow.fxml";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
@@ -35,17 +41,6 @@ public class MainWindow extends UiPart<Stage> {
     private Logic logic;
 
     private boolean isCommandMode;
-
-    public static final String ENTER_SCROLL_MODE = "esc";
-    public static final String SCROLL_MODE_NEXT = "k";
-    public static final String SCROLL_MODE_PREVIOUS = "l";
-    public static final String ENTER_INPUT_MODE = "i";
-
-    private static final String ENTER_INPUT_MODE_FEEDBACK = "Entered insert mode.\nPress "
-        + ENTER_SCROLL_MODE    + " to return to scroll mode.";
-    private static final String ENTER_SCROLL_MODE_FEEDBACK = "Entered scroll mode.\nPress "
-            + ENTER_INPUT_MODE    + " to return to input mode.\n Use [" + SCROLL_MODE_NEXT + "/"
-            + SCROLL_MODE_PREVIOUS + "] to navigate.";
 
     // Independent Ui parts residing in this Ui container
     private PersonListPanel personListPanel;
@@ -151,13 +146,13 @@ public class MainWindow extends UiPart<Stage> {
         // Listener for entering input mode - this needs to be a KEY_TYPED event to
         // prevent 'i' input from leaking into the command box.
         getRoot().addEventFilter(KeyEvent.KEY_TYPED, event -> {
-            if (isCommandMode && event.getCharacter().matches(ENTER_INPUT_MODE)){
+            if (isCommandMode && event.getCharacter().matches(ENTER_INPUT_MODE)) {
                 handleEnterInputMode();
             }
         });
 
         // Listener for other key presses - for switching modes and navigation.
-        getRoot().addEventFilter(KeyEvent.KEY_PRESSED,  this::handleKeyPressed);
+        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
     }
 
     /**

@@ -29,12 +29,11 @@ import seedu.address.storage.StorageManager;
 
 @ExtendWith(ApplicationExtension.class)
 public class MainWindowTest {
-    private Model model = new ModelManager();
-
-    private MainWindow mainWindow;
-
     @TempDir
     public Path temporaryFolder;
+
+    private Model model = new ModelManager();
+    private MainWindow mainWindow;
 
     @Start
     private void start(Stage stage) {
