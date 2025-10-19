@@ -25,7 +25,8 @@ public class DeleteCommand extends Command {
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
 
-    public static final String MESSAGE_DELETE_PERSON_CONFIRM = "Confirm deletion [y/n] of:\n%1$s?";
+    public static final String MESSAGE_DELETE_PERSON_CONFIRM = "Confirm deletion "
+            + ConfirmCommand.USER_INPUT_OPTIONS + " of:\n%1$s?";
 
     private final Index targetIndex;
 
