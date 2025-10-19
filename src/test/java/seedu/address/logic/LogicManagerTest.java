@@ -175,12 +175,35 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_clearCommand_triggersWrite() throws Exception {
+    public void execute_clearCommand_doesNotTriggerWrite() throws Exception {
         model.addPerson(AMY);
         String clearCommand = ClearCommand.COMMAND_WORD;
-
         ModelManager expectedModel = new ModelManager();
-        assertCommandTriggersWrite(clearCommand, ClearCommand.MESSAGE_SUCCESS, expectedModel);
+        expectedModel.addPerson(AMY);
+
+        assertCommandDoesNotTriggerWrite(clearCommand, ClearCommand.MESSAGE_CLEAR_CONFIRM, expectedModel);
+    }
+
+    @Test
+    public void execute_clearCommandThenConfirmCommand_triggersWrite() throws Exception {
+        // Arrange - create state with pending confirmation
+        model.addPerson(AMY);
+        int index = 1;
+        State state = new StateManager();
+        TrackingStorageManager trackingStorage = getTestStorageManager();
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.deletePerson(AMY);
+
+        // act - execute confirm command
+        LogicManager lm = new LogicManager(model, trackingStorage, state);
+        lm.execute(ClearCommand.COMMAND_WORD);
+        lm.execute("y");
+
+
+        // Assert - check that contact deleted and write triggered
+        assertEquals(expectedModel, model);
+        assertTrue(trackingStorage.saveCalled,
+                "Expected saveAddressBook() to be called but it was not.");
     }
 
     @Test
