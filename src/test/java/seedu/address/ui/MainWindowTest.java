@@ -15,7 +15,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.stage.Stage;
 import seedu.address.logic.LogicManager;
 import seedu.address.logic.StateManager;
@@ -69,7 +69,8 @@ public class MainWindowTest {
     public void insertMode_writeValues_doesNotFillInput(FxRobot robot) {
         TextField t = robot.lookup("#commandTextField").queryAs(TextField.class);
 
-        robot.push(KeyCode.ESCAPE);
+        write(robot, MainWindow.ENTER_SCROLL_MODE);
+
         robot.clickOn("#commandTextField");
         robot.write("select 1");
 
@@ -78,48 +79,52 @@ public class MainWindowTest {
 
     @Test
     public void commandMode_noSelectedPerson_noInput(FxRobot robot) {
-        robot.push(KeyCode.ESCAPE);
+        write(robot, MainWindow.ENTER_SCROLL_MODE);
 
         assertNull(mainWindow.getPersonListPanel().getSelectedPerson());
     }
 
     @Test
-    public void scrollMode_selectsFirstPerson_onK(FxRobot robot) {
+    public void scrollMode_selectsFirstPerson_onScrollNext(FxRobot robot) {
         Person selected = model.getAddressBook().getPersonList().get(0);
 
-        robot.push(KeyCode.ESCAPE);
-        robot.push(KeyCode.K);
+        write(robot, MainWindow.ENTER_SCROLL_MODE);
+        write(robot, MainWindow.SCROLL_MODE_NEXT);
 
         assertEquals(selected, mainWindow.getPersonListPanel().getSelectedPerson());
     }
 
     @Test
-    public void scrollMode_selectsLastPerson_onManyRepeatedKInputs(FxRobot robot) {
+    public void scrollMode_selectsLastPerson_onManyRepeatedScrollNextInput(FxRobot robot) {
         List<Person> list = model.getAddressBook().getPersonList();
         Person selected = list.get(list.size() - 1);
 
-        robot.push(KeyCode.ESCAPE);
+        write(robot, MainWindow.ENTER_SCROLL_MODE);
         for (int i = 0; i < list.size() + 5; i++) {
-            robot.push(KeyCode.K);
+            write(robot, MainWindow.SCROLL_MODE_NEXT);
         }
 
         assertEquals(selected, mainWindow.getPersonListPanel().getSelectedPerson());
     }
 
     @Test
-    public void scrollMode_selectsFirstPerson_onLinput(FxRobot robot) {
+    public void scrollMode_selectsFirstPerson_onScrollPreviousInput(FxRobot robot) {
         // Arrange - select second person by pressing K twice
         Person firstPerson = model.getAddressBook().getPersonList().get(0);
         Person secondPerson = model.getAddressBook().getPersonList().get(1);
-        robot.push(KeyCode.ESCAPE);
-        robot.push(KeyCode.K);
-        robot.push(KeyCode.K);
+        write(robot, MainWindow.ENTER_SCROLL_MODE);
+        write(robot, MainWindow.SCROLL_MODE_NEXT);
+        write(robot, MainWindow.SCROLL_MODE_NEXT);
         // Ensure second person is selected
         assertEquals(secondPerson, mainWindow.getPersonListPanel().getSelectedPerson());
 
         // ACT - Press L to go back to first person
-        robot.push(KeyCode.L);
+        write(robot, MainWindow.SCROLL_MODE_PREVIOUS);
 
         assertEquals(firstPerson, mainWindow.getPersonListPanel().getSelectedPerson());
+    }
+
+    private void write(FxRobot robot, String text) {
+        robot.push((KeyCodeCombination) KeyCodeCombination.valueOf(text));
     }
 }
