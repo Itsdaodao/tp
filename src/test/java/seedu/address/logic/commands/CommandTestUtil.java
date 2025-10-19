@@ -119,6 +119,37 @@ public class CommandTestUtil {
     }
 
     /**
+     * Convenience wrapper to {@link #assertConfirmedCommandSuccess(Command, Model, CommandResult, Model)}
+     * that takes a string {@code expectedMessage}.
+     */
+    public static void assertConfirmedCommandSuccess(Command command, Model actualModel, String expectedMessage,
+                                            Model expectedModel) {
+        CommandResult expectedCommandResult = new CommandResult(expectedMessage);
+        assertConfirmedCommandSuccess(command, actualModel, expectedCommandResult, expectedModel);
+    }
+
+    /**
+     * Executes the given {@code command}, confirms that <br>
+     * - a confirmation is requested via {@code ConfirmationPendingResult} <br>
+     * - upon confirmation, the returned {@link CommandResult} matches {@code expectedCommandResult} <br>
+     * - the {@code actualModel} matches {@code expectedModel}
+     */
+    public static void assertConfirmedCommandSuccess(Command command, Model actualModel,
+            CommandResult expectedCommandResult, Model expectedModel) {
+        try {
+            CommandResult resultToBeConfirmed = command.execute(actualModel);
+            if (!(resultToBeConfirmed instanceof ConfirmationPendingResult confirmationResult)) {
+                throw new AssertionError("Execution of command should result in a ConfirmationPendingResult.");
+            }
+            CommandResult finalResult = confirmationResult.executeOnConfirm();
+            assertEquals(expectedCommandResult, finalResult);
+            assertEquals(expectedModel, actualModel);
+        } catch (CommandException ce) {
+            throw new AssertionError("Execution of command should not fail.", ce);
+        }
+    }
+
+    /**
      * Executes the given {@code command}, confirms that <br>
      * - a {@code CommandException} is thrown <br>
      * - the CommandException message matches {@code expectedMessage} <br>
