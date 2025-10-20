@@ -22,6 +22,7 @@ public class Person {
     private final Email email;
     private final Telegram telegram;
     private final Github github;
+    private final PreferredCommunicationMode preferredMode;
 
     // Data fields
     private final Set<Tag> tags = new HashSet<>();
@@ -30,13 +31,14 @@ public class Person {
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Telegram telegram, Github github,
-                  Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, telegram, github, tags);
+                  PreferredCommunicationMode preferredMode, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, telegram, github, preferredMode, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.telegram = telegram;
         this.github = github;
+        this.preferredMode = preferredMode;
         this.tags.addAll(tags);
     }
 
@@ -58,6 +60,10 @@ public class Person {
 
     public Github getGithub() {
         return github;
+    }
+
+    public PreferredCommunicationMode getPreferredMode() {
+        return preferredMode;
     }
 
     /**
@@ -102,13 +108,14 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && telegram.equals(otherPerson.telegram)
                 && github.equals(otherPerson.github)
+                && preferredMode.equals(otherPerson.preferredMode)
                 && tags.equals(otherPerson.tags);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, telegram, github, tags);
+        return Objects.hash(name, phone, email, telegram, github, preferredMode, tags);
     }
 
     @Override

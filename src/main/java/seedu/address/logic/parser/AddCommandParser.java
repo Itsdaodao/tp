@@ -7,18 +7,14 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PREFERRED_MODE;
 
 import java.util.Set;
 import java.util.stream.Stream;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Github;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.Telegram;
+import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -39,6 +35,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                         PREFIX_EMAIL,
                         PREFIX_TELEGRAM,
                         PREFIX_GITHUB,
+                        PREFIX_PREFERRED_MODE,
                         PREFIX_TAG);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE)
@@ -47,7 +44,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(
-                PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM, PREFIX_GITHUB);
+                PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM, PREFIX_GITHUB, PREFIX_PREFERRED_MODE);
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
@@ -67,7 +64,13 @@ public class AddCommandParser implements Parser<AddCommand> {
             github = ParserUtil.parseGithub(argMultimap.getValue(PREFIX_GITHUB).get());
         }
 
-        Person person = new Person(name, phone, email, telegram, github, tagList);
+        // Create default preferredCommunicationMode with empty value
+        PreferredCommunicationMode preferredMode = new PreferredCommunicationMode();
+        if (arePrefixesPresent(argMultimap, PREFIX_PREFERRED_MODE)) {
+            preferredMode = ParserUtil.parsePreferredMode(argMultimap.getValue(PREFIX_PREFERRED_MODE).get());
+        }
+
+        Person person = new Person(name, phone, email, telegram, github, preferredMode, tagList);
 
         return new AddCommand(person);
     }

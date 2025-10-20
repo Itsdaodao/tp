@@ -9,11 +9,7 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Github;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.Telegram;
+import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -109,6 +105,21 @@ public class ParserUtil {
             throw new ParseException(Github.MESSAGE_CONSTRAINTS);
         }
         return new Github(trimmedUsername);
+    }
+
+    /**
+     * Parses a {@code String mode} into a {@code PreferredCommunicationMode}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code PreferredCommunicationMode} is invalid.
+     */
+    public static PreferredCommunicationMode parsePreferredMode(String mode) throws ParseException {
+        requireNonNull(mode);
+        String trimmedMode = mode.trim();
+        if (!PreferredCommunicationMode.isValidMode(trimmedMode)) {
+            throw new ParseException(Github.MESSAGE_CONSTRAINTS);
+        }
+        return new PreferredCommunicationMode(trimmedMode);
     }
 
     /**
