@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GITHUB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PREFERRED_MODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 
@@ -13,6 +14,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PreferredCommunicationMode;
 
 /**
  * Adds a person to the address book.
@@ -35,6 +37,7 @@ public class AddCommand extends Command {
             + PREFIX_EMAIL + "johnd@example.com "
             + PREFIX_TELEGRAM + "imjohndoe23 "
             + PREFIX_GITHUB + "john-doe23 "
+            + PREFIX_PREFERRED_MODE + "telegram "
             + PREFIX_TAG + "friends "
             + PREFIX_TAG + "owesMoney";
 
@@ -108,12 +111,13 @@ public class AddCommand extends Command {
                 "Usage: add n/NAME p/PHONE [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [t/TAG]...\n\n"
                         + "Adds a new contact to the address book with the specified details.\n\n"
                         + "Parameters:\n"
-                        + "  n/NAME      - Full name of the contact (required)\n"
-                        + "  p/PHONE     - Phone number (required)\n"
-                        + "  e/EMAIL     - Email address (optional)\n"
-                        + "  l/TELEGRAM  - Telegram username with @ prefix (optional)\n"
-                        + "  g/GITHUB    - GitHub username (optional)\n"
-                        + "  t/TAG       - Tag(s) to categorize the contact (optional, can have multiple)\n\n"
+                        + "  n/NAME               - Full name of the contact (required)\n"
+                        + "  p/PHONE              - Phone number (required)\n"
+                        + "  e/EMAIL              - Email address (optional)\n"
+                        + "  l/TELEGRAM           - Telegram username with @ prefix (optional)\n"
+                        + "  g/GITHUB             - GitHub username (optional)\n"
+                        + "  pm/PREFERRED_MODE    - Preferred communication mode (optional)\n"
+                        + "  t/TAG                - Tag(s) to categorize the contact (optional, can have multiple)\n\n"
                         + "Notes:\n"
                         + "  - Name and phone are required fields\n"
                         + "  - You can add multiple tags by repeating t/TAG\n"

@@ -8,6 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMOVE_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PREFERRED_MODE;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.Collections;
@@ -31,6 +32,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Telegram;
+import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -49,6 +51,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_TELEGRAM + "TELEGRAM] "
             + "[" + PREFIX_GITHUB + "GITHUB] "
+            + "[" + PREFIX_PREFERRED_MODE + "PREFERRED_MODE]"
             + "[" + PREFIX_TAG + "(add) TAG] "
             + "[" + PREFIX_REMOVE_TAG + "(remove) TAG] \n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -117,13 +120,15 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Telegram updatedTelegram = editPersonDescriptor.getTelegram().orElse(personToEdit.getTelegram());
         Github updatedGithub = editPersonDescriptor.getGithub().orElse(personToEdit.getGithub());
+        PreferredCommunicationMode updatedPreferredMode =
+                editPersonDescriptor.getPreferredMode().orElse(personToEdit.getPreferredMode());
         TagUpdateResult tagUpdateResult = getUpdatedTags(
                 personToEdit.getTags(),
                 editPersonDescriptor.getTags().orElse(Collections.emptySet()),
                 editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet())
         );
         Person editedPerson = new Person(updatedName, updatedPhone, updatedEmail,
-                updatedTelegram, updatedGithub, tagUpdateResult.getUpdatedTags());
+                updatedTelegram, updatedGithub, updatedPreferredMode, tagUpdateResult.getUpdatedTags());
         return new Pair<>(editedPerson, tagUpdateResult);
     }
 
@@ -190,6 +195,7 @@ public class EditCommand extends Command {
         private Email email;
         private Telegram telegram;
         private Github github;
+        private PreferredCommunicationMode preferredMode;
         private Set<Tag> tags;
         private Set<Tag> removedTags;
 
@@ -206,6 +212,7 @@ public class EditCommand extends Command {
             setEmail(toCopy.email);
             setTelegram(toCopy.telegram);
             setGithub(toCopy.github);
+            setPreferredMode(toCopy.preferredMode);
             setTags(toCopy.tags);
             setRemovedTags(toCopy.removedTags);
         }
@@ -214,7 +221,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, telegram, github, tags, removedTags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, telegram, github, preferredMode, tags, removedTags);
         }
 
         public void setName(Name name) {
@@ -255,6 +262,14 @@ public class EditCommand extends Command {
 
         public Optional<Github> getGithub() {
             return Optional.ofNullable(github);
+        }
+
+        public void setPreferredMode(PreferredCommunicationMode preferredMode) {
+            this.preferredMode = preferredMode;
+        }
+
+        public Optional<PreferredCommunicationMode> getPreferredMode() {
+            return Optional.ofNullable(preferredMode);
         }
 
         /**
@@ -299,6 +314,7 @@ public class EditCommand extends Command {
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(telegram, otherEditPersonDescriptor.telegram)
                     && Objects.equals(github, otherEditPersonDescriptor.github)
+                    && Objects.equals(preferredMode, otherEditPersonDescriptor.preferredMode)
                     && Objects.equals(tags == null
                             ? Collections.emptySet()
                             : tags,
@@ -369,17 +385,19 @@ public class EditCommand extends Command {
                 COMMAND_WORD,
                 "Edits the details of an existing contact by index number",
                 "Example: edit 1 p/91234567 e/johndoe@example.com",
-                "Usage: edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [t/TAG]... [r/TAG]...\n\n"
+                "Usage: edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [l/TELEGRAM] [g/GITHUB]"
+                        + "[pm/PREFERRED_MODE][t/TAG]... [r/TAG]...\n\n"
                         + "Edits the contact at the specified index. At least one optional field must be provided.\n\n"
                         + "Parameters:\n"
-                        + "  INDEX       - The index number shown in the displayed contact list (required)\n"
-                        + "  n/NAME      - New name for the contact (optional)\n"
-                        + "  p/PHONE     - New phone number (optional)\n"
-                        + "  e/EMAIL     - New email address (optional)\n"
-                        + "  l/TELEGRAM  - New Telegram username (optional)\n"
-                        + "  g/GITHUB    - New GitHub username (optional)\n"
-                        + "  t/TAG       - Add tag(s) to the contact (optional, can have multiple)\n"
-                        + "  r/TAG       - Remove tag(s) from the contact (optional, can have multiple)\n\n"
+                        + "  INDEX              - The index number shown in the displayed contact list (required)\n"
+                        + "  n/NAME             - New name for the contact (optional)\n"
+                        + "  p/PHONE            - New phone number (optional)\n"
+                        + "  e/EMAIL            - New email address (optional)\n"
+                        + "  l/TELEGRAM         - New Telegram username (optional)\n"
+                        + "  g/GITHUB           - New GitHub username (optional)\n"
+                        + "  pm/PREFERRED_MODE  - New Preferred communication mode (optional)\n"
+                        + "  t/TAG              - Add tag(s) to the contact (optional, can have multiple)\n"
+                        + "  r/TAG              - Remove tag(s) from the contact (optional, can have multiple)\n\n"
                         + "Notes:\n"
                         + "  - The index must be a positive integer (1, 2, 3, ...)\n"
                         + "  - Existing values will be overwritten by the new input values\n"

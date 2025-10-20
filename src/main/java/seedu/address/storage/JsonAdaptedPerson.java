@@ -15,6 +15,7 @@ import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 
@@ -30,6 +31,7 @@ class JsonAdaptedPerson {
     private final String email;
     private final String telegram;
     private final String github;
+    private final String preferredMode;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -41,12 +43,14 @@ class JsonAdaptedPerson {
                              @JsonProperty("email") String email,
                              @JsonProperty("telegram") String telegram,
                              @JsonProperty("github") String github,
+                             @JsonProperty("preferredMode") String preferredMode,
                              @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.telegram = telegram;
         this.github = github;
+        this.preferredMode = preferredMode;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -61,6 +65,7 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         telegram = source.getTelegram().value;
         github = source.getGithub().value;
+        preferredMode = source.getPreferredMode().value;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -108,8 +113,13 @@ class JsonAdaptedPerson {
         }
         final Github modelGithub = new Github(github);
 
+        if (!PreferredCommunicationMode.isValidMode(preferredMode)) {
+            throw new IllegalValueException(Github.MESSAGE_CONSTRAINTS);
+        }
+        final PreferredCommunicationMode modelPreferredMode = new PreferredCommunicationMode(preferredMode);
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelGithub, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelGithub, modelPreferredMode, modelTags);
     }
 
 }
