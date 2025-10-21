@@ -31,7 +31,7 @@ class JsonAdaptedPerson {
     private final String email;
     private final String telegram;
     private final String github;
-    private final String preferredMode;
+    private final String preferredCommunicationMode;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -43,14 +43,14 @@ class JsonAdaptedPerson {
                              @JsonProperty("email") String email,
                              @JsonProperty("telegram") String telegram,
                              @JsonProperty("github") String github,
-                             @JsonProperty("preferredMode") String preferredMode,
+                             @JsonProperty("preferredCommunicationMode") String preferredCommunicationMode,
                              @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.telegram = telegram;
         this.github = github;
-        this.preferredMode = preferredMode;
+        this.preferredCommunicationMode = preferredCommunicationMode;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -65,7 +65,7 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         telegram = source.getTelegram().value;
         github = source.getGithub().value;
-        preferredMode = source.getPreferredMode().value;
+        preferredCommunicationMode = source.getPreferredMode().name();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -113,12 +113,14 @@ class JsonAdaptedPerson {
         }
         final Github modelGithub = new Github(github);
 
-        if (!PreferredCommunicationMode.isValidMode(preferredMode)) {
-            throw new IllegalValueException(Github.MESSAGE_CONSTRAINTS);
-        }
-        final PreferredCommunicationMode modelPreferredMode = new PreferredCommunicationMode(preferredMode);
-
         final Set<Tag> modelTags = new HashSet<>(personTags);
+
+        if (!PreferredCommunicationMode.isValidMode(preferredCommunicationMode)) {
+            throw new IllegalValueException(PreferredCommunicationMode.MESSAGE_CONSTRAINTS);
+        }
+        final PreferredCommunicationMode modelPreferredMode = PreferredCommunicationMode.of(preferredCommunicationMode);
+
+
         return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelGithub, modelPreferredMode, modelTags);
     }
 

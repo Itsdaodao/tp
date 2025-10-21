@@ -10,6 +10,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PREFERRED_MODE;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.address.model.person.PreferredCommunicationMode.MESSAGE_INVALID_PREFERRED_MODE;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -112,7 +113,7 @@ public class EditCommand extends Command {
      * edited with {@code editPersonDescriptor}.
      */
     private static Pair<Person, TagUpdateResult> createEditedPersonAndResult(
-            Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+            Person personToEdit, EditPersonDescriptor editPersonDescriptor) throws CommandException {
         assert personToEdit != null;
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
@@ -120,15 +121,33 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Telegram updatedTelegram = editPersonDescriptor.getTelegram().orElse(personToEdit.getTelegram());
         Github updatedGithub = editPersonDescriptor.getGithub().orElse(personToEdit.getGithub());
-        PreferredCommunicationMode updatedPreferredMode =
-                editPersonDescriptor.getPreferredMode().orElse(personToEdit.getPreferredMode());
         TagUpdateResult tagUpdateResult = getUpdatedTags(
                 personToEdit.getTags(),
                 editPersonDescriptor.getTags().orElse(Collections.emptySet()),
                 editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet())
         );
+        PreferredCommunicationMode updatedPreferredMode =
+                editPersonDescriptor.getPreferredMode().orElse(personToEdit.getPreferredMode());
         Person editedPerson = new Person(updatedName, updatedPhone, updatedEmail,
                 updatedTelegram, updatedGithub, updatedPreferredMode, tagUpdateResult.getUpdatedTags());
+
+
+        // Check if the preferred mode is still valid based on available contact fields
+        Set<PreferredCommunicationMode> availableModes = editedPerson.getAvailableModes();
+        // Get as String or null if not present
+        String modeString = editPersonDescriptor.getPreferredMode()
+                .map(PreferredCommunicationMode::name)
+                .orElse(null);
+
+        boolean isInvalidPreferredMode =
+                !PreferredCommunicationMode.isValidMode(modeString,
+                availableModes);
+
+        if (isInvalidPreferredMode) {
+            throw new CommandException(String.format(MESSAGE_INVALID_PREFERRED_MODE,
+                    modeString));
+        }
+
         return new Pair<>(editedPerson, tagUpdateResult);
     }
 

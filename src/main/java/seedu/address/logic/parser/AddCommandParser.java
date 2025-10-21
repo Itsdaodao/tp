@@ -9,6 +9,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PREFERRED_MODE;
 
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -48,26 +49,37 @@ public class AddCommandParser implements Parser<AddCommand> {
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        Set<PreferredCommunicationMode> availableModes = EnumSet.of(PreferredCommunicationMode.PHONE);
 
         Email email = new Email(); // Create default Email with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_EMAIL)) {
             email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
+            if (!email.isEmpty()) {
+                availableModes.add(PreferredCommunicationMode.EMAIL);
+            }
         }
 
         Telegram telegram = new Telegram(); // Create default Telegram with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_TELEGRAM)) {
             telegram = ParserUtil.parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get());
+            if (!telegram.isEmpty()) {
+                availableModes.add(PreferredCommunicationMode.TELEGRAM);
+            }
         }
 
         Github github = new Github(); // Create default GitHub with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_GITHUB)) {
             github = ParserUtil.parseGithub(argMultimap.getValue(PREFIX_GITHUB).get());
+            if (!github.isEmpty()) {
+                availableModes.add(PreferredCommunicationMode.GITHUB);
+            }
         }
 
         // Create default preferredCommunicationMode with empty value
-        PreferredCommunicationMode preferredMode = new PreferredCommunicationMode();
+        PreferredCommunicationMode preferredMode = PreferredCommunicationMode.NONE;
         if (arePrefixesPresent(argMultimap, PREFIX_PREFERRED_MODE)) {
-            preferredMode = ParserUtil.parsePreferredMode(argMultimap.getValue(PREFIX_PREFERRED_MODE).get());
+            preferredMode = ParserUtil.parsePreferredMode(
+                    argMultimap.getValue(PREFIX_PREFERRED_MODE).get(), availableModes);
         }
 
         Person person = new Person(name, phone, email, telegram, github, preferredMode, tagList);

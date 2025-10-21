@@ -3,6 +3,7 @@ package seedu.address.model.person;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -85,6 +86,26 @@ public class Person {
 
         return otherPerson != null
                 && otherPerson.getName().equals(getName());
+    }
+
+    public Set<PreferredCommunicationMode> getAvailableModes() {
+        Set<PreferredCommunicationMode> availableModes = EnumSet.noneOf(PreferredCommunicationMode.class);
+
+        // Compulsory field
+        availableModes.add(PreferredCommunicationMode.PHONE);
+
+        // Optional field
+        if (!email.isEmpty()) {
+            availableModes.add(PreferredCommunicationMode.EMAIL);
+        }
+        if (!telegram.isEmpty()) {
+            availableModes.add(PreferredCommunicationMode.TELEGRAM);
+        }
+        if (!github.isEmpty()) {
+            availableModes.add(PreferredCommunicationMode.GITHUB);
+        }
+
+        return availableModes;
     }
 
     /**

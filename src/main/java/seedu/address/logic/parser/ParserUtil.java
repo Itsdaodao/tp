@@ -1,7 +1,9 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.AppUtil.checkArgument;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -108,18 +110,47 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String mode} into a {@code PreferredCommunicationMode}.
+     * Parses a {@code String preferredMode} into a {@code PreferredCommunicationMode} enum value.
      * Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code PreferredCommunicationMode} is invalid.
      */
-    public static PreferredCommunicationMode parsePreferredMode(String mode) throws ParseException {
-        requireNonNull(mode);
-        String trimmedMode = mode.trim();
-        if (!PreferredCommunicationMode.isValidMode(trimmedMode)) {
-            throw new ParseException(Github.MESSAGE_CONSTRAINTS);
+    public static PreferredCommunicationMode parsePreferredMode(String preferredMode
+            , Set<PreferredCommunicationMode> availableModes) throws ParseException {
+        requireNonNull(preferredMode, availableModes.toString());
+        String trimmedMode = preferredMode.trim();
+        if (!PreferredCommunicationMode.isValidMode(trimmedMode, availableModes)) {
+            throw new ParseException(String.format(
+                    PreferredCommunicationMode.MESSAGE_INVALID_PREFERRED_MODE, preferredMode));
         }
-        return new PreferredCommunicationMode(trimmedMode);
+
+        // Return the corresponding enum
+        return Arrays.stream(PreferredCommunicationMode.values())
+                .filter(mode -> mode != PreferredCommunicationMode.NONE)
+                .filter(mode -> mode.name().equalsIgnoreCase(trimmedMode))
+                .findFirst()
+                .orElse(PreferredCommunicationMode.NONE);
+    }
+
+    /**
+     * Parses a {@code String preferredMode} into a {@code PreferredCommunicationMode} enum value.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code PreferredCommunicationMode} is invalid.
+     */
+    public static PreferredCommunicationMode parsePreferredMode(String preferredMode) throws ParseException {
+        requireNonNull(preferredMode);
+        String trimmedMode = preferredMode.trim();
+        if (!PreferredCommunicationMode.isValidMode(trimmedMode)) {
+            throw new ParseException(PreferredCommunicationMode.MESSAGE_CONSTRAINTS);
+        }
+
+        // Return the corresponding enum
+        return Arrays.stream(PreferredCommunicationMode.values())
+                .filter(mode -> mode != PreferredCommunicationMode.NONE)
+                .filter(mode -> mode.name().equalsIgnoreCase(trimmedMode))
+                .findFirst()
+                .orElse(PreferredCommunicationMode.NONE);
     }
 
     /**
