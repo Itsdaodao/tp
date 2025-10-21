@@ -11,6 +11,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TELEGRAM_BOB;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.BOB;
 
 import org.junit.jupiter.api.Test;
@@ -54,6 +55,19 @@ public class PersonTest {
     }
 
     @Test
+    public void pin_personNotPinned_returnsPinnedPerson() {
+        Person pinnedBenson = BENSON.pin();
+        assertTrue(pinnedBenson.isPinned());
+        assertTrue(pinnedBenson.getPinnedAt().isPresent());
+    }
+
+    @Test
+    public void pin_personPinned_returnsSamePerson() {
+        Person pinnedBenson = new PersonBuilder(BENSON).withPinnedAt().build();
+        assertEquals(pinnedBenson, pinnedBenson.pin());
+    }
+
+    @Test
     public void equals() {
         // same values -> returns true
         Person aliceCopy = new PersonBuilder(ALICE).build();
@@ -94,6 +108,10 @@ public class PersonTest {
         // different tags -> returns false
         editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(ALICE.equals(editedAlice));
+
+        // different pin status -> returns false
+        Person pinnedBenson = new PersonBuilder(BENSON).withPinnedAt().build();
+        assertFalse(BENSON.equals(pinnedBenson));
     }
 
     @Test
