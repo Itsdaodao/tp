@@ -21,13 +21,52 @@ checkstyle {
 }
 
 test {
+    // TODO: remove once issue with JavaFX and Gradle is resolved
+    outputs.upToDateWhen { false }
     useJUnitPlatform()
     finalizedBy jacocoTestReport
-    systemProperty("testfx.robot", "glass")
-    systemProperty("testfx.headless", "true")
-    systemProperty("prism.order", "sw")
-    systemProperty("prism.text", "t2k")
-    systemProperty("java.awt.headless", "true")
+
+    doFirst {
+        boolean runGuiTests = gradle.taskGraph.hasTask(guiTests)
+        boolean runNonGuiTests = gradle.taskGraph.hasTask(nonGuiTests)
+
+        if (!runGuiTests && !runNonGuiTests) {
+            runGuiTests = true
+            runNonGuiTests = true
+        }
+
+        if (runNonGuiTests) {
+            test.include 'seedu/address/**'
+        }
+
+        if (runGuiTests) {
+            test.include 'systemtests/**'
+            test.include 'seedu/address/ui/**'
+        }
+
+        if (!runGuiTests) {
+            test.exclude 'seedu/address/ui/**'
+        }
+    }
+}
+
+tasks.register("guiTests", Test) {
+    dependsOn(headless)
+    dependsOn(test)
+}
+
+tasks.register("nonGuiTests", Test) {
+    dependsOn(test)
+}
+
+tasks.register("headless") {
+    test{
+        systemProperty("testfx.robot", "glass")
+        systemProperty("testfx.headless", "true")
+        systemProperty("prism.order", "sw")
+        systemProperty("prism.text", "t2k")
+        systemProperty("java.awt.headless", "true")
+    }
 }
 
 task coverage(type: JacocoReport) {
@@ -79,4 +118,4 @@ shadowJar {
     archiveFileName = 'addressbook.jar'
 }
 
-defaultTasks 'clean', 'test'
+defaultTasks 'clean', 'test', 'nonGuiTest', 'guiTest'
