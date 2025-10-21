@@ -13,6 +13,7 @@ public class ConfirmCommand extends Command {
 
     public static final String USER_INPUT_CONFIRM = "y";
     public static final String USER_INPUT_CANCEL = "n";
+    public static final String USER_INPUT_OPTIONS = "[y/n]";
 
     private final String input;
     private final Runnable onComplete;

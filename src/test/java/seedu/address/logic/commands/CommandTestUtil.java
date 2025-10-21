@@ -75,6 +75,8 @@ public class CommandTestUtil {
     public static final String INVALID_GITHUB_DESC = " " + PREFIX_GITHUB + "john_doe"; // '_' not allowed in GitHub
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
 
+    public static final String INVALID_LAUNCH_APP_FLAG = " " + "-x"; // 'x' not a valid launch application flag
+
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
 
@@ -116,6 +118,37 @@ public class CommandTestUtil {
             Model expectedModel) {
         CommandResult expectedCommandResult = new CommandResult(expectedMessage);
         assertCommandSuccess(command, actualModel, expectedCommandResult, expectedModel);
+    }
+
+    /**
+     * Convenience wrapper to {@link #assertConfirmedCommandSuccess(Command, Model, CommandResult, Model)}
+     * that takes a string {@code expectedMessage}.
+     */
+    public static void assertConfirmedCommandSuccess(Command command, Model actualModel, String expectedMessage,
+                                            Model expectedModel) {
+        CommandResult expectedCommandResult = new CommandResult(expectedMessage);
+        assertConfirmedCommandSuccess(command, actualModel, expectedCommandResult, expectedModel);
+    }
+
+    /**
+     * Executes the given {@code command}, confirms that <br>
+     * - a confirmation is requested via {@code ConfirmationPendingResult} <br>
+     * - upon confirmation, the returned {@link CommandResult} matches {@code expectedCommandResult} <br>
+     * - the {@code actualModel} matches {@code expectedModel}
+     */
+    public static void assertConfirmedCommandSuccess(Command command, Model actualModel,
+            CommandResult expectedCommandResult, Model expectedModel) {
+        try {
+            CommandResult resultToBeConfirmed = command.execute(actualModel);
+            if (!(resultToBeConfirmed instanceof ConfirmationPendingResult confirmationResult)) {
+                throw new AssertionError("Execution of command should result in a ConfirmationPendingResult.");
+            }
+            CommandResult finalResult = confirmationResult.executeOnConfirm();
+            assertEquals(expectedCommandResult, finalResult);
+            assertEquals(expectedModel, actualModel);
+        } catch (CommandException ce) {
+            throw new AssertionError("Execution of command should not fail.", ce);
+        }
     }
 
     /**
