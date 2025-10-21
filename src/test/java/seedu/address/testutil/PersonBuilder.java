@@ -23,6 +23,7 @@ public class PersonBuilder {
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_TELEGRAM = "amy_bee";
     public static final String DEFAULT_GITHUB = "amy-bee";
+    public static final String DEFAULT_PINNEDAT = "2025-10-21T12:49:39.699362800Z";
 
     private Name name;
     private Phone phone;
@@ -130,6 +131,15 @@ public class PersonBuilder {
      */
     public PersonBuilder withGithub(String username) {
         this.github = new Github(username);
+        return this;
+    }
+
+    /**
+     * Sets a default {@code pinnedAt} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withPinnedAt() {
+        this.isPinned = true;
+        this.pinnedAt = Instant.parse(DEFAULT_PINNEDAT);
         return this;
     }
 

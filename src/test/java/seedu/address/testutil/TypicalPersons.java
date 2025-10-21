@@ -30,7 +30,8 @@ public class TypicalPersons {
             .withPhone("94351253")
             .withTelegram("alice_p")
             .withGithub("alice123")
-            .withTags("friends").build();
+            .withTags("friends")
+            .withPinnedAt("2025-10-21T12:45:38.699362800Z").build();
 
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withEmail("bensonm@example.com").withPhone("98765432").withGithub("benson-m")
@@ -50,11 +51,12 @@ public class TypicalPersons {
 
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
             .withEmail("heinz@example.com").withTelegram("Carl_K")
-            .withGithub("carl-k").withPinnedAt("2025-10-21T10:57:52.843287Z").build();
+            .withGithub("carl-k").build();
 
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
             .withEmail("cornelia@example.com").withTelegram("DanielMeier")
-            .withGithub("danielmeier").withTags("friends").build();
+            .withGithub("danielmeier").withTags("friends")
+            .withPinnedAt("2025-10-21T12:49:39.699362800Z").build();
 
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
             .withEmail("werner@example.com").withTelegram("werner")
@@ -62,7 +64,7 @@ public class TypicalPersons {
 
     public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("9482427")
             .withEmail("lydia@example.com").withTelegram("fiona_k")
-            .withGithub("fiona-22").withPinnedAt("2025-10-21T11:06:11.386606900Z").build();
+            .withGithub("fiona-22").build();
 
     public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
             .withEmail("anna@example.com").withTelegram("gorgeousness12")

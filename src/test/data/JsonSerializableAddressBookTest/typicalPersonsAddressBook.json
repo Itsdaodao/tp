@@ -7,8 +7,8 @@
     "telegram": "alice_p",
     "github": "alice123",
     "tags" : [ "friends" ],
-    "isPinned" : false,
-    "pinnedAt" : null
+    "isPinned" : true,
+    "pinnedAt" : "2025-10-21T12:45:38.699362800Z"
   }, {
     "name" : "Benson Meier",
     "phone" : "98765432",
@@ -25,8 +25,8 @@
     "telegram": "Carl_K",
     "github": "carl-k",
     "tags" : [ ],
-    "isPinned" : true,
-    "pinnedAt" : "2025-10-21T10:57:52.843287Z"
+    "isPinned" : false,
+    "pinnedAt" : null
   }, {
     "name" : "Daniel Meier",
     "phone" : "87652533",
@@ -34,8 +34,8 @@
     "telegram": "DanielMeier",
     "github": "danielmeier",
     "tags" : [ "friends" ],
-    "isPinned" : false,
-    "pinnedAt" : null
+    "isPinned" : true,
+    "pinnedAt" : "2025-10-21T12:49:39.699362800Z"
   }, {
     "name" : "Elle Meyer",
     "phone" : "9482224",
@@ -52,8 +52,8 @@
     "telegram": "fiona_k",
     "github": "fiona-22",
     "tags" : [ ],
-    "isPinned" : true,
-    "pinnedAt" : "2025-10-21T11:06:11.386606900Z"
+    "isPinned" : false,
+    "pinnedAt" : null
   }, {
     "name" : "George Best",
     "phone" : "9482442",
