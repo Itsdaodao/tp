@@ -188,7 +188,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void withPinPriority_bothUnpinned_useBaseComparator() {
+    public void withPinPriority_bothUnpinnedWithBaseComparator_sortByAlphabetically() {
         // Create unpinned persons
         Person unpinnedBenson = new PersonBuilder(BENSON).build();
         Person unpinnedCarl = new PersonBuilder(CARL).build();
@@ -208,7 +208,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void withPinPriority_nullBaseComparator_bothUnpinned_returnsZero() {
+    public void withPinPriority_bothUnpinnedWithNullBaseComparator_returnsZero() {
         // Create unpinned persons
         Person unpinnedBenson = new PersonBuilder(BENSON).build();
         Person unpinnedElle = new PersonBuilder(ELLE).build();
