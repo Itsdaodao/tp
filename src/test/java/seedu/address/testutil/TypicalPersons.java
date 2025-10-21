@@ -35,28 +35,35 @@ public class TypicalPersons {
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withEmail("bensonm@example.com").withPhone("98765432").withGithub("benson-m")
             .withTelegram("benson_m").withTags("owesMoney", "friends").build();
+
     public static final Person BENSON_WITHOUT_EMAIL = new PersonBuilder().withName("Benson Meier")
             .withPhone("98765432").withGithub("benson-m")
             .withTelegram("benson_m").withTags("owesMoney", "friends").build();
+
     public static final Person BENSON_WITHOUT_TELEGRAM = new PersonBuilder().withName("Benson Meier")
             .withEmail("bensonm@example.com").withPhone("98765432").withGithub("benson-m")
             .withTags("owesMoney", "friends").build();
+
     public static final Person BENSON_WITHOUT_GITHUB = new PersonBuilder().withName("Benson Meier")
             .withEmail("bensonm@example.com").withPhone("98765432")
             .withTelegram("benson_m").withTags("owesMoney", "friends").build();
 
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
             .withEmail("heinz@example.com").withTelegram("Carl_K")
-            .withGithub("carl-k").build();
+            .withGithub("carl-k").withPinnedAt("2025-10-21T10:57:52.843287Z").build();
+
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
             .withEmail("cornelia@example.com").withTelegram("DanielMeier")
             .withGithub("danielmeier").withTags("friends").build();
+
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
             .withEmail("werner@example.com").withTelegram("werner")
             .withGithub("werner").build();
+
     public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("9482427")
             .withEmail("lydia@example.com").withTelegram("fiona_k")
-            .withGithub("fiona-22").build();
+            .withGithub("fiona-22").withPinnedAt("2025-10-21T11:06:11.386606900Z").build();
+
     public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
             .withEmail("anna@example.com").withTelegram("gorgeousness12")
             .withGithub("gorg12").build();
