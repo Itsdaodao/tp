@@ -119,6 +119,8 @@ class JsonAdaptedPerson {
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
 
+        final Boolean modelIsPinned = isPinned != null && isPinned;
+
         final Instant modelPinnedAt = pinnedAt == null ? null : Instant.parse(pinnedAt);
 
         return new Person(
@@ -128,7 +130,7 @@ class JsonAdaptedPerson {
                 modelTelegram,
                 modelGithub,
                 modelTags,
-                isPinned,
+                modelIsPinned,
                 modelPinnedAt);
     }
 
