@@ -77,15 +77,21 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL l/TELEGRAM g/GITHUB pm/PREFERRED_CONTACT [t/TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
 </div>
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `add n/Alice Chua p/90001231`
+* `add n/John Doe p/98765432 e/johnd@example.com`
+* `add n/Cheshire p/98112321 e/cheshire@example.com l/cheshire_02 g/cheshire-dev`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com  t/criminal l/betsy001 g/betsy12 pm/telegram`
+
+<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
+Parameters like Email, Telegram, GitHub, Preferred Contact and Tags are **optional**
+</div>
 
 ### Listing all persons : `list`
 
@@ -141,6 +147,34 @@ Format: `delete INDEX`
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+
+### Pinning a person : `pin`
+
+Pins the specified person to the top of the address book.
+
+Format: `pin INDEX`
+
+* Pins the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
+Examples:
+* `list` followed by `pin 4` pins the 4th person in the address book to the top.
+* `find Betsy` followed by `pin 2` pins the 2nd person in the results of the `find` command.
+
+### Unpinning a person : `unpin`
+
+Unpins the specified person from the address book.
+
+Format: `unpin INDEX`
+
+* Unpins the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
+Examples:
+* `list` followed by `unpin 1` unpins the 1st person and removes them from the pinned list at the top.
+* `find Betsy` followed by `unpin 2` unpins the 2nd person in the results of the `find` command.
 
 ### Clearing all entries : `clear`
 
