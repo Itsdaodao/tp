@@ -137,7 +137,8 @@ class JsonAdaptedPerson {
                 modelGithub,
                 modelTags,
                 modelIsPinned,
-                modelPinnedAt);
+                modelPinnedAt
+        );
     }
 
 }

@@ -31,7 +31,7 @@ public class TypicalPersons {
             .withTelegram("alice_p")
             .withGithub("alice123")
             .withTags("friends")
-            .withPinnedAt("2025-10-21T12:45:38.699362800Z").build();
+            .withPinnedAt("2025-10-21T12:49:39.699362800Z").build();
 
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withEmail("bensonm@example.com").withPhone("98765432").withGithub("benson-m")
@@ -56,7 +56,7 @@ public class TypicalPersons {
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
             .withEmail("cornelia@example.com").withTelegram("DanielMeier")
             .withGithub("danielmeier").withTags("friends")
-            .withPinnedAt("2025-10-21T12:49:39.699362800Z").build();
+            .withPinnedAt("2025-10-21T12:45:38.699362800Z").build();
 
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
             .withEmail("werner@example.com").withTelegram("werner")
