@@ -17,5 +17,14 @@ Person -up-> "*" Tag
 Person *--> Name
 Person *--> Phone
 Person *--> Email
-Person *--> Address
+Person *--> Telegram
+Person *-> Github
+Person *--> isPinned
+Person *--> pinnedAt
+
+Name -[hidden]right-> Phone
+Phone -[hidden]right-> Email
+Email -[hidden]right-> Telegram
+Telegram -[hidden]right-> Github
+
 @enduml
