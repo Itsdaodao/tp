@@ -67,6 +67,18 @@ public class MainWindowTest {
     }
 
     @Test
+    public void insertMode_writeValues_worksAfterTogglingMode(FxRobot robot) {
+        TextField t = robot.lookup("#commandTextField").queryAs(TextField.class);
+        robot.push(MainWindow.ENTER_SCROLL_MODE);
+        robot.push(MainWindow.ENTER_INPUT_MODE);
+
+        robot.clickOn("#commandTextField");
+        robot.write("select 1");
+
+        assertEquals("select 1", t.getText());
+    }
+
+    @Test
     public void scrollMode_writeValues_doesNotFillInput(FxRobot robot) {
         TextField t = robot.lookup("#commandTextField").queryAs(TextField.class);
 
