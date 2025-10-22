@@ -45,6 +45,7 @@ public class CommandTestUtil {
     public static final String VALID_GITHUB_BOB = "bob-123";
     public static final String VALID_PREFERRED_MODE_AMY = "phone";
     public static final String VALID_PREFERRED_MODE_BOB = "telegram";
+    public static final String VALID_PREFERRED_MODE_CHARLIE = "none";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
     public static final String VALID_TAG_FRIENDS = "friends";
