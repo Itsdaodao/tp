@@ -154,6 +154,48 @@ Exits the program.
 
 Format: `exit`
 
+### Confirming commands : `y`/`n`
+
+The `delete` and `clear` commands require you to confirm the operation.
+
+If a previous command required a confirmation, a valid confirmation must be supplied before other commands can be run.
+
+Confirm Command Format: `y`
+
+Cancel Command Format: `n`
+
+### Switching Modes
+<div markdown="block" class="alert alert-info">
+
+**:information_source: Notes about switching modes:**<br>
+
+* Commands listed in this section are *global* - they don't need to be inserted into the Command Box.
+
+* `<Esc>` refers to the *escape key* on the keyboard.
+</div>
+
+#### Insert Mode: `i`
+
+Insert mode is the mode the application starts in. It allows you to send commands in the Command Box.
+
+Enter insert mode by pressing `i`.
+
+#### Entering Scroll mode: `<Esc>`
+
+Scroll mode allows you to navigate entries in the application without leaving the home row. Scroll mode disables
+input to the Command Box, but don't worry about forgetting how to go back to input mode - a helpful hint is shown
+every time you enter scroll mode.
+
+Enter scroll mode by pressing `<Esc>`
+
+##### Navigating down: `k`
+
+Press `k` to select the entry below the current entry.
+
+##### Navigating up: `l`
+
+Press `l` to select the entry above the current entry.
+
 ### Saving the data
 
 AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
@@ -166,6 +208,12 @@ AddressBook data are saved automatically as a JSON file `[JAR file location]/dat
 If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
+
+### Autocomplete `[coming in v1.5]`
+
+As you type commands in the Command Box, autocomplete suggestions may be shown. To accept the autocomplete text, press `<Tab>`.
+
+Autocomplete suggestions are shown in-place and in grey.
 
 ### Archiving data files `[coming in v2.0]`
 
