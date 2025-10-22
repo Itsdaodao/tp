@@ -196,8 +196,8 @@ Examples:
 * `launch 2 -e` launches the default email application to compose an email to the 2nd person in the displayed person list.
 * `launch 3 -t` launches Telegram web browser to open a chat with the 3rd person's Telegram handle in the displayed person list.
 * `launch 1 -g` launches web browser to the GitHub profile of the 1st person in the displayed person list.
-* Launching through CLI ![result for Launching CLI](gifs/LaunchCLI.gif)
-* Launching through GUI ![result for Launching GUI](gifs/LaunchGUI.gif)
+* Launching through CLI ![result for Launching CLI](gifs/LaunchCli.gif)
+* Launching through GUI ![result for Launching GUI](gifs/LaunchGui.gif)
 
 
 ### Saving the data

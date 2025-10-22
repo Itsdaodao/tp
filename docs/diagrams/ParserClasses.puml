@@ -35,7 +35,7 @@ XYZCommandParser ..> ParserUtil
 ParserUtil .down.> Prefix
 ArgumentTokenizer .down.> Prefix
 XYZCommand -up-|> Command
-CommandRegistry "1" *-down- "0..* " CommandFactory
+CommandRegistry *-down- "0..* " CommandFactory
 AddressBookParser .right.> CommandFactory : <<uses>>
 AddressBookParser .up.> CommandRegistry : <<queries>>
 CommandFactory ..> XYZCommandParser
