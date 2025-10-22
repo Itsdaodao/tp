@@ -112,20 +112,14 @@ Here are the other classes in `Logic` (omitted from the class diagram above) tha
 <img src="images/ParserClasses.png" width="700"/>
 
 How the parsing works:
-* When called upon to parse a user command, the `AddressBookParser` class queries `CommandRegistry` to find the 
-appropriate `CommandFactory` instance that creates the corresponding `XYZCommandParser` class. (`XYZ`is a placeholder 
-for the specific command name e.g., `AddCommandParser`) Once found, the `CommandFactory` instance creates the 
-`XYZCommandParser` class which uses the other classes shown above to parse the user command and create a `XYZCommand`
-object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
+* When called upon to parse a user command, the `AddressBookParser` class queries `CommandRegistry` to find the appropriate `CommandFactory` instance that creates the corresponding `XYZCommandParser` class. (`XYZ`is a placeholder for the specific command name e.g., `AddCommandParser`) Once found, the `CommandFactory` instance creates the `XYZCommandParser` class which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 
-* All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` 
-interface so that they can be treated similarly where possible e.g, during testing.
+* All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 <img src="images/LogicUtilityClassDiagram.png" width="700"/>
 
 How the utility classes work:
-* When called upon by either `XYZCommandParser` classes or other external classes, ApplicationLinkLauncher tries to 
-create an instance of `RealDesktopWrapper` (which implements `DesktopWrapper` interface) to launch the communication.
+* When called upon by either `XYZCommandParser` classes or other external classes, ApplicationLinkLauncher tries to create an instance of `RealDesktopWrapper` (which implements `DesktopWrapper` interface) to launch the communication.
 * If the `RealDesktopWrapper` instance is created successfully, it uses the real desktop environment to launch the communication application.
 * If not, a `DummyDesktopWrapper` instance is created instead which does nothing when asked to launch the communication application.
 * Upon failing to launch the application through either `RealDesktopWrapper` or `DummyDesktopWrapper`, `ApplicationLinkLauncher` will attempt a fallback mechanism through `DesktopApi` class.
