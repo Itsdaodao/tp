@@ -1,6 +1,7 @@
 package seedu.address.storage;
 
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -121,7 +122,12 @@ class JsonAdaptedPerson {
 
         final Boolean modelIsPinned = isPinned != null && isPinned;
 
-        final Instant modelPinnedAt = pinnedAt == null ? null : Instant.parse(pinnedAt);
+        Instant modelPinnedAt;
+        try {
+            modelPinnedAt = pinnedAt == null ? null : Instant.parse(pinnedAt);
+        } catch (DateTimeParseException e) {
+            throw new IllegalValueException(Person.PIN_DATE_MESSAGE_CONSTRAINT);
+        }
 
         return new Person(
                 modelName,

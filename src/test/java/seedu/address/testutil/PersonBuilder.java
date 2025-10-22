@@ -148,7 +148,14 @@ public class PersonBuilder {
      */
     public PersonBuilder withPinnedAt(String pinnedAt) {
         this.isPinned = true;
-        this.pinnedAt = Instant.parse(pinnedAt);
+        try {
+            this.pinnedAt = Instant.parse(pinnedAt);
+        } catch (Exception e) {
+            this.isPinned = false;
+            this.pinnedAt = null;
+
+            throw new IllegalArgumentException(Person.PIN_DATE_MESSAGE_CONSTRAINT);
+        }
         return this;
     }
 

@@ -18,6 +18,12 @@ import seedu.address.model.tag.Tag;
  */
 public class Person {
 
+    public static final String PIN_DATE_MESSAGE_CONSTRAINT =
+            "Invalid date time format. \n"
+                    + "pinnedAt must follow the example date time format below \n"
+                    + "Format: <yyyy-MM-dd>T<hr:mm:ss>Z \n"
+                    + "Example: 2025-10-22T07:00:17.036469800Z";
+
     // Identity fields
     private final Name name;
     private final Phone phone;
