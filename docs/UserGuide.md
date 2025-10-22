@@ -77,7 +77,7 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL l/TELEGRAM g/GITHUB pm/PREFERRED_CONTACT [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [pm/PREFERRED_MODE] [t/TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
@@ -87,7 +87,7 @@ Examples:
 * `add n/Alice Chua p/90001231`
 * `add n/John Doe p/98765432 e/johnd@example.com`
 * `add n/Cheshire p/98112321 e/cheshire@example.com l/cheshire_02 g/cheshire-dev`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com  t/criminal l/betsy001 g/betsy12 pm/telegram`
+* `add n/Betsy Crowe p/99998888 t/friend e/betsycrowe@example.com  t/criminal l/betsy001 g/betsy12 pm/telegram`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 Parameters like Email, Telegram, GitHub, Preferred Contact and Tags are **optional**
@@ -103,7 +103,7 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [pm/PREFERRED_MODE] [t/TAG]…​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
