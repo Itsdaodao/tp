@@ -1,0 +1,30 @@
+@startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor LOGIC_COLOR_T4
+skinparam classBackgroundColor LOGIC_COLOR
+
+package "   Util" as UtilityPackage {
+
+Class ApplicationLinkLauncher
+Class ApplicationLinkResult
+Class DesktopApi
+Interface "<<interface>>\nDesktopWrapper" as DesktopWrapper
+Class DummyDesktopWrapper
+Class RealDesktopWrapper
+
+}
+
+Class HideOutside #FFFFFF
+Class HideOutside2 #FFFFFF
+HideOutside .down.> ApplicationLinkLauncher
+HideOutside2 .down.> ApplicationLinkResult
+ApplicationLinkLauncher .right.> ApplicationLinkResult
+ApplicationLinkLauncher -down-> DesktopWrapper
+ApplicationLinkLauncher .left.> DesktopApi : <<use>>
+ApplicationLinkLauncher -down-> DummyDesktopWrapper : <<create>>
+ApplicationLinkLauncher -down-> RealDesktopWrapper : <<create>>
+DesktopWrapper <|.left. DummyDesktopWrapper
+DesktopWrapper <|.right. RealDesktopWrapper
+
+@enduml

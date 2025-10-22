@@ -121,6 +121,16 @@ object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Com
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` 
 interface so that they can be treated similarly where possible e.g, during testing.
 
+<img src="images/LogicUtilityClassDiagram.png" width="700"/>
+
+How the utility classes work:
+* When called upon by either `XYZCommandParser` classes or other external classes, ApplicationLinkLauncher tries to 
+create an instance of `RealDesktopWrapper` (which implements `DesktopWrapper` interface) to launch the communication.
+* If the `RealDesktopWrapper` instance is created successfully, it uses the real desktop environment to launch the communication application.
+* If not, a `DummyDesktopWrapper` instance is created instead which does nothing when asked to launch the communication application.
+* Upon failing to launch the application through either `RealDesktopWrapper` or `DummyDesktopWrapper`, `ApplicationLinkLauncher` will attempt a fallback mechanism through `DesktopApi` class.
+* If all attempts to launch the application fail, an appropriate error message is returned to the user.
+
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
