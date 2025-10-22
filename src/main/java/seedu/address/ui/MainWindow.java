@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
@@ -23,7 +24,16 @@ import seedu.address.logic.parser.exceptions.ParseException;
  * a menu bar and space where other JavaFX elements can be placed.
  */
 public class MainWindow extends UiPart<Stage> {
+    public static final KeyCode ENTER_SCROLL_MODE = KeyCode.ESCAPE;
+    public static final KeyCode SCROLL_MODE_NEXT = KeyCode.K;
+    public static final KeyCode SCROLL_MODE_PREVIOUS = KeyCode.L;
+    public static final KeyCode ENTER_INPUT_MODE = KeyCode.I;
 
+    private static final String ENTER_INPUT_MODE_FEEDBACK = "Entered insert mode.\nPress "
+            + ENTER_SCROLL_MODE + " to return to scroll mode.";
+    private static final String ENTER_SCROLL_MODE_FEEDBACK = "Entered scroll mode.\nPress "
+            + ENTER_INPUT_MODE + " to return to input mode.\n Use [" + SCROLL_MODE_NEXT + "/"
+            + SCROLL_MODE_PREVIOUS + "] to navigate.";
     private static final String FXML = "MainWindow.fxml";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
@@ -31,9 +41,12 @@ public class MainWindow extends UiPart<Stage> {
     private Stage primaryStage;
     private Logic logic;
 
+    private boolean isCommandMode;
+
     // Independent Ui parts residing in this Ui container
     private PersonListPanel personListPanel;
     private ResultDisplay resultDisplay;
+    private CommandBox commandBox;
     private HelpWindow helpWindow;
 
     @FXML
@@ -60,11 +73,14 @@ public class MainWindow extends UiPart<Stage> {
         // Set dependencies
         this.primaryStage = primaryStage;
         this.logic = logic;
+        this.isCommandMode = false;
 
         // Configure the UI
         setWindowDefaultSize(logic.getGuiSettings());
 
         setAccelerators();
+
+        setModeListeners();
 
         helpWindow = new HelpWindow();
     }
@@ -111,7 +127,8 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        personListPanel = new PersonListPanel(logic.getFilteredPersonList());
+        personListPanel = new PersonListPanel(logic.getFilteredPersonList(),
+                message -> resultDisplay.setFeedbackToUser(message));
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
@@ -120,8 +137,76 @@ public class MainWindow extends UiPart<Stage> {
         StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getAddressBookFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
-        CommandBox commandBox = new CommandBox(this::executeCommand, new Autocompletor());
+        commandBox = new CommandBox(this::executeCommand, new Autocompletor());
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+    }
+
+    /**
+     * Sets up the key listeners for scroll and insert modes and keybindings associated to them.
+     */
+    void setModeListeners() {
+        // Listener for entering input mode - this needs to be a KEY_TYPED event to
+        // prevent 'i' input from leaking into the command box.
+        String toMatch = ENTER_INPUT_MODE.toString().toLowerCase();
+        getRoot().addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            String eventInput = event.getCharacter().toLowerCase();
+            if (isCommandMode && eventInput.equals(toMatch)) {
+                handleEnterInputMode();
+            }
+        });
+
+        // Listener for other key presses - for switching modes and navigation.
+        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
+    }
+
+    /**
+     * Manages global key presses for toggling modes and navigation.
+     * @param event The key event to handle.
+     */
+    private void handleKeyPressed(KeyEvent event) {
+        if (event.getCode().equals(ENTER_SCROLL_MODE)) {
+            handleEnterScrollMode();
+        } else if (event.getCode().equals(SCROLL_MODE_NEXT)) {
+            handleNavigateNext();
+        } else if (event.getCode().equals(SCROLL_MODE_PREVIOUS)) {
+            handleNavigatePrevious();
+        }
+    }
+
+    /**
+     * Handles the switch to input mode.
+     */
+    private void handleEnterInputMode() {
+        commandBox.enableInput();
+        isCommandMode = false;
+        resultDisplay.setFeedbackToUser(ENTER_INPUT_MODE_FEEDBACK);
+    }
+
+    /**
+     * Handles the switch to scroll mode.
+     */
+    private void handleEnterScrollMode() {
+        commandBox.disableInput();
+        isCommandMode = true;
+        resultDisplay.setFeedbackToUser(ENTER_SCROLL_MODE_FEEDBACK);
+    }
+
+    /**
+     * Handles navigation to the next person in scroll mode.
+     */
+    private void handleNavigateNext() {
+        if (isCommandMode) {
+            personListPanel.goToNextPerson();
+        }
+    }
+
+    /**
+     * Handles navigation to the previous person in scroll mode.
+     */
+    private void handleNavigatePrevious() {
+        if (isCommandMode) {
+            personListPanel.goToPreviousPerson();
+        }
     }
 
     /**

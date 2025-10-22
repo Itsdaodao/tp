@@ -89,6 +89,22 @@ public class CommandBox extends UiPart<Region> {
     }
 
     /**
+     * Disables the command box input.
+     */
+    public void disableInput() {
+        commandTextField.setDisable(true);
+    }
+
+    /**
+     * Enables the command box input, focusing user input onto the text field.
+     */
+    public void enableInput() {
+        commandTextField.setDisable(false);
+        commandTextField.requestFocus();
+        commandTextField.end();
+    }
+
+    /**
      * Represents a function that can execute commands.
      */
     @FunctionalInterface

@@ -1,12 +1,15 @@
 package seedu.address.ui;
 
 import java.util.Comparator;
+import java.util.function.Consumer;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.address.logic.util.ApplicationLinkLauncher;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PreferredCommunicationMode;
 
@@ -25,8 +28,9 @@ public class PersonCard extends UiPart<Region> {
      *
      * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
      */
-
     public final Person person;
+
+    private final Consumer<String> feedbackConsumer;
 
     @FXML
     private HBox cardPane;
@@ -37,29 +41,29 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label phone;
     @FXML
-    private Label email;
+    private Hyperlink email;
     @FXML
-    private Label telegram;
+    private Hyperlink telegram;
     @FXML
-    private Label github;
+    private Hyperlink github;
     @FXML
     private FlowPane tags;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
-     * <p>
-     * Displays the person's name, phone number, email, Telegram handle, GitHub username, and tags.
      * If a contact method matches the person's preferred communication mode, a "(preferred)" suffix is appended.
      *
-     * @param person the person whose details are to be displayed
-     * @param displayedIndex the index number shown beside the person's name in the list
-     *
+     * @param person            The person whose details are to be displayed.
+     * @param displayedIndex    The index of the person in the list.
+     * @param feedbackConsumer  The consumer to handle feedback messages.
      */
-    public PersonCard(Person person, int displayedIndex) {
+    public PersonCard(Person person, int displayedIndex, Consumer<String> feedbackConsumer) {
         super(FXML);
         this.person = person;
+        this.feedbackConsumer = feedbackConsumer;
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
+        phone.setText(person.getPhone().value);
 
         PreferredCommunicationMode preferredMode = person.getPreferredMode();
 
@@ -94,7 +98,7 @@ public class PersonCard extends UiPart<Region> {
      * @param fieldName the field name to show before the value
      * @param modeToCheck the communication mode associated with this field
      */
-    private void setContactField(Label label, String value, String fieldName, PreferredCommunicationMode modeToCheck) {
+    private void setContactField(Hyperlink label, String value, String fieldName, PreferredCommunicationMode modeToCheck) {
         boolean isEmpty = value == null || value.isBlank();
         boolean isPreferred = person.getPreferredMode() == modeToCheck;
 
@@ -107,6 +111,33 @@ public class PersonCard extends UiPart<Region> {
             String text = fieldName + value + (isPreferred ? PREFERRED_SUFFIX : "");
             label.setText(text);
         }
+    }
+
+    /**
+     * Launches the email application with the person's email address.
+     * FeedbackConsumer will set resultDisplay based on success/failure of launch.
+     */
+    @FXML
+    public void launchEmail() {
+        feedbackConsumer.accept(ApplicationLinkLauncher.launchEmail(person.getEmail().value).getMessage());
+    }
+
+    /**
+     * Launches the telegram application with the person's telegram handle.
+     * FeedbackConsumer will set resultDisplay based on success/failure of launch.
+     */
+    @FXML
+    public void launchTelegram() {
+        feedbackConsumer.accept(ApplicationLinkLauncher.launchTelegram(person.getTelegram().value).getMessage());
+    }
+
+    /**
+     * Launches the github page with the person's github username.
+     * FeedbackConsumer will set resultDisplay based on success/failure of launch.
+     */
+    @FXML
+    public void launchGithub() {
+        feedbackConsumer.accept(ApplicationLinkLauncher.launchGithub(person.getGithub().value).getMessage());
     }
 
 }

@@ -81,6 +81,8 @@ public class CommandTestUtil {
     public static final String INVALID_PREFERRED_MODE_DESC = " " + PREFIX_PREFERRED_MODE + "noo";
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
 
+    public static final String INVALID_LAUNCH_APP_FLAG = " " + "-x"; // 'x' not a valid launch application flag
+
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
 
