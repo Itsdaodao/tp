@@ -7,6 +7,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import java.nio.file.Path;
 import java.util.List;
 
+import javafx.scene.input.KeyCode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
@@ -32,20 +33,22 @@ public class MainWindowTest {
     @TempDir
     public Path temporaryFolder;
 
-    private Model model = new ModelManager();
+    private final Model model = new ModelManager();
     private MainWindow mainWindow;
 
     @Start
     private void start(Stage stage) {
-        // Initialize values required for the mainWindow
+        // Initialize temporary storage for prefs and address
         JsonAddressBookStorage addressBookStorage =
                 new JsonAddressBookStorage(temporaryFolder.resolve("addressBook.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
         StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        // Set initial settings
         CommandRegistry.initialize();
-
         model.setAddressBook(getTypicalAddressBook());
-        mainWindow = new MainWindow(new Stage(), new LogicManager(model, storage, new StateManager()));
+
+        // Create the MainWindow
+        mainWindow = new MainWindow(stage, new LogicManager(model, storage, new StateManager()));
         mainWindow.show();
         mainWindow.fillInnerParts();
     }
@@ -66,10 +69,10 @@ public class MainWindowTest {
     }
 
     @Test
-    public void insertMode_writeValues_doesNotFillInput(FxRobot robot) {
+    public void scrollMode_writeValues_doesNotFillInput(FxRobot robot) {
         TextField t = robot.lookup("#commandTextField").queryAs(TextField.class);
 
-        write(robot, MainWindow.ENTER_SCROLL_MODE);
+        robot.push(MainWindow.ENTER_SCROLL_MODE);
 
         robot.clickOn("#commandTextField");
         robot.write("select 1");
@@ -78,8 +81,8 @@ public class MainWindowTest {
     }
 
     @Test
-    public void commandMode_noSelectedPerson_noInput(FxRobot robot) {
-        write(robot, MainWindow.ENTER_SCROLL_MODE);
+    public void scrollMode_noSelectedPerson_noInput(FxRobot robot) {
+        robot.push(MainWindow.ENTER_SCROLL_MODE);
 
         assertNull(mainWindow.getPersonListPanel().getSelectedPerson());
     }
@@ -88,8 +91,8 @@ public class MainWindowTest {
     public void scrollMode_selectsFirstPerson_onScrollNext(FxRobot robot) {
         Person selected = model.getAddressBook().getPersonList().get(0);
 
-        write(robot, MainWindow.ENTER_SCROLL_MODE);
-        write(robot, MainWindow.SCROLL_MODE_NEXT);
+        robot.push(MainWindow.ENTER_SCROLL_MODE);
+        robot.push(MainWindow.SCROLL_MODE_NEXT);
 
         assertEquals(selected, mainWindow.getPersonListPanel().getSelectedPerson());
     }
@@ -99,9 +102,9 @@ public class MainWindowTest {
         List<Person> list = model.getAddressBook().getPersonList();
         Person selected = list.get(list.size() - 1);
 
-        write(robot, MainWindow.ENTER_SCROLL_MODE);
+        robot.push(MainWindow.ENTER_SCROLL_MODE);
         for (int i = 0; i < list.size() + 5; i++) {
-            write(robot, MainWindow.SCROLL_MODE_NEXT);
+            robot.push(MainWindow.SCROLL_MODE_NEXT);
         }
 
         assertEquals(selected, mainWindow.getPersonListPanel().getSelectedPerson());
@@ -109,22 +112,19 @@ public class MainWindowTest {
 
     @Test
     public void scrollMode_selectsFirstPerson_onScrollPreviousInput(FxRobot robot) {
-        // Arrange - select second person by pressing K twice
+        // Arrange - select second person by pressing SCROLL_NEXT twice
         Person firstPerson = model.getAddressBook().getPersonList().get(0);
         Person secondPerson = model.getAddressBook().getPersonList().get(1);
-        write(robot, MainWindow.ENTER_SCROLL_MODE);
-        write(robot, MainWindow.SCROLL_MODE_NEXT);
-        write(robot, MainWindow.SCROLL_MODE_NEXT);
+        robot.push(MainWindow.ENTER_SCROLL_MODE);
+        robot.push(MainWindow.SCROLL_MODE_NEXT);
+        robot.push(MainWindow.SCROLL_MODE_NEXT);
         // Ensure second person is selected
         assertEquals(secondPerson, mainWindow.getPersonListPanel().getSelectedPerson());
 
-        // ACT - Press L to go back to first person
-        write(robot, MainWindow.SCROLL_MODE_PREVIOUS);
+        // ACT - Press SCROLL_PREVIOUS to go back to first person
+        robot.push(MainWindow.SCROLL_MODE_PREVIOUS);
 
         assertEquals(firstPerson, mainWindow.getPersonListPanel().getSelectedPerson());
     }
 
-    private void write(FxRobot robot, String text) {
-        robot.push((KeyCodeCombination) KeyCodeCombination.valueOf(text));
-    }
 }

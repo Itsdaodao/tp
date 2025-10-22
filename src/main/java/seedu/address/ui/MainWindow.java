@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
@@ -23,10 +25,10 @@ import seedu.address.logic.parser.exceptions.ParseException;
  * a menu bar and space where other JavaFX elements can be placed.
  */
 public class MainWindow extends UiPart<Stage> {
-    public static final String ENTER_SCROLL_MODE = "esc";
-    public static final String SCROLL_MODE_NEXT = "k";
-    public static final String SCROLL_MODE_PREVIOUS = "l";
-    public static final String ENTER_INPUT_MODE = "i";
+    public static final KeyCode ENTER_SCROLL_MODE = KeyCode.ESCAPE;
+    public static final KeyCode SCROLL_MODE_NEXT = KeyCode.K;
+    public static final KeyCode SCROLL_MODE_PREVIOUS = KeyCode.L;
+    public static final KeyCode ENTER_INPUT_MODE = KeyCode.I;
 
     private static final String ENTER_INPUT_MODE_FEEDBACK = "Entered insert mode.\nPress "
             + ENTER_SCROLL_MODE + " to return to scroll mode.";
@@ -146,8 +148,10 @@ public class MainWindow extends UiPart<Stage> {
     void setModeListeners() {
         // Listener for entering input mode - this needs to be a KEY_TYPED event to
         // prevent 'i' input from leaking into the command box.
+        String toMatch = ENTER_INPUT_MODE.toString().toLowerCase();
         getRoot().addEventFilter(KeyEvent.KEY_TYPED, event -> {
-            if (isCommandMode && event.getCharacter().matches(ENTER_INPUT_MODE)) {
+            String eventInput = event.getCharacter().toLowerCase();
+            if (isCommandMode && eventInput.equals(toMatch)) {
                 handleEnterInputMode();
             }
         });
@@ -161,11 +165,11 @@ public class MainWindow extends UiPart<Stage> {
      * @param event The key event to handle.
      */
     private void handleKeyPressed(KeyEvent event) {
-        if (KeyCombination.valueOf(ENTER_SCROLL_MODE).match(event)) {
+        if (event.getCode().equals(ENTER_SCROLL_MODE)) {
             handleEnterScrollMode();
-        } else if (KeyCombination.valueOf(SCROLL_MODE_NEXT).match(event)) {
+        } else if (event.getCode().equals(SCROLL_MODE_NEXT)) {
             handleNavigateNext();
-        } else if (KeyCombination.valueOf(SCROLL_MODE_PREVIOUS).match(event)) {
+        } else if (event.getCode().equals(SCROLL_MODE_PREVIOUS)) {
             handleNavigatePrevious();
         }
     }
