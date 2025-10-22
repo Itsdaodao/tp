@@ -1,6 +1,7 @@
 package seedu.address.storage;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -115,13 +116,46 @@ class JsonAdaptedPerson {
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
 
-        if (!PreferredCommunicationMode.isValidMode(preferredCommunicationMode)) {
+        // Validate preferred mode against available contact options
+        Set<PreferredCommunicationMode> availableModes = getAvailableModes();
+        boolean allowNone = true;
+        if (!PreferredCommunicationMode.isValidMode(preferredCommunicationMode, availableModes, allowNone)) {
             throw new IllegalValueException(PreferredCommunicationMode.MESSAGE_CONSTRAINTS);
         }
         final PreferredCommunicationMode modelPreferredMode = PreferredCommunicationMode.of(preferredCommunicationMode);
 
 
         return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelGithub, modelPreferredMode, modelTags);
+    }
+
+    /**
+     * Determines which communication modes are available based on non-empty contact fields.
+     * Phone is always included. Email, Telegram, and GitHub are added only if their values are not blank.
+     *
+     * @return a set of available {@code PreferredCommunicationMode} values
+     */
+    public Set<PreferredCommunicationMode> getAvailableModes() {
+        Set<PreferredCommunicationMode> availableModes = EnumSet.noneOf(PreferredCommunicationMode.class);
+
+        // Phone is compulsory
+        availableModes.add(PreferredCommunicationMode.PHONE);
+
+        // Optional modes based on non-empty fields
+        boolean hasEmail = email != null && !email.isBlank();
+        boolean hasTelegram = telegram != null && !telegram.isBlank();
+        boolean hasGithub = github != null && !github.isBlank();
+
+        if (hasEmail) {
+            availableModes.add(PreferredCommunicationMode.EMAIL);
+        }
+        if (hasTelegram) {
+            availableModes.add(PreferredCommunicationMode.TELEGRAM);
+        }
+        if (hasGithub) {
+            availableModes.add(PreferredCommunicationMode.GITHUB);
+        }
+
+        return availableModes;
     }
 
 }

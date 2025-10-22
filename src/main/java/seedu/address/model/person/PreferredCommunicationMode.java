@@ -1,7 +1,5 @@
 package seedu.address.model.person;
 
-import static seedu.address.commons.util.AppUtil.checkArgument;
-
 import java.util.Arrays;
 import java.util.Set;
 
@@ -21,52 +19,40 @@ public enum PreferredCommunicationMode {
             "Invalid preferred mode: %s. The person does not have this contact method.";
 
     /**
-     * Returns true if the input string is a valid preferred mode among the available modes.
+     * Validates whether the given input string is a valid preferred communication mode.
+     * <p>
+     * - If {@code availableModes} is {@code null}, all enum values are considered valid.
+     * - If {@code allowNone} is {@code true}, the string "NONE" is always accepted.
+     * - Otherwise, the input must match one of the provided {@code availableModes}, excluding NONE.
      *
-     * @param test the input string
-     * @param availableModes the set of modes the user actually has
+     * @param test the input string to validate
+     * @param availableModes the set of modes available for the current context; may be {@code null}
+     * @param allowNone whether the mode "NONE" should be considered valid
+     * @return true if the input is valid under the given conditions
      */
-    public static boolean isValidMode(String test, Set<PreferredCommunicationMode> availableModes) {
-        // Preferred communication mode is optional field, Null value is allowed
-//        boolean isNull = test == null || test.isBlank();
-//        if (isNull) {
-//            return true;
-//        }
-
-//        // Allow NONE explicitly
-//        if (PreferredCommunicationMode.NONE.name().equalsIgnoreCase(test)) {
-//            return true;
-//        }
-
-        // Only allow modes that exist in availableModes
-        boolean matchesValidMode = availableModes.stream()
-                .anyMatch(mode -> mode.name().equalsIgnoreCase(test) && mode != NONE);
-
-//        boolean isValid = isNull || matchesValidMode;
-        return matchesValidMode;
-    }
-
-    /**
-     * Returns true if a given string is a valid communication mode.
-     */
-    public static boolean isValidMode(String test) {
-        // Preferred communication mode is optional field, Null value is allowed
+    public static boolean isValidMode(String test, Set<PreferredCommunicationMode> availableModes, boolean allowNone) {
         boolean isNull = test == null || test.isBlank();
+        boolean isExplicitNone = !isNull && test.equalsIgnoreCase(PreferredCommunicationMode.NONE.name());
+        boolean isValidMode;
         if (isNull) {
             return true;
         }
+        // Case 1: No restriction
+        if (availableModes == null) {
+            boolean matchesAnyEnum = Arrays.stream(PreferredCommunicationMode.values())
+                    .anyMatch(mode -> mode.name().equalsIgnoreCase(test));
+            isValidMode = matchesAnyEnum;
+        } else {
+            // Case 2: NONE is explicitly allowed
+            boolean isAllowedNone = allowNone && isExplicitNone;
 
-        // Allow NONE explicitly
-        if (PreferredCommunicationMode.NONE.name().equalsIgnoreCase(test)) {
-            return true;
+            // Case 3: Must match one of the available modes (excluding NONE)
+            boolean matchesAvailableMode = availableModes.stream()
+                    .anyMatch(mode -> mode.name().equalsIgnoreCase(test) && mode != NONE);
+            isValidMode = isAllowedNone || matchesAvailableMode;
         }
 
-        boolean matchesValidMode = Arrays.stream(values())
-//                .filter(mode -> mode != NONE)
-                .anyMatch(mode -> mode.name().equalsIgnoreCase(test));
-
-        boolean isValid = isNull || matchesValidMode;
-        return isValid;
+        return isValidMode;
     }
 
     /**

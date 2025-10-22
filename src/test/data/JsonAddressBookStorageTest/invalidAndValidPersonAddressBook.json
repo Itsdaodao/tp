@@ -4,12 +4,14 @@
     "phone": "9482424",
     "email": "hans@example.com",
     "telegram": "hansisbest",
-    "github": "hansisbest"
+    "github": "hansisbest",
+    "preferredCommunicationMode": "phone"
   }, {
     "name": "Person With Invalid Phone Field",
     "phone": "948asdf2424",
     "email": "hans@example.com",
     "telegram": "hanbest12",
-    "github": "hanbest12"
+    "github": "hanbest12",
+    "preferredCommunicationMode": "phone"
   } ]
 }

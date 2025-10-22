@@ -8,6 +8,7 @@ import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -22,12 +23,15 @@ public class PersonBuilder {
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_TELEGRAM = "amy_bee";
     public static final String DEFAULT_GITHUB = "amy-bee";
+    public static final String DEFAULT_PREFERRED_MODE = "telegram";
+
 
     private Name name;
     private Phone phone;
     private Email email;
     private Telegram telegram;
     private Github github;
+    private PreferredCommunicationMode preferredMode;
     private Set<Tag> tags;
 
     /**
@@ -39,6 +43,7 @@ public class PersonBuilder {
         email = new Email();
         telegram = new Telegram();
         github = new Github();
+        preferredMode = PreferredCommunicationMode.of(null);
         tags = new HashSet<>();
     }
 
@@ -51,6 +56,7 @@ public class PersonBuilder {
         email = personToCopy.getEmail();
         telegram = personToCopy.getTelegram();
         github = personToCopy.getGithub();
+        preferredMode = personToCopy.getPreferredMode();
         tags = new HashSet<>(personToCopy.getTags());
     }
 
@@ -126,8 +132,23 @@ public class PersonBuilder {
         return this;
     }
 
-    public Person build() {
-        return new Person(name, phone, email, telegram, github, tags);
+    /**
+     * Sets a default {@code PreferredCommunicationMode} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withPreferredMode() {
+        this.preferredMode = PreferredCommunicationMode.of(DEFAULT_PREFERRED_MODE);
+        return this;
     }
 
+    /**
+     * Sets the {@code PreferredCommunicationMode} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withPreferredMode(String username) {
+        this.preferredMode = PreferredCommunicationMode.of(username);
+        return this;
+    }
+
+    public Person build() {
+        return new Person(name, phone, email, telegram, github, preferredMode, tags);
+    }
 }

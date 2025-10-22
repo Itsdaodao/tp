@@ -5,10 +5,10 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GITHUB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PREFERRED_MODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMOVE_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_PREFERRED_MODE;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.model.person.PreferredCommunicationMode.MESSAGE_INVALID_PREFERRED_MODE;
 
@@ -32,8 +32,8 @@ import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Telegram;
 import seedu.address.model.person.PreferredCommunicationMode;
+import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -131,21 +131,19 @@ public class EditCommand extends Command {
         Person editedPerson = new Person(updatedName, updatedPhone, updatedEmail,
                 updatedTelegram, updatedGithub, updatedPreferredMode, tagUpdateResult.getUpdatedTags());
 
-
-        // Check if the preferred mode is still valid based on available contact fields
+        // Validate preferred mode against available contact options
         Set<PreferredCommunicationMode> availableModes = editedPerson.getAvailableModes();
-        // Get as String or null if not present
+
+        // Extract preferred mode name as string, or null if not set
         String modeString = editPersonDescriptor.getPreferredMode()
                 .map(PreferredCommunicationMode::name)
                 .orElse(null);
 
-        boolean isInvalidPreferredMode =
-                !PreferredCommunicationMode.isValidMode(modeString,
-                availableModes);
+        boolean allowNone = true;
+        boolean isInvalidPreferredMode = !PreferredCommunicationMode.isValidMode(modeString, availableModes, allowNone);
 
         if (isInvalidPreferredMode) {
-            throw new CommandException(String.format(MESSAGE_INVALID_PREFERRED_MODE,
-                    modeString));
+            throw new CommandException(String.format(MESSAGE_INVALID_PREFERRED_MODE, modeString));
         }
 
         return new Pair<>(editedPerson, tagUpdateResult);

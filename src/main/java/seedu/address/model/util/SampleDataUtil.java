@@ -39,11 +39,11 @@ public class SampleDataUtil {
                     getTagSet("family")),
             new Person(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
                     new Telegram(), new Github("irfan-66"),
-                    PreferredCommunicationMode.NONE,
+                    PreferredCommunicationMode.of(null),
                     getTagSet("classmates")),
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
                     new Telegram(), new Github(),
-                    PreferredCommunicationMode.NONE,
+                    PreferredCommunicationMode.of(null),
                     getTagSet("colleagues"))
         };
     }

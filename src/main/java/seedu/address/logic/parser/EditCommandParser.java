@@ -19,6 +19,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -76,8 +77,9 @@ public class EditCommandParser implements Parser<EditCommand> {
             editPersonDescriptor.setGithub(ParserUtil.parseGithub(argMultimap.getValue(PREFIX_GITHUB).get()));
         }
         if (argMultimap.getValue(PREFIX_PREFERRED_MODE).isPresent()) {
+            Set<PreferredCommunicationMode> availableModes = null;
             editPersonDescriptor.setPreferredMode(ParserUtil
-                    .parsePreferredMode(argMultimap.getValue(PREFIX_PREFERRED_MODE).get()));
+                    .parsePreferredMode(argMultimap.getValue(PREFIX_PREFERRED_MODE).get(), availableModes));
         }
         // Finds the tags to add if any
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);

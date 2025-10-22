@@ -88,6 +88,14 @@ public class Person {
                 && otherPerson.getName().equals(getName());
     }
 
+    /**
+     * Determines which communication modes are available for this person
+     * <p>
+     * Phone mode is always included as it is compulsory. Optional modes such as email, telegram and github are
+     * included only if their corresponding fields are not empty.
+     *
+     * @return a set of available {@code PreferredCommunicationMode} values
+     */
     public Set<PreferredCommunicationMode> getAvailableModes() {
         Set<PreferredCommunicationMode> availableModes = EnumSet.noneOf(PreferredCommunicationMode.class);
 

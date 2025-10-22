@@ -10,6 +10,7 @@ import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 
@@ -38,6 +39,7 @@ public class EditPersonDescriptorBuilder {
         descriptor.setEmail(person.getEmail());
         descriptor.setTelegram(person.getTelegram());
         descriptor.setGithub(person.getGithub());
+        descriptor.setPreferredMode(person.getPreferredMode());
         descriptor.setTags(person.getTags());
     }
 
@@ -78,6 +80,14 @@ public class EditPersonDescriptorBuilder {
      */
     public EditPersonDescriptorBuilder withGithub(String username) {
         descriptor.setGithub(new Github(username));
+        return this;
+    }
+
+    /**
+     * Sets the {@code PreferredCommunicationMode} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withPreferredMode(String username) {
+        descriptor.setPreferredMode(PreferredCommunicationMode.of(username));
         return this;
     }
 
