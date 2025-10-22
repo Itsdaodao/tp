@@ -98,7 +98,8 @@ public class PersonCard extends UiPart<Region> {
      * @param fieldName the field name to show before the value
      * @param modeToCheck the communication mode associated with this field
      */
-    private void setContactField(Hyperlink label, String value, String fieldName, PreferredCommunicationMode modeToCheck) {
+    private void setContactField(Hyperlink label, String value, String fieldName,
+                                 PreferredCommunicationMode modeToCheck) {
         boolean isEmpty = value == null || value.isBlank();
         boolean isPreferred = person.getPreferredMode() == modeToCheck;
 
