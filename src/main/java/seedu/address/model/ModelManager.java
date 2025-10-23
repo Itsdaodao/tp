@@ -16,7 +16,6 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
 import seedu.address.storage.CsvAddressBookStorage;
-import seedu.address.storage.Storage;
 
 /**
  * Represents the in-memory model of the address book data.

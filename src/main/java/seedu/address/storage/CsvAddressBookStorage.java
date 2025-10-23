@@ -38,39 +38,49 @@ public class CsvAddressBookStorage {
 
             // Write each person
             for (Person person : addressBook.getPersonList()) {
-                writer.write(personToCsvRow(person));
+                String csvRow = formatPersonAsCsv(person);
+                writer.write(csvRow);
                 writer.newLine();
             }
         }
     }
 
     /**
-     * Converts a person to a CSV row.
+     * Formats a person as a CSV row with proper escaping.
      */
-    private static String personToCsvRow(Person person) {
-        return String.join(CSV_DELIMITER,
-                escapeCsvField(person.getName().fullName),
-                escapeCsvField(person.getPhone().value),
-                escapeCsvField(person.getEmail().value),
-                escapeCsvField(person.getTelegram() != null ? person.getTelegram().value : EMPTY_FIELD),
-                escapeCsvField(person.getGithub() != null ? person.getGithub().value : EMPTY_FIELD),
-                escapeCsvField(person.getTags().stream()
+    private static String formatPersonAsCsv(Person person) {
+        String[] fields = new String[6];
+
+        fields[0] = escapeCsvField(person.getName().fullName);
+        fields[1] = escapeCsvField(person.getPhone().value);
+        fields[2] = escapeCsvField(person.getEmail().value);
+        fields[3] = escapeCsvField(person.getTelegram() != null ? person.getTelegram().value : EMPTY_FIELD);
+        fields[4] = escapeCsvField(person.getGithub() != null ? person.getGithub().value : EMPTY_FIELD);
+        fields[5] = escapeCsvField(
+                person.getTags().stream()
                         .map(tag -> tag.tagName)
-                        .collect(Collectors.joining(";")))
+                        .collect(Collectors.joining(";"))
         );
+
+        return String.join(CSV_DELIMITER, fields);
     }
 
     /**
      * Escapes special characters in CSV fields.
-     * Fields containing commas, quotes, or newlines are enclosed in quotes.
-     * Quotes within fields are escaped by doubling them.
      */
     private static String escapeCsvField(String field) {
         if (field == null || field.isEmpty()) {
             return EMPTY_FIELD;
         }
 
-        if (field.contains(CSV_DELIMITER) || field.contains("\"") || field.contains("\n")) {
+        // Check if field contains any characters that require quoting
+        boolean needsQuotes = field.contains(CSV_DELIMITER)
+                || field.contains("\"")
+                || field.contains("\n")
+                || field.contains("\r");
+
+        if (needsQuotes) {
+            // Replace each quote with two quotes and wrap in quotes
             return "\"" + field.replace("\"", "\"\"") + "\"";
         }
 
