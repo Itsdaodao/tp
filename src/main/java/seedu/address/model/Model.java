@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.function.Predicate;
 
@@ -102,4 +103,9 @@ public interface Model {
      * Resets the filtered person list to its original order (i.e. the order in which persons were added).
      */
     void resetSortOrder();
+
+    /**
+     * Exports the address book to a CSV file.
+     */
+    void exportAddressBookToCsv(Path filePath) throws IOException;
 }

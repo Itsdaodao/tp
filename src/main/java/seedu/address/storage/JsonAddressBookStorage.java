@@ -77,4 +77,8 @@ public class JsonAddressBookStorage implements AddressBookStorage {
         JsonUtil.saveJsonFile(new JsonSerializableAddressBook(addressBook), filePath);
     }
 
+    @Override
+    public void exportAddressBookToCsv(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
+        CsvAddressBookStorage.exportToCsv(addressBook, filePath);
+    }
 }
