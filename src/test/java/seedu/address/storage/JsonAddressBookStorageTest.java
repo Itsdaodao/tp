@@ -2,6 +2,8 @@ package seedu.address.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.HOON;
@@ -9,6 +11,7 @@ import static seedu.address.testutil.TypicalPersons.IDA;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -83,7 +86,6 @@ public class JsonAddressBookStorageTest {
         jsonAddressBookStorage.saveAddressBook(original); // file path not specified
         readBack = jsonAddressBookStorage.readAddressBook().get(); // file path not specified
         assertEquals(original, new AddressBook(readBack));
-
     }
 
     @Test
@@ -106,5 +108,148 @@ public class JsonAddressBookStorageTest {
     @Test
     public void saveAddressBook_nullFilePath_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> saveAddressBook(new AddressBook(), null));
+    }
+
+    @Test
+    public void getAddressBookFilePath_returnsCorrectPath() {
+        Path expectedPath = Paths.get("test.json");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(expectedPath);
+        assertEquals(expectedPath, storage.getAddressBookFilePath());
+    }
+
+    @Test
+    public void exportAddressBookToCsv_validPath_success() throws Exception {
+        // Setup
+        Path jsonFilePath = testFolder.resolve("test.json");
+        Path csvFilePath = testFolder.resolve("export.csv");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(jsonFilePath);
+        ReadOnlyAddressBook addressBook = getTypicalAddressBook();
+
+        // Execute
+        storage.exportAddressBookToCsv(addressBook, csvFilePath);
+
+        // Verify
+        assertTrue(Files.exists(csvFilePath));
+        String content = Files.readString(csvFilePath);
+        assertTrue(content.contains("Name,Phone,Email,Telegram,GitHub,Tags"));
+        assertTrue(content.contains("Alice"));
+    }
+
+    @Test
+    public void exportAddressBookToCsv_nullAddressBook_throwsNullPointerException() {
+        Path jsonFilePath = testFolder.resolve("test.json");
+        Path csvFilePath = testFolder.resolve("export.csv");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(jsonFilePath);
+
+        assertThrows(NullPointerException.class, () ->
+                storage.exportAddressBookToCsv(null, csvFilePath));
+    }
+
+    @Test
+    public void exportAddressBookToCsv_nullFilePath_throwsNullPointerException() {
+        Path jsonFilePath = testFolder.resolve("test.json");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(jsonFilePath);
+        ReadOnlyAddressBook addressBook = getTypicalAddressBook();
+
+        assertThrows(NullPointerException.class, () ->
+                storage.exportAddressBookToCsv(addressBook, null));
+    }
+
+    @Test
+    public void exportAddressBookToCsv_invalidPath_throwsIOException() {
+        Path jsonFilePath = testFolder.resolve("test.json");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(jsonFilePath);
+        ReadOnlyAddressBook addressBook = getTypicalAddressBook();
+        Path invalidPath = Path.of(""); // Invalid empty path
+
+        assertThrows(IOException.class, () ->
+                storage.exportAddressBookToCsv(addressBook, invalidPath));
+    }
+
+    @Test
+    public void exportAddressBookToCsv_createsParentDirectories() throws Exception {
+        // Setup
+        Path jsonFilePath = testFolder.resolve("test.json");
+        Path nestedCsvPath = testFolder.resolve("nested/folder/export.csv");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(jsonFilePath);
+        ReadOnlyAddressBook addressBook = getTypicalAddressBook();
+
+        // Verify parent directories don't exist initially
+        assertTrue(Files.notExists(nestedCsvPath.getParent()));
+
+        // Execute
+        storage.exportAddressBookToCsv(addressBook, nestedCsvPath);
+
+        // Verify
+        assertTrue(Files.exists(nestedCsvPath));
+        assertTrue(Files.exists(nestedCsvPath.getParent()));
+    }
+
+    @Test
+    public void exportAddressBookToCsv_emptyAddressBook_createsFileWithHeader() throws Exception {
+        // Setup
+        Path jsonFilePath = testFolder.resolve("test.json");
+        Path csvFilePath = testFolder.resolve("empty.csv");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(jsonFilePath);
+        ReadOnlyAddressBook emptyAddressBook = new AddressBook();
+
+        // Execute
+        storage.exportAddressBookToCsv(emptyAddressBook, csvFilePath);
+
+        // Verify
+        assertTrue(Files.exists(csvFilePath));
+        String content = Files.readString(csvFilePath);
+        assertEquals("Name,Phone,Email,Telegram,GitHub,Tags", content.trim());
+    }
+
+    @Test
+    public void exportAddressBookToCsv_fileAlreadyExists_overwrites() throws Exception {
+        // Setup
+        Path jsonFilePath = testFolder.resolve("test.json");
+        Path csvFilePath = testFolder.resolve("export.csv");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(jsonFilePath);
+        ReadOnlyAddressBook addressBook = getTypicalAddressBook();
+
+        // Create file with initial content
+        Files.writeString(csvFilePath, "old content");
+        assertTrue(Files.exists(csvFilePath));
+
+        // Execute
+        storage.exportAddressBookToCsv(addressBook, csvFilePath);
+
+        // Verify file was overwritten
+        String content = Files.readString(csvFilePath);
+        assertTrue(content.contains("Name,Phone,Email,Telegram,GitHub,Tags"));
+        assertFalse(content.contains("old content"));
+    }
+
+    @Test
+    public void saveAddressBook_defaultPath_success() throws Exception {
+        // Setup
+        Path defaultFilePath = testFolder.resolve("default.json");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(defaultFilePath);
+        AddressBook original = getTypicalAddressBook();
+
+        // Execute - save without specifying file path (should use default)
+        storage.saveAddressBook(original);
+
+        // Verify
+        ReadOnlyAddressBook readBack = storage.readAddressBook().get();
+        assertEquals(original, new AddressBook(readBack));
+    }
+
+    @Test
+    public void readAddressBook_defaultPath_success() throws Exception {
+        // Setup
+        Path defaultFilePath = testFolder.resolve("default.json");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(defaultFilePath);
+        AddressBook original = getTypicalAddressBook();
+        storage.saveAddressBook(original);
+
+        // Execute - read without specifying file path (should use default)
+        ReadOnlyAddressBook readBack = storage.readAddressBook().get();
+
+        // Verify
+        assertEquals(original, new AddressBook(readBack));
     }
 }

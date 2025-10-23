@@ -71,8 +71,6 @@ public class StorageManagerTest {
         assertNotNull(storageManager.getAddressBookFilePath());
     }
 
-    // ================ MISSING TEST COVERAGE ==============================
-
     @Test
     public void exportAddressBookToCsv_validPath_success() throws Exception {
         // Setup
