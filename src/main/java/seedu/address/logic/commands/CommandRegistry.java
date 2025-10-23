@@ -18,6 +18,7 @@ import seedu.address.logic.parser.HelpCommandParser;
 import seedu.address.logic.parser.LaunchCommandParser;
 import seedu.address.logic.parser.ListCommandParser;
 import seedu.address.logic.parser.PinCommandParser;
+import seedu.address.logic.parser.UnpinCommandParser;
 
 /**
  * Maintains a registry of all available commands and their help information.
@@ -41,7 +42,8 @@ public class CommandRegistry {
             "HelpCommand",
             "ListCommand",
             "LaunchCommand",
-            "PinCommand"
+            "PinCommand",
+            "UnpinCommand"
     );
 
     /**
@@ -153,6 +155,7 @@ public class CommandRegistry {
         commandFactoryMap.put(LaunchCommand.COMMAND_WORD, (args) -> new LaunchCommandParser().parse(args));
         commandFactoryMap.put(ExportCommand.COMMAND_WORD, (args) -> new ExportCommandParser().parse(args));
         commandFactoryMap.put(PinCommand.COMMAND_WORD, (args) -> new PinCommandParser().parse(args));
+        commandFactoryMap.put(UnpinCommand.COMMAND_WORD, (args) -> new UnpinCommandParser().parse(args));
 
         logger.info("Command registry initialized with " + commands.size() + " commands");
     }

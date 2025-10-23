@@ -69,6 +69,20 @@ public class PersonTest {
     }
 
     @Test
+    public void unpin_personPinned_returnsUnpinnedPerson() {
+        Person pinnedBenson = new PersonBuilder(BENSON).withPinnedAt().build();
+        Person unpinnedBenson = pinnedBenson.unpin();
+        assertFalse(unpinnedBenson.isPinned());
+        assertTrue(unpinnedBenson.getPinnedAt().isEmpty());
+    }
+
+    @Test
+    public void unpin_personNotPinned_returnsSamePerson() {
+        Person unpinnedBenson = BENSON;
+        assertEquals(unpinnedBenson, unpinnedBenson.unpin());
+    }
+
+    @Test
     public void equals() {
         // same values -> returns true
         Person aliceCopy = new PersonBuilder(ALICE).build();

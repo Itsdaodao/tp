@@ -46,6 +46,9 @@ public class UnpinCommand extends Command {
         Person personToUnpin = lastShownList.get(targetIndex.getZeroBased());
         Person unpinnedPerson = personToUnpin.unpin();
 
+        assert !unpinnedPerson.isPinned() : "Person is still pinned after unpinning.";
+        assert unpinnedPerson.getPinnedAt().isEmpty() : "Pinned timestamp still exists after unpinning.";
+
         if (personToUnpin.equals(unpinnedPerson)) {
             // No changes, person is not yet pinned
             throw new CommandException(MESSAGE_PERSON_NOT_PINNED);

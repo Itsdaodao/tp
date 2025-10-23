@@ -150,7 +150,6 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same identity and data fields.
      * Returns a pinned copy of this person, setting the pin timestamp if not already pinned.
      * If the person is already pinned, returns this instance unchanged.
      *
@@ -164,6 +163,20 @@ public class Person {
         Boolean isPinned = true;
         Instant pinnedAt = Instant.now();
         return new Person(name, phone, email, telegram, github, preferredMode, tags, isPinned, pinnedAt);
+    }
+
+    /**
+     * Returns an unpinned copy of this person, removing the pin timestamp if already pinned.
+     * If the person is not yet pinned, returns this instance unchanged.
+     *
+     * @return a new Person instance marked as unpinned with the timestamp removed if already pinned
+     */
+    public Person unpin() {
+        if (!isPinned) {
+            return this;
+        }
+
+        return new Person(name, phone, email, telegram, github, preferredMode, tags);
     }
 
     /**
