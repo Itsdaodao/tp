@@ -48,6 +48,7 @@ StatusBarFooter --|> UiPart
 HelpWindow --|> UiPart
 
 PersonCard ..> Model
+PersonCard ..> Logic
 UiManager -right-> Logic
 MainWindow -left-> Logic
 
