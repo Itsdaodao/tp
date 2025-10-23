@@ -55,7 +55,7 @@ The *Sequence Diagram* below shows how the components interact with each other f
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
-Each of the four main components (also shown in the diagram above),
+Each of the five main components (also shown in the diagram above),
 
 * defines its *API* in an `interface` with the same name as the Component.
 * implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point.
@@ -83,6 +83,7 @@ The `UI` component,
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
 * depends on some classes in the `Logic` component, because launching communication mode application through `UI` relies `ApplicationLinkLauncher` to execute action.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
+* initializes with a list of commands from the `Logic` component to use for autocompletion.
 
 ### Logic component
 
@@ -101,11 +102,19 @@ The sequence diagram below illustrates the interactions within the `Logic` compo
 
 How the `Logic` component works:
 
-1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
-1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
-   Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
-1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
+When `Logic` is called upon to execute a command, it checks its `state` to see if there is an operation that is pending confirmation
+* Case 1: There is no pending operation
+  1. The command word is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
+  1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
+  1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
+     Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
+  1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
+     1. If the command requires a confirmation to be executed, a `ConfirmationPendingResult` object is created instead, which encapsulates the confirmation message to show to the user and the pending operation.
+* Case 2: There is a pending operation
+    1. The command word (e.g. `y`/`n`) is passed to an `AddressBookParser`, where it is parsed specifically as a `ConfirmCommand`
+    2. A `ConfirmCommand` object is created. The `ConfirmCommand` executes the pending operation if the user inputs a valid confirmation.
+    4. The `ConfirmCommand` executes a callback to manage State if the confirmation was successful, and the state needs to be cleared.
+    5. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`. 
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
