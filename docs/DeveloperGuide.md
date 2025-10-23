@@ -114,7 +114,7 @@ When `Logic` is called upon to execute a command, it checks its `state` to see i
     1. The command word (e.g. `y`/`n`) is passed to an `AddressBookParser`, where it is parsed specifically as a `ConfirmCommand`
     2. A `ConfirmCommand` object is created. The `ConfirmCommand` executes the pending operation if the user inputs a valid confirmation.
     4. The `ConfirmCommand` executes a callback to manage State if the confirmation was successful, and the state needs to be cleared.
-    5. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`. 
+    5. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
