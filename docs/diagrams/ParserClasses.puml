@@ -6,6 +6,8 @@ skinparam classBackgroundColor LOGIC_COLOR
 
 Class "{abstract}\nCommand" as Command
 Class XYZCommand
+Class "<<interface>>\n CommandFactory" as CommandFactory
+Class CommandRegistry
 
 package "Parser classes"{
 Class "<<interface>>\nParser" as Parser
@@ -21,10 +23,8 @@ Class Prefix
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> AddressBookParser
 
-AddressBookParser .down.> XYZCommandParser: <<create>>
-
 XYZCommandParser ..> XYZCommand : <<create>>
-AddressBookParser ..> Command : <<use>>
+AddressBookParser ..> Command
 XYZCommandParser .up.|> Parser
 XYZCommandParser ..> ArgumentMultimap
 XYZCommandParser ..> ArgumentTokenizer
@@ -35,4 +35,9 @@ XYZCommandParser ..> ParserUtil
 ParserUtil .down.> Prefix
 ArgumentTokenizer .down.> Prefix
 XYZCommand -up-|> Command
+CommandRegistry *-down- "0..* " CommandFactory
+AddressBookParser .right.> CommandFactory : <<uses>>
+AddressBookParser .up.> CommandRegistry : <<queries>>
+CommandFactory ..> XYZCommandParser
+CommandFactory ..> Command : <<creates>>
 @enduml

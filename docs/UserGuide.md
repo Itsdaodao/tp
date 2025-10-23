@@ -91,24 +91,42 @@ Examples:
 
 Shows a list of all persons in the address book.
 
-Format: `list`
+Format: `list [-a (alphabetical)] [-r (recent)]`
+
+* By default, lists all persons in the address book in the order they were added **(first to last)**.
+* Use the optional flag to change the listing order:
+   * `-a` lists all persons sorted in **alphabetical order by name**.
+   * `-r` lists all persons in the **recent order they were added (last to first)**.
+* User cannot combine both flags.
+
+Examples:
+* `list` shows all persons in the order they were added.
+* `list -a` shows all persons in alphabetical order by name.
+* `list -r` shows all persons in the reverse order they were added.
+* `list -a -r` error message is displayed.
 
 ### Editing a person : `edit`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [t/TAG]…​  [r/TAG]…​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+* When editing tags, you can add or remove tags.
+  * To add tags, use the prefix `t/` followed by the tags to be added.
+  * To remove tags, use the prefix `r/` followed by the tags to be removed.
+    * User will be informed if any of the tags to be removed do not exist on the person.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+*  `edit 1 p/91234567 e/johndoe@example.com`
+   * Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
+  *  `edit 2 n/Betsy Crower t/CS2103 t/CS2100 r/CS1101S`
+     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, and removes the tag `CS1101S`.
+       ```
+       Edited Person: Betsy Crower; Phone: 91093122; Telegram: BestyCrower; Github: BestyCrower; Tags: [CS2100][CS2103]
+       ```
 
 ### Locating persons by name: `find`
 
@@ -196,9 +214,39 @@ Press `k` to select the entry below the current entry.
 
 Press `l` to select the entry above the current entry.
 
+
+### Launching external communication modes : `launch`
+
+Launches an external application to communicate with the specified person via the specified mode.
+
+Format: `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`
+
+* The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+* Use the flag to specify the communication mode:
+    * `-e` launches the default email application to compose an email to the person's email address.
+        * Depending on the user's system settings, the email may be composed in an email client or web browser.
+    * `-t` launches Telegram web browser that links to opening a chat with the person's Telegram handle.
+        * To open the chat through web browser, the user is required to have Telegram application installed on their device.
+        * Checking existence of Telegram user is outside the scope of this feature and is handled by Telegram application.
+    * `-g` launches web browser that links to the person's GitHub profile.
+        * Checking existence of GitHub user is outside the scope of this feature and is handled by GitHub.
+* User must specify **exactly one flag**.
+* If the person does not have the specified communication mode, an error message is shown.
+* User's interaction with the launched application is outside the scope of this feature.
+* User's can launch external application through the GUI by left-clicking the email, telegram or github icon of a person in the person card.
+
+Examples:
+* `launch 2 -e` launches the default email application to compose an email to the 2nd person in the displayed person list.
+* `launch 3 -t` launches Telegram web browser to open a chat with the 3rd person's Telegram handle in the displayed person list.
+* `launch 1 -g` launches web browser to the GitHub profile of the 1st person in the displayed person list.
+* Launching through CLI ![result for Launching CLI](gifs/LaunchCli.gif)
+* Launching through GUI ![result for Launching GUI](gifs/LaunchGui.gif)
+
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+There is no need to save manually as the AddressBook data are saved in the hard disk automatically **ONLY after any command that changes the data**.
+* Commands that change the data include: `add`, `edit`, `delete`, and `clear`.
+* Commands that do not change the data include: `help`, `list`, `find`, `launch`, and `exit`.
 
 ### Editing the data file
 
@@ -242,7 +290,22 @@ Action | Format, Examples
 **Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [t/TAG]…​ [r/TAG]…​`<br> e.g., `edit 1 p/91234567`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List** | `list`
+**List** | `list [-a (alphabetical)] [-r (recent)]`<br> e.g., `list -a`
 **Help** | `help`
+**Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
+
+--------------------------------------------------------------------------------------------------------------------
+
+## Navigation Summary
+
+Mode | Key Bind
+---------|-----------------
+**Insert**| **i**
+**Scroll**| **Esc**
+
+Scroll Action | Key Bind
+--------------|-----------------
+**Scroll Up**| **k**
+**Scroll Down**| **l**
