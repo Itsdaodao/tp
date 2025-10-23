@@ -156,7 +156,7 @@ public class JsonAddressBookStorageTest {
     }
 
     @Test
-    public void exportAddressBookToCsv_invalidPath_throwsIOException() {
+    public void exportAddressBookToCsv_invalidPath_throwsException() {
         Path jsonFilePath = testFolder.resolve("test.json");
         JsonAddressBookStorage storage = new JsonAddressBookStorage(jsonFilePath);
         ReadOnlyAddressBook addressBook = getTypicalAddressBook();

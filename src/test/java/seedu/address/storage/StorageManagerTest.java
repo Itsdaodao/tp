@@ -104,7 +104,7 @@ public class StorageManagerTest {
     }
 
     @Test
-    public void exportAddressBookToCsv_invalidPath_throwsIOException() {
+    public void exportAddressBookToCsv_invalidPath_throwsException() {
         ReadOnlyAddressBook addressBook = getTypicalAddressBook();
         Path invalidPath = Path.of(""); // Invalid empty path
 
