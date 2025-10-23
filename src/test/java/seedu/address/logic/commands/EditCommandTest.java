@@ -40,7 +40,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
-        Person editedPerson = new PersonBuilder().build();
+        Person editedPerson = new PersonBuilder().withPinnedAt().build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson)
                 .withTags(VALID_TAG_FRIENDS).withRemovedTags(VALID_TAG_FRIENDS).build();
 
@@ -153,7 +153,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_removeNonExistentTag_showsWarningMessage() {
-        Person editedPerson = new PersonBuilder().build();
+        Person editedPerson = new PersonBuilder().withPinnedAt().build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson)
                 .withRemovedTags(VALID_TAG_FRIENDS, VALID_TAG_FRIEND, VALID_TAG_HUSBAND).build();
 

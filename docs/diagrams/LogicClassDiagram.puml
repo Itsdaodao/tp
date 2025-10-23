@@ -8,6 +8,8 @@ package Logic as LogicPackage {
 
 package "Parser Classes" as ParserClasses{
 }
+package "Utility Classes" as UtilityClasses{
+}
 Class XYZCommand
 Class CommandResult
 Class "{abstract}\nCommand" as Command
@@ -25,6 +27,7 @@ package Storage {
 }
 
 Class HiddenOutside #FFFFFF
+Class HiddenOutsideUi #FFFFFF
 HiddenOutside ..> Logic
 
 LogicManager .right.|> Logic
@@ -40,7 +43,8 @@ Storage --[hidden] Model
 Command .[hidden]up.> Storage
 Command .right.> Model
 note right of XYZCommand: XYZCommand = AddCommand, \nFindCommand, etc
-
+XYZCommand .left.> UtilityClasses : <<use>>
+HiddenOutsideUi ..> UtilityClasses
 Logic ..> CommandResult
 LogicManager .down.> CommandResult
 Command .up.> CommandResult : <<create>>

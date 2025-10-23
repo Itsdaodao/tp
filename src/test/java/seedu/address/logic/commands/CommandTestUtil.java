@@ -12,6 +12,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.PersonBuilder.DEFAULT_NAME;
 import static seedu.address.testutil.PersonBuilder.DEFAULT_PHONE;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,12 +112,41 @@ public class CommandTestUtil {
     }
 
     /**
+     * Executes the given {@code pinCommand}, confirms that <br>
+     * - the returned {@link CommandResult} matches {@code expectedCommandResult} <br>
+     * - the first item pin status of {@code actualModel} matches first item pin status of {@code expectedModel}
+     */
+    public static void assertCommandSuccess(PinCommand pinCommand, Model actualModel,
+                                            CommandResult expectedCommandResult, Model expectedModel) {
+        try {
+            CommandResult result = pinCommand.execute(actualModel);
+            assertEquals(expectedCommandResult, result);
+
+            Person expectedPinnedPerson =
+                    expectedModel.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+            Person actualPinnedPerson =
+                    actualModel.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+
+            assertEquals(expectedPinnedPerson.getName(), actualPinnedPerson.getName());
+            assertTrue(actualPinnedPerson.isPinned());
+            assertTrue(expectedPinnedPerson.isPinned());
+        } catch (CommandException ce) {
+            throw new AssertionError("Execution of command should not fail.", ce);
+        }
+    }
+
+    /**
      * Convenience wrapper to {@link #assertCommandSuccess(Command, Model, CommandResult, Model)}
      * that takes a string {@code expectedMessage}.
      */
     public static void assertCommandSuccess(Command command, Model actualModel, String expectedMessage,
             Model expectedModel) {
         CommandResult expectedCommandResult = new CommandResult(expectedMessage);
+
+        if (command instanceof PinCommand) {
+            assertCommandSuccess((PinCommand) command, actualModel, expectedCommandResult, expectedModel);
+            return;
+        }
         assertCommandSuccess(command, actualModel, expectedCommandResult, expectedModel);
     }
 

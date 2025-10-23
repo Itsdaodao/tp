@@ -10,6 +10,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -122,8 +123,18 @@ public class EditCommand extends Command {
                 editPersonDescriptor.getTags().orElse(Collections.emptySet()),
                 editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet())
         );
-        Person editedPerson = new Person(updatedName, updatedPhone, updatedEmail,
-                updatedTelegram, updatedGithub, tagUpdateResult.getUpdatedTags());
+        Boolean isPinned = personToEdit.isPinned();
+        Instant pinnedAt = personToEdit.getPinnedAt().orElse(null);
+
+        Person editedPerson = new Person(
+                updatedName,
+                updatedPhone,
+                updatedEmail,
+                updatedTelegram,
+                updatedGithub,
+                tagUpdateResult.getUpdatedTags(),
+                isPinned,
+                pinnedAt);
         return new Pair<>(editedPerson, tagUpdateResult);
     }
 
