@@ -7,10 +7,12 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GITHUB_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PREFERRED_MODE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TELEGRAM_BOB;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.BOB;
 
 import org.junit.jupiter.api.Test;
@@ -36,7 +38,7 @@ public class PersonTest {
         // same name, all other attributes different -> returns true
         Person editedAlice = new PersonBuilder(ALICE).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB)
                 .withGithub(VALID_GITHUB_BOB).withTelegram(VALID_TELEGRAM_BOB)
-                .withTags(VALID_TAG_HUSBAND).build();
+                .withPreferredMode(VALID_PREFERRED_MODE_BOB).withTags(VALID_TAG_HUSBAND).build();
         assertTrue(ALICE.isSamePerson(editedAlice));
 
         // different name, all other attributes same -> returns false
@@ -51,6 +53,19 @@ public class PersonTest {
         String nameWithTrailingSpaces = VALID_NAME_BOB + " ";
         editedBob = new PersonBuilder(BOB).withName(nameWithTrailingSpaces).build();
         assertFalse(BOB.isSamePerson(editedBob));
+    }
+
+    @Test
+    public void pin_personNotPinned_returnsPinnedPerson() {
+        Person pinnedBenson = BENSON.pin();
+        assertTrue(pinnedBenson.isPinned());
+        assertTrue(pinnedBenson.getPinnedAt().isPresent());
+    }
+
+    @Test
+    public void pin_personPinned_returnsSamePerson() {
+        Person pinnedBenson = new PersonBuilder(BENSON).withPinnedAt().build();
+        assertEquals(pinnedBenson, pinnedBenson.pin());
     }
 
     @Test
@@ -91,9 +106,17 @@ public class PersonTest {
         editedAlice = new PersonBuilder(ALICE).withGithub(VALID_GITHUB_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
 
+        // different preferred mode -> returns false
+        editedAlice = new PersonBuilder(ALICE).withPreferredMode(VALID_PREFERRED_MODE_BOB).build();
+        assertFalse(ALICE.equals(editedAlice));
+
         // different tags -> returns false
         editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(ALICE.equals(editedAlice));
+
+        // different pin status -> returns false
+        Person pinnedBenson = new PersonBuilder(BENSON).withPinnedAt().build();
+        assertFalse(BENSON.equals(pinnedBenson));
     }
 
     @Test

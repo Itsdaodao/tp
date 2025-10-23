@@ -1,6 +1,6 @@
 package seedu.address.logic.util;
 
-import java.awt.Desktop;
+import java.awt.Desktop.Action;
 import java.io.IOException;
 import java.net.URI;
 
@@ -10,7 +10,7 @@ import java.net.URI;
  */
 public class DummyDesktopWrapper implements DesktopWrapper {
     @Override
-    public boolean isSupported(Desktop.Action action) {
+    public boolean isSupported(Action action) {
         return false;
     }
 

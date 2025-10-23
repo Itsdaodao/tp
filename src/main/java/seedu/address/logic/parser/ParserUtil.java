@@ -2,6 +2,7 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +14,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 
@@ -109,6 +111,43 @@ public class ParserUtil {
             throw new ParseException(Github.MESSAGE_CONSTRAINTS);
         }
         return new Github(trimmedUsername);
+    }
+
+    /**
+     * Parses a {@code String preferredMode} into a {@code PreferredCommunicationMode} enum value.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code PreferredCommunicationMode} is invalid.
+     */
+    public static PreferredCommunicationMode parsePreferredMode(
+            String preferredMode, Set<PreferredCommunicationMode> availableModes) throws ParseException {
+        // available mode can be null
+        requireNonNull(preferredMode);
+        String trimmedMode = preferredMode.trim();
+        boolean allowNone = false;
+
+        // Check if the mode is a valid enum value (excluding NONE)
+        boolean isRecognized = Arrays.stream(PreferredCommunicationMode.values())
+                .anyMatch(mode -> mode.name().equalsIgnoreCase(trimmedMode)
+                        && mode != PreferredCommunicationMode.NONE);
+
+        if (!isRecognized) {
+            throw new ParseException(PreferredCommunicationMode.MESSAGE_CONSTRAINTS);
+        }
+
+        if (!PreferredCommunicationMode.isValidMode(trimmedMode, availableModes, allowNone)) {
+            throw new ParseException(String.format(
+                    PreferredCommunicationMode.MESSAGE_INVALID_PREFERRED_MODE, preferredMode));
+        }
+
+        // Find matching enum value
+        PreferredCommunicationMode matchedMode = Arrays.stream(PreferredCommunicationMode.values())
+                .filter(mode -> mode != PreferredCommunicationMode.NONE)
+                .filter(mode -> mode.name().equalsIgnoreCase(trimmedMode))
+                .findFirst()
+                .orElse(PreferredCommunicationMode.NONE);
+
+        return matchedMode;
     }
 
     /**

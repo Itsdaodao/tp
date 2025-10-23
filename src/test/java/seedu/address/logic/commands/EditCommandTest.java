@@ -40,7 +40,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
-        Person editedPerson = new PersonBuilder().build();
+        Person editedPerson = new PersonBuilder().withPinnedAt().build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson)
                 .withTags(VALID_TAG_FRIENDS).withRemovedTags(VALID_TAG_FRIENDS).build();
 
@@ -153,7 +153,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_removeNonExistentTag_showsWarningMessage() {
-        Person editedPerson = new PersonBuilder().build();
+        Person editedPerson = new PersonBuilder().withPinnedAt().build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson)
                 .withRemovedTags(VALID_TAG_FRIENDS, VALID_TAG_FRIEND, VALID_TAG_HUSBAND).build();
 
@@ -202,5 +202,37 @@ public class EditCommandTest {
                 + editPersonDescriptor + "}";
         assertEquals(expected, editCommand.toString());
     }
+
+    @Test
+    public void execute_invalidPreferredMode_throwsCommandException() {
+        // Create your own person without an email
+        Person person = new PersonBuilder()
+                .withName("Alice")
+                .withPhone("81234567")
+                .withEmail("flippy@gmail.com") // no email field
+                .withTelegram(null)
+                .withGithub("alicehub")
+                .withPreferredMode("telegram")
+                .build();
+
+        // Create a model that contains only that person
+        Model model = new ModelManager(new AddressBook(), new UserPrefs());
+        model.addPerson(person);
+
+        // Try to edit preferred mode to EMAIL (invalid since no email)
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withPreferredMode("telegram")
+                .build();
+
+        EditCommand editCommand = new EditCommand(Index.fromOneBased(1), descriptor);
+
+        String expectedMessage = String.format(
+                seedu.address.model.person.PreferredCommunicationMode.MESSAGE_INVALID_PREFERRED_MODE,
+                "TELEGRAM"
+        );
+
+        assertCommandFailure(editCommand, model, expectedMessage);
+    }
+
 
 }

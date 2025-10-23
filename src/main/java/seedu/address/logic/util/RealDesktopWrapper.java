@@ -1,6 +1,7 @@
 package seedu.address.logic.util;
 
 import java.awt.Desktop;
+import java.awt.Desktop.Action;
 import java.io.IOException;
 import java.net.URI;
 
@@ -10,7 +11,7 @@ import java.net.URI;
 public class RealDesktopWrapper implements DesktopWrapper {
     private final Desktop desktop = Desktop.getDesktop();
 
-    public boolean isSupported(Desktop.Action action) {
+    public boolean isSupported(Action action) {
         return desktop.isSupported(action);
     }
 

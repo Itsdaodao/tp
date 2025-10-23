@@ -11,6 +11,7 @@ import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 
@@ -22,21 +23,28 @@ public class SampleDataUtil {
         return new Person[] {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
                     new Telegram("alex_yy"), new Github("alex-y"),
+                    PreferredCommunicationMode.TELEGRAM,
                     getTagSet("friends")),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
                     new Telegram("berinceyu88"), new Github("berniceyu88"),
+                    PreferredCommunicationMode.GITHUB,
                     getTagSet("colleagues", "friends")),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
                     new Telegram("itschar"), new Github("char-code"),
+                    PreferredCommunicationMode.PHONE,
                     getTagSet("neighbours")),
             new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
                     new Telegram("david_li40"), new Github(),
+                    PreferredCommunicationMode.TELEGRAM,
                     getTagSet("family")),
             new Person(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
                     new Telegram(), new Github("irfan-66"),
+                    PreferredCommunicationMode.of(null),
                     getTagSet("classmates")),
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
-                    new Telegram(), new Github(), getTagSet("colleagues"))
+                    new Telegram(), new Github(),
+                    PreferredCommunicationMode.of(null),
+                    getTagSet("colleagues"))
         };
     }
 

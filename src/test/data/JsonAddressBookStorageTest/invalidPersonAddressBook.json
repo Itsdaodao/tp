@@ -4,6 +4,9 @@
     "phone": "9482424",
     "email": "hans@example.com",
     "telegram": "hansisbest",
-    "github": "hansisbest"
+    "github": "hansisbest",
+    "preferredCommunicationMode": "phone",
+    "isPinned" : false,
+    "pinnedAt" : null
   } ]
 }

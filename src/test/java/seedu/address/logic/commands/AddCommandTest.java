@@ -36,7 +36,7 @@ public class AddCommandTest {
     public void execute_personAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
         Person validPerson = new PersonBuilder()
-                .withEmail().withTelegram().withGithub().build();
+                .withEmail().withTelegram().withGithub().withPreferredMode().build();
 
         CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
 
@@ -171,6 +171,11 @@ public class AddCommandTest {
 
         @Override
         public void resetSortOrder() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void exportAddressBookToCsv(Path filePath) {
             throw new AssertionError("This method should not be called.");
         }
     }
