@@ -99,7 +99,7 @@ public class MainWindowTest {
 
     @Test
     public void scrollMode_selectsFirstPerson_onScrollNext(FxRobot robot) {
-        Person selected = model.getAddressBook().getPersonList().get(0);
+        Person selected = model.getSortedAndFilteredPersonList().get(0);
 
         robot.push(MainWindow.ENTER_SCROLL_MODE);
         robot.push(MainWindow.SCROLL_MODE_NEXT);
@@ -109,7 +109,7 @@ public class MainWindowTest {
 
     @Test
     public void scrollMode_selectsLastPerson_onManyRepeatedScrollNextInput(FxRobot robot) {
-        List<Person> list = model.getAddressBook().getPersonList();
+        List<Person> list = model.getSortedAndFilteredPersonList();
         Person selected = list.get(list.size() - 1);
 
         robot.push(MainWindow.ENTER_SCROLL_MODE);
@@ -123,8 +123,8 @@ public class MainWindowTest {
     @Test
     public void scrollMode_selectsFirstPerson_onScrollPreviousInput(FxRobot robot) {
         // Arrange - select second person by pressing SCROLL_NEXT twice
-        Person firstPerson = model.getAddressBook().getPersonList().get(0);
-        Person secondPerson = model.getAddressBook().getPersonList().get(1);
+        Person firstPerson = model.getSortedAndFilteredPersonList().get(0);
+        Person secondPerson = model.getSortedAndFilteredPersonList().get(1);
         robot.push(MainWindow.ENTER_SCROLL_MODE);
         robot.push(MainWindow.SCROLL_MODE_NEXT);
         robot.push(MainWindow.SCROLL_MODE_NEXT);

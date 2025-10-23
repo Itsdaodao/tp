@@ -1,5 +1,6 @@
 package seedu.address.testutil;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ public class PersonBuilder {
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_TELEGRAM = "amy_bee";
     public static final String DEFAULT_GITHUB = "amy-bee";
+    public static final String DEFAULT_PINNEDAT = "2025-10-21T12:49:39.699362800Z";
 
     private Name name;
     private Phone phone;
@@ -29,6 +31,8 @@ public class PersonBuilder {
     private Telegram telegram;
     private Github github;
     private Set<Tag> tags;
+    private Boolean isPinned;
+    private Instant pinnedAt;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -40,6 +44,8 @@ public class PersonBuilder {
         telegram = new Telegram();
         github = new Github();
         tags = new HashSet<>();
+        isPinned = false;
+        pinnedAt = null;
     }
 
     /**
@@ -52,6 +58,8 @@ public class PersonBuilder {
         telegram = personToCopy.getTelegram();
         github = personToCopy.getGithub();
         tags = new HashSet<>(personToCopy.getTags());
+        isPinned = personToCopy.isPinned();
+        pinnedAt = personToCopy.getPinnedAt().orElse(null);
     }
 
     /**
@@ -126,8 +134,33 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets a default {@code pinnedAt} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withPinnedAt() {
+        this.isPinned = true;
+        this.pinnedAt = Instant.parse(DEFAULT_PINNEDAT);
+        return this;
+    }
+
+    /**
+     * Sets the {@code pinnedAt} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withPinnedAt(String pinnedAt) {
+        this.isPinned = true;
+        try {
+            this.pinnedAt = Instant.parse(pinnedAt);
+        } catch (Exception e) {
+            this.isPinned = false;
+            this.pinnedAt = null;
+
+            throw new IllegalArgumentException(Person.PIN_DATE_MESSAGE_CONSTRAINT);
+        }
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, telegram, github, tags);
+        return new Person(name, phone, email, telegram, github, tags, isPinned, pinnedAt);
     }
 
 }

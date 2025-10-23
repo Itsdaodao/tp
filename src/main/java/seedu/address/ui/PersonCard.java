@@ -46,6 +46,8 @@ public class PersonCard extends UiPart<Region> {
     private Hyperlink github;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label pinIcon;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -60,6 +62,9 @@ public class PersonCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
         phone.setText(person.getPhone().value);
+
+        // Display pin icon
+        pinIcon.setVisible(person.isPinned());
 
         // Optional Field: Email
         if (person.getEmail().isEmpty()) {

@@ -1,5 +1,7 @@
 package seedu.address.storage;
 
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +33,8 @@ class JsonAdaptedPerson {
     private final String telegram;
     private final String github;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final Boolean isPinned;
+    private final String pinnedAt;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -41,12 +45,16 @@ class JsonAdaptedPerson {
                              @JsonProperty("email") String email,
                              @JsonProperty("telegram") String telegram,
                              @JsonProperty("github") String github,
-                             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+                             @JsonProperty("tags") List<JsonAdaptedTag> tags,
+                             @JsonProperty("isPinned") Boolean isPinned,
+                             @JsonProperty("pinnedAt") String pinnedAt) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.telegram = telegram;
         this.github = github;
+        this.isPinned = isPinned;
+        this.pinnedAt = pinnedAt;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -61,6 +69,8 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         telegram = source.getTelegram().value;
         github = source.getGithub().value;
+        isPinned = source.isPinned();
+        pinnedAt = source.getPinnedAt().map(Instant::toString).orElse(null);
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -109,7 +119,26 @@ class JsonAdaptedPerson {
         final Github modelGithub = new Github(github);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelGithub, modelTags);
+
+        final Boolean modelIsPinned = isPinned != null && isPinned;
+
+        Instant modelPinnedAt;
+        try {
+            modelPinnedAt = pinnedAt == null ? null : Instant.parse(pinnedAt);
+        } catch (DateTimeParseException e) {
+            throw new IllegalValueException(Person.PIN_DATE_MESSAGE_CONSTRAINT);
+        }
+
+        return new Person(
+                modelName,
+                modelPhone,
+                modelEmail,
+                modelTelegram,
+                modelGithub,
+                modelTags,
+                modelIsPinned,
+                modelPinnedAt
+        );
     }
 
 }
