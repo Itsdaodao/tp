@@ -69,7 +69,8 @@ public class ExportCommand extends Command {
         CommandRegistry.register(
                 COMMAND_WORD,
                 "Exports all contacts to a CSV file",
-                "Example: " + COMMAND_WORD + " mycontacts.csv",
+                "Example: " + COMMAND_WORD + " mycontacts.csv\n"
+                        + "            Example: export",
                 "Usage: " + MESSAGE_USAGE
         );
     }
