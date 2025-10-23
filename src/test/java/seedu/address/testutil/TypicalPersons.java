@@ -59,7 +59,8 @@ public class TypicalPersons {
             .withGithub("carl-k").withPreferredMode("phone").build();
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
             .withEmail("cornelia@example.com").withTelegram("DanielMeier")
-            .withGithub("danielmeier").withPreferredMode("phone").withTags("friends").build();
+            .withGithub("danielmeier").withPreferredMode("phone").withTags("friends")
+            .withPinnedAt("2025-10-21T12:45:38.699362800Z").build();
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
             .withEmail("werner@example.com").withTelegram("werner")
             .withGithub("werner").withPreferredMode("phone").build();
