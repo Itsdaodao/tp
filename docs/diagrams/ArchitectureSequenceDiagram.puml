@@ -5,14 +5,56 @@ skinparam ArrowFontStyle plain
 Actor User as user USER_COLOR
 Participant ":UI" as ui UI_COLOR
 Participant ":Logic" as logic LOGIC_COLOR
+Participant ":State" as state STATE_COLOR
 Participant ":Model" as model MODEL_COLOR
 Participant ":Storage" as storage STORAGE_COLOR
+
 
 user -[USER_COLOR]> ui : "delete 1"
 activate ui UI_COLOR
 
 ui -[UI_COLOR]> logic : execute("delete 1")
 activate logic LOGIC_COLOR
+
+logic -[USER_COLOR]> state : isAwaitingUserConfirmation()
+activate state STATE_COLOR
+
+state -[STATE_COLOR]-> logic : false
+deactivate state
+
+logic -[LOGIC_COLOR]> state : setAwaitingUserConfirmation(\npendingOperation\n)\t\t\t\t\t
+activate state STATE_COLOR
+
+state -[STATE_COLOR]-> logic
+deactivate state
+
+logic -[MODEL_COLOR]-> ui
+deactivate logic
+
+ui -[MODEL_COLOR]-> user : show \n confirm\n prompt
+deactivate ui
+
+user -[USER_COLOR]> ui : "y"
+activate ui UI_COLOR
+
+ui -[UI_COLOR]> logic : execute("y")
+activate logic LOGIC_COLOR
+
+logic -[LOGIC_COLOR]> state : isAwaitingUserConfirmation()
+activate state STATE_COLOR
+
+state -[STATE_COLOR]-> logic : true
+deactivate state
+
+logic -[LOGIC_COLOR]> state : getPendingOperation()
+activate state STATE_COLOR
+
+state -[STATE_COLOR]-> logic
+deactivate state
+
+
+
+
 
 logic -[LOGIC_COLOR]> model : deletePerson(p)
 activate model MODEL_COLOR
@@ -34,6 +76,6 @@ deactivate storage
 logic --[LOGIC_COLOR]> ui
 deactivate logic
 
-ui--[UI_COLOR]> user
+ui--[UI_COLOR]> user : show \n result
 deactivate ui
 @enduml
