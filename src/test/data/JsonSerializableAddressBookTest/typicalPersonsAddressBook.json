@@ -6,6 +6,7 @@
     "email" : "alice@example.com",
     "telegram": "alice_p",
     "github": "alice123",
+    "preferredCommunicationMode": "phone",
     "tags" : [ "friends" ],
     "isPinned" : true,
     "pinnedAt" : "2025-10-21T12:49:39.699362800Z"
@@ -15,6 +16,7 @@
     "email" : "bensonm@example.com",
     "telegram": "benson_m",
     "github": "benson-m",
+    "preferredCommunicationMode": "phone",
     "tags" : [ "owesMoney", "friends" ],
     "isPinned" : false,
     "pinnedAt" : null
@@ -24,6 +26,7 @@
     "email" : "heinz@example.com",
     "telegram": "Carl_K",
     "github": "carl-k",
+    "preferredCommunicationMode": "phone",
     "tags" : [ ],
     "isPinned" : false,
     "pinnedAt" : null
@@ -33,6 +36,7 @@
     "email" : "cornelia@example.com",
     "telegram": "DanielMeier",
     "github": "danielmeier",
+    "preferredCommunicationMode": "phone",
     "tags" : [ "friends" ],
     "isPinned" : true,
     "pinnedAt" : "2025-10-21T12:45:38.699362800Z"
@@ -42,6 +46,7 @@
     "email" : "werner@example.com",
     "telegram": "werner",
     "github": "werner",
+    "preferredCommunicationMode": "phone",
     "tags" : [ ],
     "isPinned" : false,
     "pinnedAt" : null
@@ -51,6 +56,7 @@
     "email" : "lydia@example.com",
     "telegram": "fiona_k",
     "github": "fiona-22",
+    "preferredCommunicationMode": "phone",
     "tags" : [ ],
     "isPinned" : false,
     "pinnedAt" : null
@@ -60,6 +66,7 @@
     "email" : "anna@example.com",
     "telegram": "gorgeousness12",
     "github": "gorg12",
+    "preferredCommunicationMode": "phone",
     "tags" : [ ],
     "isPinned" : false,
     "pinnedAt" : null

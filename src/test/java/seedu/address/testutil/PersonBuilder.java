@@ -9,6 +9,7 @@ import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -24,12 +25,15 @@ public class PersonBuilder {
     public static final String DEFAULT_TELEGRAM = "amy_bee";
     public static final String DEFAULT_GITHUB = "amy-bee";
     public static final String DEFAULT_PINNEDAT = "2025-10-21T12:49:39.699362800Z";
+    public static final String DEFAULT_PREFERRED_MODE = "telegram";
+
 
     private Name name;
     private Phone phone;
     private Email email;
     private Telegram telegram;
     private Github github;
+    private PreferredCommunicationMode preferredMode;
     private Set<Tag> tags;
     private Boolean isPinned;
     private Instant pinnedAt;
@@ -43,6 +47,7 @@ public class PersonBuilder {
         email = new Email();
         telegram = new Telegram();
         github = new Github();
+        preferredMode = PreferredCommunicationMode.of(null);
         tags = new HashSet<>();
         isPinned = false;
         pinnedAt = null;
@@ -57,6 +62,7 @@ public class PersonBuilder {
         email = personToCopy.getEmail();
         telegram = personToCopy.getTelegram();
         github = personToCopy.getGithub();
+        preferredMode = personToCopy.getPreferredMode();
         tags = new HashSet<>(personToCopy.getTags());
         isPinned = personToCopy.isPinned();
         pinnedAt = personToCopy.getPinnedAt().orElse(null);
@@ -135,6 +141,22 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets a default {@code PreferredCommunicationMode} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withPreferredMode() {
+        this.preferredMode = PreferredCommunicationMode.of(DEFAULT_PREFERRED_MODE);
+        return this;
+    }
+
+    /**
+     * Sets the {@code PreferredCommunicationMode} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withPreferredMode(String username) {
+        this.preferredMode = PreferredCommunicationMode.of(username);
+        return this;
+    }
+
+    /**
      * Sets a default {@code pinnedAt} of the {@code Person} that we are building.
      */
     public PersonBuilder withPinnedAt() {
@@ -160,7 +182,7 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, phone, email, telegram, github, tags, isPinned, pinnedAt);
+        return new Person(name, phone, email, telegram, github, preferredMode, tags, isPinned, pinnedAt);
     }
 
 }

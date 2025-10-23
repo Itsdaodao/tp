@@ -5,9 +5,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GITHUB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PREFERRED_MODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -18,6 +20,7 @@ import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 
@@ -39,6 +42,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                         PREFIX_EMAIL,
                         PREFIX_TELEGRAM,
                         PREFIX_GITHUB,
+                        PREFIX_PREFERRED_MODE,
                         PREFIX_TAG);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE)
@@ -47,27 +51,44 @@ public class AddCommandParser implements Parser<AddCommand> {
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(
-                PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM, PREFIX_GITHUB);
+                PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM, PREFIX_GITHUB, PREFIX_PREFERRED_MODE);
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        Set<PreferredCommunicationMode> availableModes = EnumSet.of(PreferredCommunicationMode.PHONE);
 
         Email email = new Email(); // Create default Email with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_EMAIL)) {
             email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
+            if (!email.isEmpty()) {
+                availableModes.add(PreferredCommunicationMode.EMAIL);
+            }
         }
 
         Telegram telegram = new Telegram(); // Create default Telegram with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_TELEGRAM)) {
             telegram = ParserUtil.parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get());
+            if (!telegram.isEmpty()) {
+                availableModes.add(PreferredCommunicationMode.TELEGRAM);
+            }
         }
 
         Github github = new Github(); // Create default GitHub with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_GITHUB)) {
             github = ParserUtil.parseGithub(argMultimap.getValue(PREFIX_GITHUB).get());
+            if (!github.isEmpty()) {
+                availableModes.add(PreferredCommunicationMode.GITHUB);
+            }
         }
 
-        Person person = new Person(name, phone, email, telegram, github, tagList);
+        // Create default preferredCommunicationMode with empty value
+        PreferredCommunicationMode preferredMode = PreferredCommunicationMode.NONE;
+        if (arePrefixesPresent(argMultimap, PREFIX_PREFERRED_MODE)) {
+            preferredMode = ParserUtil.parsePreferredMode(
+                    argMultimap.getValue(PREFIX_PREFERRED_MODE).get(), availableModes);
+        }
+
+        Person person = new Person(name, phone, email, telegram, github, preferredMode, tagList);
 
         return new AddCommand(person);
     }

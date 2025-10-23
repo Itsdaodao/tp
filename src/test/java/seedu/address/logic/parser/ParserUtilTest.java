@@ -8,6 +8,7 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
@@ -24,10 +26,13 @@ public class ParserUtilTest {
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_TAG = "#friend";
+    private static final String INVALID_PREFERRED_MODE = "none";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
     private static final String VALID_EMAIL = "rachel@example.com";
+    private static final String VALID_PREFERRED_MODE_1 = "telegram";
+    private static final String VALID_PREFERRED_MODE_2 = "phone";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
 
@@ -120,6 +125,29 @@ public class ParserUtilTest {
         String emailWithWhitespace = WHITESPACE + VALID_EMAIL + WHITESPACE;
         Email expectedEmail = new Email(VALID_EMAIL);
         assertEquals(expectedEmail, ParserUtil.parseEmail(emailWithWhitespace));
+    }
+
+    @Test
+    public void parsePreferredMode_invalidMode_throwsParseException() {
+        Set<PreferredCommunicationMode> availableModes =
+                EnumSet.of(PreferredCommunicationMode.PHONE, PreferredCommunicationMode.EMAIL);
+
+        // Invalid mode (not in availableModes)
+        assertThrows(ParseException.class, () ->
+                ParserUtil.parsePreferredMode(VALID_PREFERRED_MODE_1, availableModes));
+
+        // Explicitly disallowed NONE
+        assertThrows(ParseException.class, () ->
+                ParserUtil.parsePreferredMode(INVALID_PREFERRED_MODE, availableModes));
+    }
+
+    @Test
+    public void parsePreferredMode_validMode_success() throws Exception {
+        Set<PreferredCommunicationMode> availableModes =
+                EnumSet.of(PreferredCommunicationMode.PHONE, PreferredCommunicationMode.EMAIL);
+
+        assertEquals(PreferredCommunicationMode.PHONE,
+                ParserUtil.parsePreferredMode(VALID_PREFERRED_MODE_2, availableModes));
     }
 
     @Test
