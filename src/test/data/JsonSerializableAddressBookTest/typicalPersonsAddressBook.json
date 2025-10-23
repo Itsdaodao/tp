@@ -7,7 +7,9 @@
     "telegram": "alice_p",
     "github": "alice123",
     "preferredCommunicationMode": "phone",
-    "tags" : [ "friends" ]
+    "tags" : [ "friends" ],
+    "isPinned" : true,
+    "pinnedAt" : "2025-10-21T12:49:39.699362800Z"
   }, {
     "name" : "Benson Meier",
     "phone" : "98765432",
@@ -15,7 +17,9 @@
     "telegram": "benson_m",
     "github": "benson-m",
     "preferredCommunicationMode": "phone",
-    "tags" : [ "owesMoney", "friends" ]
+    "tags" : [ "owesMoney", "friends" ],
+    "isPinned" : false,
+    "pinnedAt" : null
   }, {
     "name" : "Carl Kurz",
     "phone" : "95352563",
@@ -23,7 +27,9 @@
     "telegram": "Carl_K",
     "github": "carl-k",
     "preferredCommunicationMode": "phone",
-    "tags" : [ ]
+    "tags" : [ ],
+    "isPinned" : false,
+    "pinnedAt" : null
   }, {
     "name" : "Daniel Meier",
     "phone" : "87652533",
@@ -31,7 +37,9 @@
     "telegram": "DanielMeier",
     "github": "danielmeier",
     "preferredCommunicationMode": "phone",
-    "tags" : [ "friends" ]
+    "tags" : [ "friends" ],
+    "isPinned" : true,
+    "pinnedAt" : "2025-10-21T12:45:38.699362800Z"
   }, {
     "name" : "Elle Meyer",
     "phone" : "9482224",
@@ -39,7 +47,9 @@
     "telegram": "werner",
     "github": "werner",
     "preferredCommunicationMode": "phone",
-    "tags" : [ ]
+    "tags" : [ ],
+    "isPinned" : false,
+    "pinnedAt" : null
   }, {
     "name" : "Fiona Kunz",
     "phone" : "9482427",
@@ -47,7 +57,9 @@
     "telegram": "fiona_k",
     "github": "fiona-22",
     "preferredCommunicationMode": "phone",
-    "tags" : [ ]
+    "tags" : [ ],
+    "isPinned" : false,
+    "pinnedAt" : null
   }, {
     "name" : "George Best",
     "phone" : "9482442",
@@ -55,6 +67,8 @@
     "telegram": "gorgeousness12",
     "github": "gorg12",
     "preferredCommunicationMode": "phone",
-    "tags" : [ ]
+    "tags" : [ ],
+    "isPinned" : false,
+    "pinnedAt" : null
   } ]
 }

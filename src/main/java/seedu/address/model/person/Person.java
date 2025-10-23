@@ -2,10 +2,12 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -17,6 +19,12 @@ import seedu.address.model.tag.Tag;
  */
 public class Person {
 
+    public static final String PIN_DATE_MESSAGE_CONSTRAINT =
+            "Invalid date time format. \n"
+                    + "pinnedAt must follow the example date time format below \n"
+                    + "Format: <yyyy-MM-dd>T<hr:mm:ss>Z \n"
+                    + "Example: 2025-10-22T07:00:17.036469800Z";
+
     // Identity fields
     private final Name name;
     private final Phone phone;
@@ -27,6 +35,10 @@ public class Person {
 
     // Data fields
     private final Set<Tag> tags = new HashSet<>();
+
+    // Status fields
+    private final Boolean isPinned;
+    private final Optional<Instant> pinnedAt;
 
     /**
      * Every field must be present and not null.
@@ -41,6 +53,27 @@ public class Person {
         this.github = github;
         this.preferredMode = preferredMode;
         this.tags.addAll(tags);
+        this.isPinned = false;
+        this.pinnedAt = Optional.empty();
+    }
+
+    /**
+     * Constructs a Person with the isPinned and pinnedAt field.
+     * pinnedAt field can be null, every other field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Email email, Telegram telegram, Github github,
+                  PreferredCommunicationMode preferredMode,
+                  Set<Tag> tags, Boolean isPinned, Instant pinnedAt) {
+        requireAllNonNull(name, phone, email, telegram, github, tags, isPinned);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.telegram = telegram;
+        this.github = github;
+        this.preferredMode = preferredMode;
+        this.tags.addAll(tags);
+        this.isPinned = isPinned;
+        this.pinnedAt = Optional.ofNullable(pinnedAt);
     }
 
     public Name getName() {
@@ -118,6 +151,37 @@ public class Person {
 
     /**
      * Returns true if both persons have the same identity and data fields.
+     * Returns a pinned copy of this person, setting the pin timestamp if not already pinned.
+     * If the person is already pinned, returns this instance unchanged.
+     *
+     * @return a new Person instance marked as pinned with the current timestamp if not already pinned
+     */
+    public Person pin() {
+        if (isPinned) {
+            return this;
+        }
+
+        Boolean isPinned = true;
+        Instant pinnedAt = Instant.now();
+        return new Person(name, phone, email, telegram, github, preferredMode, tags, isPinned, pinnedAt);
+    }
+
+    /**
+     * Returns true if person isPinned
+     */
+    public Boolean isPinned() {
+        return isPinned;
+    }
+
+    /**
+     * Returns the time at which person is pinned
+     */
+    public Optional<Instant> getPinnedAt() {
+        return pinnedAt;
+    }
+
+    /**
+     * Returns true if both persons have the same identity, data and status fields.
      * This defines a stronger notion of equality between two persons.
      */
     @Override
@@ -138,13 +202,15 @@ public class Person {
                 && telegram.equals(otherPerson.telegram)
                 && github.equals(otherPerson.github)
                 && preferredMode.equals(otherPerson.preferredMode)
-                && tags.equals(otherPerson.tags);
+                && tags.equals(otherPerson.tags)
+                && isPinned.equals(otherPerson.isPinned)
+                && pinnedAt.equals(otherPerson.pinnedAt);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, telegram, github, preferredMode, tags);
+        return Objects.hash(name, phone, email, telegram, github, preferredMode, tags, isPinned, pinnedAt);
     }
 
     @Override

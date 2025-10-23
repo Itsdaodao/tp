@@ -9,6 +9,7 @@ import static seedu.address.testutil.TypicalPersons.BENSON_WITHOUT_GITHUB;
 import static seedu.address.testutil.TypicalPersons.BENSON_WITHOUT_PREFERRED_MODE;
 import static seedu.address.testutil.TypicalPersons.BENSON_WITHOUT_TELEGRAM;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +39,8 @@ public class JsonAdaptedPersonTest {
     private static final String VALID_TELEGRAM = BENSON.getTelegram().toString();
     private static final String VALID_GITHUB = BENSON.getGithub().toString();
     private static final String VALID_PREFERRED_MODE = BENSON.getPreferredMode().toString();
+    private static final Boolean VALID_ISPINNED = BENSON.isPinned();
+    private static final String VALID_PINNEDAT = BENSON.getPinnedAt().map(Instant::toString).orElse(null);
     private static final List<JsonAdaptedTag> VALID_TAGS = BENSON.getTags().stream()
             .map(JsonAdaptedTag::new)
             .collect(Collectors.toList());
@@ -51,28 +54,32 @@ public class JsonAdaptedPersonTest {
     @Test
     public void toModelType_validPersonWithNullEmail_returnsPerson() throws Exception {
         JsonAdaptedPerson person = new JsonAdaptedPerson(
-                VALID_NAME, VALID_PHONE, null, VALID_TELEGRAM, VALID_GITHUB, VALID_PREFERRED_MODE, VALID_TAGS);
+                VALID_NAME, VALID_PHONE, null, VALID_TELEGRAM, VALID_GITHUB, VALID_PREFERRED_MODE, VALID_TAGS,
+                VALID_ISPINNED, VALID_PINNEDAT);
         assertEquals(BENSON_WITHOUT_EMAIL, person.toModelType());
     }
 
     @Test
     public void toModelType_validPersonWithNullTelegram_returnsPerson() throws Exception {
         JsonAdaptedPerson person = new JsonAdaptedPerson(
-                VALID_NAME, VALID_PHONE, VALID_EMAIL, null, VALID_GITHUB, VALID_PREFERRED_MODE, VALID_TAGS);
+                VALID_NAME, VALID_PHONE, VALID_EMAIL, null, VALID_GITHUB, VALID_PREFERRED_MODE, VALID_TAGS,
+                VALID_ISPINNED, VALID_PINNEDAT);
         assertEquals(BENSON_WITHOUT_TELEGRAM, person.toModelType());
     }
 
     @Test
     public void toModelType_validPersonWithNullGithub_returnsPerson() throws Exception {
         JsonAdaptedPerson person = new JsonAdaptedPerson(
-                VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_TELEGRAM, null, VALID_PREFERRED_MODE, VALID_TAGS);
+                VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_TELEGRAM, null, VALID_PREFERRED_MODE, VALID_TAGS,
+                VALID_ISPINNED, VALID_PINNEDAT);
         assertEquals(BENSON_WITHOUT_GITHUB, person.toModelType());
     }
 
     @Test
     public void toModelType_validPersonWithNullPreferredMode_returnsPerson() throws Exception {
         JsonAdaptedPerson person = new JsonAdaptedPerson(
-                VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_TELEGRAM, VALID_GITHUB, null, VALID_TAGS);
+                VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_TELEGRAM, VALID_GITHUB, null, VALID_TAGS,
+                VALID_ISPINNED, VALID_PINNEDAT);
         assertEquals(BENSON_WITHOUT_PREFERRED_MODE, person.toModelType());
     }
 
@@ -81,7 +88,7 @@ public class JsonAdaptedPersonTest {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(
                         INVALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_TELEGRAM, VALID_GITHUB, VALID_PREFERRED_MODE,
-                        VALID_TAGS);
+                        VALID_TAGS, VALID_ISPINNED, VALID_PINNEDAT);
         String expectedMessage = Name.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -89,7 +96,8 @@ public class JsonAdaptedPersonTest {
     @Test
     public void toModelType_nullName_throwsIllegalValueException() {
         JsonAdaptedPerson person = new JsonAdaptedPerson(
-                null, VALID_PHONE, VALID_EMAIL, VALID_TELEGRAM, VALID_GITHUB, VALID_PREFERRED_MODE, VALID_TAGS);
+                null, VALID_PHONE, VALID_EMAIL, VALID_TELEGRAM, VALID_GITHUB, VALID_PREFERRED_MODE, VALID_TAGS,
+                VALID_ISPINNED, VALID_PINNEDAT);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -99,7 +107,7 @@ public class JsonAdaptedPersonTest {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(
                         VALID_NAME, INVALID_PHONE, VALID_EMAIL, VALID_TELEGRAM, VALID_GITHUB, VALID_PREFERRED_MODE,
-                        VALID_TAGS);
+                        VALID_TAGS, VALID_ISPINNED, VALID_PINNEDAT);
         String expectedMessage = Phone.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -107,7 +115,8 @@ public class JsonAdaptedPersonTest {
     @Test
     public void toModelType_nullPhone_throwsIllegalValueException() {
         JsonAdaptedPerson person = new JsonAdaptedPerson(
-                VALID_NAME, null, VALID_EMAIL, VALID_TELEGRAM, VALID_GITHUB, VALID_PREFERRED_MODE, VALID_TAGS);
+                VALID_NAME, null, VALID_EMAIL, VALID_TELEGRAM, VALID_GITHUB, VALID_PREFERRED_MODE, VALID_TAGS,
+                VALID_ISPINNED, VALID_PINNEDAT);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -117,7 +126,7 @@ public class JsonAdaptedPersonTest {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(
                         VALID_NAME, VALID_PHONE, INVALID_EMAIL, VALID_TELEGRAM, VALID_GITHUB, VALID_PREFERRED_MODE,
-                        VALID_TAGS);
+                        VALID_TAGS, VALID_ISPINNED, VALID_PINNEDAT);
         String expectedMessage = Email.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -127,7 +136,7 @@ public class JsonAdaptedPersonTest {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(
                         VALID_NAME, VALID_PHONE, VALID_EMAIL, INVALID_TELEGRAM, VALID_GITHUB, VALID_PREFERRED_MODE,
-                        VALID_TAGS);
+                        VALID_TAGS, VALID_ISPINNED, VALID_PINNEDAT);
         String expectedMessage = Telegram.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -137,7 +146,7 @@ public class JsonAdaptedPersonTest {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(
                         VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_TELEGRAM, INVALID_GITHUB, VALID_PREFERRED_MODE,
-                        VALID_TAGS);
+                        VALID_TAGS, VALID_ISPINNED, VALID_PINNEDAT);
         String expectedMessage = Github.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -147,7 +156,7 @@ public class JsonAdaptedPersonTest {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(
                         VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_TELEGRAM, VALID_GITHUB, INVALID_PREFERRED_MODE,
-                        VALID_TAGS);
+                        VALID_TAGS, VALID_ISPINNED, VALID_PINNEDAT);
         String expectedMessage = PreferredCommunicationMode.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -159,7 +168,7 @@ public class JsonAdaptedPersonTest {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(
                         VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_TELEGRAM, VALID_GITHUB, VALID_PREFERRED_MODE,
-                        invalidTags);
+                        invalidTags, VALID_ISPINNED, VALID_PINNEDAT);
         assertThrows(IllegalValueException.class, person::toModelType);
     }
 

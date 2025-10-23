@@ -6,13 +6,17 @@
     "telegram": "alice_p",
     "github": "alice123",
     "preferredCommunicationMode": "phone",
-    "tags": [ "friends" ]
+    "tags": [ "friends" ],
+    "isPinned" : false,
+    "pinnedAt" : null
   }, {
     "name": "Alice Pauline",
     "phone": "94351253",
     "email": "pauline@example.com",
     "telegram": "alice_p",
     "github": "alice123",
-    "preferredCommunicationMode": "phone"
+    "preferredCommunicationMode": "phone",
+    "isPinned" : false,
+    "pinnedAt" : null
   } ]
 }

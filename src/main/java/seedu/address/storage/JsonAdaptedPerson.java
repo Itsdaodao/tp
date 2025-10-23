@@ -1,5 +1,7 @@
 package seedu.address.storage;
 
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -34,6 +36,8 @@ class JsonAdaptedPerson {
     private final String github;
     private final String preferredCommunicationMode;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final Boolean isPinned;
+    private final String pinnedAt;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -45,13 +49,17 @@ class JsonAdaptedPerson {
                              @JsonProperty("telegram") String telegram,
                              @JsonProperty("github") String github,
                              @JsonProperty("preferredCommunicationMode") String preferredCommunicationMode,
-                             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+                             @JsonProperty("tags") List<JsonAdaptedTag> tags,
+                             @JsonProperty("isPinned") Boolean isPinned,
+                             @JsonProperty("pinnedAt") String pinnedAt) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.telegram = telegram;
         this.github = github;
         this.preferredCommunicationMode = preferredCommunicationMode;
+        this.isPinned = isPinned;
+        this.pinnedAt = pinnedAt;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -67,6 +75,8 @@ class JsonAdaptedPerson {
         telegram = source.getTelegram().value;
         github = source.getGithub().value;
         preferredCommunicationMode = source.getPreferredMode().name();
+        isPinned = source.isPinned();
+        pinnedAt = source.getPinnedAt().map(Instant::toString).orElse(null);
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -124,8 +134,17 @@ class JsonAdaptedPerson {
         }
         final PreferredCommunicationMode modelPreferredMode = PreferredCommunicationMode.of(preferredCommunicationMode);
 
+        final Boolean modelIsPinned = isPinned != null && isPinned;
 
-        return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelGithub, modelPreferredMode, modelTags);
+        Instant modelPinnedAt;
+        try {
+            modelPinnedAt = pinnedAt == null ? null : Instant.parse(pinnedAt);
+        } catch (DateTimeParseException e) {
+            throw new IllegalValueException(Person.PIN_DATE_MESSAGE_CONSTRAINT);
+        }
+
+        return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelGithub, modelPreferredMode,
+                modelTags, modelIsPinned, modelPinnedAt);
     }
 
     /**

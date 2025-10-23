@@ -48,6 +48,8 @@ public class PersonCard extends UiPart<Region> {
     private Hyperlink github;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label pinIcon;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -66,6 +68,8 @@ public class PersonCard extends UiPart<Region> {
         phone.setText(person.getPhone().value);
 
         PreferredCommunicationMode preferredMode = person.getPreferredMode();
+        // Display pin icon
+        pinIcon.setVisible(person.isPinned());
 
         // Mandatory Field: Phone
         String phoneText = person.getPhone().value;
@@ -93,7 +97,7 @@ public class PersonCard extends UiPart<Region> {
      * Otherwise, the label is shown with its text set to the provided field name and value.
      * If the field matches the person's preferred communication mode, a "(preferred)" suffix is appended.
      *
-     * @param label the JavaFX label to udpate
+     * @param label the JavaFX label to update
      * @param value the contact information to display
      * @param fieldName the field name to show before the value
      * @param modeToCheck the communication mode associated with this field

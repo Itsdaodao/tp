@@ -12,6 +12,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.model.person.PreferredCommunicationMode.MESSAGE_INVALID_PREFERRED_MODE;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -126,10 +127,23 @@ public class EditCommand extends Command {
                 editPersonDescriptor.getTags().orElse(Collections.emptySet()),
                 editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet())
         );
+
+        Boolean isPinned = personToEdit.isPinned();
+        Instant pinnedAt = personToEdit.getPinnedAt().orElse(null);
+
         PreferredCommunicationMode updatedPreferredMode =
                 editPersonDescriptor.getPreferredMode().orElse(personToEdit.getPreferredMode());
-        Person editedPerson = new Person(updatedName, updatedPhone, updatedEmail,
-                updatedTelegram, updatedGithub, updatedPreferredMode, tagUpdateResult.getUpdatedTags());
+
+        Person editedPerson = new Person(
+                updatedName,
+                updatedPhone,
+                updatedEmail,
+                updatedTelegram,
+                updatedGithub,
+                updatedPreferredMode,
+                tagUpdateResult.getUpdatedTags(),
+                isPinned,
+                pinnedAt);
 
         // Validate preferred mode against available contact options
         Set<PreferredCommunicationMode> availableModes = editedPerson.getAvailableModes();

@@ -33,11 +33,13 @@ public class TypicalPersons {
             .withTelegram("alice_p")
             .withGithub("alice123")
             .withPreferredMode("phone")
-            .withTags("friends").build();
+            .withTags("friends")
+            .withPinnedAt("2025-10-21T12:49:39.699362800Z").build();
 
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withEmail("bensonm@example.com").withPhone("98765432").withGithub("benson-m")
             .withTelegram("benson_m").withPreferredMode("phone").withTags("owesMoney", "friends").build();
+
     public static final Person BENSON_WITHOUT_EMAIL = new PersonBuilder().withName("Benson Meier")
             .withPhone("98765432").withGithub("benson-m")
             .withTelegram("benson_m").withPreferredMode("phone").withTags("owesMoney", "friends").build();

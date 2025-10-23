@@ -5,6 +5,8 @@
     "email": "hans@example.com",
     "telegram": "hansisbest",
     "github": "hansisbest",
-    "preferredCommunicationMode": "phone"
+    "preferredCommunicationMode": "phone",
+    "isPinned" : false,
+    "pinnedAt" : null
   } ]
 }
