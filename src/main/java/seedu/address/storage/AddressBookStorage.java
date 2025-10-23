@@ -42,4 +42,8 @@ public interface AddressBookStorage {
      */
     void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException;
 
+    /**
+     * Exports the address book to a CSV file at the specified path.
+     */
+    void exportAddressBookToCsv(ReadOnlyAddressBook addressBook, Path filePath) throws IOException;
 }

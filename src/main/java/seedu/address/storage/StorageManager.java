@@ -75,4 +75,9 @@ public class StorageManager implements Storage {
         addressBookStorage.saveAddressBook(addressBook, filePath);
     }
 
+    @Override
+    public void exportAddressBookToCsv(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
+        logger.fine("Attempting to export data to CSV file: " + filePath);
+        addressBookStorage.exportAddressBookToCsv(addressBook, filePath);
+    }
 }

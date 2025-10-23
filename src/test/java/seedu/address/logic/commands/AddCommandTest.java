@@ -173,6 +173,11 @@ public class AddCommandTest {
         public void resetSortOrder() {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void exportAddressBookToCsv(Path filePath) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**

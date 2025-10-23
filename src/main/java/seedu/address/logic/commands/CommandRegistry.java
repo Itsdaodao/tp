@@ -12,6 +12,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.parser.AddCommandParser;
 import seedu.address.logic.parser.DeleteCommandParser;
 import seedu.address.logic.parser.EditCommandParser;
+import seedu.address.logic.parser.ExportCommandParser;
 import seedu.address.logic.parser.FindCommandParser;
 import seedu.address.logic.parser.HelpCommandParser;
 import seedu.address.logic.parser.LaunchCommandParser;
@@ -35,6 +36,7 @@ public class CommandRegistry {
             "DeleteCommand",
             "EditCommand",
             "ExitCommand",
+            "ExportCommand",
             "FindCommand",
             "HelpCommand",
             "ListCommand",
@@ -149,6 +151,7 @@ public class CommandRegistry {
         commandFactoryMap.put(ExitCommand.COMMAND_WORD, (args) -> new ExitCommand());
         commandFactoryMap.put(HelpCommand.COMMAND_WORD, (args) -> new HelpCommandParser().parse(args));
         commandFactoryMap.put(LaunchCommand.COMMAND_WORD, (args) -> new LaunchCommandParser().parse(args));
+        commandFactoryMap.put(ExportCommand.COMMAND_WORD, (args) -> new ExportCommandParser().parse(args));
         commandFactoryMap.put(PinCommand.COMMAND_WORD, (args) -> new PinCommandParser().parse(args));
 
         logger.info("Command registry initialized with " + commands.size() + " commands");

@@ -318,4 +318,43 @@ public class CommandRegistryTest {
             throw new RuntimeException(e);
         }
     }
+
+    @Test
+    public void initialize_registersExportCommand() {
+        CommandRegistry.clear();
+        CommandRegistry.initialize();
+
+        assertTrue(CommandRegistry.hasCommand("export"));
+        String helpText = CommandRegistry.getCommandHelp("export");
+        assertTrue(helpText.contains("export"));
+        assertTrue(helpText.contains("CSV"));
+    }
+
+    @Test
+    public void getCommandFactory_exportCommand_returnsFactory() {
+        CommandRegistry.initialize();
+
+        CommandFactory factory = CommandRegistry.getCommandFactory("export");
+        assertTrue(factory != null);
+    }
+
+    @Test
+    public void getCommandFactory_exportCommandWithArgs_createsCommand() throws Exception {
+        CommandRegistry.initialize();
+
+        CommandFactory factory = CommandRegistry.getCommandFactory("export");
+        Command command = factory.create("test.csv");
+
+        assertTrue(command instanceof ExportCommand);
+    }
+
+    @Test
+    public void getCommandFactory_exportCommandEmptyArgs_createsCommand() throws Exception {
+        CommandRegistry.initialize();
+
+        CommandFactory factory = CommandRegistry.getCommandFactory("export");
+        Command command = factory.create("");
+
+        assertTrue(command instanceof ExportCommand);
+    }
 }
