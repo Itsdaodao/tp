@@ -46,6 +46,9 @@ public class PinCommand extends Command {
         Person personToPin = lastShownList.get(targetIndex.getZeroBased());
         Person pinnedPerson = personToPin.pin();
 
+        assert pinnedPerson.isPinned() : "Person is not pinned";
+        assert pinnedPerson.getPinnedAt().isPresent() : "PinnedAt time is not found";
+
         if (personToPin.equals(pinnedPerson)) {
             // No changes, person already pinned
             throw new CommandException(MESSAGE_PERSON_ALREADY_PINNED);
