@@ -16,8 +16,7 @@ import seedu.address.model.tag.Tag;
 public class TagCommandParserTest {
     private final TagCommandParser parser = new TagCommandParser();
 
-    // --- Valid cases ---
-
+    // <--- Valid cases --->
     @Test
     public void parse_validRename_success() {
         // e.g. tag -r t/CS1101 s/CS2100
@@ -33,7 +32,7 @@ public class TagCommandParserTest {
     }
 
     @Test
-    public void parse_validRename_withExtraSpaces_success() {
+    public void parse_validRenameWithExtraSpaces_success() {
         // Handles random spacing correctly
         String userInput = "   " + FLAG_RENAME_TAG
                 + "       " + PREFIX_TARGET_TAG + "  friend  "
@@ -46,8 +45,7 @@ public class TagCommandParserTest {
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
-    // --- Invalid flag cases ---
-
+    // <--- Invalid flag cases --->
     @Test
     public void parse_missingFlag_failure() {
         // Missing -r
@@ -67,8 +65,7 @@ public class TagCommandParserTest {
         assertParseFailure(parser, userInput, TagCommand.MESSAGE_NO_FLAG_PROVIDED);
     }
 
-    // --- Invalid tag count cases ---
-
+    // <--- Invalid tag count cases --->
     @Test
     public void parse_missingTargetTag_failure() {
         // Missing target tag

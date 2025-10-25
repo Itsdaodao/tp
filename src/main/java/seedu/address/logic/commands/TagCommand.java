@@ -14,18 +14,26 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.Tag;
 
+/**
+ * Edits the Tag details of single or multiple contacts in the address book.
+ */
 public class TagCommand extends Command {
 
     public static final String COMMAND_WORD = "tag";
 
-    public static final String MESSAGE_DESCRIPTION = "Edits the tags details for all persons identified in the displayed person list.";
-    public static final String MESSAGE_FLAGS = "Flags: ["+ FLAG_RENAME_TAG + "]";
+    public static final String MESSAGE_DESCRIPTION =
+            "Edits the tags details for all persons identified in the displayed person list.";
+
+    public static final String MESSAGE_FLAGS = "Flags: [" + FLAG_RENAME_TAG + "]";
+
     public static final String MESSAGE_PARAMETERS = "Parameters: "
-            + "" + PREFIX_TARGET_TAG + "(target) TAG "
+            + PREFIX_TARGET_TAG + "(target) TAG "
             + "[" + PREFIX_RENAMED_TAG + "(renamed) TAG]";
+
     public static final String MESSAGE_EXAMPLE = "Example: "
             + COMMAND_WORD + " " + FLAG_RENAME_TAG + " "
-            + PREFIX_TARGET_TAG + "CS1101" + " " + PREFIX_RENAMED_TAG + "CS2100";;
+            + PREFIX_TARGET_TAG + "CS1101" + " " + PREFIX_RENAMED_TAG + "CS2100";
+
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": "
             + MESSAGE_DESCRIPTION + "\n"
             + MESSAGE_FLAGS + "\n"
@@ -34,13 +42,18 @@ public class TagCommand extends Command {
 
     public static final String MESSAGE_RENAMED_SUCCESS = "Renamed tag %s to %s for %d person(s).";
     public static final String MESSAGE_TAG_FAILURE = "No persons found with tag: %s";
-
     public static final String MESSAGE_NO_FLAG_PROVIDED = "No/Invalid Flag provided\n" + MESSAGE_USAGE;
     public static final String MESSAGE_RENAMED_EXACTLY_ONE = "Must have exactly one target tag and one renamed tag";
 
     private final Set<Tag> targetTags;
     private final Set<Tag> renamedTags;
 
+    /**
+     * Creates a TagCommand to either rename or delete a specified tag from multiple people
+     *
+     * @param targetTag     set of target tags to delete/rename
+     * @param renamedTags   name of tags to be renamed to
+     */
     public TagCommand(Set<Tag> targetTag, Set<Tag> renamedTags) {
         this.targetTags = targetTag;
         this.renamedTags = renamedTags;
@@ -54,7 +67,15 @@ public class TagCommand extends Command {
         return executeRenameTags(model, lastShownList);
     }
 
-    public CommandResult executeRenameTags(Model model, List<Person> lastShownList) throws CommandException {
+    /**
+     * Executes the TagCommand given the rename flag {@code -r} and returns the result message.
+     *
+     * @param model {@code Model} which the command should operate on.
+     * @param lastShownList {@code lastShownList} which the command should iterate on.
+     * @return feedback message of the rename tag result for display
+     * @throws CommandException
+     */
+    private CommandResult executeRenameTags(Model model, List<Person> lastShownList) throws CommandException {
         assert targetTags.size() == 1;
 
         Tag targetTag = targetTags.iterator().next();
@@ -78,8 +99,7 @@ public class TagCommand extends Command {
         return new CommandResult(String.format(MESSAGE_RENAMED_SUCCESS, targetTag, renamedTag, updatedCount));
     }
 
-    public Person createPerson(Person personToEdit) {
-
+    private Person createPerson(Person personToEdit) {
         Set<Tag> updatedTagSet = getUpdatedTagSet(personToEdit);
 
         return new Person(
@@ -99,7 +119,7 @@ public class TagCommand extends Command {
         Set<Tag> baseTags = new HashSet<>(person.getTags());
 
         assert !baseTags.isEmpty() : "baseTags should contain at least the targetTag";
-        assert renamedTags.size() == 1: "renamedTag should contain exactly one tag to be renamed";
+        assert renamedTags.size() == 1 : "renamedTag should contain exactly one tag to be renamed";
 
         baseTags.removeAll(targetTags);
         baseTags.addAll(renamedTags);
@@ -107,6 +127,10 @@ public class TagCommand extends Command {
         return baseTags;
     }
 
+    /**
+     * @return <code>true</code> as TagCommand modifies the address book
+     * @inheritDoc
+     */
     @Override
     public boolean requiresWrite() {
         return true;

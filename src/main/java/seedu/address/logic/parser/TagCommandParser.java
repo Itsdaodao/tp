@@ -12,8 +12,17 @@ import seedu.address.logic.commands.TagCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.tag.Tag;
 
+/**
+ * Parses input arguments and creates a new TagCommand object
+ */
 public class TagCommandParser implements Parser<TagCommand> {
 
+    /**
+     * Parses the given {@code String} of arguments in the context of the TagCommand
+     * and returns an TagCommand object for execution.
+     *
+     * @throws ParseException if the user input does not conform the expected format
+     */
     public TagCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, FLAG_RENAME_TAG, PREFIX_TARGET_TAG, PREFIX_RENAMED_TAG);
@@ -28,7 +37,13 @@ public class TagCommandParser implements Parser<TagCommand> {
         return parseRename(argMultimap);
     }
 
-    public TagCommand parseRename(ArgumentMultimap argMultimap) throws ParseException {
+    /**
+     * Parses the given {@code String} of arguments in the context of the TagCommand given the rename flag {@code -r}
+     * and returns an TagCommand object for execution.
+     *
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    private TagCommand parseRename(ArgumentMultimap argMultimap) throws ParseException {
 
         Set<Tag> targetTags = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TARGET_TAG));
         Set<Tag> renamedTags = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_RENAMED_TAG));

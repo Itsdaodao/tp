@@ -4,7 +4,6 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
-import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +17,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
 
+
 public class TagCommandTest {
     private Model model;
     private final Tag targetTag = new Tag("friends");
@@ -27,33 +27,6 @@ public class TagCommandTest {
     public void setUp() {
         model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     }
-//
-//    @Test
-//    public void execute_renameExistingTag_success() throws Exception {
-//        // Create TagCommand that renames "friends" -> "buddies"
-//        Set<Tag> target = Set.of(targetTag);
-//        Set<Tag> renamed = Set.of(renamedTag);
-//        TagCommand command = new TagCommand(target, renamed);
-//
-//        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-//        List<Person> originalList = model.getSortedAndFilteredPersonList();
-//
-//        int updatedCount = 0;
-//        for (Person person : originalList) {
-//            if (person.getTags().contains(targetTag)) {
-//                Person updatedPerson = new PersonBuilder(person)
-//                        .withTags(renamedTag.tagName)
-//                        .build();
-//                expectedModel.setPerson(person, updatedPerson);
-//                updatedCount++;
-//            }
-//        }
-//
-//        String expectedMessage = String.format(TagCommand.MESSAGE_RENAMED_SUCCESS,
-//                targetTag, renamedTag, updatedCount);
-//
-//        assertCommandSuccess(command, model, expectedMessage, expectedModel);
-//    }
 
     @Test
     public void execute_multiplePersonsUpdated_success() {
