@@ -126,4 +126,18 @@ public class TagCommand extends Command {
                 MESSAGE_PARAMETERS
         );
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof TagCommand)) {
+            return false;
+        }
+        TagCommand otherCommand = (TagCommand) other;
+        return targetTags.equals(otherCommand.targetTags) && renamedTags.equals(otherCommand.renamedTags);
+    }
 }
