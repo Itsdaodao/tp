@@ -18,8 +18,8 @@ import seedu.address.logic.parser.HelpCommandParser;
 import seedu.address.logic.parser.LaunchCommandParser;
 import seedu.address.logic.parser.ListCommandParser;
 import seedu.address.logic.parser.PinCommandParser;
-import seedu.address.logic.parser.UnpinCommandParser;
 import seedu.address.logic.parser.TagCommandParser;
+import seedu.address.logic.parser.UnpinCommandParser;
 
 /**
  * Maintains a registry of all available commands and their help information.
