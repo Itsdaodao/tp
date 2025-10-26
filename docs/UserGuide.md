@@ -294,6 +294,7 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 ### Accessing Command History
 
 Access your previously entered commands by pressing the `Up` and `Down` arrow keys when the Command Box is focused.
+Command history is saved and loaded every time.
 
 #### Previous Command: `Up` Arrow Key
 
