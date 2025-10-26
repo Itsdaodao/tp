@@ -2,7 +2,6 @@ package seedu.address.storage;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,9 +10,16 @@ import seedu.address.commons.util.FileUtil;
 import seedu.address.model.CommandHistory;
 import seedu.address.model.ReadOnlyCommandHistory;
 
+/**
+ * A class to access CommandHistory stored in the hard disk
+ */
 public class NewlineDelimitedCommandHistoryStorage implements CommandHistoryStorage {
     private Path filePath;
 
+    /**
+     * Constructs an object with the provided filePath
+     * @param filePath The location of the file
+     */
     public NewlineDelimitedCommandHistoryStorage(Path filePath) {
         this.filePath = filePath;
     }

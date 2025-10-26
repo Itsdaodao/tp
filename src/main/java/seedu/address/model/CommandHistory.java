@@ -1,16 +1,14 @@
 package seedu.address.model;
 
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
+/**
+ * Represents the user's command history.
+ */
 public class CommandHistory implements ReadOnlyCommandHistory {
+    private static final int HISTORY_CAPACITY = 15;
     private final LinkedList<String> commandHistory;
-    private final int HISTORY_CAPACITY = 15;
     private int indexInHistory = -1;
     private String currentCommand = "";
 
@@ -22,6 +20,9 @@ public class CommandHistory implements ReadOnlyCommandHistory {
         this.commandHistory = new LinkedList<>();
     }
 
+    /**
+     * Creates a CommandHistory object with the data in {@code commandHistory}.
+     */
     public CommandHistory(ReadOnlyCommandHistory commandHistory) {
         this.commandHistory = new LinkedList<>();
         this.commandHistory.addAll(commandHistory.getHistory());
@@ -51,7 +52,7 @@ public class CommandHistory implements ReadOnlyCommandHistory {
             return null;
         }
 
-        indexInHistory = Math.max(indexInHistory-1, -1);
+        indexInHistory = Math.max(indexInHistory - 1, -1);
 
         if (indexInHistory == -1) {
             return currentCommand;
@@ -67,7 +68,7 @@ public class CommandHistory implements ReadOnlyCommandHistory {
      */
     @Override
     public String getPreviousCommandFromHistory(String currentCommand) {
-        if (commandHistory.isEmpty()){
+        if (commandHistory.isEmpty()) {
             return null;
         }
 
@@ -75,7 +76,7 @@ public class CommandHistory implements ReadOnlyCommandHistory {
             this.currentCommand = currentCommand;
         }
 
-        indexInHistory = Math.min(indexInHistory+1, commandHistory.size() - 1);
+        indexInHistory = Math.min(indexInHistory + 1, commandHistory.size() - 1);
 
         return commandHistory.get(indexInHistory);
     }
@@ -85,6 +86,10 @@ public class CommandHistory implements ReadOnlyCommandHistory {
         return List.copyOf(this.commandHistory);
     }
 
+    /**
+     * Resets the CommandHistory state,
+     * clearing all saved histories and current navigation state.
+     */
     public void clearHistory() {
         commandHistory.clear();
         indexInHistory = -1;

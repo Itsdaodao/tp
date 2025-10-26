@@ -28,8 +28,8 @@ public class StorageManagerTest {
     public void setUp() {
         JsonAddressBookStorage addressBookStorage = new JsonAddressBookStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
-        CommandHistoryStorage commandHistoryStorage
-                = new NewlineDelimitedCommandHistoryStorage(getTempFilePath("hist"));
+        CommandHistoryStorage commandHistoryStorage =
+            new NewlineDelimitedCommandHistoryStorage(getTempFilePath("hist"));
         storageManager = new StorageManager(addressBookStorage, userPrefsStorage, commandHistoryStorage);
     }
 

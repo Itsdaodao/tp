@@ -18,7 +18,6 @@ import seedu.address.logic.autocomplete.Autocompletor;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.CommandHistory;
 import seedu.address.model.ReadOnlyCommandHistory;
 
 /**

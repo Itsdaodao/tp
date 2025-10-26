@@ -1,6 +1,5 @@
 package seedu.address.ui;
 
-import java.util.Optional;
 import java.util.logging.Logger;
 
 import javafx.application.Platform;
@@ -10,14 +9,10 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
 import seedu.address.logic.autocomplete.Autocompletor;
-import seedu.address.model.CommandHistory;
-import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyCommandHistory;
-import seedu.address.storage.Storage;
 
 /**
  * The manager of the UI component.

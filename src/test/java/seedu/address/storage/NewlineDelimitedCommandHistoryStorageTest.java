@@ -2,11 +2,8 @@ package seedu.address.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static seedu.address.testutil.Assert.assertThrows;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,16 +12,13 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.exceptions.DataLoadingException;
-import seedu.address.commons.util.FileUtil;
 import seedu.address.model.CommandHistory;
-import seedu.address.model.UserPrefs;
 
 public class NewlineDelimitedCommandHistoryStorageTest {
 
     private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data",
-            "NewlineDelimitedCommandHistoryStorageTest");
+        "NewlineDelimitedCommandHistoryStorageTest");
 
     @TempDir
     public Path testFolder;
@@ -34,7 +28,8 @@ public class NewlineDelimitedCommandHistoryStorageTest {
         assertThrows(NullPointerException.class, () -> readCommandHistory(null));
     }
 
-    private Optional<CommandHistory> readCommandHistory(String commandHistoryFileInTestDataFolder) throws DataLoadingException {
+    private Optional<CommandHistory> readCommandHistory(String commandHistoryFileInTestDataFolder)
+            throws DataLoadingException {
         Path histFilePath = addToTestDataPathIfNotNull(commandHistoryFileInTestDataFolder);
         return new NewlineDelimitedCommandHistoryStorage(histFilePath).readCommandHistory();
     }
@@ -46,8 +41,8 @@ public class NewlineDelimitedCommandHistoryStorageTest {
 
     private Path addToTestDataPathIfNotNull(String userPrefsFileInTestDataFolder) {
         return userPrefsFileInTestDataFolder != null
-                ? TEST_DATA_FOLDER.resolve(userPrefsFileInTestDataFolder)
-                : null;
+            ? TEST_DATA_FOLDER.resolve(userPrefsFileInTestDataFolder)
+            : null;
     }
 
     @Test
@@ -85,7 +80,7 @@ public class NewlineDelimitedCommandHistoryStorageTest {
     private void saveCommandHistory(CommandHistory history, String histFileIntTestDataFolder) {
         try {
             new NewlineDelimitedCommandHistoryStorage(addToTestDataPathIfNotNull(histFileIntTestDataFolder))
-                    .saveCommandHistory(history);
+                .saveCommandHistory(history);
         } catch (IOException ioe) {
             throw new AssertionError("There should not be an error writing to the file", ioe);
         }
@@ -99,7 +94,7 @@ public class NewlineDelimitedCommandHistoryStorageTest {
 
         Path histFilePath = testFolder.resolve(".save_history");
         NewlineDelimitedCommandHistoryStorage commandHistoryStorage =
-                new NewlineDelimitedCommandHistoryStorage(histFilePath);
+            new NewlineDelimitedCommandHistoryStorage(histFilePath);
 
         //Try writing when the file doesn't exist
         commandHistoryStorage.saveCommandHistory(history);

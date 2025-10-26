@@ -20,31 +20,26 @@ import seedu.address.logic.commands.CommandRegistry;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.CommandHistory;
-import seedu.address.model.Model;
-import seedu.address.model.ModelManager;
 
 @ExtendWith(ApplicationExtension.class)
 public class CommandBoxTest {
     @TempDir
     public Path temporaryFolder;
 
-    private final Model model = new ModelManager();
-
-    CommandHistory chm = new CommandHistory();
-    CommandBox cb;
+    private CommandHistory chm = new CommandHistory();
 
     @Start
     private void start(Stage stage) {
         CommandRegistry.initialize();
 
         // Create the MainWindow
-        cb = new CommandBox(
-                new CommandExecutorStub(),
-                new Autocompletor(),
-                chm
+        CommandBox commandBox = new CommandBox(
+            new CommandExecutorStub(),
+            new Autocompletor(),
+            chm
         );
 
-        Scene scene = new Scene(cb.getRoot());
+        Scene scene = new Scene(commandBox.getRoot());
         stage.setScene(scene);
         stage.show();
     }
@@ -99,7 +94,7 @@ public class CommandBoxTest {
         TextField t = robot.lookup("#commandTextField").queryAs(TextField.class);
         robot.clickOn("#commandTextField");
 
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             robot.push(CommandBox.GO_PREVIOUS_COMMAND);
         }
 
@@ -143,8 +138,8 @@ public class CommandBoxTest {
 
     private class CommandExecutorStub implements CommandBox.CommandExecutor {
         @Override
-        public CommandResult execute(String commandText) throws CommandException  {
-            if (commandText.equals("invalid command")){
+        public CommandResult execute(String commandText) throws CommandException {
+            if (commandText.equals("invalid command")) {
                 throw new CommandException("This command is invalid");
             }
             return new CommandResult(commandText);

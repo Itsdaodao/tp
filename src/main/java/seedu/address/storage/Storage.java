@@ -5,11 +5,11 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 import seedu.address.commons.exceptions.DataLoadingException;
+import seedu.address.model.CommandHistory;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyCommandHistory;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.CommandHistory;
 
 /**
  * API of the Storage component
