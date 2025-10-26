@@ -25,7 +25,10 @@ public class NewlineDelimitedCommandHistoryStorage implements CommandHistoryStor
 
     @Override
     public Optional<CommandHistory> readCommandHistory() throws DataLoadingException {
-        if (filePath == null || !FileUtil.isFileExists(filePath)) {
+        if (filePath == null) {
+            throw new NullPointerException();
+        }
+        if (!FileUtil.isFileExists(filePath)) {
             return Optional.empty();
         }
 
