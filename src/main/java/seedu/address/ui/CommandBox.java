@@ -10,6 +10,7 @@ import seedu.address.logic.autocomplete.Autocompletor;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.ReadOnlyCommandHistory;
 
 /**
  * The UI component that is responsible for receiving user command inputs.
@@ -23,7 +24,7 @@ public class CommandBox extends UiPart<Region> {
 
     private final CommandExecutor commandExecutor;
     private final Autocompletor autocompletor;
-    private final CommandHistoryManager chm;
+    private final ReadOnlyCommandHistory chm;
 
     @FXML
     private TextField commandTextField;
@@ -33,7 +34,10 @@ public class CommandBox extends UiPart<Region> {
     /**
      * Creates a {@code CommandBox} with the given {@code CommandExecutor}.
      */
-    public CommandBox(CommandExecutor commandExecutor, Autocompletor autocompletor, CommandHistoryManager chm) {
+    public CommandBox(
+            CommandExecutor commandExecutor,
+            Autocompletor autocompletor,
+            ReadOnlyCommandHistory chm) {
         super(FXML);
         this.commandExecutor = commandExecutor;
         this.autocompletor = autocompletor;
@@ -56,7 +60,6 @@ public class CommandBox extends UiPart<Region> {
         try {
             commandExecutor.execute(commandText);
             commandTextField.setText("");
-            chm.addCommandToHistory(commandText);
         } catch (CommandException | ParseException e) {
             setStyleToIndicateCommandFailure();
         }

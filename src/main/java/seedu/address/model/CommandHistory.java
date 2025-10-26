@@ -1,10 +1,16 @@
-package seedu.address.ui;
+package seedu.address.model;
 
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
-public class CommandHistoryManager {
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+public class CommandHistory implements ReadOnlyCommandHistory {
     private final LinkedList<String> commandHistory;
-    private final int HISTORY_CAPACITY;
+    private final int HISTORY_CAPACITY = 15;
     private int indexInHistory = -1;
     private String currentCommand = "";
 
@@ -12,9 +18,13 @@ public class CommandHistoryManager {
     /**
      * Creates a {@code CommandHistoryManager} with default capacity of 15 commands.
      */
-    public CommandHistoryManager() {
+    public CommandHistory() {
         this.commandHistory = new LinkedList<>();
-        this.HISTORY_CAPACITY = 15;
+    }
+
+    public CommandHistory(ReadOnlyCommandHistory commandHistory) {
+        this.commandHistory = new LinkedList<>();
+        this.commandHistory.addAll(commandHistory.getHistory());
     }
 
     /**
@@ -35,6 +45,7 @@ public class CommandHistoryManager {
      *
      * @return The next command, or an empty string if at the end of history.
      */
+    @Override
     public String getNextCommandFromHistory() {
         if (commandHistory.isEmpty()) {
             return null;
@@ -54,6 +65,7 @@ public class CommandHistoryManager {
      *
      * @return The previous command, or an empty string if no recorded history.
      */
+    @Override
     public String getPreviousCommandFromHistory(String currentCommand) {
         if (commandHistory.isEmpty()){
             return null;
@@ -67,6 +79,12 @@ public class CommandHistoryManager {
 
         return commandHistory.get(indexInHistory);
     }
+
+    @Override
+    public List<String> getHistory() {
+        return List.copyOf(this.commandHistory);
+    }
+
 
     public void clearHistory() {
         commandHistory.clear();

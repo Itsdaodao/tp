@@ -18,15 +18,19 @@ import seedu.address.logic.LogicManager;
 import seedu.address.logic.StateManager;
 import seedu.address.logic.commands.CommandRegistry;
 import seedu.address.model.AddressBook;
+import seedu.address.model.CommandHistory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlyCommandHistory;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.AddressBookStorage;
+import seedu.address.storage.CommandHistoryStorage;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
+import seedu.address.storage.NewlineDelimitedCommandHistoryStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
 import seedu.address.storage.UserPrefsStorage;
@@ -60,13 +64,16 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
-        storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        CommandHistoryStorage commandHistoryStorage =
+                new NewlineDelimitedCommandHistoryStorage(config.getCommandHistoryFilePath());
+
+        storage = new StorageManager(addressBookStorage, userPrefsStorage, commandHistoryStorage);
 
         model = initModelManager(storage, userPrefs);
 
         logic = new LogicManager(model, storage, new StateManager());
 
-        ui = new UiManager(logic);
+        ui = new UiManager(logic, model.getCommandHistory());
 
         initCommandRegistry();
     }
@@ -94,7 +101,21 @@ public class MainApp extends Application {
             initialData = new AddressBook();
         }
 
-        return new ModelManager(initialData, userPrefs);
+        Optional<CommandHistory> commandHistoryOptional;
+        ReadOnlyCommandHistory commandHistory;
+        try {
+            commandHistoryOptional = storage.readCommandHistory();
+            if (commandHistoryOptional.isEmpty()) {
+                logger.info("Creating a new data file " + storage.getCommandHistoryFilePath());
+            }
+            commandHistory = commandHistoryOptional.orElseGet(CommandHistory::new);
+        } catch (DataLoadingException e) {
+            logger.warning("Data file at " + storage.getCommandHistoryFilePath() + " could not be loaded."
+                    + " Will be starting with empty command history");
+            commandHistory = new CommandHistory();
+        }
+
+        return new ModelManager(initialData, userPrefs, commandHistory);
     }
 
     private void initLogging(Config config) {

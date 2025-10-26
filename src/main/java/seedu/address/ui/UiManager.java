@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import javafx.application.Platform;
@@ -9,8 +10,14 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
+import seedu.address.logic.autocomplete.Autocompletor;
+import seedu.address.model.CommandHistory;
+import seedu.address.model.Model;
+import seedu.address.model.ReadOnlyCommandHistory;
+import seedu.address.storage.Storage;
 
 /**
  * The manager of the UI component.
@@ -23,13 +30,15 @@ public class UiManager implements Ui {
     private static final String ICON_APPLICATION = "/images/dev_books_32.png";
 
     private Logic logic;
+    private ReadOnlyCommandHistory commandHistory;
     private MainWindow mainWindow;
 
     /**
      * Creates a {@code UiManager} with the given {@code Logic}.
      */
-    public UiManager(Logic logic) {
+    public UiManager(Logic logic, ReadOnlyCommandHistory history) {
         this.logic = logic;
+        this.commandHistory = history;
     }
 
     @Override
@@ -43,6 +52,7 @@ public class UiManager implements Ui {
             mainWindow = new MainWindow(primaryStage, logic);
             mainWindow.show(); //This should be called before creating other UI parts
             mainWindow.fillInnerParts();
+            mainWindow.createCommandBox(new Autocompletor(), commandHistory);
 
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
@@ -84,5 +94,4 @@ public class UiManager implements Ui {
         Platform.exit();
         System.exit(1);
     }
-
 }

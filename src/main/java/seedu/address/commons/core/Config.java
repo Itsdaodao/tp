@@ -17,6 +17,7 @@ public class Config {
     // Config values customizable through config file
     private Level logLevel = Level.INFO;
     private Path userPrefsFilePath = Paths.get("preferences.json");
+    private Path commandHistoryFilePath = Paths.get(".devbooks_history");
 
     public Level getLogLevel() {
         return logLevel;
@@ -24,6 +25,14 @@ public class Config {
 
     public void setLogLevel(Level logLevel) {
         this.logLevel = logLevel;
+    }
+
+    public Path getCommandHistoryFilePath() {
+        return commandHistoryFilePath;
+    }
+
+    public void setCommandHistoryFilePath(Path commandHistoryFilePath) {
+        this.commandHistoryFilePath = commandHistoryFilePath;
     }
 
     public Path getUserPrefsFilePath() {

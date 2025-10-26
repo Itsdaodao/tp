@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -102,4 +103,13 @@ public interface Model {
      * Resets the filtered person list to its original order (i.e. the order in which persons were added).
      */
     void resetSortOrder();
+
+    /**
+     * Adds a command to the history.
+     *
+     * @param command The command to be added.
+     */
+    void addCommandToHistory(String command);
+
+    ReadOnlyCommandHistory getCommandHistory();
 }

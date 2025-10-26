@@ -56,6 +56,8 @@ public class LogicManager implements Logic {
 
         saveIfRequired(command);
 
+        saveCommandHistory(commandText);
+
         if (commandResult instanceof ConfirmationPendingResult pendingResult) {
             // Set the state to indicate that app is waiting for confirmation
             state.setAwaitingUserConfirmation(
@@ -121,6 +123,17 @@ public class LogicManager implements Logic {
         // Save using the current model state
         try {
             storage.saveAddressBook(model.getAddressBook());
+        } catch (AccessDeniedException e) {
+            throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
+        } catch (IOException ioe) {
+            throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
+        }
+    }
+
+    private void saveCommandHistory(String commandText) throws CommandException {
+        model.addCommandToHistory(commandText);
+        try {
+            storage.saveCommandHistory(model.getCommandHistory());
         } catch (AccessDeniedException e) {
             throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
         } catch (IOException ioe) {

@@ -19,6 +19,7 @@ import seedu.address.logic.autocomplete.Autocompletor;
 import seedu.address.logic.commands.CommandRegistry;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.CommandHistory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 
@@ -29,7 +30,7 @@ public class CommandBoxTest {
 
     private final Model model = new ModelManager();
 
-    CommandHistoryManager chm = new CommandHistoryManager();
+    CommandHistory chm = new CommandHistory();
     CommandBox cb;
 
     @Start
