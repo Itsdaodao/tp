@@ -1,6 +1,7 @@
 package seedu.address.logic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
@@ -24,19 +25,24 @@ import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.CommandRegistry;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.ConfirmCommand;
 import seedu.address.logic.commands.ConfirmationPendingResult;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.AddressBook;
+import seedu.address.model.CommandHistory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
+import seedu.address.storage.CommandHistoryStorage;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
+import seedu.address.storage.NewlineDelimitedCommandHistoryStorage;
 import seedu.address.storage.StorageManager;
 import seedu.address.testutil.PersonBuilder;
 
@@ -55,7 +61,9 @@ public class LogicManagerTest {
         JsonAddressBookStorage addressBookStorage =
                 new JsonAddressBookStorage(temporaryFolder.resolve("addressBook.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        CommandHistoryStorage commandHistoryStorage =
+                new NewlineDelimitedCommandHistoryStorage(temporaryFolder.resolve(".hist"));
+        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage, commandHistoryStorage);
         CommandRegistry.initialize();
         logic = new LogicManager(model, storage, new StateManager());
     }
@@ -101,7 +109,9 @@ public class LogicManagerTest {
                 + EMAIL_DESC_AMY + TELEGRAM_DESC_AMY + GITHUB_DESC_AMY;
 
         Person expectedPerson = new PersonBuilder(AMY).withTags().build();
-        ModelManager expectedModel = new ModelManager();
+        CommandHistory expectedCommandHistory = new CommandHistory();
+        expectedCommandHistory.addCommandToHistory(addCommand);
+        ModelManager expectedModel = new ModelManager(new AddressBook(), new UserPrefs(), expectedCommandHistory);
         expectedModel.addPerson(expectedPerson);
 
         assertCommandTriggersWrite(addCommand,
@@ -117,7 +127,9 @@ public class LogicManagerTest {
         String editCommand = "edit " + index + " " + PHONE_DESC_AMY; // or replace with valid edit args
 
         Person editedPerson = new PersonBuilder(AMY).build();
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        CommandHistory expectedCommandHistory = new CommandHistory();
+        expectedCommandHistory.addCommandToHistory(editCommand);
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), expectedCommandHistory);
         expectedModel.setPerson(model.getSortedAndFilteredPersonList().get(0), editedPerson);
 
         assertCommandTriggersWrite(editCommand,
@@ -131,7 +143,9 @@ public class LogicManagerTest {
         int index = 1;
         String deleteCommand = "delete " + index;
 
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        CommandHistory expectedCommandHistory = new CommandHistory();
+        expectedCommandHistory.addCommandToHistory(deleteCommand);
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), expectedCommandHistory);
 
         String expected = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_CONFIRM, Messages.format(AMY));
         assertCommandDoesNotTriggerWrite(deleteCommand, expected, expectedModel);
@@ -143,7 +157,7 @@ public class LogicManagerTest {
         model.addPerson(AMY);
         State state = createPendingDeleteConfirmationState(model, AMY);
         TrackingStorageManager trackingStorage = getTestStorageManager();
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
         expectedModel.deletePerson(AMY);
 
         // act - execute confirm command
@@ -162,7 +176,7 @@ public class LogicManagerTest {
         model.addPerson(AMY);
         State state = createPendingDeleteConfirmationState(model, AMY);
         TrackingStorageManager trackingStorage = getTestStorageManager();
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
 
         // act - execute confirm command
         LogicManager lm = new LogicManager(model, trackingStorage, state);
@@ -178,7 +192,11 @@ public class LogicManagerTest {
     public void execute_clearCommand_doesNotTriggerWrite() throws Exception {
         model.addPerson(AMY);
         String clearCommand = ClearCommand.COMMAND_WORD;
-        ModelManager expectedModel = new ModelManager();
+
+        CommandHistory expectedCommandHistory = new CommandHistory();
+        expectedCommandHistory.addCommandToHistory(ClearCommand.COMMAND_WORD);
+
+        ModelManager expectedModel = new ModelManager(new AddressBook(), new UserPrefs(), expectedCommandHistory);
         expectedModel.addPerson(AMY);
 
         assertCommandDoesNotTriggerWrite(clearCommand, ClearCommand.MESSAGE_CLEAR_CONFIRM, expectedModel);
@@ -191,7 +209,10 @@ public class LogicManagerTest {
         int index = 1;
         State state = new StateManager();
         TrackingStorageManager trackingStorage = getTestStorageManager();
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        CommandHistory expectedCommandHistory = new CommandHistory();
+        expectedCommandHistory.addCommandToHistory(ClearCommand.COMMAND_WORD);
+        expectedCommandHistory.addCommandToHistory(ConfirmCommand.USER_INPUT_CONFIRM);
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), expectedCommandHistory);
         expectedModel.deletePerson(AMY);
 
         // act - execute confirm command
@@ -221,13 +242,16 @@ public class LogicManagerTest {
         String deleteCommand = "delete " + index;
         State state = new StateManager();
         TrackingStorageManager trackingStorage = getTestStorageManager();
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        CommandHistory expectedCommandHistory = new CommandHistory();
+        expectedCommandHistory.addCommandToHistory(deleteCommand);
+        expectedCommandHistory.addCommandToHistory(ConfirmCommand.USER_INPUT_CONFIRM);
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), expectedCommandHistory);
         expectedModel.deletePerson(AMY);
 
         // act - execute confirm command
         LogicManager lm = new LogicManager(model, trackingStorage, state);
         lm.execute(deleteCommand);
-        lm.execute("y");
+        lm.execute(ConfirmCommand.USER_INPUT_CONFIRM);
 
 
         // Assert - check that contact deleted and write triggered
@@ -276,7 +300,7 @@ public class LogicManagerTest {
      */
     private void assertCommandFailure(String inputCommand, Class<? extends Throwable> expectedException,
                                       String expectedMessage) {
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
         assertCommandFailure(inputCommand, expectedException, expectedMessage, expectedModel);
     }
 
@@ -314,7 +338,9 @@ public class LogicManagerTest {
 
         JsonUserPrefsStorage userPrefsStorage =
                 new JsonUserPrefsStorage(temporaryFolder.resolve("ExceptionUserPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        CommandHistoryStorage commandHistoryStorage =
+                new NewlineDelimitedCommandHistoryStorage(temporaryFolder.resolve(".hist"));
+        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage, commandHistoryStorage);
 
         logic = new LogicManager(model, storage, new StateManager());
 
@@ -333,8 +359,10 @@ public class LogicManagerTest {
     private static class TrackingStorageManager extends StorageManager {
         private boolean saveCalled = false;
 
-        TrackingStorageManager(Path addressBookPath, Path prefsPath) {
-            super(new JsonAddressBookStorage(addressBookPath), new JsonUserPrefsStorage(prefsPath));
+        TrackingStorageManager(Path addressBookPath, Path prefsPath, Path histPath) {
+            super(new JsonAddressBookStorage(addressBookPath),
+                    new JsonUserPrefsStorage(prefsPath),
+                    new NewlineDelimitedCommandHistoryStorage(histPath));
         }
 
         @Override
@@ -355,8 +383,9 @@ public class LogicManagerTest {
             throws Exception {
         Path bookPath = temporaryFolder.resolve("writeTest.json");
         Path prefsPath = temporaryFolder.resolve("prefsWriteTest.json");
+        Path histPath = temporaryFolder.resolve(".hist");
 
-        TrackingStorageManager trackingStorage = new TrackingStorageManager(bookPath, prefsPath);
+        TrackingStorageManager trackingStorage = new TrackingStorageManager(bookPath, prefsPath, histPath);
         logic = new LogicManager(model, trackingStorage, new StateManager());
 
         CommandResult result = logic.execute(inputCommand);
@@ -383,20 +412,22 @@ public class LogicManagerTest {
             throws Exception {
         Path bookPath = temporaryFolder.resolve("noWriteTest.json");
         Path prefsPath = temporaryFolder.resolve("prefsNoWriteTest.json");
+        Path histPath = temporaryFolder.resolve(".hist");
 
-        TrackingStorageManager trackingStorage = new TrackingStorageManager(bookPath, prefsPath);
+        TrackingStorageManager trackingStorage = new TrackingStorageManager(bookPath, prefsPath, histPath);
         logic = new LogicManager(model, trackingStorage, new StateManager());
 
         CommandResult result = logic.execute(inputCommand);
         assertEquals(expectedMessage, result.getFeedbackToUser());
         assertEquals(expectedModel, model);
-        assertEquals(false, trackingStorage.saveCalled, "Expected saveAddressBook() NOT to be called but it was.");
+        assertFalse(trackingStorage.saveCalled, "Expected saveAddressBook() NOT to be called but it was.");
     }
 
     private TrackingStorageManager getTestStorageManager() {
         Path bookPath = temporaryFolder.resolve("writeTest.json");
         Path prefsPath = temporaryFolder.resolve("prefsWriteTest.json");
-        return new TrackingStorageManager(bookPath, prefsPath);
+        Path histPath = temporaryFolder.resolve(".hist");
+        return new TrackingStorageManager(bookPath, prefsPath, histPath);
     }
 
     private static State createPendingDeleteConfirmationState(Model model, Person person) {

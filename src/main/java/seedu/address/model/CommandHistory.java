@@ -85,10 +85,24 @@ public class CommandHistory implements ReadOnlyCommandHistory {
         return List.copyOf(this.commandHistory);
     }
 
-
     public void clearHistory() {
         commandHistory.clear();
         indexInHistory = -1;
         currentCommand = "";
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof CommandHistory)) {
+            return false;
+        }
+
+        CommandHistory otherHist = (CommandHistory) other;
+        return commandHistory.equals(otherHist.commandHistory);
     }
 }
