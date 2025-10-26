@@ -27,8 +27,8 @@ create ":DeleteCommandParser"
 create "d:DeleteCommand"
 ":DeleteCommandParser" -> "d:DeleteCommand" #Blue :
 return d
-destroy ":DeleteCommandParser"
 return d
+destroy ":DeleteCommandParser"
 return d
 return d
 ":LogicManager" -> "d:DeleteCommand" #Blue : execute(m)
