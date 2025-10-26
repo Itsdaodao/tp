@@ -5,6 +5,7 @@
     "email": "alice@example.com",
     "telegram": "alice_p",
     "github": "alice123",
+    "preferredCommunicationMode": "phone",
     "tags": [ "friends" ],
     "isPinned" : false,
     "pinnedAt" : null
@@ -14,6 +15,7 @@
     "email": "pauline@example.com",
     "telegram": "alice_p",
     "github": "alice123",
+    "preferredCommunicationMode": "phone",
     "isPinned" : false,
     "pinnedAt" : null
   } ]

@@ -55,6 +55,11 @@ public class Messages {
                     .append(person.getGithub());
         }
 
+        if (!person.getPreferredMode().isEmpty()) {
+            builder.append("; Preferred mode: ")
+                    .append(person.getPreferredMode());
+        }
+
         builder.append("; Tags: ");
         person.getTags().forEach(builder::append);
         return builder.toString();

@@ -42,11 +42,13 @@ public class StorageManager implements Storage {
 
     @Override
     public Optional<UserPrefs> readUserPrefs() throws DataLoadingException {
+        logger.fine("Attempting to read user preferences from storage");
         return userPrefsStorage.readUserPrefs();
     }
 
     @Override
     public void saveUserPrefs(ReadOnlyUserPrefs userPrefs) throws IOException {
+        logger.fine("Attempting to save user preferences: " + userPrefs);
         userPrefsStorage.saveUserPrefs(userPrefs);
     }
 
@@ -96,4 +98,9 @@ public class StorageManager implements Storage {
         commandHistoryStorage.saveCommandHistory(commandHistory);
     }
 
+    @Override
+    public void exportAddressBookToCsv(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
+        logger.fine("Attempting to export data to CSV file: " + filePath);
+        addressBookStorage.exportAddressBookToCsv(addressBook, filePath);
+    }
 }

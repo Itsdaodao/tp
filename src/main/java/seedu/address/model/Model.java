@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.function.Predicate;
 
@@ -111,4 +112,11 @@ public interface Model {
     void addCommandToHistory(String command);
 
     ReadOnlyCommandHistory getCommandHistory();
+
+    /**
+     * Exports the address book to a CSV file.
+     * @param filePath path to save the CSV file
+     * @throws IOException if there was any problem writing to the file
+     */
+    void exportAddressBookToCsv(Path filePath) throws IOException;
 }

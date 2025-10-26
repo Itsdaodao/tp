@@ -5,6 +5,7 @@
     "email": "invalid@email!3e",
     "telegram": "hansisbest",
     "github": "hansisbest",
+    "preferredCommunicationMode": "phone",
     "isPinned" : false,
     "pinnedAt" : null
   } ]

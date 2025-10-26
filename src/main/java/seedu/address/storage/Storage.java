@@ -40,4 +40,11 @@ public interface Storage extends AddressBookStorage, UserPrefsStorage, CommandHi
     @Override
     void saveCommandHistory(ReadOnlyCommandHistory commandHistory) throws IOException;
 
+    /**
+     * Exports the address book data to a CSV file.
+     * @param addressBook the address book to export
+     * @param filePath path to the CSV file
+     * @throws IOException if there was any problem writing to the file
+     */
+    void exportAddressBookToCsv(ReadOnlyAddressBook addressBook, Path filePath) throws IOException;
 }

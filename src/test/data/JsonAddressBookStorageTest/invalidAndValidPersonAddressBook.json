@@ -5,6 +5,7 @@
     "email": "hans@example.com",
     "telegram": "hansisbest",
     "github": "hansisbest",
+    "preferredCommunicationMode": "phone",
     "isPinned" : false,
     "pinnedAt" : null
   }, {
@@ -13,6 +14,7 @@
     "email": "hans@example.com",
     "telegram": "hanbest12",
     "github": "hanbest12",
+    "preferredCommunicationMode": "phone",
     "isPinned" : false,
     "pinnedAt" : null
   } ]

@@ -11,6 +11,7 @@ import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.DANIEL;
 import static seedu.address.testutil.TypicalPersons.ELLE;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
@@ -143,6 +144,43 @@ public class ModelManagerTest {
         CommandHistory differentCommandHistory = new CommandHistory();
         differentCommandHistory.addCommandToHistory("hi");
         assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs, differentCommandHistory)));
+    }
+
+    @Test
+    public void exportAddressBookToCsv_nullFilePath_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.exportAddressBookToCsv(null));
+    }
+
+    @Test
+    public void exportAddressBookToCsv_validPath_success() throws Exception {
+        Path tempFile = Files.createTempFile("test", ".csv");
+        try {
+            modelManager.addPerson(ALICE);
+            modelManager.exportAddressBookToCsv(tempFile);
+
+            assertTrue(Files.exists(tempFile));
+            String content = Files.readString(tempFile);
+            assertTrue(content.contains("Name,Phone,Email,Telegram,GitHub,Tags"));
+            assertTrue(content.contains("Alice"));
+        } finally {
+            Files.deleteIfExists(tempFile);
+        }
+    }
+
+    @Test
+    public void exportAddressBookToCsv_emptyAddressBook_exportsHeaderOnly() throws Exception {
+        Path tempFile = Files.createTempFile("test", ".csv");
+        try {
+            modelManager.exportAddressBookToCsv(tempFile);
+
+            assertTrue(Files.exists(tempFile));
+            String content = Files.readString(tempFile);
+            String[] lines = content.split("\n");
+            assertEquals(1, lines.length); // Only header
+            assertTrue(lines[0].contains("Name,Phone,Email"));
+        } finally {
+            Files.deleteIfExists(tempFile);
+        }
     }
 
     @Test

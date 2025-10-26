@@ -3,6 +3,7 @@ package seedu.address.storage;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +18,7 @@ import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 
@@ -32,6 +34,7 @@ class JsonAdaptedPerson {
     private final String email;
     private final String telegram;
     private final String github;
+    private final String preferredCommunicationMode;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final Boolean isPinned;
     private final String pinnedAt;
@@ -45,6 +48,7 @@ class JsonAdaptedPerson {
                              @JsonProperty("email") String email,
                              @JsonProperty("telegram") String telegram,
                              @JsonProperty("github") String github,
+                             @JsonProperty("preferredCommunicationMode") String preferredCommunicationMode,
                              @JsonProperty("tags") List<JsonAdaptedTag> tags,
                              @JsonProperty("isPinned") Boolean isPinned,
                              @JsonProperty("pinnedAt") String pinnedAt) {
@@ -53,6 +57,7 @@ class JsonAdaptedPerson {
         this.email = email;
         this.telegram = telegram;
         this.github = github;
+        this.preferredCommunicationMode = preferredCommunicationMode;
         this.isPinned = isPinned;
         this.pinnedAt = pinnedAt;
         if (tags != null) {
@@ -69,6 +74,7 @@ class JsonAdaptedPerson {
         email = source.getEmail().value;
         telegram = source.getTelegram().value;
         github = source.getGithub().value;
+        preferredCommunicationMode = source.getPreferredMode().name();
         isPinned = source.isPinned();
         pinnedAt = source.getPinnedAt().map(Instant::toString).orElse(null);
         tags.addAll(source.getTags().stream()
@@ -120,6 +126,14 @@ class JsonAdaptedPerson {
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
 
+        // Validate preferred mode against available contact options
+        Set<PreferredCommunicationMode> availableModes = getAvailableModes();
+        boolean allowNone = true;
+        if (!PreferredCommunicationMode.isValidMode(preferredCommunicationMode, availableModes, allowNone)) {
+            throw new IllegalValueException(PreferredCommunicationMode.MESSAGE_CONSTRAINTS);
+        }
+        final PreferredCommunicationMode modelPreferredMode = PreferredCommunicationMode.of(preferredCommunicationMode);
+
         final Boolean modelIsPinned = isPinned != null && isPinned;
 
         Instant modelPinnedAt;
@@ -129,16 +143,38 @@ class JsonAdaptedPerson {
             throw new IllegalValueException(Person.PIN_DATE_MESSAGE_CONSTRAINT);
         }
 
-        return new Person(
-                modelName,
-                modelPhone,
-                modelEmail,
-                modelTelegram,
-                modelGithub,
-                modelTags,
-                modelIsPinned,
-                modelPinnedAt
-        );
+        return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelGithub, modelPreferredMode,
+                modelTags, modelIsPinned, modelPinnedAt);
+    }
+
+    /**
+     * Determines which communication modes are available based on non-empty contact fields.
+     * Phone is always included. Email, Telegram, and GitHub are added only if their values are not blank.
+     *
+     * @return a set of available {@code PreferredCommunicationMode} values
+     */
+    public Set<PreferredCommunicationMode> getAvailableModes() {
+        Set<PreferredCommunicationMode> availableModes = EnumSet.noneOf(PreferredCommunicationMode.class);
+
+        // Phone is compulsory
+        availableModes.add(PreferredCommunicationMode.PHONE);
+
+        // Optional modes based on non-empty fields
+        boolean hasEmail = email != null && !email.isBlank();
+        boolean hasTelegram = telegram != null && !telegram.isBlank();
+        boolean hasGithub = github != null && !github.isBlank();
+
+        if (hasEmail) {
+            availableModes.add(PreferredCommunicationMode.EMAIL);
+        }
+        if (hasTelegram) {
+            availableModes.add(PreferredCommunicationMode.TELEGRAM);
+        }
+        if (hasGithub) {
+            availableModes.add(PreferredCommunicationMode.GITHUB);
+        }
+
+        return availableModes;
     }
 
 }

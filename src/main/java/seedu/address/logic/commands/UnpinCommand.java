@@ -13,24 +13,24 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
 /**
- * Updates the status of existing person as pinned
+ * Updates the status of existing person as unpinned
  */
-public class PinCommand extends Command {
+public class UnpinCommand extends Command {
 
-    public static final String COMMAND_WORD = "pin";
+    public static final String COMMAND_WORD = "unpin";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Pins the person identified by the index number used in the displayed person list.\n"
+            + ": Unpin a pinned person identified by the index number used in the displayed person list.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_PIN_PERSON_SUCCESS = "Pinned: %1$s";
+    public static final String MESSAGE_UNPIN_PERSON_SUCCESS = "Unpinned: %1$s";
 
-    public static final String MESSAGE_PERSON_ALREADY_PINNED = "Person is already pinned.";
+    public static final String MESSAGE_PERSON_NOT_PINNED = "Person is currently not pinned.";
 
     private final Index targetIndex;
 
-    public PinCommand(Index targetIndex) {
+    public UnpinCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
     }
 
@@ -43,22 +43,22 @@ public class PinCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        Person personToPin = lastShownList.get(targetIndex.getZeroBased());
-        Person pinnedPerson = personToPin.pin();
+        Person personToUnpin = lastShownList.get(targetIndex.getZeroBased());
+        Person unpinnedPerson = personToUnpin.unpin();
 
-        assert pinnedPerson.isPinned() : "Person is not pinned";
-        assert pinnedPerson.getPinnedAt().isPresent() : "PinnedAt time is not found";
+        assert !unpinnedPerson.isPinned() : "Person is still pinned after unpinning.";
+        assert unpinnedPerson.getPinnedAt().isEmpty() : "Pinned timestamp still exists after unpinning.";
 
-        if (personToPin.equals(pinnedPerson)) {
-            // No changes, person already pinned
-            throw new CommandException(MESSAGE_PERSON_ALREADY_PINNED);
+        if (personToUnpin.equals(unpinnedPerson)) {
+            // No changes, person is not yet pinned
+            throw new CommandException(MESSAGE_PERSON_NOT_PINNED);
         }
 
-        model.setPerson(personToPin, pinnedPerson);
+        model.setPerson(personToUnpin, unpinnedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(
-                String.format(MESSAGE_PIN_PERSON_SUCCESS, Messages.format(pinnedPerson))
+                String.format(MESSAGE_UNPIN_PERSON_SUCCESS, Messages.format(unpinnedPerson))
         );
     }
 
@@ -69,17 +69,17 @@ public class PinCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof PinCommand)) {
+        if (!(other instanceof UnpinCommand)) {
             return false;
         }
 
-        PinCommand otherPinCommand = (PinCommand) other;
-        return targetIndex.equals(otherPinCommand.targetIndex);
+        UnpinCommand otherUnpinCommand = (UnpinCommand) other;
+        return targetIndex.equals(otherUnpinCommand.targetIndex);
     }
 
     /**
      * @inheritDoc
-     * @return <code>true</code> as PinCommand modifies the address book
+     * @return <code>true</code> as UnpinCommand modifies the address book
      */
     @Override
     public boolean requiresWrite() {
@@ -94,7 +94,7 @@ public class PinCommand extends Command {
     }
 
     /**
-     * Registers the pin command with the command registry, providing detailed help information
+     * Registers the unpin command with the command registry, providing detailed help information
      * including usage syntax, parameters, and examples for user reference.
      * This method is called during application initialization to make the command
      * available in the help system.
@@ -102,10 +102,10 @@ public class PinCommand extends Command {
     public static void registerHelp() {
         CommandRegistry.register(
                 COMMAND_WORD,
-                "Pins a contact by index number",
-                "Example: pin 1",
-                "Usage: pin INDEX\n\n"
-                        + "Pins the contact at the specified index from the address book.\n\n"
+                "Unpin a pinned contact by index number",
+                "Example: unpin 1",
+                "Usage: unpin INDEX\n\n"
+                        + "Unpin the contact at the specified index from the address book.\n\n"
                         + "Parameters:\n"
                         + "  INDEX - The index number shown in the displayed contact list (required)\n\n"
                         + "Notes:\n"

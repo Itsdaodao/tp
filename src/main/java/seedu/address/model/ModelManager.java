@@ -3,6 +3,7 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
@@ -15,6 +16,7 @@ import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
+import seedu.address.storage.CsvAddressBookStorage;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -190,6 +192,12 @@ public class ModelManager implements Model {
                 && commandHistory.equals(otherModelManager.commandHistory);
     }
 
+    @Override
+    public void exportAddressBookToCsv(Path filePath) throws IOException {
+        requireNonNull(filePath);
+        logger.fine("Exporting address book to CSV: " + filePath);
+        CsvAddressBookStorage.exportToCsv(addressBook, filePath);
+    }
     /**
      * Creates a comparator that ensures pinned contacts appear first.
      * Within pinned contacts, they are sorted by pinnedAt (most recent first).
@@ -222,5 +230,4 @@ public class ModelManager implements Model {
             return 0;
         };
     }
-
 }
