@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.commons.util.FileUtil;
-import seedu.address.logic.commands.Command;
 import seedu.address.model.CommandHistory;
 import seedu.address.model.ReadOnlyCommandHistory;
 
