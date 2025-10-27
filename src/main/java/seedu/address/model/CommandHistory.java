@@ -9,6 +9,10 @@ import java.util.List;
 public class CommandHistory implements ReadOnlyCommandHistory {
     private static final int HISTORY_CAPACITY = 15;
     private final LinkedList<String> commandHistory;
+    /**
+     * Represents the index of the history tree. -1 represents the input that the user is currently typing in the
+     * command box, any value above that is the index of the command history list.
+     */
     private int indexInHistory = -1;
     private String currentCommand = "";
 
@@ -34,6 +38,8 @@ public class CommandHistory implements ReadOnlyCommandHistory {
      * @param command The command to be added.
      */
     public void addCommandToHistory(String command) {
+        assert !command.isBlank() : "A valid command should not be blank!";
+
         this.commandHistory.addFirst(command);
         this.indexInHistory = -1;
         if (commandHistory.size() > HISTORY_CAPACITY) {
@@ -53,6 +59,8 @@ public class CommandHistory implements ReadOnlyCommandHistory {
         }
 
         indexInHistory = Math.max(indexInHistory - 1, -1);
+
+        assert indexInHistory < commandHistory.size() : "Next index can't be larger than list size!";
 
         if (indexInHistory == -1) {
             return currentCommand;
@@ -77,6 +85,9 @@ public class CommandHistory implements ReadOnlyCommandHistory {
         }
 
         indexInHistory = Math.min(indexInHistory + 1, commandHistory.size() - 1);
+
+        assert indexInHistory >= -1 : "Previous index cannot be less than -1!";
+
 
         return commandHistory.get(indexInHistory);
     }
