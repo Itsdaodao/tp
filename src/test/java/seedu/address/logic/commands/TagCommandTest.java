@@ -29,7 +29,7 @@ public class TagCommandTest {
     }
 
     @Test
-    public void execute_multiplePersonsUpdated_success() {
+    public void execute_renameMultiplePersonsUpdated_success() {
         // Give multiple people the same target tag
         Person first = model.getSortedAndFilteredPersonList().get(0);
         Person second = model.getSortedAndFilteredPersonList().get(1);
@@ -44,7 +44,7 @@ public class TagCommandTest {
         model.setPerson(third, updatedThird);
         Set<Tag> target = Set.of(targetTag);
         Set<Tag> renamed = Set.of(renamedTag);
-        TagCommand command = new TagCommand(target, renamed);
+        TagCommand command = new TagCommand(target, renamed, TagOperation.RENAME);
 
         String expectedMessage = String.format(TagCommand.MESSAGE_RENAMED_SUCCESS,
                 targetTag, renamedTag, 3);
@@ -58,10 +58,10 @@ public class TagCommandTest {
     }
 
     @Test
-    public void execute_noPersonsWithTag_throwsCommandException() {
+    public void execute_renameNoPersonsWithTag_throwsCommandException() {
         Set<Tag> target = Set.of(new Tag("missingTag"));
         Set<Tag> renamed = Set.of(new Tag("whatever"));
-        TagCommand command = new TagCommand(target, renamed);
+        TagCommand command = new TagCommand(target, renamed, TagOperation.RENAME);
 
         assertCommandFailure(command, model,
                 String.format(TagCommand.MESSAGE_TAG_FAILURE, target));

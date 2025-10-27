@@ -242,6 +242,8 @@ public class TagCommand extends Command {
             return false;
         }
         TagCommand otherCommand = (TagCommand) other;
-        return targetTags.equals(otherCommand.targetTags) && renamedTags.equals(otherCommand.renamedTags);
+        return targetTags.equals(otherCommand.targetTags)
+                && renamedTags.equals(otherCommand.renamedTags)
+                && tagOperation == otherCommand.tagOperation;
     }
 }
