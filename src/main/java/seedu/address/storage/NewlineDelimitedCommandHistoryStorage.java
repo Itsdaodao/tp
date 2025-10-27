@@ -57,7 +57,7 @@ public class NewlineDelimitedCommandHistoryStorage implements CommandHistoryStor
                 continue;
             }
             // Process each line as a command
-            history.addCommandToHistory(line);
+            history.addCommandToHistory(line.trim());
         }
     }
 
