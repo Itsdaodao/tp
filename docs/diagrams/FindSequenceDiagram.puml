@@ -6,7 +6,8 @@ box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":StateManager" as StateManager LOGIC_COLOR
 participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
-participant ":CommandRegistry" as CommandRegistry LOGIC_COLOR
+participant "<<Class>>\nCommandRegistry" as CommandRegistry LOGIC_COLOR
+participant "factory:CommandFactory" as CommandFactory LOGIC_COLOR
 participant ":FindCommandParser" as FindCommandParser LOGIC_COLOR
 participant ":NameContainsKeywordPredicate" as PredicateN LOGIC_COLOR
 participant ":TagContainsKeywordPredicate" as PredicateT LOGIC_COLOR
@@ -33,21 +34,30 @@ deactivate StateManager
 LogicManager -> AddressBookParser : parseCommand("find n/John Alex")
 activate AddressBookParser
 
-create CommandRegistry
 AddressBookParser -> CommandRegistry : getCommandFactory("find")
 activate CommandRegistry
+
+create CommandFactory
+CommandRegistry -> CommandFactory : new CommandFactory()
+activate CommandFactory
+
+CommandFactory --> CommandRegistry : factory
+deactivate CommandFactory
 
 CommandRegistry --> AddressBookParser : factory
 deactivate CommandRegistry
 
-AddressBookParser -> CommandRegistry : Create(" n/John Alex")
-activate CommandRegistry
+AddressBookParser -> CommandFactory : Create(" n/John Alex")
+activate CommandFactory
 
 create FindCommandParser
-CommandRegistry -> FindCommandParser : new FindCommandParser(" n/John Alex")
+CommandFactory -> FindCommandParser : new FindCommandParser(" n/John Alex")
 activate FindCommandParser
 
-FindCommandParser -> FindCommandParser : parse(" n/John Alex")
+FindCommandParser --> CommandFactory
+deactivate FindCommandParser
+
+CommandFactory -> FindCommandParser : parse(" n/John Alex")
 activate FindCommandParser
 
 alt activePrefix == PREFIX_NAME
@@ -73,14 +83,11 @@ activate FindCommand
 FindCommand --> FindCommandParser : f
 deactivate FindCommand
 
-FindCommandParser --> FindCommandParser: f
-deactivate FindCommandParser
-
-FindCommandParser --> CommandRegistry : f
+FindCommandParser --> CommandFactory : f
 destroy FindCommandParser
 
-CommandRegistry --> AddressBookParser : f
-deactivate CommandRegistry
+CommandFactory --> AddressBookParser : f
+destroy CommandFactory
 
 AddressBookParser --> LogicManager : f
 deactivate AddressBookParser
