@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.commons.util.FileUtil;
+import seedu.address.logic.commands.Command;
 import seedu.address.model.CommandHistory;
 import seedu.address.model.ReadOnlyCommandHistory;
 
@@ -46,15 +47,19 @@ public class NewlineDelimitedCommandHistoryStorage implements CommandHistoryStor
         }
 
         CommandHistory history = new CommandHistory();
-        for (String line : data.split("\n")) {
+        addAllCommandsInTextToHistory(data, history);
+
+        return Optional.of(history);
+    }
+
+    private void addAllCommandsInTextToHistory(String text, CommandHistory history) {
+        for (String line : text.split("\n")) {
             if (line.isBlank()) {
                 continue;
             }
             // Process each line as a command
             history.addCommandToHistory(line);
         }
-
-        return Optional.of(history);
     }
 
     @Override
