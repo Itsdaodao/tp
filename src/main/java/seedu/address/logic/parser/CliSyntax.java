@@ -26,6 +26,7 @@ public class CliSyntax {
 
     /* Flag & Prefix definitions (for TagCommand) */
     public static final Prefix FLAG_RENAME_TAG = new Prefix("-r");
+    public static final Prefix FLAG_DELETE_TAG = new Prefix("-d");
     public static final Prefix PREFIX_TARGET_TAG = new Prefix("t/");
     public static final Prefix PREFIX_RENAMED_TAG = new Prefix("r/");
 }
