@@ -1,0 +1,90 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":StateManager" as StateManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":FindCommandParser" as FindCommandParser LOGIC_COLOR
+participant ":Predicate" as PredicateN LOGIC_COLOR
+participant ":Predicate" as PredicateT LOGIC_COLOR
+participant "f:FindCommand" as FindCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("find n/John Alex")
+activate LogicManager
+
+LogicManager -> LogicManager : buildCommand()
+activate LogicManager
+
+LogicManager -> StateManager : isAwaitingUserConfirmation
+activate StateManager
+
+StateManager --> LogicManager : false
+deactivate StateManager
+
+LogicManager -> AddressBookParser : parseCommand("find n/John Alex")
+activate AddressBookParser
+
+create FindCommandParser
+AddressBookParser -> FindCommandParser : parse(("n/John Alex")
+activate FindCommandParser
+
+alt activePrefix == PREFIX_NAME
+    create PredicateN
+    FindCommandParser -> PredicateN : new NameContainsKeywordsPredicate(["John","Alex"])
+    activate PredicateN
+
+    PredicateN --> FindCommandParser : predicate
+else activePrefix == PREFIX_TAG
+    create PredicateT
+    FindCommandParser -> PredicateT : new TagContainsKeywordsPredicate(["John","Alex"])
+    activate PredicateT
+
+    PredicateT --> FindCommandParser : predicate
+end
+
+create FindCommand
+FindCommandParser -> FindCommand : new FindCommand(predicate, showWarning)
+activate FindCommand
+
+FindCommand --> FindCommandParser : f
+deactivate FindCommand
+
+FindCommandParser --> AddressBookParser : f
+destroy FindCommandParser
+
+AddressBookParser --> LogicManager : f
+deactivate AddressBookParser
+
+LogicManager --> LogicManager : f
+deactivate LogicManager
+
+LogicManager -> FindCommand : execute(m)
+activate FindCommand
+
+FindCommand -> Model : updateFilteredPersonList(predicate)
+activate Model
+
+Model --> FindCommand
+deactivate Model
+
+create CommandResult
+FindCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> FindCommand
+deactivate CommandResult
+
+FindCommand --> LogicManager : r
+deactivate FindCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml
