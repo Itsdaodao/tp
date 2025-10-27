@@ -48,7 +48,8 @@ public class TagCommand extends Command {
 
     public static final String MESSAGE_RENAMED_SUCCESS = "Renamed tag %s to %s for %d person(s).";
     public static final String MESSAGE_TAG_FAILURE = "No persons found with tag: %s";
-    public static final String MESSAGE_MULTIPLE_FLAGS_INVALID = "Invalid command! multiple flags found\n" + MESSAGE_USAGE;
+    public static final String MESSAGE_MULTIPLE_FLAGS_INVALID =
+            "Invalid command! multiple flags found\n" + MESSAGE_USAGE;
     public static final String MESSAGE_NO_FLAG_PROVIDED = "No/Invalid flag provided\n" + MESSAGE_USAGE;
     public static final String MESSAGE_NO_TARGET_TAG_PROVIDED = "No target tags provided\n" + MESSAGE_USAGE;
     public static final String MESSAGE_RENAMED_EXACTLY_ONE = "Must have exactly one target tag and one renamed tag";
