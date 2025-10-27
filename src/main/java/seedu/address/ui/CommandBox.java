@@ -111,7 +111,7 @@ public class CommandBox extends UiPart<Region> {
             return;
         }
         commandTextField.setText(completion);
-        commandTextField.end();;
+        commandTextField.end();
     }
 
     /**
