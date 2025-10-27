@@ -304,7 +304,7 @@ Press the `Up` arrow key to cycle backwards through your command history.
 
 Press the `Down` arrow key to cycle forwards through your command history.
 
-### Autocomplete `[coming in v1.5]`
+### Autocomplete
 
 As you type commands in the Command Box, autocomplete suggestions may be shown. To accept the autocomplete text, press `<Tab>`.
 
