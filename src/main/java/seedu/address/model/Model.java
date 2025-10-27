@@ -46,6 +46,16 @@ public interface Model {
     void setAddressBookFilePath(Path addressBookFilePath);
 
     /**
+     * Returns the user prefs' command history file path.
+     */
+    Path getCommandHistoryFilePath();
+
+    /**
+     * Sets the user prefs' command history file path.
+     */
+    void setCommandHistoryFilePath(Path commandHistoryFilePath);
+
+    /**
      * Replaces address book data with the data in {@code addressBook}.
      */
     void setAddressBook(ReadOnlyAddressBook addressBook);

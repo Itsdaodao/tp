@@ -121,6 +121,16 @@ public class AddCommandTest {
         }
 
         @Override
+        public Path getCommandHistoryFilePath() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setCommandHistoryFilePath(Path commandHistoryFilePath) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void addPerson(Person person) {
             throw new AssertionError("This method should not be called.");
         }

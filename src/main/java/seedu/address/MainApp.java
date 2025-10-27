@@ -65,7 +65,7 @@ public class MainApp extends Application {
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
         CommandHistoryStorage commandHistoryStorage =
-                new NewlineDelimitedCommandHistoryStorage(config.getCommandHistoryFilePath());
+                new NewlineDelimitedCommandHistoryStorage(userPrefs.getCommandHistoryFilePath());
 
         storage = new StorageManager(addressBookStorage, userPrefsStorage, commandHistoryStorage);
 

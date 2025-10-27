@@ -85,6 +85,17 @@ public class ModelManager implements Model {
         userPrefs.setAddressBookFilePath(addressBookFilePath);
     }
 
+    @Override
+    public Path getCommandHistoryFilePath() {
+        return userPrefs.getCommandHistoryFilePath();
+    }
+
+    @Override
+    public void setCommandHistoryFilePath(Path commandHistoryFilePath) {
+        requireNonNull(commandHistoryFilePath);
+        userPrefs.setCommandHistoryFilePath(commandHistoryFilePath);
+    }
+
     //=========== AddressBook ================================================================================
 
     @Override

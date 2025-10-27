@@ -81,6 +81,18 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void setCommandHistoryFilePath_nullPath_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.setCommandHistoryFilePath(null));
+    }
+
+    @Test
+    public void setCommandHistoryFilePath_validPath_setsCommandHistoryFilePath() {
+        Path path = Paths.get("cmd/history/file/path");
+        modelManager.setCommandHistoryFilePath(path);
+        assertEquals(path, modelManager.getCommandHistoryFilePath());
+    }
+
+    @Test
     public void hasPerson_nullPerson_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> modelManager.hasPerson(null));
     }
