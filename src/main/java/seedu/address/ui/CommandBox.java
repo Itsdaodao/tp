@@ -3,6 +3,8 @@ package seedu.address.ui;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import seedu.address.logic.autocomplete.Autocompletor;
 import seedu.address.logic.commands.CommandResult;
@@ -14,6 +16,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class CommandBox extends UiPart<Region> {
 
+    public static final KeyCode FILL_AUTOCOMPLETE = KeyCode.TAB;
     public static final String ERROR_STYLE_CLASS = "error";
     private static final String FXML = "CommandBox.fxml";
 
@@ -34,6 +37,7 @@ public class CommandBox extends UiPart<Region> {
         this.autocompletor = autocompletor;
         // calls handleInput whenever there is a change to the text of the command box.
         commandTextField.textProperty().addListener((unused1, unused2, newText) -> handleInput(newText));
+        commandTextField.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
     }
 
     /**
@@ -86,6 +90,28 @@ public class CommandBox extends UiPart<Region> {
         }
 
         styleClass.add(ERROR_STYLE_CLASS);
+    }
+
+    private void handleKeyPress(KeyEvent event) {
+        if (event.getCode().equals(FILL_AUTOCOMPLETE)) {
+            fillAutocomplete();
+            event.consume();
+        }
+    }
+
+    /**
+     * Fills the CommandTextField with the currently-suggested
+     * Autocomplete input.
+     */
+    private void fillAutocomplete() {
+        String completion = commandHintField.getText();
+        // Completion field can be blank if there is no suggestion. To prevent overwriting
+        // of user input if there is no suggestion, simply return if there is no completion.
+        if (completion.isBlank()) {
+            return;
+        }
+        commandTextField.setText(completion);
+        commandTextField.end();
     }
 
     /**
