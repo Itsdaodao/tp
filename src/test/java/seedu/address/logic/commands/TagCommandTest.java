@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.AddressBook;
+import seedu.address.model.CommandHistory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -25,7 +26,7 @@ public class TagCommandTest {
 
     @BeforeEach
     public void setUp() {
-        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
     }
 
     @Test
@@ -49,7 +50,8 @@ public class TagCommandTest {
         String expectedMessage = String.format(TagCommand.MESSAGE_RENAMED_SUCCESS,
                 targetTag, renamedTag, 3);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(),
+            new CommandHistory());
         expectedModel.setPerson(updatedFirst, new PersonBuilder(updatedFirst).withTags("buddies").build());
         expectedModel.setPerson(updatedSecond, new PersonBuilder(updatedSecond).withTags("buddies").build());
         expectedModel.setPerson(updatedThird, new PersonBuilder(third).withTags("buddies").build());

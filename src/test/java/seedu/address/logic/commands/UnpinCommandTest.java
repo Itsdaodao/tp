@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.model.CommandHistory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -28,7 +29,7 @@ public class UnpinCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
         // After sorting, the first two persons (Alice and Daniel) are pinned.
         Person personToUnpin = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         UnpinCommand unpinCommand = new UnpinCommand(INDEX_FIRST_PERSON);
@@ -37,7 +38,7 @@ public class UnpinCommandTest {
         String expectedMessage = String.format(
                 UnpinCommand.MESSAGE_UNPIN_PERSON_SUCCESS, Messages.format(unpinnedPerson));
 
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
         expectedModel.setPerson(personToUnpin, unpinnedPerson);
 
         assertCommandSuccess(unpinCommand, model, expectedMessage, expectedModel);
@@ -45,7 +46,7 @@ public class UnpinCommandTest {
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
         Index outOfBoundIndex = Index.fromOneBased(model.getSortedAndFilteredPersonList().size() + 1);
         UnpinCommand unpinCommand = new UnpinCommand(outOfBoundIndex);
 
@@ -54,7 +55,7 @@ public class UnpinCommandTest {
 
     @Test
     public void execute_validIndexFilteredList_success() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
         showPersonAtIndex(model, INDEX_FIRST_PERSON); // Show a pinned person (Alice)
 
         Person personToUnpin = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
@@ -64,7 +65,7 @@ public class UnpinCommandTest {
         String expectedMessage = String.format(
                 UnpinCommand.MESSAGE_UNPIN_PERSON_SUCCESS, Messages.format(unpinnedPerson));
 
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
         expectedModel.setPerson(personToUnpin, unpinnedPerson);
         // The list should show all persons after a successful pin command.
 
@@ -73,7 +74,7 @@ public class UnpinCommandTest {
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
@@ -87,7 +88,7 @@ public class UnpinCommandTest {
 
     @Test
     public void execute_personNotPinned_throwsCommandException() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
         // The person at the third index of the sorted list is not pinned.
         UnpinCommand unpinCommand = new UnpinCommand(INDEX_THIRD_PERSON);
         assertCommandFailure(unpinCommand, model, UnpinCommand.MESSAGE_PERSON_NOT_PINNED);

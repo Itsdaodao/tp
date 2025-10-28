@@ -20,6 +20,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.util.ApplicationLinkLauncher;
 import seedu.address.logic.util.ApplicationLinkLauncher.ApplicationType;
 import seedu.address.logic.util.ApplicationLinkResult;
+import seedu.address.model.CommandHistory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -38,7 +39,7 @@ public class LaunchCommandTest {
     public void excute_launchCommand_emailsuccess() {
         Person person = new PersonBuilder().withEmail(VALID_EMAIL_AMY).build();
         model.addPerson(person);
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
 
         // Mock the static method ApplicationLinkLauncher.launchEmail
         try (MockedStatic<ApplicationLinkLauncher> mocked = mockStatic(ApplicationLinkLauncher.class)) {
@@ -60,7 +61,7 @@ public class LaunchCommandTest {
     public void execute_validTelegramLaunch_success() {
         Person person = new PersonBuilder().withTelegram(VALID_TELEGRAM_AMY).build();
         model.addPerson(person);
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
 
         try (MockedStatic<ApplicationLinkLauncher> mocked = mockStatic(ApplicationLinkLauncher.class)) {
             mocked.when(() -> ApplicationLinkLauncher.launchTelegram(VALID_TELEGRAM_AMY))
@@ -81,7 +82,7 @@ public class LaunchCommandTest {
     public void execute_validGithubLaunch_success() {
         Person person = new PersonBuilder().withGithub(VALID_GITHUB_AMY).build();
         model.addPerson(person);
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
 
         try (MockedStatic<ApplicationLinkLauncher> mocked = mockStatic(ApplicationLinkLauncher.class)) {
             mocked.when(() -> ApplicationLinkLauncher.launchGithub(VALID_GITHUB_AMY))

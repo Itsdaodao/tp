@@ -56,6 +56,8 @@ public class LogicManager implements Logic {
 
         saveIfRequired(command);
 
+        saveCommandHistory(commandText);
+
         if (commandResult instanceof ConfirmationPendingResult pendingResult) {
             // Set the state to indicate that app is waiting for confirmation
             state.setAwaitingUserConfirmation(
@@ -119,12 +121,49 @@ public class LogicManager implements Logic {
             return;
         }
         // Save using the current model state
-        try {
+        runSaveWithHandling((storage) -> {
             storage.saveAddressBook(model.getAddressBook());
+        });
+    }
+
+    /**
+     * Saves the commandText to command history.
+     *
+     * @param commandText The text that the user inputs for the command.
+     * @throws CommandException If an error occurs during saving.
+     */
+    private void saveCommandHistory(String commandText) throws CommandException {
+        model.addCommandToHistory(commandText);
+
+        runSaveWithHandling((storage) -> {
+            storage.saveCommandHistory(model.getCommandHistory());
+        });
+    }
+
+    /**
+     * Runs a storage save operation, handling IO exceptions.
+     *
+     * @param saveOperation The operation to run.
+     * @throws CommandException If an error occurs during saving.
+     */
+    private void runSaveWithHandling(Savable saveOperation) throws CommandException {
+        try {
+            saveOperation.apply(storage);
         } catch (AccessDeniedException e) {
             throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
         } catch (IOException ioe) {
             throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
         }
+    }
+
+    /**
+     * An interface used for Storage saving operations.
+     * This interface is used so that the IOExceptions can be thrown, as Java's
+     * standard `Callable` does not allow for that.
+     *
+     */
+    @FunctionalInterface
+    public interface Savable {
+        void apply(Storage s) throws IOException;
     }
 }

@@ -10,18 +10,22 @@ import seedu.address.logic.autocomplete.Autocompletor;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.ReadOnlyCommandHistory;
 
 /**
  * The UI component that is responsible for receiving user command inputs.
  */
 public class CommandBox extends UiPart<Region> {
 
+    public static final KeyCode GO_PREVIOUS_COMMAND = KeyCode.UP;
+    public static final KeyCode GO_NEXT_COMMAND = KeyCode.DOWN;
     public static final KeyCode FILL_AUTOCOMPLETE = KeyCode.TAB;
     public static final String ERROR_STYLE_CLASS = "error";
     private static final String FXML = "CommandBox.fxml";
 
     private final CommandExecutor commandExecutor;
     private final Autocompletor autocompletor;
+    private final ReadOnlyCommandHistory chm;
 
     @FXML
     private TextField commandTextField;
@@ -31,10 +35,14 @@ public class CommandBox extends UiPart<Region> {
     /**
      * Creates a {@code CommandBox} with the given {@code CommandExecutor}.
      */
-    public CommandBox(CommandExecutor commandExecutor, Autocompletor autocompletor) {
+    public CommandBox(
+            CommandExecutor commandExecutor,
+            Autocompletor autocompletor,
+            ReadOnlyCommandHistory chm) {
         super(FXML);
         this.commandExecutor = commandExecutor;
         this.autocompletor = autocompletor;
+        this.chm = chm;
         // calls handleInput whenever there is a change to the text of the command box.
         commandTextField.textProperty().addListener((unused1, unused2, newText) -> handleInput(newText));
         commandTextField.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPress);
@@ -93,10 +101,34 @@ public class CommandBox extends UiPart<Region> {
     }
 
     private void handleKeyPress(KeyEvent event) {
-        if (event.getCode().equals(FILL_AUTOCOMPLETE)) {
+        if (event.getCode().equals(GO_NEXT_COMMAND)) {
+            goToNextCommand();
+            event.consume();
+        } else if (event.getCode().equals(GO_PREVIOUS_COMMAND)) {
+            goToPreviousCommand();
+            event.consume();
+        } else if (event.getCode().equals(FILL_AUTOCOMPLETE)) {
             fillAutocomplete();
             event.consume();
         }
+    }
+
+    private void goToPreviousCommand() {
+        String previousCommand = chm.getPreviousCommandFromHistory(commandTextField.getText());
+        if (previousCommand == null) {
+            return;
+        }
+        commandTextField.setText(previousCommand);
+        commandTextField.positionCaret(previousCommand.length());
+    }
+
+    private void goToNextCommand() {
+        String nextCommand = chm.getNextCommandFromHistory();
+        if (nextCommand == null) {
+            return;
+        }
+        commandTextField.setText(nextCommand);
+        commandTextField.positionCaret(nextCommand.length());
     }
 
     /**

@@ -42,4 +42,5 @@ public class StateManager implements State {
         }
         return pendingOperation;
     }
+
 }

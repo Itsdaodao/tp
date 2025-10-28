@@ -18,12 +18,16 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import seedu.address.logic.LogicManager;
 import seedu.address.logic.StateManager;
+import seedu.address.logic.autocomplete.Autocompletor;
 import seedu.address.logic.commands.CommandRegistry;
+import seedu.address.model.CommandHistory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.person.Person;
+import seedu.address.storage.CommandHistoryStorage;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
+import seedu.address.storage.NewlineDelimitedCommandHistoryStorage;
 import seedu.address.storage.StorageManager;
 
 @ExtendWith(ApplicationExtension.class)
@@ -40,7 +44,9 @@ public class MainWindowTest {
         JsonAddressBookStorage addressBookStorage =
                 new JsonAddressBookStorage(temporaryFolder.resolve("addressBook.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        CommandHistoryStorage commandHistoryStorage =
+                new NewlineDelimitedCommandHistoryStorage(temporaryFolder.resolve(".hist"));
+        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage, commandHistoryStorage);
         // Set initial settings
         CommandRegistry.initialize();
         model.setAddressBook(getTypicalAddressBook());
@@ -49,6 +55,7 @@ public class MainWindowTest {
         mainWindow = new MainWindow(stage, new LogicManager(model, storage, new StateManager()));
         mainWindow.show();
         mainWindow.fillInnerParts();
+        mainWindow.createCommandBox(new Autocompletor(), new CommandHistory());
     }
 
     @Test
