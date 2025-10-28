@@ -238,7 +238,12 @@ public class ModelManager implements Model {
             if (baseComparator != null) {
                 return baseComparator.compare(p1, p2);
             }
-            return 0;
+
+
+            List<Person> originalList = addressBook.getPersonList();
+            int index1 = originalList.indexOf(p1);
+            int index2 = originalList.indexOf(p2);
+            return Integer.compare(index1, index2);
         };
     }
 }
