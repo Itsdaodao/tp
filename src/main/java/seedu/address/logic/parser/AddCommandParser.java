@@ -56,10 +56,11 @@ public class AddCommandParser implements Parser<AddCommand> {
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
         Set<PreferredCommunicationMode> availableModes = EnumSet.of(PreferredCommunicationMode.PHONE);
+        boolean isAcceptEmptyString = false;
 
         Email email = new Email(); // Create default Email with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_EMAIL)) {
-            email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
+            email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get(), isAcceptEmptyString);
             if (!email.isEmpty()) {
                 availableModes.add(PreferredCommunicationMode.EMAIL);
             }
@@ -67,7 +68,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Telegram telegram = new Telegram(); // Create default Telegram with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_TELEGRAM)) {
-            telegram = ParserUtil.parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get());
+            telegram = ParserUtil.parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get(), isAcceptEmptyString);
             if (!telegram.isEmpty()) {
                 availableModes.add(PreferredCommunicationMode.TELEGRAM);
             }
@@ -75,7 +76,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Github github = new Github(); // Create default GitHub with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_GITHUB)) {
-            github = ParserUtil.parseGithub(argMultimap.getValue(PREFIX_GITHUB).get());
+            github = ParserUtil.parseGithub(argMultimap.getValue(PREFIX_GITHUB).get(), isAcceptEmptyString);
             if (!github.isEmpty()) {
                 availableModes.add(PreferredCommunicationMode.GITHUB);
             }
@@ -85,7 +86,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         PreferredCommunicationMode preferredMode = PreferredCommunicationMode.NONE;
         if (arePrefixesPresent(argMultimap, PREFIX_PREFERRED_MODE)) {
             preferredMode = ParserUtil.parsePreferredMode(
-                    argMultimap.getValue(PREFIX_PREFERRED_MODE).get(), availableModes);
+                    argMultimap.getValue(PREFIX_PREFERRED_MODE).get(), availableModes, isAcceptEmptyString);
         }
 
         Person person = new Person(name, phone, email, telegram, github, preferredMode, tagList);
