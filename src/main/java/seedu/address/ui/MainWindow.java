@@ -18,6 +18,7 @@ import seedu.address.logic.autocomplete.Autocompletor;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.ReadOnlyCommandHistory;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -136,8 +137,10 @@ public class MainWindow extends UiPart<Stage> {
 
         StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getAddressBookFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
+    }
 
-        commandBox = new CommandBox(this::executeCommand, new Autocompletor());
+    void createCommandBox(Autocompletor autocompletor, ReadOnlyCommandHistory commandHistory) {
+        commandBox = new CommandBox(this::executeCommand, autocompletor, commandHistory);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
     }
 

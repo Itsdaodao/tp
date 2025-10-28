@@ -8,6 +8,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.CommandHistory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -17,7 +18,7 @@ import seedu.address.model.person.Person;
  * Contains unit tests for {@code ConfirmCommand}.
  */
 public class ConfirmCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
 
     @Test
     public void execute_confirmCommandY_performsOperation() {
@@ -27,7 +28,7 @@ public class ConfirmCommandTest {
                 model, personToDelete, "y", expectedMessage, "Delete user?"
         );
 
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
         expectedModel.deletePerson(personToDelete);
 
         assertCommandSuccess(confirmCommand, model, "Done!", expectedModel);
@@ -40,7 +41,7 @@ public class ConfirmCommandTest {
                 model, personToDelete, "n", "Done!", "Delete user?"
         );
 
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
 
         assertCommandSuccess(confirmCommand, model, ConfirmCommand.MESSAGE_OPERATION_CANCELLED, expectedModel);
     }

@@ -298,7 +298,20 @@ If your changes to the data file makes its format invalid, AddressBook will disc
 Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
 
-### Autocomplete `[coming in v1.5]`
+### Accessing Command History
+
+Access your previously entered commands by pressing the `Up` and `Down` arrow keys when the Command Box is focused.
+Command history is saved and loaded every time.
+
+#### Previous Command: `Up` Arrow Key
+
+Press the `Up` arrow key to cycle backwards through your command history.
+
+#### Next Command: `Down` Arrow Key
+
+Press the `Down` arrow key to cycle forwards through your command history.
+
+### Autocomplete
 
 As you type commands in the Command Box, autocomplete suggestions may be shown. To accept the autocomplete text, press `<Tab>`.
 

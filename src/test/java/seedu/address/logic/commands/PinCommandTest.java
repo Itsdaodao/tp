@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.model.CommandHistory;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -28,7 +29,7 @@ public class PinCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
         // After sorting, the first two persons (Daniel and Alice) are pinned.
         Person personToPin = model.getSortedAndFilteredPersonList().get(INDEX_THIRD_PERSON.getZeroBased());
         PinCommand pinCommand = new PinCommand(INDEX_THIRD_PERSON);
@@ -36,7 +37,7 @@ public class PinCommandTest {
         Person pinnedPerson = personToPin.pin();
         String expectedMessage = String.format(PinCommand.MESSAGE_PIN_PERSON_SUCCESS, Messages.format(pinnedPerson));
 
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
         expectedModel.setPerson(personToPin, pinnedPerson);
 
         assertCommandSuccess(pinCommand, model, expectedMessage, expectedModel);
@@ -44,7 +45,7 @@ public class PinCommandTest {
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
         Index outOfBoundIndex = Index.fromOneBased(model.getSortedAndFilteredPersonList().size() + 1);
         PinCommand pinCommand = new PinCommand(outOfBoundIndex);
 
@@ -53,7 +54,7 @@ public class PinCommandTest {
 
     @Test
     public void execute_validIndexFilteredList_success() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
         showPersonAtIndex(model, INDEX_THIRD_PERSON); // Show an unpinned person (Benson)
 
         Person personToPin = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
@@ -62,7 +63,7 @@ public class PinCommandTest {
         Person pinnedPerson = personToPin.pin();
         String expectedMessage = String.format(PinCommand.MESSAGE_PIN_PERSON_SUCCESS, Messages.format(pinnedPerson));
 
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
         expectedModel.setPerson(personToPin, pinnedPerson);
         // The list should show all persons after a successful pin command.
 
@@ -71,7 +72,7 @@ public class PinCommandTest {
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
@@ -85,7 +86,7 @@ public class PinCommandTest {
 
     @Test
     public void execute_personAlreadyPinned_throwsCommandException() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
         // The person at the first index of the sorted list is already pinned.
         PinCommand pinCommand = new PinCommand(INDEX_FIRST_PERSON);
         assertCommandFailure(pinCommand, model, PinCommand.MESSAGE_PERSON_ALREADY_PINNED);

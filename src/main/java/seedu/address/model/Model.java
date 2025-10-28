@@ -46,6 +46,16 @@ public interface Model {
     void setAddressBookFilePath(Path addressBookFilePath);
 
     /**
+     * Returns the user prefs' command history file path.
+     */
+    Path getCommandHistoryFilePath();
+
+    /**
+     * Sets the user prefs' command history file path.
+     */
+    void setCommandHistoryFilePath(Path commandHistoryFilePath);
+
+    /**
      * Replaces address book data with the data in {@code addressBook}.
      */
     void setAddressBook(ReadOnlyAddressBook addressBook);
@@ -103,6 +113,15 @@ public interface Model {
      * Resets the filtered person list to its original order (i.e. the order in which persons were added).
      */
     void resetSortOrder();
+
+    /**
+     * Adds a command to the history.
+     *
+     * @param command The command to be added.
+     */
+    void addCommandToHistory(String command);
+
+    ReadOnlyCommandHistory getCommandHistory();
 
     /**
      * Exports the address book to a CSV file.

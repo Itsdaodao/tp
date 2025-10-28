@@ -21,6 +21,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlyCommandHistory;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.PersonBuilder;
@@ -120,6 +121,16 @@ public class AddCommandTest {
         }
 
         @Override
+        public Path getCommandHistoryFilePath() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setCommandHistoryFilePath(Path commandHistoryFilePath) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void addPerson(Person person) {
             throw new AssertionError("This method should not be called.");
         }
@@ -175,6 +186,15 @@ public class AddCommandTest {
         }
 
         @Override
+        public void addCommandToHistory(String command) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ReadOnlyCommandHistory getCommandHistory() {
+            throw new AssertionError("This method should not be called.");
+        }
+
         public void exportAddressBookToCsv(Path filePath) {
             throw new AssertionError("This method should not be called.");
         }

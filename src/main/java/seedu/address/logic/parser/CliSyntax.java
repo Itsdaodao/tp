@@ -24,4 +24,9 @@ public class CliSyntax {
     public static final Prefix FLAG_TELEGRAM_LAUNCH = new Prefix("-l");
     public static final Prefix FLAG_GITHUB_LAUNCH = new Prefix("-g");
 
+    /* Flag & Prefix definitions (for TagCommand) */
+    public static final Prefix FLAG_RENAME_TAG = new Prefix("-r");
+    public static final Prefix FLAG_DELETE_TAG = new Prefix("-d");
+    public static final Prefix PREFIX_TARGET_TAG = new Prefix("t/");
+    public static final Prefix PREFIX_RENAMED_TAG = new Prefix("r/");
 }
