@@ -174,11 +174,11 @@ public class EditCommand extends Command {
 
         Set<Tag> updatedTags = new HashSet<>(baseTags);
         Set<Tag> invalidRemovals = new HashSet<>(tagsToRemove);
-        invalidRemovals.removeAll(baseTags);
-
 
         updatedTags.addAll(tagsToAdd);
         updatedTags.removeAll(tagsToRemove);
+        invalidRemovals.removeAll(updatedTags);
+        invalidRemovals.removeAll(tagsToAdd);
 
         return new TagUpdateResult(updatedTags, invalidRemovals);
     }
