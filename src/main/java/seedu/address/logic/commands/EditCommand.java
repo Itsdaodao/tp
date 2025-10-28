@@ -177,7 +177,7 @@ public class EditCommand extends Command {
 
         updatedTags.addAll(tagsToAdd);
         updatedTags.removeAll(tagsToRemove);
-        invalidRemovals.removeAll(updatedTags);
+        invalidRemovals.removeAll(baseTags);
         invalidRemovals.removeAll(tagsToAdd);
 
         return new TagUpdateResult(updatedTags, invalidRemovals);
