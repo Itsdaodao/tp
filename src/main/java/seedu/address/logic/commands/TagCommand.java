@@ -33,6 +33,8 @@ public class TagCommand extends Command {
             + PREFIX_TARGET_TAG + "(target) TAG "
             + "[" + PREFIX_RENAMED_TAG + "(renamed) TAG]";
 
+    public static final String MESSAGE_DETAILED_USAGE = MESSAGE_FLAGS + "\n" + MESSAGE_PARAMETERS;
+
     public static final String MESSAGE_EXAMPLE = "Example Rename Tag: "
             + COMMAND_WORD + " " + FLAG_RENAME_TAG + " "
             + PREFIX_TARGET_TAG + "CS1101" + " " + PREFIX_RENAMED_TAG + "CS2100"
@@ -68,9 +70,9 @@ public class TagCommand extends Command {
     /**
      * Creates a TagCommand to delete/rename a specified tag from multiple people
      *
-     * @param targetTag     set of target tags to delete/rename
-     * @param renamedTags   name of tags to be renamed to
-     * @param tagOperation   operation mode of the tag command
+     * @param targetTag    set of target tags to delete/rename
+     * @param renamedTags  name of tags to be renamed to
+     * @param tagOperation operation mode of the tag command
      */
     public TagCommand(Set<Tag> targetTag, Set<Tag> renamedTags, TagOperation tagOperation) {
         this.targetTags = targetTag;
@@ -97,7 +99,7 @@ public class TagCommand extends Command {
     /**
      * Executes the TagCommand given the rename flag {@code -r} and returns the result message.
      *
-     * @param model {@code Model} which the command should operate on.
+     * @param model         {@code Model} which the command should operate on.
      * @param lastShownList {@code lastShownList} which the command should iterate on.
      * @return feedback message of the rename tag result for display
      * @throws CommandException
@@ -130,7 +132,7 @@ public class TagCommand extends Command {
     /**
      * Executes the TagCommand to delete tag given the delete flag {@code -d} and returns the result message.
      *
-     * @param model {@code Model} which the command should operate on.
+     * @param model         {@code Model} which the command should operate on.
      * @param lastShownList {@code lastShownList} which the command should iterate on.
      * @return feedback message of the deleted tags result for display
      * @throws CommandException
@@ -228,7 +230,7 @@ public class TagCommand extends Command {
                 COMMAND_WORD,
                 MESSAGE_DESCRIPTION,
                 MESSAGE_EXAMPLE,
-                MESSAGE_PARAMETERS
+                MESSAGE_DETAILED_USAGE
         );
     }
 
