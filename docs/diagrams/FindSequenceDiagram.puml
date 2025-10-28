@@ -37,17 +37,10 @@ activate AddressBookParser
 AddressBookParser -> CommandRegistry : getCommandFactory("find")
 activate CommandRegistry
 
-create CommandFactory
-CommandRegistry -> CommandFactory : new CommandFactory()
-activate CommandFactory
-
-CommandFactory --> CommandRegistry : factory
-deactivate CommandFactory
-
 CommandRegistry --> AddressBookParser : factory
 deactivate CommandRegistry
 
-AddressBookParser -> CommandFactory : Create(" n/John Alex")
+AddressBookParser -> CommandFactory : create(" n/John Alex")
 activate CommandFactory
 
 create FindCommandParser
