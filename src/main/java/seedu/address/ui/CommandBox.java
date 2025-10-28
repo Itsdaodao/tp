@@ -19,6 +19,7 @@ public class CommandBox extends UiPart<Region> {
 
     public static final KeyCode GO_PREVIOUS_COMMAND = KeyCode.UP;
     public static final KeyCode GO_NEXT_COMMAND = KeyCode.DOWN;
+    public static final KeyCode FILL_AUTOCOMPLETE = KeyCode.TAB;
     public static final String ERROR_STYLE_CLASS = "error";
     private static final String FXML = "CommandBox.fxml";
 
@@ -106,6 +107,9 @@ public class CommandBox extends UiPart<Region> {
         } else if (event.getCode().equals(GO_PREVIOUS_COMMAND)) {
             goToPreviousCommand();
             event.consume();
+        } else if (event.getCode().equals(FILL_AUTOCOMPLETE)) {
+            fillAutocomplete();
+            event.consume();
         }
     }
 
@@ -125,6 +129,21 @@ public class CommandBox extends UiPart<Region> {
         }
         commandTextField.setText(nextCommand);
         commandTextField.positionCaret(nextCommand.length());
+    }
+
+    /**
+     * Fills the CommandTextField with the currently-suggested
+     * Autocomplete input.
+     */
+    private void fillAutocomplete() {
+        String completion = commandHintField.getText();
+        // Completion field can be blank if there is no suggestion. To prevent overwriting
+        // of user input if there is no suggestion, simply return if there is no completion.
+        if (completion.isBlank()) {
+            return;
+        }
+        commandTextField.setText(completion);
+        commandTextField.end();
     }
 
     /**

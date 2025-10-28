@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import seedu.address.logic.autocomplete.Autocompletor;
 import seedu.address.logic.commands.CommandRegistry;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.LaunchCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.CommandHistory;
 
@@ -26,7 +27,7 @@ public class CommandBoxTest {
     @TempDir
     public Path temporaryFolder;
 
-    private CommandHistory chm = new CommandHistory();
+    private final CommandHistory chm = new CommandHistory();
 
     @Start
     private void start(Stage stage) {
@@ -59,6 +60,7 @@ public class CommandBoxTest {
         robot.push(CommandBox.GO_PREVIOUS_COMMAND);
 
         assertEquals(contents, t.getText());
+
     }
 
     @Test
@@ -134,6 +136,29 @@ public class CommandBoxTest {
         robot.push(CommandBox.GO_NEXT_COMMAND);
 
         assertEquals(userInput, t.getText());
+    }
+
+    public void fillAutocomplete_withSuggestion_updatesCommandTextFieldToSuggestionAndSetsCaretPosToEnd(FxRobot robot) {
+        String expected = LaunchCommand.COMMAND_WORD;
+        String contents = expected.substring(0, expected.length() - 1);
+        TextField t = robot.lookup("#commandTextField").queryAs(TextField.class);
+        robot.write(contents);
+
+        robot.push(CommandBox.FILL_AUTOCOMPLETE);
+
+        assertEquals(expected, t.getText());
+        assertEquals(expected.length(), t.getCaretPosition());
+    }
+
+    @Test
+    public void fillAutocomplete_withNoSuggestions_preservesUserInput(FxRobot robot) {
+        String contents = "this command will have no autocomplete suggestions because its too long";
+        TextField t = robot.lookup("#commandTextField").queryAs(TextField.class);
+        robot.write(contents);
+
+        robot.push(CommandBox.FILL_AUTOCOMPLETE);
+
+        assertEquals(contents, t.getText());
     }
 
     private class CommandExecutorStub implements CommandBox.CommandExecutor {
