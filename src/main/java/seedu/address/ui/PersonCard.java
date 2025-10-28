@@ -6,9 +6,11 @@ import java.util.function.Consumer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.shape.SVGPath;
 import seedu.address.logic.util.ApplicationLinkLauncher;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PreferredCommunicationMode;
@@ -49,7 +51,7 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private FlowPane tags;
     @FXML
-    private Label pinIcon;
+    private ImageView pinIcon;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -68,6 +70,7 @@ public class PersonCard extends UiPart<Region> {
         phone.setText(person.getPhone().value);
 
         PreferredCommunicationMode preferredMode = person.getPreferredMode();
+
         // Display pin icon
         pinIcon.setVisible(person.isPinned());
 
