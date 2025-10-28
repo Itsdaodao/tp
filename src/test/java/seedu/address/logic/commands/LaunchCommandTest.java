@@ -105,7 +105,11 @@ public class LaunchCommandTest {
         model.addPerson(person);
 
         LaunchCommand command = new LaunchCommand(INDEX_SECOND_PERSON, ApplicationType.EMAIL);
-        assertCommandFailure(command, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandFailure(
+                command,
+                model,
+                Messages.getMessageInvalidPersonDisplayedIndex(INDEX_SECOND_PERSON.getOneBased(),
+                        model.getSortedAndFilteredPersonList().size()));
     }
 
     /**

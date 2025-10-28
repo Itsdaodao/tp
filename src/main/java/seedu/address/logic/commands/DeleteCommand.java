@@ -40,7 +40,8 @@ public class DeleteCommand extends Command {
         List<Person> lastShownList = model.getSortedAndFilteredPersonList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new CommandException(
+                    Messages.getMessageInvalidPersonDisplayedIndex(targetIndex.getOneBased(), lastShownList.size()));
         }
 
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
