@@ -113,7 +113,7 @@ public class AddCommand extends Command {
                         + "  n/NAME               - Full name of the contact (required)\n"
                         + "  p/PHONE              - Phone number (required)\n"
                         + "  e/EMAIL              - Email address (optional)\n"
-                        + "  l/TELEGRAM           - Telegram username with @ prefix (optional)\n"
+                        + "  l/TELEGRAM           - Telegram username (optional)\n"
                         + "  g/GITHUB             - GitHub username (optional)\n"
                         + "  pm/PREFERRED_MODE    - Preferred communication mode (optional)\n"
                         + "  t/TAG                - Tag(s) to categorize the contact (optional, can have multiple)\n\n"
