@@ -26,15 +26,19 @@ import seedu.address.model.ReadOnlyCommandHistory;
  */
 public class MainWindow extends UiPart<Stage> {
     public static final KeyCode ENTER_SCROLL_MODE = KeyCode.ESCAPE;
-    public static final KeyCode SCROLL_MODE_NEXT = KeyCode.K;
-    public static final KeyCode SCROLL_MODE_PREVIOUS = KeyCode.L;
+    public static final KeyCode SCROLL_MODE_NEXT = KeyCode.J;
+    public static final KeyCode SCROLL_MODE_PREVIOUS = KeyCode.K;
+    public static final KeyCode SCROLL_MODE_NEXT_ALT = KeyCode.DOWN;
+    public static final KeyCode SCROLL_MODE_PREVIOUS_ALT = KeyCode.UP;
     public static final KeyCode ENTER_INPUT_MODE = KeyCode.I;
 
     private static final String ENTER_INPUT_MODE_FEEDBACK = "Entered insert mode.\nPress "
             + ENTER_SCROLL_MODE + " to return to scroll mode.";
-    private static final String ENTER_SCROLL_MODE_FEEDBACK = "Entered scroll mode.\nPress "
-            + ENTER_INPUT_MODE + " to return to input mode.\n Use [" + SCROLL_MODE_NEXT + "/"
-            + SCROLL_MODE_PREVIOUS + "] to navigate.";
+    private static final String ENTER_SCROLL_MODE_FEEDBACK = String.format(
+        "Entered scroll mode.\nPress %s to return to input mode.\nUse [%s/%s] or [%s/%s] to navigate",
+        ENTER_INPUT_MODE, SCROLL_MODE_NEXT, SCROLL_MODE_PREVIOUS, SCROLL_MODE_NEXT_ALT, SCROLL_MODE_PREVIOUS_ALT
+    );
+
     private static final String FXML = "MainWindow.fxml";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
@@ -167,13 +171,15 @@ public class MainWindow extends UiPart<Stage> {
      * @param event The key event to handle.
      */
     private void handleKeyPressed(KeyEvent event) {
-        if (event.getCode().equals(ENTER_SCROLL_MODE)) {
+        KeyCode keyCode = event.getCode();
+        if (keyCode.equals(ENTER_SCROLL_MODE)) {
             handleEnterScrollMode();
-        } else if (event.getCode().equals(SCROLL_MODE_NEXT)) {
+        } else if (keyCode.equals(SCROLL_MODE_NEXT) || keyCode.equals(SCROLL_MODE_NEXT_ALT)) {
             handleNavigateNext();
-        } else if (event.getCode().equals(SCROLL_MODE_PREVIOUS)) {
+        } else if (keyCode.equals(SCROLL_MODE_PREVIOUS) || keyCode.equals(SCROLL_MODE_PREVIOUS_ALT)) {
             handleNavigatePrevious();
         }
+        event.consume();
     }
 
     /**

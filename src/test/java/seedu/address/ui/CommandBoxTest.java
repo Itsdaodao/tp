@@ -138,6 +138,7 @@ public class CommandBoxTest {
         assertEquals(userInput, t.getText());
     }
 
+    @Test
     public void fillAutocomplete_withSuggestion_updatesCommandTextFieldToSuggestionAndSetsCaretPosToEnd(FxRobot robot) {
         String expected = LaunchCommand.COMMAND_WORD;
         String contents = expected.substring(0, expected.length() - 1);

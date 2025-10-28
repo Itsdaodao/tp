@@ -144,4 +144,34 @@ public class MainWindowTest {
         assertEquals(firstPerson, mainWindow.getPersonListPanel().getSelectedPerson());
     }
 
+    // Test alternate inputs - apply `at least one` strategy to check that alternate arrow key binding works
+    // on singular cases (instead of redoing the manyRepeatedScrollNextInput tests for alternate bindings)
+    @Test
+    public void scrollMode_selectsFirstPerson_onScrollNextAlternateInput(FxRobot robot) {
+        Person selected = model.getSortedAndFilteredPersonList().get(0);
+
+        robot.push(MainWindow.ENTER_SCROLL_MODE);
+        robot.push(MainWindow.SCROLL_MODE_NEXT_ALT);
+
+        assertEquals(selected, mainWindow.getPersonListPanel().getSelectedPerson());
+    }
+
+
+    @Test
+    public void scrollMode_selectsFirstPerson_onScrollPreviousInputAlternateInput(FxRobot robot) {
+        // Arrange - select second person by pressing SCROLL_NEXT_ALT twice
+        Person firstPerson = model.getSortedAndFilteredPersonList().get(0);
+        Person secondPerson = model.getSortedAndFilteredPersonList().get(1);
+        robot.push(MainWindow.ENTER_SCROLL_MODE);
+        robot.push(MainWindow.SCROLL_MODE_NEXT_ALT);
+        robot.push(MainWindow.SCROLL_MODE_NEXT_ALT);
+        // Ensure second person is selected
+        assertEquals(secondPerson, mainWindow.getPersonListPanel().getSelectedPerson());
+
+        // ACT - Press SCROLL_PREVIOUS_ALT to go back to first person
+        robot.push(MainWindow.SCROLL_MODE_PREVIOUS_ALT);
+
+        assertEquals(firstPerson, mainWindow.getPersonListPanel().getSelectedPerson());
+    }
+
 }
