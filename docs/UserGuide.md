@@ -136,21 +136,28 @@ Examples:
 
 ### Locating persons by name: `find`
 
-Finds persons whose names contain any of the given keywords.
+Finds persons whose names or tags start with the given prefix keyword.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `find [n/MORE_NAMES]` or `find [t/MORE_TAGS]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
+* Either name or tag is searched, depending on the prefix used.
+* Input must match the start of the word, not the full word. e.g. `Han` will match 
+  `Hans`, but not `Johann`.
+* When multiple prefixes are provided, only the first prefix is used; subsequent ones are ignored.
+* Only the specified field (name or tag) is searched.
 * Persons matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
 Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `find n/John` returns `johnny Tan` and `John Doe`
+* `find t/friend` returns all contacts tagged with "friend"
+* `find n/alex t/friend` searches only by name `n/alex`, since t/ is ignored
+* `find t/friend n/alex` searches only by tag `t/friend`, since n/ is ignored
+* `find n/a` returns all contacts whose names start with "A" e.g. `Alex yeoh`, `amy tan`
+* `find n/charlotte david` returns `Charlotte Oliveiro`, `David Li`<br>
+  ![result for 'find charlotte david'](images/findCharlotteDavidResult.png)
 
 ### Deleting a person : `delete`
 
@@ -164,7 +171,7 @@ Format: `delete INDEX`
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `find n/Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
 ### Pinning a person : `pin`
 
@@ -178,7 +185,7 @@ Format: `pin INDEX`
 
 Examples:
 * `list` followed by `pin 4` pins the 4th person in the address book to the top.
-* `find Betsy` followed by `pin 2` pins the 2nd person in the results of the `find` command.
+* `find n/Betsy` followed by `pin 2` pins the 2nd person in the results of the `find` command.
 
 ### Unpinning a person : `unpin`
 
@@ -192,7 +199,7 @@ Format: `unpin INDEX`
 
 Examples:
 * `list` followed by `unpin 1` unpins the 1st person and removes them from the pinned list at the top.
-* `find Betsy` followed by `unpin 2` unpins the 2nd person in the results of the `find` command.
+* `find n/Betsy` followed by `unpin 2` unpins the 2nd person in the results of the `find` command.
 
 ### Clearing all entries : `clear`
 
@@ -338,7 +345,7 @@ Action | Format, Examples
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [t/TAG]…​ [r/TAG]…​`<br> e.g., `edit 1 p/91234567`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find** | `find n/KEYWORD [MORE_KEYWORDS]` or `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n/James Jake`, `find t/friend`
 **List** | `list [-a (alphabetical)] [-r (recent)]`<br> e.g., `list -a`
 **Help** | `help`
 **Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
