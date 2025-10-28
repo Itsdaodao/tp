@@ -79,7 +79,8 @@ public class TagCommandTest {
 
         String expectedMessage = String.format(TagCommand.MESSAGE_DELETE_SUCCESS, target);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(),
+                new CommandHistory());
         expectedModel.setPerson(updatedFirst, new PersonBuilder(first).withTags("colleagues").build());
         expectedModel.setPerson(updatedSecond, new PersonBuilder(second).withTags().build()); // no tags
 
@@ -106,7 +107,8 @@ public class TagCommandTest {
 
         String expectedMessage = String.format(TagCommand.MESSAGE_DELETE_SUCCESS, target);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(),
+                new CommandHistory());
         expectedModel.setPerson(updatedFirst, new PersonBuilder(first).withTags("colleagues").build());
         expectedModel.setPerson(updatedSecond, new PersonBuilder(second).withTags().build()); // no tags
         expectedModel.setPerson(updatedThird, new PersonBuilder(third).withTags("friend").build());
