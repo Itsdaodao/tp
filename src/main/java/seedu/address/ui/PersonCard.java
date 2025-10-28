@@ -10,7 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.shape.SVGPath;
 import seedu.address.logic.util.ApplicationLinkLauncher;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PreferredCommunicationMode;
