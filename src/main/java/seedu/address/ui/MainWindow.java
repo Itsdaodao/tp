@@ -174,12 +174,14 @@ public class MainWindow extends UiPart<Stage> {
         KeyCode keyCode = event.getCode();
         if (keyCode.equals(ENTER_SCROLL_MODE)) {
             handleEnterScrollMode();
+            event.consume();
         } else if (keyCode.equals(SCROLL_MODE_NEXT) || keyCode.equals(SCROLL_MODE_NEXT_ALT)) {
             handleNavigateNext();
+            event.consume();
         } else if (keyCode.equals(SCROLL_MODE_PREVIOUS) || keyCode.equals(SCROLL_MODE_PREVIOUS_ALT)) {
             handleNavigatePrevious();
+            event.consume();
         }
-        event.consume();
     }
 
     /**
