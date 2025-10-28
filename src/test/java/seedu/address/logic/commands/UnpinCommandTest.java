@@ -50,7 +50,14 @@ public class UnpinCommandTest {
         Index outOfBoundIndex = Index.fromOneBased(model.getSortedAndFilteredPersonList().size() + 1);
         UnpinCommand unpinCommand = new UnpinCommand(outOfBoundIndex);
 
-        assertCommandFailure(unpinCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandFailure(
+                unpinCommand,
+                model,
+                Messages.getMessageInvalidPersonDisplayedIndex(
+                        outOfBoundIndex.getOneBased(),
+                        model.getSortedAndFilteredPersonList().size()
+                )
+        );
     }
 
     @Test
@@ -83,7 +90,14 @@ public class UnpinCommandTest {
 
         UnpinCommand unpinCommand = new UnpinCommand(outOfBoundIndex);
 
-        assertCommandFailure(unpinCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandFailure(
+                unpinCommand,
+                model,
+                Messages.getMessageInvalidPersonDisplayedIndex(
+                        outOfBoundIndex.getOneBased(),
+                        model.getSortedAndFilteredPersonList().size()
+                )
+        );
     }
 
     @Test
