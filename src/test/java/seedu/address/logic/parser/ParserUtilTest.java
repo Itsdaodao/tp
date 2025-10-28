@@ -16,9 +16,11 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.PreferredCommunicationMode;
+import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
@@ -132,13 +134,35 @@ public class ParserUtilTest {
 
     @Test
     public void parseEmail_emptyStringDisallowed_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseTelegram("", NOT_ACCEPT_EMPTY_STRING));
+        assertThrows(ParseException.class, () -> ParserUtil.parseEmail("", NOT_ACCEPT_EMPTY_STRING));
     }
 
     @Test
     public void parseEmail_emptyStringAllowed_returnsEmptyEmail() throws Exception {
         Email expectedEmail = new Email();
         assertEquals(expectedEmail, ParserUtil.parseEmail("", ACCEPT_EMPTY_STRING));
+    }
+
+    @Test
+    public void parseTelegram_emptyStringDisallowed_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTelegram("", NOT_ACCEPT_EMPTY_STRING));
+    }
+
+    @Test
+    public void parseTelegram_emptyStringAllowed_returnsEmptyEmail() throws Exception {
+        Telegram expectedTelegram = new Telegram();
+        assertEquals(expectedTelegram, ParserUtil.parseTelegram("", ACCEPT_EMPTY_STRING));
+    }
+
+    @Test
+    public void parseGithub_emptyStringDisallowed_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseGithub("", NOT_ACCEPT_EMPTY_STRING));
+    }
+
+    @Test
+    public void parseGithub_emptyStringAllowed_returnsEmptyGithub() throws Exception {
+        Github expectedGithub = new Github();
+        assertEquals(expectedGithub, ParserUtil.parseGithub("", ACCEPT_EMPTY_STRING));
     }
 
     @Test
