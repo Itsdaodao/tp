@@ -10,6 +10,8 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <GridPane HBox.hgrow="ALWAYS">
@@ -38,11 +40,17 @@
       </VBox>
 
       <!-- Pin icon at top right -->
-      <Label fx:id="pinIcon" text="📌" styleClass="pin-icon" StackPane.alignment="TOP_RIGHT">
-        <padding>
-          <Insets top="5" right="10" />
-        </padding>
-      </Label>
+      <ImageView fx:id="pinIcon"
+                 fitWidth="28"
+                 fitHeight="28"
+                 StackPane.alignment="TOP_RIGHT"
+                 rotate="45"
+                 preserveRatio="true">
+        <StackPane.margin>
+          <Insets top="10" right="5" />
+        </StackPane.margin>
+        <Image url="@/images/pin_icon.png" />
+      </ImageView>
     </StackPane>
   </GridPane>
 </HBox>
