@@ -22,7 +22,7 @@ import seedu.address.testutil.PersonBuilder;
 
 public class CsvAddressBookStorageTest {
 
-    private static final String CSV_HEADER = "Name,Phone,Email,Telegram,GitHub,Tags,Preferred Mode,Pinned,Pinned At";
+    private static final String CSV_HEADER = "Name,Phone,Email,Telegram,GitHub,Tags,Preferred Mode,Pinned,PinnedAt";
 
     @TempDir
     public Path temporaryFolder;
