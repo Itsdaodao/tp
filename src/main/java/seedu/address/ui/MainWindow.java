@@ -177,10 +177,8 @@ public class MainWindow extends UiPart<Stage> {
             event.consume();
         } else if (keyCode.equals(SCROLL_MODE_NEXT) || keyCode.equals(SCROLL_MODE_NEXT_ALT)) {
             handleNavigateNext();
-            event.consume();
         } else if (keyCode.equals(SCROLL_MODE_PREVIOUS) || keyCode.equals(SCROLL_MODE_PREVIOUS_ALT)) {
             handleNavigatePrevious();
-            event.consume();
         }
     }
 
