@@ -214,6 +214,7 @@ public class CsvAddressBookStorageTest {
                 .withName("John Doe")
                 .withPhone("98765432")
                 .withEmail("john@example.com")
+                .withPreferredMode(null)
                 .build();
 
         AddressBook addressBook = new AddressBook();
