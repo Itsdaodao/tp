@@ -127,28 +127,20 @@ Here are the other classes in `Logic` (omitted from the class diagram above) tha
 
 <img src="images/ParserClasses.png" width="700"/>
 
+
 How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class queries `CommandRegistry` to find the appropriate `CommandFactory` instance that creates the corresponding `XYZCommandParser` class. (`XYZ`is a placeholder for the specific command name e.g., `AddCommandParser`) Once found, the `CommandFactory` instance creates the `XYZCommandParser` class which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
-<img src="images/LogicUtilityClassDiagram.png" width="700"/>
+![How Logic Utility Classes Work](images/LogicUtilityClassDiagram.png)
 
 How the utility classes work:
 * Currently utility classes are only used by `PersonCard`, `LaunchCommand` and `LaunchCommandParser`
 * `LaunchCommandParser` uses on `ApplicationType` to decide how it creates `LaunchCommand`
-* When called upon by either `LaunchCommand` or `PersonCard`, `ApplicationLinkLauncher` uses the `ApplicationType` and attempts to launch the communication mode.
-* `ApplicationLinkLauncher` then tries to create an instance of `RealDesktopWrapper` (which implements `DesktopWrapper` interface) to launch the communication mode.
-* If the `RealDesktopWrapper` instance is created successfully, it uses the real desktop environment to launch the communication application.
-* If not, a `DummyDesktopWrapper` instance is created instead which does nothing when asked to launch the communication application.
-* Upon failing to launch the application through either `RealDesktopWrapper` or `DummyDesktopWrapper`, `ApplicationLinkLauncher` will attempt a fallback mechanism through `DesktopApi` class.
-* Finally, `ApplicationLinkLauncher` will return with create and return the appropriate  `ApplicationLinkResult`.
+* When called upon by either `LaunchCommand` or `PersonCard`, `ApplicationLinkLauncher` uses the `ApplicationType` and attempts to launch the communication mode through the use `DesktopApi`. 
+* Based on the success of the `DesktopApi` launch attempt, `ApplicationLinkLauncher` will return with create and return the appropriate  `ApplicationLinkResult`.
 
-
-
-
-
-### Model component
 ### Model component
 **API** : [`Model.java`](https://github.com/AY2526S1-CS2103-F12-2/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
