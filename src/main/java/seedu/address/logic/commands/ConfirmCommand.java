@@ -43,7 +43,7 @@ public class ConfirmCommand extends Command {
             CommandResult res = pendingOperation.executeOnConfirm();
             onComplete.run();
             return res;
-        } else if (input.equals(USER_INPUT_CANCEL) || input .equals(USER_INPUT_CANCEL_ALT)) {
+        } else if (input.equals(USER_INPUT_CANCEL) || input.equals(USER_INPUT_CANCEL_ALT)) {
             onComplete.run();
             return new CommandResult(MESSAGE_OPERATION_CANCELLED);
         } else {

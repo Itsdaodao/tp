@@ -4,12 +4,11 @@ package seedu.address.logic.commands;
  * Represents a command that requires confirmation from the user before execution.
  */
 public class ConfirmationPendingResult extends CommandResult {
+    public static final String CONFIRMATION_TEXT_FORMAT = "%s\nProceed? " + ConfirmCommand.USER_INPUT_OPTIONS;
 
     /** Contains logic to execute on user confirmation.**/
     private final OnceRunnable pendingAction;
     private final CommandResult successResult;
-
-    public static final String CONFIRMATION_TEXT_FORMAT = "%s\nProceed? " + ConfirmCommand.USER_INPUT_OPTIONS;
 
     /**
      * Constructs a {@code ConfirmationPendingResult} with the specified fields.
@@ -39,7 +38,10 @@ public class ConfirmationPendingResult extends CommandResult {
         return successResult;
     }
 
-    private static class OnceRunnable{
+    /**
+     * Represents a runnable callback that can only be executed once.
+     */
+    private static class OnceRunnable {
         private boolean hasRun = false;
         private final Runnable r;
 
@@ -47,8 +49,15 @@ public class ConfirmationPendingResult extends CommandResult {
             this.r = r;
         }
 
+        /**
+         * Runs the Runnable. If the inner Runnable object has already
+         * been ran once, then it simply returns, doing nothing.
+         */
         public void run() {
-            assert !hasRun : "Pending Result should only be runned once!";
+            assert !hasRun : "Pending Result should only be ran once!";
+            if (hasRun) {
+                return;
+            }
             this.r.run();
             hasRun = true;
         }
