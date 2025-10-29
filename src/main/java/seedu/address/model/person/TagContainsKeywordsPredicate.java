@@ -30,7 +30,7 @@ public class TagContainsKeywordsPredicate implements Predicate<Person> {
                 .map(Tag::getTagName)
                 .anyMatch(tagName ->
                         keywords.stream()
-                                .anyMatch(keyword -> StringUtil.containsPrefixIgnoreCase(tagName, keyword))
+                                .anyMatch(keyword -> StringUtil.hasWordStartingWithIgnoreCase(tagName, keyword))
                 );
     }
 
