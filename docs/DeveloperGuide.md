@@ -114,6 +114,10 @@ The `Logic` component additionally relies on `State` to chiefly manage Confirmat
 
 ![State interactions Inside the Logic Component for the `delete 1` Command](images/DeleteAbstractedStateDiagram.png)
 
+<div markdown="span" class="alert alert-info">:information_source: **Note:** `DeleteCommand` and `ConfirmCommand` are both created in the respective `ref` frames directly above them. PlantUML does not allow for the object to be created in the frame.
+
+</div>
+
 How logic manages state:
 On every execute call, LogicManager checks its `State` to see if there is an operation pending confirmation.
 
