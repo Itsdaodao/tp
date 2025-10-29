@@ -93,28 +93,24 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <img src="images/LogicClassDiagram.png" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("edit 1 n/Adam")` API call as an example.
 
-![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
+![Interactions Inside the Logic Component for the `edit 1 n/Adam` Command](images/EditSequenceDiagram.png)
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser`, `DeleteCommand` and `ConfirmationPendingResult` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </div>
 
-How the `Logic` component works:
+How the `Logic` component works in a typical case:
+1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object.
+1The `AddressBookParser` calls upon the `CommandRegistry` to obtain a `CommandFactory` that creates a Command.
+1The `AddressBookParser` supplies the parsed arguments to the `CommandFactory`, which in turn uses the `EditParser`.
+1This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `EditCommand`) which is exectued by the `LogicManager`.
+1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
+   Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
+1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
-When `Logic` is called upon to execute a command, it checks its `state` to see if there is an operation that is pending confirmation
-* Case 1: There is no pending operation
-  1. The command word is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
-  1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-  1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
-     Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
-  1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
-     1. If the command requires a confirmation to be executed, a `ConfirmationPendingResult` object is created instead, which encapsulates the confirmation message to show to the user and the pending operation.
-* Case 2: There is a pending operation
-    1. The command word (e.g. `y`/`n`) is passed to an `AddressBookParser`, where it is parsed specifically as a `ConfirmCommand`
-    2. A `ConfirmCommand` object is created. The `ConfirmCommand` executes the pending operation if the user inputs a valid confirmation.
-    4. The `ConfirmCommand` executes a callback to manage State if the confirmation was successful, and the state needs to be cleared.
-    5. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
+#### State Management
+The `Logic` component additionally relies on `State` to chiefly manage Confirmation prompts for some commands. In these cases, the components interact like so:
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
