@@ -47,12 +47,17 @@ public class LaunchCommandParser implements Parser<LaunchCommand> {
         boolean telegramFlag = argMultimap.getValue(FLAG_TELEGRAM_LAUNCH).isPresent();
         boolean githubFlag = argMultimap.getValue(FLAG_GITHUB_LAUNCH).isPresent();
 
+
         // Ensures that exactly one flag is provided
-        if (emailFlag && !telegramFlag && !githubFlag) {
+        boolean isOnlyEmail = emailFlag && !telegramFlag && !githubFlag;
+        boolean isOnlyTelegram = !emailFlag && telegramFlag && !githubFlag;
+        boolean isOnlyGithub = !emailFlag && !telegramFlag && githubFlag;
+
+        if (isOnlyEmail) {
             return new LaunchCommand(index, ApplicationType.EMAIL);
-        } else if (!emailFlag && telegramFlag && !githubFlag) {
+        } else if (isOnlyTelegram) {
             return new LaunchCommand(index, ApplicationType.TELEGRAM);
-        } else if (!emailFlag && !telegramFlag && githubFlag) {
+        } else if (isOnlyGithub) {
             return new LaunchCommand(index, ApplicationType.GITHUB);
         } else {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, LaunchCommand.MESSAGE_USAGE));
