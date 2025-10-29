@@ -26,7 +26,7 @@ import seedu.address.model.tag.Tag;
  * Parses input arguments and creates a new EditCommand object
  */
 public class EditCommandParser implements Parser<EditCommand> {
-
+    private static final boolean IS_ACCEPT_EMPTY_STRING = true;
     /**
      * Parses the given {@code String} of arguments in the context of the EditCommand
      * and returns an EditCommand object for execution.
@@ -60,7 +60,6 @@ public class EditCommandParser implements Parser<EditCommand> {
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM, PREFIX_PREFERRED_MODE, PREFIX_GITHUB);
 
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
-        boolean isAcceptEmptyString = true;
 
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
             editPersonDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
@@ -70,20 +69,20 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
         if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
             editPersonDescriptor.setEmail(ParserUtil
-                    .parseEmail(argMultimap.getValue(PREFIX_EMAIL).get(), isAcceptEmptyString));
+                    .parseEmail(argMultimap.getValue(PREFIX_EMAIL).get(), IS_ACCEPT_EMPTY_STRING));
         }
         if (argMultimap.getValue(PREFIX_TELEGRAM).isPresent()) {
             editPersonDescriptor.setTelegram(ParserUtil
-                    .parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get(), isAcceptEmptyString));
+                    .parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get(), IS_ACCEPT_EMPTY_STRING));
         }
         if (argMultimap.getValue(PREFIX_GITHUB).isPresent()) {
             editPersonDescriptor.setGithub(ParserUtil
-                    .parseGithub(argMultimap.getValue(PREFIX_GITHUB).get(), isAcceptEmptyString));
+                    .parseGithub(argMultimap.getValue(PREFIX_GITHUB).get(), IS_ACCEPT_EMPTY_STRING));
         }
         if (argMultimap.getValue(PREFIX_PREFERRED_MODE).isPresent()) {
             Set<PreferredCommunicationMode> availableModes = null;
             editPersonDescriptor.setPreferredMode(ParserUtil.parsePreferredMode(argMultimap
-                    .getValue(PREFIX_PREFERRED_MODE).get(), availableModes, isAcceptEmptyString));
+                    .getValue(PREFIX_PREFERRED_MODE).get(), availableModes, IS_ACCEPT_EMPTY_STRING));
         }
         // Finds the tags to add if any
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
