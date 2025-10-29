@@ -115,6 +115,7 @@ public class CsvAddressBookStorageTest {
         assertTrue(dataLine.contains("friend; colleague"));
         assertTrue(dataLine.contains("phone"));
         assertTrue(dataLine.contains("true"));
+        assertTrue(dataLine.contains("2025-10-21T12:49:39.699362800Z"));
     }
 
     @Test
@@ -173,6 +174,7 @@ public class CsvAddressBookStorageTest {
         assertEquals("Tags", columns[5]);
         assertEquals("Preferred Mode", columns[6]);
         assertEquals("Pinned", columns[7]);
+        assertEquals("PinnedAt", columns[8]);
     }
 
     @Test
