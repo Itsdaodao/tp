@@ -264,4 +264,74 @@ public class CsvAddressBookStorageTest {
         assertTrue(content.contains("Name,Phone,Email"));
         assertTrue(!content.contains("old content"));
     }
+
+    @Test
+    public void exportToCsv_personWithNullPreferredMode_exportsEmptyField() throws IOException {
+        testFilePath = temporaryFolder.resolve("nullpreferred.csv");
+
+        Person person = new PersonBuilder()
+                .withName("John Doe")
+                .withPhone("98765432")
+                .withEmail("john@example.com")
+                .build();
+
+        AddressBook addressBook = new AddressBook();
+        addressBook.addPerson(person);
+
+        CsvAddressBookStorage.exportToCsv(addressBook, testFilePath);
+
+        List<String> lines = Files.readAllLines(testFilePath);
+        assertEquals(2, lines.size());
+
+        String dataLine = lines.get(1);
+        String[] fields = dataLine.split(",", -1);
+
+        assertEquals("", fields[6]);
+    }
+
+    @Test
+    public void exportToCsv_personNotPinned_exportsFalse() throws IOException {
+        testFilePath = temporaryFolder.resolve("notpinned.csv");
+
+        Person person = new PersonBuilder()
+                .withName("John Doe")
+                .withPhone("98765432")
+                .withEmail("john@example.com")
+                .build();
+
+        AddressBook addressBook = new AddressBook();
+        addressBook.addPerson(person);
+
+        CsvAddressBookStorage.exportToCsv(addressBook, testFilePath);
+
+        List<String> lines = Files.readAllLines(testFilePath);
+        String dataLine = lines.get(1);
+
+        assertTrue(dataLine.contains("false"));
+    }
+
+    @Test
+    public void exportToCsv_personWithNoTags_exportsEmptyTagField() throws IOException {
+        testFilePath = temporaryFolder.resolve("notags.csv");
+
+        Person person = new PersonBuilder()
+                .withName("John Doe")
+                .withPhone("98765432")
+                .withEmail("john@example.com")
+                .withTags()
+                .build();
+
+        AddressBook addressBook = new AddressBook();
+        addressBook.addPerson(person);
+
+        CsvAddressBookStorage.exportToCsv(addressBook, testFilePath);
+
+        List<String> lines = Files.readAllLines(testFilePath);
+        assertEquals(2, lines.size());
+
+        String dataLine = lines.get(1);
+        String[] fields = dataLine.split(",", -1);
+
+        assertEquals("", fields[5]);
+    }
 }
