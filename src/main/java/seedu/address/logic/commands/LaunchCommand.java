@@ -11,8 +11,8 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.util.ApplicationLinkLauncher;
-import seedu.address.logic.util.ApplicationType;
 import seedu.address.logic.util.ApplicationLinkResult;
+import seedu.address.logic.util.ApplicationType;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
@@ -84,8 +84,8 @@ public class LaunchCommand extends Command {
     /**
      * Launches the specified application link for the given person.
      *
-     * @param person    The person whose application link is to be launched.
-     * @param type      The type of application to launch.
+     * @param person The person whose application link is to be launched.
+     * @param type   The type of application to launch.
      * @return The result of the application link launch.
      * @throws CommandException If the person does not have the required information
      *                          for the specified application type.

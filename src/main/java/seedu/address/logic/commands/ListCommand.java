@@ -96,9 +96,14 @@ public class ListCommand extends Command {
          */
         DEFAULT {
             @Override
-            public String getMessage() { return MESSAGE_SUCCESS; }
+            public String getMessage() {
+                return MESSAGE_SUCCESS;
+            }
+
             @Override
-            public void applySort(Model model) { model.resetSortOrder(); }
+            public void applySort(Model model) {
+                model.resetSortOrder();
+            }
         },
 
         /**
@@ -106,9 +111,14 @@ public class ListCommand extends Command {
          */
         ALPHABETICAL {
             @Override
-            public String getMessage() { return MESSAGE_SUCCESS_ALPHABETICAL_ORDER; }
+            public String getMessage() {
+                return MESSAGE_SUCCESS_ALPHABETICAL_ORDER;
+            }
+
             @Override
-            public void applySort(Model model) { model.applyNameSort(); }
+            public void applySort(Model model) {
+                model.applyNameSort();
+            }
         },
 
         /**
@@ -116,9 +126,14 @@ public class ListCommand extends Command {
          */
         RECENT {
             @Override
-            public String getMessage() { return MESSAGE_SUCCESS_RECENT_ORDER; }
+            public String getMessage() {
+                return MESSAGE_SUCCESS_RECENT_ORDER;
+            }
+
             @Override
-            public void applySort(Model model) { model.applyRecentSort(); }
+            public void applySort(Model model) {
+                model.applyRecentSort();
+            }
         };
 
         /**
