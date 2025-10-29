@@ -10,6 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import seedu.address.logic.util.ApplicationLinkLauncher;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PreferredCommunicationMode;
@@ -20,8 +23,7 @@ import seedu.address.model.person.PreferredCommunicationMode;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
-    private static final String PREFERRED_SUFFIX = " (preferred)";
-
+    private static final String PREFERRED_SUFFIX = " (Preferred)";
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
@@ -95,9 +97,10 @@ public class PersonCard extends UiPart<Region> {
     /**
      * Updates the visibility and text of a contact field label based on its value and whether it matches the
      * person's preferred communication mode.
+     * <p>
      * If the value is {@code null} or blank, the label is hidden and unmanaged in the layout.
      * Otherwise, the label is shown with its text set to the provided field name and value.
-     * If the field matches the person's preferred communication mode, a "(preferred)" suffix is appended.
+     * If the field matches the person's preferred communication mode, a "(Preferred)" suffix is appended.
      *
      * @param label the JavaFX label to update
      * @param value the contact information to display
@@ -109,15 +112,50 @@ public class PersonCard extends UiPart<Region> {
         boolean isEmpty = value == null || value.isBlank();
         boolean isPreferred = person.getPreferredMode() == modeToCheck;
 
+        // Hide field if empty
         if (isEmpty) {
             label.setVisible(false);
             label.setManaged(false);
-        } else {
-            label.setVisible(true);
-            label.setManaged(true);
-            String text = fieldName + value + (isPreferred ? PREFERRED_SUFFIX : "");
-            label.setText(text);
+            return;
         }
+
+        // Show valid fields
+        label.setVisible(true);
+        label.setManaged(true);
+
+        // Display with preferred styling or normal text
+        if (isPreferred) {
+            setPreferredContactField(label, value, fieldName);
+        } else {
+            label.setText(fieldName + value);
+            label.setGraphic(null);
+        }
+    }
+
+    /**
+     * Formats the given contact field as the user's preferred communication mode.
+     * <p>
+     * Adds a gold, bold "(Preferred)" label next to the field
+     *
+     * @param label the JavaFX label to update
+     * @param value the contact information to display
+     * @param fieldName the field name to show before the value
+     */
+    private void setPreferredContactField(Hyperlink label, String value, String fieldName) {
+        Text mainText = new Text(fieldName + value + " ");
+        Text preferredText = new Text(PREFERRED_SUFFIX);
+
+        // Main text: inherits hyperlink color (preserves hover effect)
+        mainText.fillProperty().bind(label.textFillProperty());
+
+        // Preferred text: gold & bold
+        preferredText.setFill(Color.GOLDENROD);
+        preferredText.setStyle("-fx-font-weight: bold;");
+
+        // Combine into a single flow and apply to the label
+        TextFlow flow = new TextFlow(mainText, preferredText);
+        label.setGraphic(flow);
+        label.setText(""); // clear plain text to prevent duplication
     }
 
     /**
