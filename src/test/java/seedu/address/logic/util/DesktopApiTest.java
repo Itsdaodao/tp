@@ -33,6 +33,119 @@ public class DesktopApiTest {
     }
 
     @Test
+    void browse_returnsTrue_whenSystemSpecificFailsButBrowseDesktopSucceeds() {
+        try (MockedStatic<DesktopApi> apiMock = mockStatic(DesktopApi.class)) {
+            // Let the top-level method use real code
+            apiMock.when(() -> DesktopApi.browse(any())).thenCallRealMethod();
+
+            // Stub out internal side-effecting methods
+            apiMock.when(() -> DesktopApi.openSystemSpecific(any())).thenReturn(false);
+            apiMock.when(() -> DesktopApi.browseDesktop(any())).thenReturn(true);
+
+            URI uri = URI.create("http://example.com");
+            assertTrue(DesktopApi.browse(uri));
+        }
+    }
+
+    @Test
+    void browse_returnsFalse_whenBothSystemSpecificAndDesktopFail() {
+        try (MockedStatic<DesktopApi> apiMock = mockStatic(DesktopApi.class)) {
+            // Only let the real browse() logic run
+            apiMock.when(() -> DesktopApi.browse(any())).thenCallRealMethod();
+
+            // Stub internals
+            apiMock.when(() -> DesktopApi.openSystemSpecific(any())).thenReturn(false);
+            apiMock.when(() -> DesktopApi.browseDesktop(any())).thenReturn(false);
+
+            URI uri = URI.create("https://example.com");
+            assertFalse(DesktopApi.browse(uri));
+        }
+    }
+
+    @Test
+    void openSystemSpecific_returnsTrue_whenWindowsCommandSucceeds() {
+        try (MockedStatic<DesktopApi> apiMock = mockStatic(DesktopApi.class)) {
+            // Allow real openSystemSpecific() logic, mock dependencies
+            apiMock.when(() -> DesktopApi.openSystemSpecific(any())).thenCallRealMethod();
+
+            // Mock environment and internal behavior
+            apiMock.when(DesktopApi::getOs).thenReturn(DesktopApi.EnumOS.windows);
+            apiMock.when(() -> DesktopApi.runCommand("explorer", "%s", "file.txt")).thenReturn(true);
+
+            assertTrue(DesktopApi.openSystemSpecific("file.txt"));
+        }
+    }
+
+    @Test
+    void openSystemSpecific_returnsTrue_whenLinuxKdeCommandSucceeds() {
+        try (MockedStatic<DesktopApi> apiMock = mockStatic(DesktopApi.class)) {
+            // Allow only the real openSystemSpecific() logic to run
+            apiMock.when(() -> DesktopApi.openSystemSpecific(any())).thenCallRealMethod();
+
+            // Mock environment and behavior
+            apiMock.when(DesktopApi::getOs).thenReturn(DesktopApi.EnumOS.linux);
+            apiMock.when(() -> DesktopApi.runCommand("kde-open", "%s", "file.txt")).thenReturn(true);
+
+            // Use the helper safely — no real command is executed
+            assertTrue(DesktopApiHelper.openSystemSpecific("file.txt"));
+        }
+    }
+
+    @Test
+    void openSystemSpecific_returnsTrue_whenLinuxGnomeCommandSucceeds() {
+        try (MockedStatic<DesktopApi> apiMock = mockStatic(DesktopApi.class)) {
+            // Allow only the real openSystemSpecific() logic to run
+            apiMock.when(() -> DesktopApi.openSystemSpecific(any())).thenCallRealMethod();
+
+            // Mock environment and behavior
+            apiMock.when(DesktopApi::getOs).thenReturn(DesktopApi.EnumOS.linux);
+            apiMock.when(() -> DesktopApi.runCommand("gnome-open", "%s", "file.txt")).thenReturn(true);
+
+            // Use the helper safely — no real command is executed
+            assertTrue(DesktopApiHelper.openSystemSpecific("file.txt"));
+        }
+    }
+
+    @Test
+    void openSystemSpecific_returnsTrue_whenLinuxXdgCommandSucceeds() {
+        try (MockedStatic<DesktopApi> apiMock = mockStatic(DesktopApi.class)) {
+            // Allow only the real openSystemSpecific() logic to run
+            apiMock.when(() -> DesktopApi.openSystemSpecific(any())).thenCallRealMethod();
+
+            // Mock environment and behavior
+            apiMock.when(DesktopApi::getOs).thenReturn(DesktopApi.EnumOS.linux);
+            apiMock.when(() -> DesktopApi.runCommand("xdg-open", "%s", "file.txt")).thenReturn(true);
+
+            // Use the helper safely — no real command is executed
+            assertTrue(DesktopApiHelper.openSystemSpecific("file.txt"));
+        }
+    }
+
+    @Test
+    void openSystemSpecific_returnsFalse_whenAllLinuxCommandsFail() {
+        try (MockedStatic<DesktopApi> apiMock = mockStatic(DesktopApi.class)) {
+            apiMock.when(() -> DesktopApi.openSystemSpecific(any())).thenCallRealMethod();
+
+            apiMock.when(DesktopApi::getOs).thenReturn(DesktopApi.EnumOS.linux);
+            apiMock.when(() -> DesktopApi.runCommand(any(), any(), any())).thenReturn(false);
+
+            assertFalse(DesktopApiHelper.openSystemSpecific("file.txt"));
+        }
+    }
+
+    @Test
+    void openSystemSpecific_returnsTrue_whenMacCommandSucceeds() {
+        try (MockedStatic<DesktopApi> apiMock = mockStatic(DesktopApi.class)) {
+            apiMock.when(() -> DesktopApi.openSystemSpecific(any())).thenCallRealMethod();
+
+            apiMock.when(DesktopApi::getOs).thenReturn(DesktopApi.EnumOS.macos);
+            apiMock.when(() -> DesktopApi.runCommand("open", "%s", "file.txt")).thenReturn(true);
+
+            assertTrue(DesktopApiHelper.openSystemSpecific("file.txt"));
+        }
+    }
+
+    @Test
     void getOs_returnsWindows_whenSystemPropertyContainsWin() {
         System.setProperty("os.name", "Windows 10");
         assertEquals(DesktopApi.EnumOS.windows, DesktopApi.getOs());
@@ -156,6 +269,33 @@ public class DesktopApiTest {
         try (MockedStatic<DesktopApi> apiMock = mockStatic(DesktopApi.class, CALLS_REAL_METHODS)) {
             apiMock.when(() -> DesktopApi.openSystemSpecific(any())).thenReturn(true);
             assertTrue(DesktopApi.browse(mockUri));
+        }
+    }
+
+    @Test
+    void browseDesktop_returnsFalse_whenBrowseActionNotSupported() {
+        try (MockedStatic<Desktop> desktopMock = mockStatic(Desktop.class)) {
+            Desktop mockDesktop = mock(Desktop.class);
+            desktopMock.when(Desktop::isDesktopSupported).thenReturn(true);
+            desktopMock.when(Desktop::getDesktop).thenReturn(mockDesktop);
+            when(mockDesktop.isSupported(Desktop.Action.BROWSE)).thenReturn(false);
+
+            boolean result = DesktopApiHelper.browseDesktop(mockUri);
+            assertFalse(result);
+        }
+    }
+
+    @Test
+    void browseDesktop_returnsFalse_whenBrowseThrowsException() throws Exception {
+        try (MockedStatic<Desktop> desktopMock = mockStatic(Desktop.class)) {
+            Desktop mockDesktop = mock(Desktop.class);
+            desktopMock.when(Desktop::isDesktopSupported).thenReturn(true);
+            desktopMock.when(Desktop::getDesktop).thenReturn(mockDesktop);
+            when(mockDesktop.isSupported(Desktop.Action.BROWSE)).thenReturn(true);
+            doThrow(new RuntimeException("boom")).when(mockDesktop).browse(any(URI.class));
+
+            boolean result = DesktopApiHelper.browseDesktop(mockUri);
+            assertFalse(result);
         }
     }
 
