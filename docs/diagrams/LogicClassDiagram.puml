@@ -12,6 +12,8 @@ package "Utility Classes" as UtilityClasses{
 }
 Class XYZCommand
 Class CommandResult
+Class "<<interface>>\nCommandFactory" as CommandFactory
+Class CommandRegistry
 Class "{abstract}\nCommand" as Command
 
 
@@ -27,11 +29,11 @@ package Storage {
 }
 
 Class HiddenOutside #FFFFFF
-Class HiddenOutsideUi #FFFFFF
+Class "Hidden" as HiddenOutsideUi #FFFFFF
 HiddenOutside ..> Logic
 
 LogicManager .right.|> Logic
-LogicManager -right->"1" ParserClasses
+LogicManager -down->"1" ParserClasses
 ParserClasses ..> XYZCommand : <<create>>
 
 XYZCommand -up-|> Command
@@ -48,4 +50,11 @@ HiddenOutsideUi ..> UtilityClasses
 Logic ..> CommandResult
 LogicManager .down.> CommandResult
 Command .up.> CommandResult : <<create>>
+CommandFactory .down.> Command : <<create>>
+CommandRegistry *-down- "0..* " CommandFactory
+ParserClasses <..> CommandFactory
+ParserClasses <.down..> CommandRegistry
+ParserClasses ..> UtilityClasses
+
+CommandRegistry .[hidden]left.> UtilityClasses
 @enduml

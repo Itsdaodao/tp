@@ -84,6 +84,8 @@ public class EditCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        assert editPersonDescriptor.isAnyFieldEdited() : "No fields to edit. Expected at least 1 field being edited";
+
         List<Person> lastShownList = model.getSortedAndFilteredPersonList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
@@ -130,10 +132,8 @@ public class EditCommand extends Command {
                 editPersonDescriptor.getTags().orElse(Collections.emptySet()),
                 editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet())
         );
-
         Boolean isPinned = personToEdit.isPinned();
         Instant pinnedAt = personToEdit.getPinnedAt().orElse(null);
-
         PreferredCommunicationMode updatedPreferredMode =
                 editPersonDescriptor.getPreferredMode().orElse(personToEdit.getPreferredMode());
 

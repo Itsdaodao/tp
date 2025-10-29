@@ -135,11 +135,18 @@ How the parsing works:
 <img src="images/LogicUtilityClassDiagram.png" width="700"/>
 
 How the utility classes work:
-* When called upon by either `XYZCommandParser` classes or other external classes, ApplicationLinkLauncher tries to create an instance of `RealDesktopWrapper` (which implements `DesktopWrapper` interface) to launch the communication.
+* Currently utility classes are only used by `PersonCard`, `LaunchCommand` and `LaunchCommandParser`
+* `LaunchCommandParser` uses on `ApplicationType` to decide how it creates `LaunchCommand`
+* When called upon by either `LaunchCommand` or `PersonCard`, `ApplicationLinkLauncher` uses the `ApplicationType` and attempts to launch the communication mode.
+* `ApplicationLinkLauncher` then tries to create an instance of `RealDesktopWrapper` (which implements `DesktopWrapper` interface) to launch the communication mode.
 * If the `RealDesktopWrapper` instance is created successfully, it uses the real desktop environment to launch the communication application.
 * If not, a `DummyDesktopWrapper` instance is created instead which does nothing when asked to launch the communication application.
 * Upon failing to launch the application through either `RealDesktopWrapper` or `DummyDesktopWrapper`, `ApplicationLinkLauncher` will attempt a fallback mechanism through `DesktopApi` class.
-* If all attempts to launch the application fail, an appropriate error message is returned to the user.
+* Finally, `ApplicationLinkLauncher` will return with create and return the appropriate  `ApplicationLinkResult`.
+
+
+
+
 
 ### Model component
 ### Model component

@@ -45,8 +45,7 @@ public class ApplicationLinkLauncherTest {
             verify(mockDesktopWrapper, times(1)).mail(any(URI.class));
             assertNotNull(result);
             assertEquals(
-                    String.format(ApplicationLinkLauncher.MESSAGE_SUCCESS,
-                            ApplicationLinkLauncher.ApplicationType.EMAIL),
+                    String.format(ApplicationLinkLauncher.MESSAGE_SUCCESS, ApplicationType.EMAIL),
                     result.getMessage()
             );
         } catch (IOException e) {
@@ -66,8 +65,7 @@ public class ApplicationLinkLauncherTest {
             verify(mockDesktopWrapper, times(1)).browse(any(URI.class));
             assertNotNull(result);
             assertEquals(
-                    String.format(ApplicationLinkLauncher.MESSAGE_SUCCESS,
-                            ApplicationLinkLauncher.ApplicationType.TELEGRAM),
+                    String.format(ApplicationLinkLauncher.MESSAGE_SUCCESS, ApplicationType.TELEGRAM),
                     result.getMessage()
             );
         } catch (IOException e) {
@@ -87,8 +85,7 @@ public class ApplicationLinkLauncherTest {
             verify(mockDesktopWrapper, times(1)).browse(any(URI.class));
             assertNotNull(result);
             assertEquals(
-                    String.format(ApplicationLinkLauncher.MESSAGE_SUCCESS,
-                            ApplicationLinkLauncher.ApplicationType.GITHUB),
+                    String.format(ApplicationLinkLauncher.MESSAGE_SUCCESS, ApplicationType.GITHUB),
                     result.getMessage()
             );
         } catch (IOException e) {
@@ -102,13 +99,13 @@ public class ApplicationLinkLauncherTest {
 
         ApplicationLinkResult result = ApplicationLinkLauncher.launchApplicationLink(
                 "ht!tp://invalid-uri",
-                ApplicationLinkLauncher.ApplicationType.GITHUB
+                ApplicationType.GITHUB
         );
 
         assertNotNull(result);
         assertEquals(
                 String.format(ApplicationLinkLauncher.MESSAGE_FAILURE,
-                        ApplicationLinkLauncher.ApplicationType.GITHUB),
+                        ApplicationType.GITHUB),
                 result.getMessage()
         );
     }
@@ -147,8 +144,7 @@ public class ApplicationLinkLauncherTest {
             URI uri = new URI("https://t.me/testhandle");
 
             assertDoesNotThrow(() -> {
-                ApplicationLinkLauncher.launchApplicationLink(uri.toString(),
-                        ApplicationLinkLauncher.ApplicationType.TELEGRAM);
+                ApplicationLinkLauncher.launchApplicationLink(uri.toString(), ApplicationType.TELEGRAM);
             });
 
             // Verify fallback was invoked once
@@ -173,12 +169,15 @@ public class ApplicationLinkLauncherTest {
             mockedApi.when(() -> DesktopApi.browse(any(URI.class))).thenReturn(false);
 
             ApplicationLinkResult result = ApplicationLinkLauncher.launchApplicationLink(
-                    "https://github.com/testuser", ApplicationLinkLauncher.ApplicationType.GITHUB);
+                    "https://github.com/testuser",
+                    ApplicationType.GITHUB
+            );
 
             assertNotNull(result);
             assertEquals(
                     String.format(ApplicationLinkLauncher.MESSAGE_FAILURE,
-                            ApplicationLinkLauncher.ApplicationType.GITHUB),
+                            ApplicationType.GITHUB
+                    ),
                     result.getMessage()
             );
 

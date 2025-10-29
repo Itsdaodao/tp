@@ -49,7 +49,6 @@ public class EditCommandParser implements Parser<EditCommand> {
                 );
 
         Index index;
-
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
@@ -59,8 +58,23 @@ public class EditCommandParser implements Parser<EditCommand> {
         argMultimap.verifyNoDuplicatePrefixesFor(
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM, PREFIX_PREFERRED_MODE, PREFIX_GITHUB);
 
-        EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
+        EditPersonDescriptor editPersonDescriptor = createEditPersonDescriptor(argMultimap);
+        if (!editPersonDescriptor.isAnyFieldEdited()) {
+            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
+        }
 
+        return new EditCommand(index, editPersonDescriptor);
+    }
+
+    /**
+     * Helper method used to help parse and extract all values for present parameters
+     *
+     * @param argMultimap
+     * @return {@code EditPersonDescriptor} used for EditCommand
+     * @throws ParseException
+     */
+    private EditPersonDescriptor createEditPersonDescriptor(ArgumentMultimap argMultimap) throws ParseException {
+        EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
             editPersonDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
         }
@@ -89,11 +103,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         // Finds the tags to remove if any
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_REMOVE_TAG)).ifPresent(editPersonDescriptor::setRemovedTags);
 
-        if (!editPersonDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
-        }
-
-        return new EditCommand(index, editPersonDescriptor);
+        return editPersonDescriptor;
     }
 
     /**

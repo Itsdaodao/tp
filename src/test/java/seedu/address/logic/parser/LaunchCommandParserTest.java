@@ -13,6 +13,7 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.LaunchCommand;
+import seedu.address.logic.util.ApplicationType;
 
 public class LaunchCommandParserTest {
     private static final String MESSAGE_INVALID_FORMAT =
@@ -64,8 +65,7 @@ public class LaunchCommandParserTest {
     @Test
     public void parse_validEmail_success() {
         // valid email launch flag
-        LaunchCommand expectedCommand = new LaunchCommand(INDEX_FIRST_PERSON,
-                seedu.address.logic.util.ApplicationLinkLauncher.ApplicationType.EMAIL);
+        LaunchCommand expectedCommand = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.EMAIL);
         assertParseSuccess(parser, "1 " + FLAG_EMAIL_LAUNCH, expectedCommand);
     }
 
@@ -75,8 +75,7 @@ public class LaunchCommandParserTest {
     @Test
     public void parse_validTelegram_success() {
         // valid telegram launch flag
-        LaunchCommand expectedCommand = new LaunchCommand(INDEX_FIRST_PERSON,
-                seedu.address.logic.util.ApplicationLinkLauncher.ApplicationType.TELEGRAM);
+        LaunchCommand expectedCommand = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.TELEGRAM);
         assertParseSuccess(parser, "1 " + FLAG_TELEGRAM_LAUNCH, expectedCommand);
     }
 
@@ -86,8 +85,7 @@ public class LaunchCommandParserTest {
     @Test
     public void parse_validGithub_success() {
         // valid github launch flag
-        LaunchCommand expectedCommand = new LaunchCommand(INDEX_FIRST_PERSON,
-                seedu.address.logic.util.ApplicationLinkLauncher.ApplicationType.GITHUB);
+        LaunchCommand expectedCommand = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.GITHUB);
         assertParseSuccess(parser, "1 " + FLAG_GITHUB_LAUNCH, expectedCommand);
     }
 
