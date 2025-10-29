@@ -29,7 +29,7 @@ package Storage {
 }
 
 Class HiddenOutside #FFFFFF
-Class HiddenOutsideUi #FFFFFF
+Class "Hidden" as HiddenOutsideUi #FFFFFF
 HiddenOutside ..> Logic
 
 LogicManager .right.|> Logic
@@ -51,7 +51,10 @@ Logic ..> CommandResult
 LogicManager .down.> CommandResult
 Command .up.> CommandResult : <<create>>
 CommandFactory .down.> Command : <<create>>
-CommandRegistry *-down- "0..*" CommandFactory
+CommandRegistry *-down- "0..* " CommandFactory
 ParserClasses <..> CommandFactory
-ParserClasses <..> CommandRegistry
+ParserClasses <.down..> CommandRegistry
+ParserClasses ..> UtilityClasses
+
+CommandRegistry .[hidden]left.> UtilityClasses
 @enduml

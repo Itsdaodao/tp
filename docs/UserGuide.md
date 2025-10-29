@@ -317,10 +317,48 @@ As you type commands in the Command Box, autocomplete suggestions may be shown. 
 
 Autocomplete suggestions are shown in-place and in grey.
 
-### Archiving data files `[coming in v2.0]`
+### Updating Tags for Multiple Contacts
 
-_Details coming soon ..._
+Enables ability to rename/delete tags detail for all users that contains the specified tag within the currently displayed list.
 
+#### Renaming Tags for Multiple Contacts
+
+Format: `tag -r t/TAG r/TAG`
+
+* Use `-r` flag to signify a rename tag command
+* `t/TAG` refers to the value of the target tag to be renamed
+* `r/TAG` refers to the renamed value
+
+Example:
+- `tag -r t/CS1101 r/CS2103`
+  - renames the existing tag `CS1101` for all contacts that has it with the new tag `CS2103`
+  - Expected Output: (Assuming there are 2 people with this tag in the list)
+    ```
+    Renamed tag [CS1101] to [CS2103] for 2 person(s).
+    ```
+  - Expected Output: (Assuming no contact has the `CS1101` tag)
+    ```
+    No persons found with tag: [[CS1101]]
+    ```
+
+### Deleting Tags for Multiple Contacts
+
+Format: `tag -d t/TAG…​`
+
+* Use `-d` to signify delete tag command
+* `t/TAG` refers to the target tags to be deleted for all users
+
+Example:
+- `tag -d t/CS1101 t/CS2103`
+    - deletes `CS1101` & `CS2103` tag for all contacts with the tag.
+    - Expected Output: (Assuming there are 2 people with this tag in the list)
+      ```
+      Deleted tags: [[CS1101], [CS2103]]
+      ```
+    - Expected Output: (Assuming no contact has the `CS1101` tag)
+      ```
+      No persons found with tag: [[CS1101]]
+      ```
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
@@ -349,7 +387,7 @@ Action | Format, Examples
 **List** | `list [-a (alphabetical)] [-r (recent)]`<br> e.g., `list -a`
 **Help** | `help`
 **Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
-
+**Tag** | Rename: `tag -r t/TAG r/TAG` <br> `tag -r t/CS1101 r/CS2103`
 --------------------------------------------------------------------------------------------------------------------
 
 ## Navigation Summary
@@ -361,5 +399,5 @@ Mode | Key Bind
 
 Scroll Action | Key Bind
 --------------|-----------------
-**Scroll Up**| **k**
-**Scroll Down**| **l**
+**Scroll Up**| **l**
+**Scroll Down**| **k**

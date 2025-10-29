@@ -20,6 +20,9 @@ Class ArgumentTokenizer
 Class Prefix
 }
 
+package "Utility Classes" as UtilityClasses{
+}
+
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> AddressBookParser
 
@@ -40,4 +43,5 @@ AddressBookParser .right.> CommandFactory : <<uses>>
 AddressBookParser .up.> CommandRegistry : <<queries>>
 CommandFactory ..> XYZCommandParser
 CommandFactory ..> Command : <<creates>>
+XYZCommandParser .right.> UtilityClasses
 @enduml
