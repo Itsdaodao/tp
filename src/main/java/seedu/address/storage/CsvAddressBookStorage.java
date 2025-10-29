@@ -61,9 +61,7 @@ public class CsvAddressBookStorage {
                         .map(tag -> tag.tagName)
                         .collect(Collectors.joining("; "))
         );
-        fields[6] = escapeCsvField(person.getPreferredMode() != null
-                ? person.getPreferredMode().toString()
-                : EMPTY_FIELD);
+        fields[6] = escapeCsvField(person.getPreferredMode().toString());
         fields[7] = escapeCsvField(String.valueOf(person.isPinned()));
 
         return String.join(CSV_DELIMITER, fields);
