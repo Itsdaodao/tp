@@ -14,7 +14,7 @@ import seedu.address.model.person.Person;
  */
 public class CsvAddressBookStorage {
 
-    private static final String CSV_HEADER = "Name,Phone,Email,Telegram,GitHub,Tags";
+    private static final String CSV_HEADER = "Name,Phone,Email,Telegram,GitHub,Tags,Preferred Mode,Pinned";
     private static final String CSV_DELIMITER = ",";
     private static final String EMPTY_FIELD = "";
 
@@ -49,7 +49,7 @@ public class CsvAddressBookStorage {
      * Formats a person as a CSV row with proper escaping.
      */
     private static String formatPersonAsCsv(Person person) {
-        String[] fields = new String[6];
+        String[] fields = new String[8];
 
         fields[0] = escapeCsvField(person.getName().fullName);
         fields[1] = escapeCsvField(person.getPhone().value);
@@ -59,8 +59,12 @@ public class CsvAddressBookStorage {
         fields[5] = escapeCsvField(
                 person.getTags().stream()
                         .map(tag -> tag.tagName)
-                        .collect(Collectors.joining(";"))
+                        .collect(Collectors.joining("; "))
         );
+        fields[6] = person.getPreferredMode() != null
+                ? person.getPreferredMode().toString()
+                : EMPTY_FIELD;
+        fields[7] = String.valueOf(person.isPinned());
 
         return String.join(CSV_DELIMITER, fields);
     }
