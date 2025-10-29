@@ -12,8 +12,10 @@ public class ConfirmCommand extends Command {
     public static final String MESSAGE_INVALID_CONFIRMATION_INPUT = "Invalid Input.\n%s";
 
     public static final String USER_INPUT_CONFIRM = "y";
+    public static final String USER_INPUT_CONFIRM_ALT = "yes";
     public static final String USER_INPUT_CANCEL = "n";
-    public static final String USER_INPUT_OPTIONS = "[y/n]";
+    public static final String USER_INPUT_CANCEL_ALT = "no";
+    public static final String USER_INPUT_OPTIONS = "[y(es)/n(o)]";
 
     private final String input;
     private final Runnable onComplete;
@@ -37,11 +39,11 @@ public class ConfirmCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        if (input.equals(USER_INPUT_CONFIRM)) {
+        if (input.equals(USER_INPUT_CONFIRM) || input.equals(USER_INPUT_CONFIRM_ALT)) {
             CommandResult res = pendingOperation.executeOnConfirm();
             onComplete.run();
             return res;
-        } else if (input.equals(USER_INPUT_CANCEL)) {
+        } else if (input.equals(USER_INPUT_CANCEL) || input .equals(USER_INPUT_CANCEL_ALT)) {
             onComplete.run();
             return new CommandResult(MESSAGE_OPERATION_CANCELLED);
         } else {
