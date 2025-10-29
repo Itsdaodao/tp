@@ -76,9 +76,6 @@ public class AddCommandParser implements Parser<AddCommand> {
         Github github = new Github(); // Create default GitHub with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_GITHUB)) {
             github = ParserUtil.parseGithub(argMultimap.getValue(PREFIX_GITHUB).get(), IS_ACCEPT_EMPTY_STRING);
-            if (!github.isEmpty()) {
-                availableModes.add(PreferredCommunicationMode.GITHUB);
-            }
         }
 
         // Create default preferredCommunicationMode with empty value

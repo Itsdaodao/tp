@@ -27,7 +27,7 @@ public class SampleDataUtil {
                     getTagSet("friends")),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
                     new Telegram("berinceyu88"), new Github("berniceyu88"),
-                    PreferredCommunicationMode.GITHUB,
+                    PreferredCommunicationMode.PHONE,
                     getTagSet("colleagues", "friends")),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
                     new Telegram("itschar"), new Github("char-code"),

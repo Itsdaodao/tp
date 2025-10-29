@@ -162,16 +162,12 @@ class JsonAdaptedPerson {
         // Optional modes based on non-empty fields
         boolean hasEmail = email != null && !email.isBlank();
         boolean hasTelegram = telegram != null && !telegram.isBlank();
-        boolean hasGithub = github != null && !github.isBlank();
 
         if (hasEmail) {
             availableModes.add(PreferredCommunicationMode.EMAIL);
         }
         if (hasTelegram) {
             availableModes.add(PreferredCommunicationMode.TELEGRAM);
-        }
-        if (hasGithub) {
-            availableModes.add(PreferredCommunicationMode.GITHUB);
         }
 
         return availableModes;
