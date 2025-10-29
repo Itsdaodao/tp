@@ -12,19 +12,22 @@ Class DesktopApi
 Interface "<<interface>>\nDesktopWrapper" as DesktopWrapper
 Class DummyDesktopWrapper
 Class RealDesktopWrapper
-
+Class "<<enumeration>>\nApplicationType" as ApplicationType
 }
 
 Class HideOutside #FFFFFF
 Class HideOutside2 #FFFFFF
+Class HideOutside3 #FFFFFF
 HideOutside .down.> ApplicationLinkLauncher
 HideOutside2 .down.> ApplicationLinkResult
 ApplicationLinkLauncher .right.> ApplicationLinkResult
 ApplicationLinkLauncher -down-> DesktopWrapper
 ApplicationLinkLauncher .left.> DesktopApi : <<use>>
-ApplicationLinkLauncher -down-> DummyDesktopWrapper : <<create>>
-ApplicationLinkLauncher -down-> RealDesktopWrapper : <<create>>
+ApplicationLinkLauncher .down.> DummyDesktopWrapper : <<create>>
+ApplicationLinkLauncher .down.> RealDesktopWrapper
 DesktopWrapper <|.left. DummyDesktopWrapper
 DesktopWrapper <|.right. RealDesktopWrapper
-
+ApplicationType <.up. ApplicationLinkLauncher
+ApplicationType <.up. ApplicationLinkResult
+HideOutside3 .right.> ApplicationType
 @enduml

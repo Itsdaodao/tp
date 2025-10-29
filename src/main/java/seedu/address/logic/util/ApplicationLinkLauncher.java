@@ -26,23 +26,6 @@ public class ApplicationLinkLauncher {
 
     private static DesktopWrapper desktopWrapper;
 
-    static DesktopWrapper getDesktopWrapper() {
-        if (desktopWrapper == null) {
-            try {
-                desktopWrapper = new RealDesktopWrapper();
-            } catch (Exception e) {
-                // CI or headless mode — fall back to a dummy wrapper
-                desktopWrapper = new DummyDesktopWrapper();
-            }
-        }
-        return desktopWrapper;
-    }
-
-    public static void setDesktopWrapper(DesktopWrapper wrapper) {
-        desktopWrapper = wrapper; // assign to the static field
-    }
-
-
     private static ApplicationLinkResult launchApp(String prefix, String value, ApplicationType type) {
         return launchApplicationLink(prefix + value, type);
     }
@@ -77,6 +60,13 @@ public class ApplicationLinkLauncher {
         return launchApp(LAUNCH_GITHUB_PREFIX, username, ApplicationType.GITHUB);
     }
 
+    /**
+     * Attempts to launch the application, and return the results of its attempt
+     *
+     * @param link to be parsed to create a {@code URI} instance
+     * @param type helps display {@code ApplicationType} it is attempting to launch
+     * @return {@code ApplicationLinkResult} from its attempt of launching the application.
+     */
     protected static ApplicationLinkResult launchApplicationLink(String link, ApplicationType type) {
         try {
             URI uri = parseToUri(link);
@@ -152,6 +142,12 @@ public class ApplicationLinkLauncher {
         return success;
     }
 
+    /**
+     * Helper method to find out if the current {@code desktopWrapper} instance supports the specified action
+     *
+     * @param action to be checked
+     * @return {@code true} if {@code action} is supported, else it returns {@code false}
+     */
     protected static boolean isActionSupported(Action action) {
         requireNonNull(getDesktopWrapper());
         requireNonNull(action);
@@ -159,4 +155,32 @@ public class ApplicationLinkLauncher {
         return desktopWrapper.isSupported(action);
 
     }
+
+    /**
+     * Helps to set the desktopWrapper. Used mainly for testing purposes
+     *
+     * @param wrapper
+     */
+    public static void setDesktopWrapper(DesktopWrapper wrapper) {
+        desktopWrapper = wrapper; // assign to the static field
+    }
+
+    /**
+     * Sets the instance of desktop wrapper if it is {@code null}.
+     * Tries to create a {@code RealDesktopWrapper}, if it fails to do so, it will create a DummyDesktopWrapper
+     *
+     * @return {@code DesktopWrapper} instance
+     */
+    protected static DesktopWrapper getDesktopWrapper() {
+        if (desktopWrapper == null) {
+            try {
+                desktopWrapper = new RealDesktopWrapper();
+            } catch (Exception e) {
+                // CI or headless mode — fall back to a dummy wrapper
+                desktopWrapper = new DummyDesktopWrapper();
+            }
+        }
+        return desktopWrapper;
+    }
+
 }

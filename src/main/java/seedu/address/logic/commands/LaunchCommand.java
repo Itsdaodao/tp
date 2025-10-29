@@ -75,6 +75,9 @@ public class LaunchCommand extends Command {
         Person personToLaunch = lastShownList.get(index.getZeroBased());
         ApplicationLinkResult result = launchApplicationLink(personToLaunch, type);
 
+        requireNonNull(result);
+        assert !result.getMessage().isEmpty();
+
         return new CommandResult(result.getMessage());
     }
 
