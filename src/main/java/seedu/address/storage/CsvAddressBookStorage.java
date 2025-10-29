@@ -61,10 +61,10 @@ public class CsvAddressBookStorage {
                         .map(tag -> tag.tagName)
                         .collect(Collectors.joining("; "))
         );
-        fields[6] = person.getPreferredMode() != null
+        fields[6] = escapeCsvField(person.getPreferredMode() != null
                 ? person.getPreferredMode().toString()
-                : EMPTY_FIELD;
-        fields[7] = String.valueOf(person.isPinned());
+                : EMPTY_FIELD);
+        fields[7] = escapeCsvField(String.valueOf(person.isPinned()));
 
         return String.join(CSV_DELIMITER, fields);
     }

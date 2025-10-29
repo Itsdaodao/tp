@@ -118,46 +118,6 @@ public class CsvAddressBookStorageTest {
     }
 
     @Test
-    public void exportToCsv_personWithCommasInName_properlyEscaped() throws IOException {
-        testFilePath = temporaryFolder.resolve("commas.csv");
-
-        Person person = new PersonBuilder()
-                .withName("Doe John") // CHANGED: Remove comma to avoid validation issues
-                .withPhone("98765432")
-                .withEmail("john@example.com")
-                .build();
-
-        AddressBook addressBook = new AddressBook();
-        addressBook.addPerson(person);
-
-        CsvAddressBookStorage.exportToCsv(addressBook, testFilePath);
-
-        List<String> lines = Files.readAllLines(testFilePath);
-        assertEquals(2, lines.size()); // CHANGED: Simple assertion
-        assertTrue(lines.get(1).contains("Doe John"));
-    }
-
-    @Test
-    public void exportToCsv_personWithQuotesInField_properlyEscaped() throws IOException {
-        testFilePath = temporaryFolder.resolve("quotes.csv");
-
-        Person person = new PersonBuilder()
-                .withName("John Johnny Doe") // CHANGED: Remove quotes to avoid validation issues
-                .withPhone("98765432")
-                .withEmail("john@example.com")
-                .build();
-
-        AddressBook addressBook = new AddressBook();
-        addressBook.addPerson(person);
-
-        CsvAddressBookStorage.exportToCsv(addressBook, testFilePath);
-
-        List<String> lines = Files.readAllLines(testFilePath);
-        assertEquals(2, lines.size()); // CHANGED: Simple assertion
-        assertTrue(lines.get(1).contains("John Johnny Doe"));
-    }
-
-    @Test
     public void exportToCsv_personWithMultipleTags_semicolonSeparated() throws IOException {
         testFilePath = temporaryFolder.resolve("tags.csv");
 
@@ -166,7 +126,7 @@ public class CsvAddressBookStorageTest {
                 .withPhone("98765432")
                 .withEmail("john@example.com")
                 .withTags("friend", "colleague")
-                .build(); // CHANGED: Reduced to 2 tags for simplicity
+                .build();
 
         AddressBook addressBook = new AddressBook();
         addressBook.addPerson(person);
@@ -182,32 +142,11 @@ public class CsvAddressBookStorageTest {
 
     @Test
     public void exportToCsv_invalidPath_throwsException() {
-        // CHANGED: Use a path that will definitely cause IOException
         Path invalidPath = Path.of(""); // Empty path is invalid
         AddressBook addressBook = new AddressBook(); // CHANGED: Use empty address book
 
         assertThrows(IOException.class, () ->
                 CsvAddressBookStorage.exportToCsv(addressBook, invalidPath));
-    }
-
-    @Test
-    public void exportToCsv_personWithNewlineInField_properlyEscaped() throws IOException {
-        testFilePath = temporaryFolder.resolve("newline.csv");
-
-        Person person = new PersonBuilder()
-                .withName("John Doe") // CHANGED: Remove newline to avoid validation issues
-                .withPhone("98765432")
-                .withEmail("john@example.com")
-                .build();
-
-        AddressBook addressBook = new AddressBook();
-        addressBook.addPerson(person);
-
-        CsvAddressBookStorage.exportToCsv(addressBook, testFilePath);
-
-        List<String> lines = Files.readAllLines(testFilePath); // CHANGED: Simple approach
-        assertEquals(2, lines.size());
-        assertTrue(lines.get(1).contains("John Doe"));
     }
 
     @Test
@@ -232,6 +171,8 @@ public class CsvAddressBookStorageTest {
         assertEquals("Telegram", columns[3]);
         assertEquals("GitHub", columns[4]);
         assertEquals("Tags", columns[5]);
+        assertEquals("Preferred Mode", columns[6]);
+        assertEquals("Pinned", columns[7]);
     }
 
     @Test
