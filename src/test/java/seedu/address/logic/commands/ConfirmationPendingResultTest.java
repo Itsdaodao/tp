@@ -1,8 +1,8 @@
 package seedu.address.logic.commands;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /**
  * Contains unit tests for {@code ConfirmationPendingResultTest}.
@@ -33,11 +33,17 @@ public class ConfirmationPendingResultTest {
         cpr.executeOnConfirm();
         cpr.executeOnConfirm();
 
-        assertEquals( 1, th.numberOfCalls);
+        assertEquals(1, th.numberOfCalls);
     }
 
-    private class TestHelper {
-        public int numberOfCalls = 0;
+    /**
+     * Test helper used to check if runnable callback is
+     * called multiple times. Required since primitives like
+     * int/booleans are passed as values into lambda functions
+     * while objects are passed by reference.
+     */
+    private static class TestHelper {
+        private int numberOfCalls = 0;
 
         public void setHasCalled() {
             numberOfCalls += 1;
