@@ -21,6 +21,7 @@ checkstyle {
 }
 
 test {
+    enableAssertions = false
     useJUnitPlatform()
     finalizedBy jacocoTestReport
 

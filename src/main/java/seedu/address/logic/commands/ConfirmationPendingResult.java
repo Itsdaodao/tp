@@ -24,6 +24,7 @@ public class ConfirmationPendingResult extends CommandResult {
         super(String.format(CONFIRMATION_TEXT_FORMAT, feedbackToUser), showHelp, exit);
 
         assert successResult != null : "successResult should be a valid CommandResult!";
+        assert pendingAction != null : "pendingAction should not be null!";
 
         this.pendingAction = new OnceRunnable(pendingAction);
         this.successResult = successResult;

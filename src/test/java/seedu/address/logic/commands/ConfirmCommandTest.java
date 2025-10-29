@@ -46,6 +46,33 @@ public class ConfirmCommandTest {
         assertCommandSuccess(confirmCommand, model, ConfirmCommand.MESSAGE_OPERATION_CANCELLED, expectedModel);
     }
 
+
+    @Test
+    public void execute_confirmCommandYes_performsOperation() {
+        Person personToDelete = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        String expectedMessage = "Done!";
+        ConfirmCommand confirmCommand = createConfirmCommandWithDeletePending(
+                model, personToDelete, "yes", expectedMessage, "Delete user?"
+        );
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
+        expectedModel.deletePerson(personToDelete);
+
+        assertCommandSuccess(confirmCommand, model, "Done!", expectedModel);
+    }
+
+    @Test
+    public void execute_confirmCommandNo_doesNotPerformOperation() {
+        Person personToDelete = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        ConfirmCommand confirmCommand = createConfirmCommandWithDeletePending(
+                model, personToDelete, "no", "Done!", "Delete user?"
+        );
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
+
+        assertCommandSuccess(confirmCommand, model, ConfirmCommand.MESSAGE_OPERATION_CANCELLED, expectedModel);
+    }
+
     @Test
     public void execute_confirmCommandGarbageInput_promptsForInputAgain() {
         Person personToDelete = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
