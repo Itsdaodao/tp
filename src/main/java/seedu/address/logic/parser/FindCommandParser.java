@@ -57,7 +57,7 @@ public class FindCommandParser implements Parser<FindCommand> {
     }
 
     /**
-     * Validates that the command does not contain extraneous text before any prefix.
+     * Checks that the command does not have any text before the first prefix
      */
     private void validatePreamble(ArgumentMultimap argMultimap, String args) throws ParseException {
         if (!argMultimap.getPreamble().trim().isEmpty()) {
