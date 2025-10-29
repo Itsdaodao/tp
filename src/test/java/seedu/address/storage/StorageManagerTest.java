@@ -159,7 +159,7 @@ public class StorageManagerTest {
         // Verify
         assertTrue(Files.exists(csvPath));
         String content = Files.readString(csvPath);
-        assertEquals("Name,Phone,Email,Telegram,GitHub,Tags", content.trim());
+        assertEquals("Name,Phone,Email,Telegram,GitHub,Tags,Preferred Mode,Pinned", content.trim());
     }
 
     @Test

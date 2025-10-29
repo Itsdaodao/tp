@@ -22,7 +22,7 @@ import seedu.address.testutil.PersonBuilder;
 
 public class CsvAddressBookStorageTest {
 
-    private static final String CSV_HEADER = "Name,Phone,Email,Telegram,GitHub,Tags";
+    private static final String CSV_HEADER = "Name,Phone,Email,Telegram,GitHub,Tags,Preferred Mode,Pinned";
 
     @TempDir
     public Path temporaryFolder;
@@ -60,7 +60,7 @@ public class CsvAddressBookStorageTest {
         assertTrue(Files.exists(testFilePath));
         List<String> lines = Files.readAllLines(testFilePath);
         assertEquals(1, lines.size()); // Only header
-        assertEquals("Name,Phone,Email,Telegram,GitHub,Tags", lines.get(0));
+        assertEquals(CSV_HEADER, lines.get(0));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class CsvAddressBookStorageTest {
 
         // Should have header + number of persons
         assertTrue(lines.size() > 1);
-        assertEquals("Name,Phone,Email,Telegram,GitHub,Tags", lines.get(0));
+        assertEquals(CSV_HEADER, lines.get(0));
 
         // Check that file contains data
         String content = String.join("\n", lines);
@@ -93,6 +93,8 @@ public class CsvAddressBookStorageTest {
                 .withTelegram("johndoe")
                 .withGithub("johndoe")
                 .withTags("friend", "colleague")
+                .withPreferredMode("phone")
+                .withPinnedAt()
                 .build();
 
         AddressBook addressBook = new AddressBook();
@@ -101,14 +103,18 @@ public class CsvAddressBookStorageTest {
         CsvAddressBookStorage.exportToCsv(addressBook, testFilePath);
 
         List<String> lines = Files.readAllLines(testFilePath);
+        System.out.println(lines.size());
         assertEquals(2, lines.size()); // Header + 1 person
 
         String dataLine = lines.get(1);
+        System.out.println(dataLine);
         assertTrue(dataLine.contains("John Doe"));
         assertTrue(dataLine.contains("98765432"));
         assertTrue(dataLine.contains("john@example.com"));
         assertTrue(dataLine.contains("johndoe"));
-        assertTrue(dataLine.contains("friend;colleague"));
+        assertTrue(dataLine.contains("friend; colleague"));
+        assertTrue(dataLine.contains("phone"));
+        assertTrue(dataLine.contains("true"));
     }
 
     @Test
@@ -217,7 +223,7 @@ public class CsvAddressBookStorageTest {
         String header = lines.get(0);
 
         // Verify column order
-        assertEquals("Name,Phone,Email,Telegram,GitHub,Tags", header);
+        assertEquals(CSV_HEADER, header);
 
         String[] columns = header.split(",");
         assertEquals("Name", columns[0]);
