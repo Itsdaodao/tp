@@ -95,7 +95,8 @@ public class FindCommandParser implements Parser<FindCommand> {
     /**
      * Extracts and validates keywords for the given prefix.
      */
-    private String[] extractKeywords(ArgumentMultimap argMultimap, Prefix prefix, String args) throws ParseException {
+    // package private for testing
+    String[] extractKeywords(ArgumentMultimap argMultimap, Prefix prefix, String args) throws ParseException {
         String trimmedArgs = argMultimap.getValue(prefix).orElse("").trim();
 
         if (trimmedArgs.isEmpty()) {

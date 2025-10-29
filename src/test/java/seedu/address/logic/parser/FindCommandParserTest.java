@@ -69,6 +69,16 @@ public class FindCommandParserTest {
     }
 
     @Test
+    public void extractKeywords_emptyKeyword_throwsParseException() {
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize("n/   ", CliSyntax.PREFIX_NAME);
+        String args = "n/   ";
+
+        assertThrows(ParseException.class, () ->
+                parser.extractKeywords(argMultimap, PREFIX_NAME, args)
+        );
+    }
+
+    @Test
     public void buildPredicate_namePrefix_returnsNamePredicate() {
         String[] keywords = {"Alice", "Bob"};
         Predicate<Person> predicate = parser.buildPredicate(PREFIX_NAME, keywords);
