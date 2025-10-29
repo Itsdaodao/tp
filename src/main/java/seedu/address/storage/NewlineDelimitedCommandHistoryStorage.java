@@ -1,5 +1,7 @@
 package seedu.address.storage;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -31,9 +33,7 @@ public class NewlineDelimitedCommandHistoryStorage implements CommandHistoryStor
 
     @Override
     public Optional<CommandHistory> readCommandHistory() throws DataLoadingException {
-        if (filePath == null) {
-            throw new NullPointerException();
-        }
+        requireNonNull(filePath);
         if (!FileUtil.isFileExists(filePath)) {
             return Optional.empty();
         }
@@ -63,13 +63,27 @@ public class NewlineDelimitedCommandHistoryStorage implements CommandHistoryStor
 
     @Override
     public void saveCommandHistory(ReadOnlyCommandHistory history) throws IOException {
+        requireNonNull(history);
+        requireNonNull(filePath);
+
+        String data = convertHistoryToNewlineDelimitedString(history);
+
+        FileUtil.createIfMissing(filePath);
+        FileUtil.writeToFile(filePath, data);
+    }
+
+    private String convertHistoryToNewlineDelimitedString(ReadOnlyCommandHistory history) {
+        requireNonNull(history);
+
         StringBuilder sb = new StringBuilder();
         List<String> historyList = history.getHistory();
 
+        // Reverse-iterate through the list to order data from
+        // the oldest command (top) -> the newest command (bottom)
         for (int i = historyList.size() - 1; i >= 0; i--) {
             sb.append(historyList.get(i)).append("\n");
         }
 
-        FileUtil.writeToFile(filePath, sb.toString());
+        return sb.toString();
     }
 }

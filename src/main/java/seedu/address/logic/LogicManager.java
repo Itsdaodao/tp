@@ -150,8 +150,10 @@ public class LogicManager implements Logic {
         try {
             saveOperation.apply(storage);
         } catch (AccessDeniedException e) {
+            logger.info("Error occurred while saving to file: " + e.getMessage());
             throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
         } catch (IOException ioe) {
+            logger.info("Error occurred while saving to file: " + ioe.getMessage());
             throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
         }
     }
