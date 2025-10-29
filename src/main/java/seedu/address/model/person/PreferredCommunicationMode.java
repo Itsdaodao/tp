@@ -10,11 +10,10 @@ public enum PreferredCommunicationMode {
     PHONE,
     EMAIL,
     TELEGRAM,
-    GITHUB,
     NONE; // Represents empty/null preferred modes
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Preferred mode should be one of: phone, email, telegram or github.";
+            "Preferred mode should be one of: phone, email or telegram.";
     public static final String MESSAGE_INVALID_PREFERRED_MODE =
             "Invalid preferred mode: %s. The person does not have this contact method.";
 

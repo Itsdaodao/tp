@@ -85,7 +85,7 @@ public class PersonCard extends UiPart<Region> {
         // Optional Fields
         setContactField(email, person.getEmail().value, "", PreferredCommunicationMode.EMAIL);
         setContactField(telegram, person.getTelegram().value, "Telegram: ", PreferredCommunicationMode.TELEGRAM);
-        setContactField(github, person.getGithub().value, "Github: ", PreferredCommunicationMode.GITHUB);
+        setContactField(github, person.getGithub().value, "Github: ", null);
 
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
@@ -107,7 +107,7 @@ public class PersonCard extends UiPart<Region> {
     private void setContactField(Hyperlink label, String value, String fieldName,
                                  PreferredCommunicationMode modeToCheck) {
         boolean isEmpty = value == null || value.isBlank();
-        boolean isPreferred = person.getPreferredMode() == modeToCheck;
+        boolean isPreferred = modeToCheck != null && person.getPreferredMode() == modeToCheck;
 
         if (isEmpty) {
             label.setVisible(false);
