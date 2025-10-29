@@ -140,13 +140,13 @@
     -fx-border-width: 0;
 }
 
-.cell_small_hyperlink:hover {
-    -fx-text-fill: #4077b3; /* light blue on hover */
+.cell_small_hyperlink:visited {
+    -fx-text-fill: #c74ac7; /* set to purple for visited links */
     -fx-underline: false;
 }
 
-.cell_small_hyperlink:visited {
-    -fx-text-fill: #29006b; /* set to purple for visited links */
+.cell_small_hyperlink:hover {
+    -fx-text-fill: #4077b3; /* light blue on hover */
     -fx-underline: false;
 }
 
