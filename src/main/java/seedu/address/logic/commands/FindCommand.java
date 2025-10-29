@@ -19,9 +19,9 @@ public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String EXAMPLE_MESSAGE = "Example: "
-            + COMMAND_WORD + " " + PREFIX_NAME + "alice bob charlie\n"
-            + COMMAND_WORD + " " + PREFIX_TAG + "family";
+    public static final String EXAMPLE_MESSAGE =
+            "Example: " + COMMAND_WORD + " " + PREFIX_NAME + "alice bob charlie\n"
+            + "Example: " + COMMAND_WORD + " " + PREFIX_TAG + "family";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names or tags contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
@@ -100,12 +100,12 @@ public class FindCommand extends Command {
                         + "  KEYWORD - One or more keywords to search for (required)\n"
                         + "\n"
                         + "Notes:\n"
+                        + "  - Keywords must match the start of the word (e.g. 'De' matches 'Derek')"
                         + "  - Only one prefix can be used at a time\n"
                         + "  - The search is case-insensitive (e.g., 'alice' matches 'Alice')\n"
-                        + "  - Only the name field is searched\n"
+                        + "  - Only the name field or tag field is searched\n"
                         + "  - Contacts matching at least one keyword will be displayed\n"
-                        + "  - If both prefixes provided. Only the first prefix is used.\n"
-                        + "  - Keywords must match the start of the word (e.g. 'De' matches 'Derek')",
+                        + "  - If both prefixes provided. Only the first prefix is used.\n",
                 PREFIX_NAME,
                 PREFIX_TAG,
                 PREFIX_NAME,
