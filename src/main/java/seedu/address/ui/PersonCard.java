@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -68,21 +69,23 @@ public class PersonCard extends UiPart<Region> {
         this.feedbackConsumer = feedbackConsumer;
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-
-        PreferredCommunicationMode preferredMode = person.getPreferredMode();
 
         // Display pin icon
         pinIcon.setVisible(person.isPinned());
 
         // Mandatory Field: Phone
         String phoneText = person.getPhone().value;
-        if (preferredMode == PreferredCommunicationMode.PHONE) {
-            phoneText += PREFERRED_SUFFIX;
-        }
         phone.setText(phoneText);
         phone.setVisible(true);
         phone.setManaged(true);
+
+        PreferredCommunicationMode preferredMode = person.getPreferredMode();
+        boolean isPreferredPhone = preferredMode == PreferredCommunicationMode.PHONE;
+
+        // Set preferred styling for phone field
+        if (isPreferredPhone) {
+            setPreferredContactField(phone, phoneText, "");
+        }
 
         // Optional Fields
         setContactField(email, person.getEmail().value, "", PreferredCommunicationMode.EMAIL);
@@ -102,12 +105,12 @@ public class PersonCard extends UiPart<Region> {
      * Otherwise, the label is shown with its text set to the provided field name and value.
      * If the field matches the person's preferred communication mode, a "(Preferred)" suffix is appended.
      *
-     * @param label the JavaFX label to update
+     * @param label the JavaFX labeled to update
      * @param value the contact information to display
      * @param fieldName the field name to show before the value
      * @param modeToCheck the communication mode associated with this field
      */
-    private void setContactField(Hyperlink label, String value, String fieldName,
+    private void setContactField(Labeled label, String value, String fieldName,
                                  PreferredCommunicationMode modeToCheck) {
         boolean isEmpty = value == null || value.isBlank();
         boolean isPreferred = person.getPreferredMode() == modeToCheck;
@@ -137,11 +140,11 @@ public class PersonCard extends UiPart<Region> {
      * <p>
      * Adds a gold, bold "(Preferred)" label next to the field
      *
-     * @param label the JavaFX label to update
+     * @param label the JavaFX labeled to update
      * @param value the contact information to display
      * @param fieldName the field name to show before the value
      */
-    private void setPreferredContactField(Hyperlink label, String value, String fieldName) {
+    private void setPreferredContactField(Labeled label, String value, String fieldName) {
         Text mainText = new Text(fieldName + value + " ");
         Text preferredText = new Text(PREFERRED_SUFFIX);
 
