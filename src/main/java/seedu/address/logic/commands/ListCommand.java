@@ -16,10 +16,10 @@ public class ListCommand extends Command {
     public static final String COMMAND_WORD_ALPHABETICAL = COMMAND_WORD + " " + FLAG_ALPHABETICAL_ORDER;
     public static final String COMMAND_WORD_RECENT = COMMAND_WORD + " " + FLAG_RECENT_ORDER;
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + " (original order)\n "
-            + " -a (alphabetical order)\n"
-            + " -r (recent order)";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " (original order)\n"
+            + "  " + FLAG_ALPHABETICAL_ORDER + " (alphabetical order)\n"
+            + "  " + FLAG_RECENT_ORDER + " (recent order)";
+
     public static final String MESSAGE_INVALID_ORDER = "Kindly choose only one sorting order.";
     public static final String MESSAGE_SUCCESS = "Listed all persons";
     public static final String MESSAGE_SUCCESS_ALPHABETICAL_ORDER = MESSAGE_SUCCESS + " in alphabetical order";
