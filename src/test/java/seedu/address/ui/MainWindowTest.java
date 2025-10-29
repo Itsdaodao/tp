@@ -36,6 +36,7 @@ public class MainWindowTest {
     public Path temporaryFolder;
 
     private final Model model = new ModelManager();
+    private final CommandHistory chm = new CommandHistory();
     private MainWindow mainWindow;
 
     @Start
@@ -55,7 +56,7 @@ public class MainWindowTest {
         mainWindow = new MainWindow(stage, new LogicManager(model, storage, new StateManager()));
         mainWindow.show();
         mainWindow.fillInnerParts();
-        mainWindow.createCommandBox(new Autocompletor(), new CommandHistory());
+        mainWindow.createCommandBox(new Autocompletor(), chm);
     }
 
     @Test
@@ -172,6 +173,21 @@ public class MainWindowTest {
         robot.push(MainWindow.SCROLL_MODE_PREVIOUS_ALT);
 
         assertEquals(firstPerson, mainWindow.getPersonListPanel().getSelectedPerson());
+    }
+
+    // Integration test to check if command history plays well in main window
+    @Test
+    public void insertMode_fillsOldCommandHistory_onPreviousHistoryInput(FxRobot robot) {
+        // Arrange - select second person by pressing SCROLL_NEXT_ALT twice
+        TextField t = robot.lookup("#commandTextField").queryAs(TextField.class);
+        String oldCommand = "this was typed in previously";
+        chm.clearHistory();
+        chm.addCommandToHistory(oldCommand);
+
+        robot.clickOn("#commandTextField");
+        robot.push(CommandBox.GO_PREVIOUS_COMMAND);
+
+        assertEquals(oldCommand, t.getText());
     }
 
 }
