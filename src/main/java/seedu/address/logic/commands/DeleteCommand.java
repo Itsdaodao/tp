@@ -96,7 +96,8 @@ public class DeleteCommand extends Command {
                         + "  INDEX - The index number shown in the displayed contact list (required)\n\n"
                         + "Notes:\n"
                         + "  - The index must be a positive integer (1, 2, 3, ...)\n"
-                        + "  - The index refers to the contact's position in the currently displayed list"
+                        + "  - The index refers to the contact's position in the currently displayed list\n"
+                        + "  - The program will prompt for confirmation before the deletion is finalized"
         );
     }
 }

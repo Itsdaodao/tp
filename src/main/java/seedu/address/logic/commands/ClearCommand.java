@@ -44,7 +44,8 @@ public class ClearCommand extends Command {
                         + "Removes all contacts from the address book.\n\n"
                         + "Notes:\n"
                         + "  - This action cannot be undone\n"
-                        + "  - All contact data will be permanently deleted"
+                        + "  - All contact data will be permanently deleted\n"
+                        + "  - The program will prompt for confirmation before the deletion is finalized"
         );
     }
 }
