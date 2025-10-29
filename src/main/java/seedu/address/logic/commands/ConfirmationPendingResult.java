@@ -10,6 +10,8 @@ public class ConfirmationPendingResult extends CommandResult {
     /** Contains logic to execute on user confirmation.**/
     private final Supplier<CommandResult> onConfirm;
 
+    public static final String CONFIRMATION_TEXT_FORMAT = "%s\nProceed? " + ConfirmCommand.USER_INPUT_OPTIONS;
+
     /**
      * Constructs a {@code ConfirmationPendingResult} with the specified fields.
      *
@@ -20,7 +22,7 @@ public class ConfirmationPendingResult extends CommandResult {
      */
     public ConfirmationPendingResult(String feedbackToUser, boolean showHelp, boolean exit,
                                      Supplier<CommandResult> onConfirm) {
-        super(feedbackToUser, showHelp, exit);
+        super(String.format(CONFIRMATION_TEXT_FORMAT, feedbackToUser), showHelp, exit);
         this.onConfirm = onConfirm;
     }
 

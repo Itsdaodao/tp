@@ -53,7 +53,8 @@ public class ConfirmCommandTest {
         ConfirmCommand confirmCommand = createConfirmCommandWithDeletePending(
                 model, personToDelete, "asdfasdfasddfasdfsasdfasdf", "Done!", feedback
         );
-        String expected = String.format(ConfirmCommand.MESSAGE_INVALID_CONFIRMATION_INPUT, feedback);
+        String expectedFeedback = String.format(ConfirmationPendingResult.CONFIRMATION_TEXT_FORMAT, feedback);
+        String expected = String.format(ConfirmCommand.MESSAGE_INVALID_CONFIRMATION_INPUT, expectedFeedback);
 
         assertCommandFailure(confirmCommand, model, expected);
     }
