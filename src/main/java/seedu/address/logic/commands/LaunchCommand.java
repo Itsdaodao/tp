@@ -98,7 +98,6 @@ public class LaunchCommand extends Command {
         }
         case TELEGRAM: {
             isFieldEmpty(person.getTelegram().isEmpty(), person.getName().fullName, MESSAGE_MISSING_TELEGRAM);
-
             return ApplicationLinkLauncher.launchTelegram(person.getTelegram().value);
         }
         case GITHUB:
