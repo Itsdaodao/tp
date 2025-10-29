@@ -443,12 +443,10 @@ public class LogicManagerTest {
         State state = new StateManager();
         state.setAwaitingUserConfirmation(new ConfirmationPendingResult(
                 "Confirm deletion [y/n] of:\n" + Messages.format(person) + "?",
-                false, false, () -> {
-                    model.deletePerson(person);
-                    return new CommandResult(
+                false, false, () -> model.deletePerson(person),
+                    new CommandResult(
                             String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(person))
-                    );
-                }
+                    )
         ));
         return state;
     }

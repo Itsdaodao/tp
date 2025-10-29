@@ -21,10 +21,9 @@ public class ClearCommand extends Command {
         requireNonNull(model);
         return new ConfirmationPendingResult(
                 String.format(MESSAGE_CLEAR_CONFIRM),
-                false, false, () -> {
-                    model.setAddressBook(new AddressBook());
-                    return new CommandResult(MESSAGE_SUCCESS);
-                }
+                false, false,
+                () -> model.setAddressBook(new AddressBook()),
+                new CommandResult(MESSAGE_SUCCESS)
         );
     }
 

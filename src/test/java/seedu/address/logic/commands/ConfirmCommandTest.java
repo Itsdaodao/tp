@@ -63,7 +63,7 @@ public class ConfirmCommandTest {
     @Test
     public void toStringMethod() {
         ConfirmationPendingResult pendingOperation = new ConfirmationPendingResult(
-                "Delete?", false, false, () ->
+                "Delete?", false, false, () -> {},
                 new CommandResult("Deleted!")
         );
         String userInput = "n";
@@ -76,10 +76,7 @@ public class ConfirmCommandTest {
     private static ConfirmCommand createConfirmCommandWithDeletePending(Model model, Person person, String input,
                                                                         String result, String feedback) {
         ConfirmationPendingResult pendingOperation = new ConfirmationPendingResult(
-                feedback, false, false, () -> {
-                    model.deletePerson(person);
-                    return new CommandResult(result);
-                }
+                feedback, false, false, () -> model.deletePerson(person), new CommandResult(result)
         );
         return new ConfirmCommand(input, () -> {}, pendingOperation);
     }
