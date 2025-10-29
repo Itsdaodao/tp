@@ -5,15 +5,11 @@ skinparam ArrowFontStyle plain
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":ConfirmCommand" as ConfirmCommand LOGIC_COLOR
+participant ":DeleteCommand" as DeleteCommand LOGIC_COLOR
 participant ":StateManager" as StateManager LOGIC_COLOR
-participant "p:ConfirmationPendingResult" as ConfirmationPendingResult LOGIC_COLOR
 end box
 -> LogicManager #FFBBBB : execute("delete 1")
 activate LogicManager
-
-box Model MODEL_COLOR_T1
-participant "m:Model" as m MODEL_COLOR
-end box
 
 LogicManager -> StateManager: isAwaitingUserConfirmation()
 activate StateManager
@@ -21,17 +17,39 @@ activate StateManager
 StateManager --> LogicManager: false
 deactivate StateManager
 
-ref over LogicManager: parseGenericCommand
+ref over LogicManager, DeleteCommand: parseGenericCommand
+
+create DeleteCommand
+LogicManager[hidden]-> DeleteCommand
+
+
+
+LogicManager -> DeleteCommand: execute(m)
+activate DeleteCommand
+
+
+
+DeleteCommand --> LogicManager: p: ConfirmationPendingResult
+deactivate DeleteCommand
 
 LogicManager -> StateManager: setAwaitingUserConfirmation(p)
 activate StateManager
+
+note left of StateManager
+Logic Manager detects that
+a Pending Result is returned
+and sets state to be `awaiting`
+end note
 
 StateManager --> LogicManager
 deactivate StateManager
 
 [<-- LogicManager
+deactivate LogicManager
 
 -> LogicManager#FFBBBB: execute("y")
+activate LogicManager
+
 LogicManager -> StateManager: isAwaitingUserConfirmation()
 activate StateManager
 
@@ -45,22 +63,13 @@ StateManager --> LogicManager: p
 deactivate StateManager
 
 ref over LogicManager, ConfirmCommand: parseConfirmCommand
-
-ConfirmCommand --> LogicManager: c
+create ConfirmCommand
+LogicManager[hidden]-> ConfirmCommand
 
 LogicManager -> ConfirmCommand: execute(m)
 activate ConfirmCommand
 
-ConfirmCommand -> ConfirmationPendingResult: executeOnConfirm()
-activate ConfirmationPendingResult
-
-ConfirmationPendingResult -> m: run()
-activate m
-
-m --> ConfirmationPendingResult
-deactivate m
-
-ConfirmationPendingResult --> ConfirmCommand
+ref over ConfirmCommand: executePendingOperation
 
 ConfirmCommand -> StateManager: clearAwaitingUserConfirmation()
 activate StateManager
@@ -68,7 +77,7 @@ activate StateManager
 StateManager --> ConfirmCommand
 deactivate StateManager
 
-ConfirmationPendingResult --> LogicManager
+ConfirmCommand --> LogicManager
 
 [<--LogicManager
 

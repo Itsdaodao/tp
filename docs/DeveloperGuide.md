@@ -102,16 +102,26 @@ The sequence diagram below illustrates the typical interactions within the `Logi
 
 How the `Logic` component works in a typical case:
 1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object.
-1The `AddressBookParser` calls upon the `CommandRegistry` to obtain a `CommandFactory` that creates a Command.
-1The `AddressBookParser` supplies the parsed arguments to the `CommandFactory`, which in turn uses the `EditParser`.
-1This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `EditCommand`) which is exectued by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
+1. The `AddressBookParser` calls upon the `CommandRegistry` to obtain a `CommandFactory` that creates a Command.
+1. The `AddressBookParser` supplies the parsed arguments to the `CommandFactory`, which in turn uses the `EditParser`.
+1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `EditCommand`) which is executed by the `LogicManager`.
+1. The command can communicate with the `Model` when it is executed (e.g. to edit a person).<br>
    Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
 #### State Management
 The `Logic` component additionally relies on `State` to chiefly manage Confirmation prompts for some commands. In these cases, the components interact like so:
 
+![State interactions Inside the Logic Component for the `delete 1` Command](images/DeleteAbstractedStateDiagram.png)
+
+How logic manages state:
+On every execute call, LogicManager checks its `State` to see if there is an operation pending confirmation.
+
+If there is no pending command, the operation carries on as per normal.
+
+If there is a pending command, `LogicManager` calls upon `AddressBookParser` to strictly parse the command as a `ConfirmCommand`. `ConfirmCommand` will clear `State` via a callback once satisfied.
+
+#### Parsing
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
 <img src="images/ParserClasses.png" width="700"/>
@@ -121,6 +131,7 @@ How the parsing works:
 
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
+#### Utility Classes
 <img src="images/LogicUtilityClassDiagram.png" width="700"/>
 
 How the utility classes work:

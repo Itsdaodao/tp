@@ -54,7 +54,7 @@ deactivate EditCommandParser
 EditCommandParser -[hidden]-> AddressBookParser
 destroy EditCommandParser
 
-CommandFactory -> AddressBookParser: e
+CommandFactory --> AddressBookParser: e
 
 AddressBookParser --> LogicManager : e
 deactivate AddressBookParser
