@@ -44,6 +44,10 @@ public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
+    public static final String EXAMPLE_MESSAGE = "Example: " + COMMAND_WORD + " 1 "
+            + PREFIX_PHONE + "91234567 "
+            + PREFIX_EMAIL + "johndoe@example.com";
+
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the person identified "
             + "by the index number used in the displayed person list. "
             + "Existing values will be overwritten by the input values.\n"
@@ -56,9 +60,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_PREFERRED_MODE + "PREFERRED_MODE]"
             + "[" + PREFIX_TAG + "(add) TAG] "
             + "[" + PREFIX_REMOVE_TAG + "(remove) TAG] \n"
-            + "Example: " + COMMAND_WORD + " 1 "
-            + PREFIX_PHONE + "91234567 "
-            + PREFIX_EMAIL + "johndoe@example.com";
+            + EXAMPLE_MESSAGE;
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
@@ -413,27 +415,52 @@ public class EditCommand extends Command {
      * available in the help system.
      */
     public static void registerHelp() {
-        CommandRegistry.register(
-                COMMAND_WORD,
-                "Edits the details of an existing contact by index number",
-                "Example: edit 1 p/91234567 e/johndoe@example.com",
-                "Usage: edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [l/TELEGRAM] [g/GITHUB]"
-                        + "[pm/PREFERRED_MODE][t/TAG]... [r/TAG]...\n\n"
-                        + "Edits the contact at the specified index. At least one optional field must be provided.\n\n"
+        String detailedUsage = String.format(
+                "Usage: edit INDEX [%sNAME] [%sPHONE] [%sEMAIL] [%sTELEGRAM] [%sGITHUB] "
+                        + "[%sPREFERRED_MODE] [%sTAG]... [%sTAG]...\n"
+                        + "\n"
+                        + "Edits the contact at the specified index. At least one optional field must be provided.\n"
+                        + "\n"
                         + "Parameters:\n"
                         + "  INDEX              - The index number shown in the displayed contact list (required)\n"
-                        + "  n/NAME             - New name for the contact (optional)\n"
-                        + "  p/PHONE            - New phone number (optional)\n"
-                        + "  e/EMAIL            - New email address (optional)\n"
-                        + "  l/TELEGRAM         - New Telegram username (optional)\n"
-                        + "  g/GITHUB           - New GitHub username (optional)\n"
-                        + "  pm/PREFERRED_MODE  - New Preferred communication mode (optional)\n"
-                        + "  t/TAG              - Add tag(s) to the contact (optional, can have multiple)\n"
-                        + "  r/TAG              - Remove tag(s) from the contact (optional, can have multiple)\n\n"
+                        + "  %sNAME             - New name for the contact (optional)\n"
+                        + "  %sPHONE            - New phone number (optional)\n"
+                        + "  %sEMAIL            - New email address (optional)\n"
+                        + "  %sTELEGRAM         - New Telegram username (optional)\n"
+                        + "  %sGITHUB           - New GitHub username (optional)\n"
+                        + "  %sPREFERRED_MODE   - New Preferred communication mode (optional)\n"
+                        + "  %sTAG              - Add tag(s) to the contact (optional, can have multiple)\n"
+                        + "  %sTAG              - Remove tag(s) from the contact (optional, can have multiple)\n"
+                        + "\n"
                         + "Notes:\n"
                         + "  - The index must be a positive integer (1, 2, 3, ...)\n"
                         + "  - Existing values will be overwritten by the new input values\n"
-                        + "  - Use t/ to add tags and r/ to remove tags"
+                        + "  - Use %s to add tags and %s to remove tags",
+                PREFIX_NAME,
+                PREFIX_PHONE,
+                PREFIX_EMAIL,
+                PREFIX_TELEGRAM,
+                PREFIX_GITHUB,
+                PREFIX_PREFERRED_MODE,
+                PREFIX_TAG,
+                PREFIX_REMOVE_TAG,
+                PREFIX_NAME,
+                PREFIX_PHONE,
+                PREFIX_EMAIL,
+                PREFIX_TELEGRAM,
+                PREFIX_GITHUB,
+                PREFIX_PREFERRED_MODE,
+                PREFIX_TAG,
+                PREFIX_REMOVE_TAG,
+                PREFIX_TAG,
+                PREFIX_REMOVE_TAG
+        );
+
+        CommandRegistry.register(
+                COMMAND_WORD,
+                "Edits the details of an existing contact by index number",
+                EXAMPLE_MESSAGE,
+                detailedUsage
         );
     }
 }

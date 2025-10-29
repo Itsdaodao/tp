@@ -22,15 +22,7 @@ public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
-            + "Parameters: "
-            + PREFIX_NAME + "NAME "
-            + PREFIX_PHONE + "PHONE "
-            + PREFIX_EMAIL + "EMAIL "
-            + PREFIX_TELEGRAM + "TELEGRAM "
-            + PREFIX_GITHUB + "GITHUB "
-            + "[" + PREFIX_TAG + "TAG]...\n"
-            + "Example: " + COMMAND_WORD + " "
+    public static final String EXAMPLE_MESSAGE = "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_EMAIL + "johnd@example.com "
@@ -39,6 +31,17 @@ public class AddCommand extends Command {
             + PREFIX_PREFERRED_MODE + "telegram "
             + PREFIX_TAG + "friends "
             + PREFIX_TAG + "owesMoney";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
+            + "Parameters: "
+            + PREFIX_NAME + "NAME "
+            + PREFIX_PHONE + "PHONE "
+            + "[" + PREFIX_EMAIL + "EMAIL] "
+            + "[" + PREFIX_TELEGRAM + "TELEGRAM] "
+            + "[" + PREFIX_GITHUB + "GITHUB] "
+            + "[" + PREFIX_PREFERRED_MODE + "PREFERRED_MODE] "
+            + "[" + PREFIX_TAG + "TAG]...\n"
+            + EXAMPLE_MESSAGE;
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
@@ -103,24 +106,46 @@ public class AddCommand extends Command {
      * available in the help system.
      */
     public static void registerHelp() {
+        String detailedUsage = String.format(
+                "Usage: add %sNAME %sPHONE [%sEMAIL] [%sTELEGRAM] [%sGITHUB] [%sPREFERRED_MODE] [%sTAG]...\n"
+                        + "\n"
+                        + "Adds a new contact to the address book with the specified details.\n"
+                        + "\n"
+                        + "Parameters:\n"
+                        + "  %sNAME               - Full name of the contact (required)\n"
+                        + "  %sPHONE              - Phone number (required)\n"
+                        + "  %sEMAIL              - Email address (optional)\n"
+                        + "  %sTELEGRAM           - Telegram username (optional)\n"
+                        + "  %sGITHUB             - GitHub username (optional)\n"
+                        + "  %sPREFERRED_MODE     - Preferred communication mode (optional)\n"
+                        + "  %sTAG                - "
+                        + "Tag(s) to categorize the contact (optional, can have multiple)\n\n"
+                        + "Notes:\n"
+                        + "  - Name and phone are required fields\n"
+                        + "  - You can add multiple tags by repeating %sTAG\n"
+                        + "  - Duplicate contacts (same name) are not allowed",
+                PREFIX_NAME,
+                PREFIX_PHONE,
+                PREFIX_EMAIL,
+                PREFIX_TELEGRAM,
+                PREFIX_GITHUB,
+                PREFIX_PREFERRED_MODE,
+                PREFIX_TAG,
+                PREFIX_NAME,
+                PREFIX_PHONE,
+                PREFIX_EMAIL,
+                PREFIX_TELEGRAM,
+                PREFIX_GITHUB,
+                PREFIX_PREFERRED_MODE,
+                PREFIX_TAG,
+                PREFIX_TAG
+        );
+
         CommandRegistry.register(
                 COMMAND_WORD,
                 "Adds a contact to the address book",
-                "Example: add n/John Doe p/98765432 e/johnd@example.com l/@johndoe g/john-doe t/friends",
-                "Usage: add n/NAME p/PHONE [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [t/TAG]...\n\n"
-                        + "Adds a new contact to the address book with the specified details.\n\n"
-                        + "Parameters:\n"
-                        + "  n/NAME               - Full name of the contact (required)\n"
-                        + "  p/PHONE              - Phone number (required)\n"
-                        + "  e/EMAIL              - Email address (optional)\n"
-                        + "  l/TELEGRAM           - Telegram username (optional)\n"
-                        + "  g/GITHUB             - GitHub username (optional)\n"
-                        + "  pm/PREFERRED_MODE    - Preferred communication mode (optional)\n"
-                        + "  t/TAG                - Tag(s) to categorize the contact (optional, can have multiple)\n\n"
-                        + "Notes:\n"
-                        + "  - Name and phone are required fields\n"
-                        + "  - You can add multiple tags by repeating t/TAG\n"
-                        + "  - Duplicate contacts (same name) are not allowed"
+                EXAMPLE_MESSAGE,
+                detailedUsage
         );
     }
 }
