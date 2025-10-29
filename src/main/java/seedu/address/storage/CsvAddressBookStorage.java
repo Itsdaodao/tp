@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import seedu.address.model.ReadOnlyAddressBook;
@@ -14,7 +16,7 @@ import seedu.address.model.person.Person;
  */
 public class CsvAddressBookStorage {
 
-    private static final String CSV_HEADER = "Name,Phone,Email,Telegram,GitHub,Tags,Preferred Mode,Pinned";
+    private static final String CSV_HEADER = "Name,Phone,Email,Telegram,GitHub,Tags,Preferred Mode,Pinned,PinnedAt";
     private static final String CSV_DELIMITER = ",";
     private static final String EMPTY_FIELD = "";
 
@@ -49,7 +51,7 @@ public class CsvAddressBookStorage {
      * Formats a person as a CSV row with proper escaping.
      */
     private static String formatPersonAsCsv(Person person) {
-        String[] fields = new String[8];
+        String[] fields = new String[9];
 
         fields[0] = escapeCsvField(person.getName().fullName);
         fields[1] = escapeCsvField(person.getPhone().value);
@@ -63,8 +65,17 @@ public class CsvAddressBookStorage {
         );
         fields[6] = escapeCsvField(person.getPreferredMode().toString());
         fields[7] = escapeCsvField(String.valueOf(person.isPinned()));
+        fields[8] = escapeCsvField(formatInstant(person.getPinnedAt()));
 
         return String.join(CSV_DELIMITER, fields);
+    }
+
+    /**
+     * Formats an Optional Instant to a human-readable string.
+     * Converts ISO-8601 format to a more readable format.
+     */
+    private static String formatInstant(Optional<Instant> instantOptional) {
+        return instantOptional.map(Instant::toString).orElse(EMPTY_FIELD);
     }
 
     /**
