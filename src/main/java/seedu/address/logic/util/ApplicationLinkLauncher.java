@@ -42,14 +42,9 @@ public class ApplicationLinkLauncher {
         desktopWrapper = wrapper; // assign to the static field
     }
 
-    /**
-     * Enum representing different application types.
-     */
-    public enum ApplicationType {
-        EMAIL,
-        TELEGRAM,
-        GITHUB,
-        UNKOWNN
+
+    private static ApplicationLinkResult launchApp(String prefix, String value, ApplicationType type) {
+        return launchApplicationLink(prefix + value, type);
     }
 
     /**
@@ -59,15 +54,27 @@ public class ApplicationLinkLauncher {
      * @return The result of the launch attempt.
      */
     public static ApplicationLinkResult launchEmail(String email) {
-        return launchApplicationLink(LAUNCH_EMAIL_PREFIX + email, ApplicationType.EMAIL);
+        return launchApp(LAUNCH_EMAIL_PREFIX, email, ApplicationType.EMAIL);
     }
 
+    /**
+     * Launches the telegram web with the specified handle.
+     *
+     * @param handle The telegram handle to launch.
+     * @return The result of the launch attempt.
+     */
     public static ApplicationLinkResult launchTelegram(String handle) {
-        return launchApplicationLink(LAUNCH_TELEGRAM_PREFIX + handle, ApplicationType.TELEGRAM);
+        return launchApp(LAUNCH_TELEGRAM_PREFIX, handle, ApplicationType.TELEGRAM);
     }
 
+    /**
+     * Launches the telegram web with the specified handle.
+     *
+     * @param username The telegram handle to launch.
+     * @return The result of the launch attempt.
+     */
     public static ApplicationLinkResult launchGithub(String username) {
-        return launchApplicationLink(LAUNCH_GITHUB_PREFIX + username, ApplicationType.GITHUB);
+        return launchApp(LAUNCH_GITHUB_PREFIX, username, ApplicationType.GITHUB);
     }
 
     protected static ApplicationLinkResult launchApplicationLink(String link, ApplicationType type) {
@@ -149,20 +156,7 @@ public class ApplicationLinkLauncher {
         requireNonNull(getDesktopWrapper());
         requireNonNull(action);
 
-        switch (action) {
-        case BROWSE:
-            return desktopWrapper.isSupported(Action.BROWSE);
-        case MAIL:
-            return desktopWrapper.isSupported(Action.MAIL);
-        case OPEN:
-            return desktopWrapper.isSupported(Action.OPEN);
-        case EDIT:
-            return desktopWrapper.isSupported(Action.EDIT);
-        case PRINT:
-            return desktopWrapper.isSupported(Action.PRINT);
-        default:
-            return false;
-        }
+        return desktopWrapper.isSupported(action);
 
     }
 }

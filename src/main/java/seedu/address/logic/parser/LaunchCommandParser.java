@@ -8,7 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.FLAG_TELEGRAM_LAUNCH;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.LaunchCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.logic.util.ApplicationLinkLauncher.ApplicationType;
+import seedu.address.logic.util.ApplicationType;
 
 /**
  * Parses input arguments and creates a new LaunchCommand object

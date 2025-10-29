@@ -18,7 +18,7 @@ import org.mockito.MockedStatic;
 
 import seedu.address.logic.Messages;
 import seedu.address.logic.util.ApplicationLinkLauncher;
-import seedu.address.logic.util.ApplicationLinkLauncher.ApplicationType;
+import seedu.address.logic.util.ApplicationType;
 import seedu.address.logic.util.ApplicationLinkResult;
 import seedu.address.model.CommandHistory;
 import seedu.address.model.Model;
