@@ -109,7 +109,8 @@ public class FindCommandParser implements Parser<FindCommand> {
     /**
      * Builds the correct predicate depending on the prefix.
      */
-    private Predicate<Person> buildPredicate(Prefix prefix, String[] keywords) {
+    // Package private for testing
+    Predicate<Person> buildPredicate(Prefix prefix, String[] keywords) {
         if (prefix.equals(PREFIX_NAME)) {
             return new NameContainsKeywordsPredicate(Arrays.asList(keywords));
         } else if (prefix.equals(PREFIX_TAG)) {
