@@ -28,7 +28,7 @@ import seedu.address.model.tag.Tag;
  * Parses input arguments and creates a new AddCommand object
  */
 public class AddCommandParser implements Parser<AddCommand> {
-
+    private static final boolean IS_ACCEPT_EMPTY_STRING = false;
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
      * and returns an AddCommand object for execution.
@@ -59,7 +59,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Email email = new Email(); // Create default Email with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_EMAIL)) {
-            email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
+            email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get(), IS_ACCEPT_EMPTY_STRING);
             if (!email.isEmpty()) {
                 availableModes.add(PreferredCommunicationMode.EMAIL);
             }
@@ -67,7 +67,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Telegram telegram = new Telegram(); // Create default Telegram with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_TELEGRAM)) {
-            telegram = ParserUtil.parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get());
+            telegram = ParserUtil.parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get(), IS_ACCEPT_EMPTY_STRING);
             if (!telegram.isEmpty()) {
                 availableModes.add(PreferredCommunicationMode.TELEGRAM);
             }
@@ -75,7 +75,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Github github = new Github(); // Create default GitHub with empty value
         if (arePrefixesPresent(argMultimap, PREFIX_GITHUB)) {
-            github = ParserUtil.parseGithub(argMultimap.getValue(PREFIX_GITHUB).get());
+            github = ParserUtil.parseGithub(argMultimap.getValue(PREFIX_GITHUB).get(), IS_ACCEPT_EMPTY_STRING);
             if (!github.isEmpty()) {
                 availableModes.add(PreferredCommunicationMode.GITHUB);
             }
@@ -85,7 +85,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         PreferredCommunicationMode preferredMode = PreferredCommunicationMode.NONE;
         if (arePrefixesPresent(argMultimap, PREFIX_PREFERRED_MODE)) {
             preferredMode = ParserUtil.parsePreferredMode(
-                    argMultimap.getValue(PREFIX_PREFERRED_MODE).get(), availableModes);
+                    argMultimap.getValue(PREFIX_PREFERRED_MODE).get(), availableModes, IS_ACCEPT_EMPTY_STRING);
         }
 
         Person person = new Person(name, phone, email, telegram, github, preferredMode, tagList);

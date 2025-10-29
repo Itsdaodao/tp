@@ -26,7 +26,7 @@ import seedu.address.model.tag.Tag;
  * Parses input arguments and creates a new EditCommand object
  */
 public class EditCommandParser implements Parser<EditCommand> {
-
+    private static final boolean IS_ACCEPT_EMPTY_STRING = true;
     /**
      * Parses the given {@code String} of arguments in the context of the EditCommand
      * and returns an EditCommand object for execution.
@@ -68,18 +68,21 @@ public class EditCommandParser implements Parser<EditCommand> {
             editPersonDescriptor.setPhone(ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get()));
         }
         if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
-            editPersonDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get()));
+            editPersonDescriptor.setEmail(ParserUtil
+                    .parseEmail(argMultimap.getValue(PREFIX_EMAIL).get(), IS_ACCEPT_EMPTY_STRING));
         }
         if (argMultimap.getValue(PREFIX_TELEGRAM).isPresent()) {
-            editPersonDescriptor.setTelegram(ParserUtil.parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get()));
+            editPersonDescriptor.setTelegram(ParserUtil
+                    .parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get(), IS_ACCEPT_EMPTY_STRING));
         }
         if (argMultimap.getValue(PREFIX_GITHUB).isPresent()) {
-            editPersonDescriptor.setGithub(ParserUtil.parseGithub(argMultimap.getValue(PREFIX_GITHUB).get()));
+            editPersonDescriptor.setGithub(ParserUtil
+                    .parseGithub(argMultimap.getValue(PREFIX_GITHUB).get(), IS_ACCEPT_EMPTY_STRING));
         }
         if (argMultimap.getValue(PREFIX_PREFERRED_MODE).isPresent()) {
             Set<PreferredCommunicationMode> availableModes = null;
-            editPersonDescriptor.setPreferredMode(ParserUtil
-                    .parsePreferredMode(argMultimap.getValue(PREFIX_PREFERRED_MODE).get(), availableModes));
+            editPersonDescriptor.setPreferredMode(ParserUtil.parsePreferredMode(argMultimap
+                    .getValue(PREFIX_PREFERRED_MODE).get(), availableModes, IS_ACCEPT_EMPTY_STRING));
         }
         // Finds the tags to add if any
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
