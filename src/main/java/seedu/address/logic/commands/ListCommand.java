@@ -25,15 +25,6 @@ public class ListCommand extends Command {
     public static final String MESSAGE_SUCCESS_ALPHABETICAL_ORDER = MESSAGE_SUCCESS + " in alphabetical order";
     public static final String MESSAGE_SUCCESS_RECENT_ORDER = MESSAGE_SUCCESS + " in order of most recently added";
 
-    /**
-     * Represents the sorting order for listing persons.
-     */
-    public enum SortOrder {
-        DEFAULT,
-        ALPHABETICAL,
-        RECENT
-    }
-
     private final SortOrder sortOrder;
 
     /**
@@ -50,17 +41,8 @@ public class ListCommand extends Command {
         requireNonNull(model);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        switch (sortOrder) {
-        case ALPHABETICAL:
-            model.applyNameSort();
-            return new CommandResult(MESSAGE_SUCCESS_ALPHABETICAL_ORDER);
-        case RECENT:
-            model.applyRecentSort();
-            return new CommandResult(MESSAGE_SUCCESS_RECENT_ORDER);
-        default:
-            model.resetSortOrder();
-            return new CommandResult(MESSAGE_SUCCESS);
-        }
+        sortOrder.applySort(model);
+        return new CommandResult(sortOrder.getMessage());
     }
 
     @Override
@@ -100,5 +82,57 @@ public class ListCommand extends Command {
                         + "  - Without flags, contacts are listed in their default order\n"
                         + "  - Only one sorting flag can be used at a time"
         );
+    }
+
+
+    /**
+     * Represents the available sorting orders for listing persons in the address book.
+     * Each enum constant encapsulates the specific logic for applying the sort
+     * to the {@code Model} and retrieving the corresponding success message.
+     */
+    public enum SortOrder {
+        /**
+         * Represents the default listing order (earliest to latest, as per internalList).
+         */
+        DEFAULT {
+            @Override
+            public String getMessage() { return MESSAGE_SUCCESS; }
+            @Override
+            public void applySort(Model model) { model.resetSortOrder(); }
+        },
+
+        /**
+         * Represents sorting the persons in alphabetical order by name.
+         */
+        ALPHABETICAL {
+            @Override
+            public String getMessage() { return MESSAGE_SUCCESS_ALPHABETICAL_ORDER; }
+            @Override
+            public void applySort(Model model) { model.applyNameSort(); }
+        },
+
+        /**
+         * Represents sorting the persons in order of most recently added.
+         */
+        RECENT {
+            @Override
+            public String getMessage() { return MESSAGE_SUCCESS_RECENT_ORDER; }
+            @Override
+            public void applySort(Model model) { model.applyRecentSort(); }
+        };
+
+        /**
+         * Retrieves the success message specific to this sorting order.
+         *
+         * @return The formatted success message string.
+         */
+        public abstract String getMessage();
+
+        /**
+         * Applies the required sorting mechanism to the model's person list.
+         *
+         * @param model The {@code Model} to which the sorting action will be applied.
+         */
+        public abstract void applySort(Model model);
     }
 }

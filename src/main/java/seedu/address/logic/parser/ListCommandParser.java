@@ -28,17 +28,18 @@ public class ListCommandParser implements Parser<ListCommand> {
 
         boolean alphabeticalFlag = argMultimap.getValue(FLAG_ALPHABETICAL_ORDER).isPresent();
         boolean recentFlag = argMultimap.getValue(FLAG_RECENT_ORDER).isPresent();
+        boolean isBothFlagPresent = alphabeticalFlag && recentFlag;
 
-        if (alphabeticalFlag && recentFlag) {
+        if (isBothFlagPresent) {
             throw new ParseException(MESSAGE_INVALID_ORDER);
         }
 
-        if (argMultimap.getValue(FLAG_ALPHABETICAL_ORDER).isPresent()) {
+        if (alphabeticalFlag) {
             return new ListCommand(SortOrder.ALPHABETICAL);
-        } else if (argMultimap.getValue(FLAG_RECENT_ORDER).isPresent()) {
+        } else if (recentFlag) {
             return new ListCommand(SortOrder.RECENT);
+        } else {
+            return new ListCommand(SortOrder.DEFAULT);
         }
-
-        return new ListCommand(SortOrder.DEFAULT);
     }
 }
