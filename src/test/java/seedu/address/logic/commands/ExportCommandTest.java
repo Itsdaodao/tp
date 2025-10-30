@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -52,6 +53,85 @@ public class ExportCommandTest {
             Files.deleteIfExists(dataDir);
         }
     }
+
+    @SuppressWarnings("unchecked")
+    private static <T> T invokePrivateMethod(Object instance, String methodName,
+                                             Class<?>[] paramTypes, Object... args) {
+        try {
+            Method method = instance.getClass().getDeclaredMethod(methodName, paramTypes);
+            method.setAccessible(true);
+            return (T) method.invoke(instance, args);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void removeExtension_variousCases_returnsExpected() {
+        ExportCommand cmd = new ExportCommand();
+        assertEquals("file", invokePrivateMethod(cmd, "removeExtension",
+                new Class[]{String.class}, "file.csv"));
+        assertEquals("file.backup.old", invokePrivateMethod(cmd, "removeExtension",
+                new Class[]{String.class}, "file.backup.old.csv"));
+        assertEquals("file", invokePrivateMethod(cmd, "removeExtension",
+                new Class[]{String.class}, "file."));
+        assertEquals("file", invokePrivateMethod(cmd, "removeExtension",
+                new Class[]{String.class}, "file"));
+        assertEquals(".hidden", invokePrivateMethod(cmd, "removeExtension",
+                new Class[]{String.class}, ".hidden"));
+    }
+
+    @Test
+    public void sanitizeFilename_variousCases_returnsExpected() {
+        ExportCommand cmd = new ExportCommand();
+        String method = "sanitizeFilename";
+        assertEquals("hello", invokePrivateMethod(cmd, method, new Class[]{String.class}, "hello"));
+        assertEquals("filename", invokePrivateMethod(cmd, method, new Class[]{String.class}, "file*?name"));
+        assertEquals("file", invokePrivateMethod(cmd, method, new Class[]{String.class}, "..file.."));
+        assertEquals("contacts", invokePrivateMethod(cmd, method, new Class[]{String.class}, "*?<>|"));
+        assertEquals("contacts", invokePrivateMethod(cmd, method, new Class[]{String.class}, "   "));
+    }
+
+    @Test
+    public void ensureCsvExtension_variousCases_returnsExpected() {
+        ExportCommand cmd = new ExportCommand();
+        String method = "ensureCsvExtension";
+        assertEquals("file.csv", invokePrivateMethod(cmd, method, new Class[]{String.class}, "file"));
+        assertEquals("file.csv", invokePrivateMethod(cmd, method, new Class[]{String.class}, "file.csv"));
+        assertEquals("file.pdf.csv", invokePrivateMethod(cmd, method, new Class[]{String.class}, "file.pdf"));
+    }
+
+    @Test
+    public void findAvailableFilePath_exhaustsAttempts_throwsException() throws Exception {
+        ExportCommand cmd = new ExportCommand("test");
+
+        Path mockDir = temporaryFolder.resolve("fullDir");
+        Files.createDirectories(mockDir);
+
+        // Create base file and all possible incremented ones (0–999)
+        Files.createFile(mockDir.resolve("test.csv"));
+        for (int i = 0; i < 1000; i++) {
+            Files.createFile(mockDir.resolve("test-" + i + ".csv"));
+        }
+
+        Path initialPath = mockDir.resolve("test.csv");
+
+        RuntimeException thrown = assertThrows(RuntimeException.class, () ->
+                invokePrivateMethod(cmd, "findAvailableFilePath", new Class[]{Path.class}, initialPath)
+        );
+
+        // Unwrap the cause chain to find the real IOException
+        Throwable cause = thrown;
+        while (cause != null && !(cause instanceof IOException)) {
+            cause = cause.getCause();
+        }
+
+        // Verify the cause type and message
+        assertTrue(cause instanceof IOException, "Expected IOException but got: " + thrown);
+        assertTrue(cause.getMessage().contains("Unable to find available filename"),
+                "Expected message to contain 'Unable to find available filename' but got: " + cause.getMessage());
+    }
+
 
     @Test
     public void isValidFilename_validFilenames_returnsTrue() {
@@ -141,15 +221,6 @@ public class ExportCommandTest {
     }
 
     @Test
-    public void execute_filenameWithMultipleExtensions_appendsCsvExtension() throws CommandException, IOException {
-        ExportCommand command = new ExportCommand("myfile.backup.old");
-        command.execute(model);
-
-        Path expectedPath = Path.of("data/myfile.backup.old.csv");
-        assertTrue(Files.exists(expectedPath), "File should preserve all parts of filename");
-    }
-
-    @Test
     public void execute_filenameWithInvalidChars_removesInvalidChars() throws CommandException, IOException {
         ExportCommand command = new ExportCommand("my*file?name");
         command.execute(model);
@@ -226,36 +297,6 @@ public class ExportCommandTest {
     }
 
     @Test
-    public void execute_filenameNoExtension_keepsWholeName() throws CommandException, IOException {
-        ExportCommand command1 = new ExportCommand("myfile");
-        command1.execute(model);
-
-        ExportCommand command2 = new ExportCommand("myfile");
-        command2.execute(model);
-
-        Path firstFile = Path.of("data/myfile.csv");
-        Path secondFile = Path.of("data/myfile-1.csv");
-
-        assertTrue(Files.exists(firstFile));
-        assertTrue(Files.exists(secondFile));
-    }
-
-    @Test
-    public void execute_filenameWithDotAtStart_removesExtensionCorrectly() throws CommandException, IOException {
-        ExportCommand command1 = new ExportCommand(".hidden.csv");
-        command1.execute(model);
-
-        ExportCommand command2 = new ExportCommand(".hidden.csv");
-        command2.execute(model);
-
-        Path firstFile = Path.of("data/hidden.csv");
-        Path secondFile = Path.of("data/hidden-1.csv");
-
-        assertTrue(Files.exists(firstFile));
-        assertTrue(Files.exists(secondFile));
-    }
-
-    @Test
     public void execute_fileAlreadyExists_createsIncrementedFilename() throws CommandException, IOException {
         // Create first file
         ExportCommand command1 = new ExportCommand("testfile");
@@ -274,18 +315,6 @@ public class ExportCommandTest {
         // Check that the success message mentions the filename change
         assertTrue(result.getFeedbackToUser().contains("already exists"));
         assertTrue(result.getFeedbackToUser().contains("testfile-1.csv"));
-    }
-
-    @Test
-    public void execute_multipleConflicts_createsMultipleIncrements() throws CommandException, IOException {
-        // Create multiple files with same base name
-        new ExportCommand("conflict").execute(model);
-        new ExportCommand("conflict").execute(model);
-        new ExportCommand("conflict").execute(model);
-
-        assertTrue(Files.exists(Path.of("data/conflict.csv")));
-        assertTrue(Files.exists(Path.of("data/conflict-1.csv")));
-        assertTrue(Files.exists(Path.of("data/conflict-2.csv")));
     }
 
     @Test
