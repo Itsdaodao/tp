@@ -349,4 +349,38 @@ public class ExportCommandTest {
         assertTrue(help.contains("export"));
         assertTrue(help.contains("CSV"));
     }
+
+    @Test
+    public void execute_modelExportThrowsException_throwsCommandException() {
+        // Create a mock model that throws IOException during export
+        Model failingModel = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory()) {
+            @Override
+            public void exportAddressBookToCsv(Path filePath) throws IOException {
+                throw new IOException("Simulated export failure");
+            }
+        };
+
+        ExportCommand command = new ExportCommand("testfile");
+        CommandException exception = assertThrows(CommandException.class, () -> command.execute(failingModel));
+        assertTrue(exception.getMessage().contains("Failed to export contacts"));
+        assertTrue(exception.getMessage().contains("Simulated export failure"));
+    }
+
+    @Test
+    public void execute_filenameBecomesEmptyAfterSanitization_usesDefault() throws CommandException, IOException {
+        ExportCommand command = new ExportCommand("..."); // Becomes empty after sanitization
+        command.execute(model);
+
+        Path expectedPath = Path.of("data/contacts.csv");
+        assertTrue(Files.exists(expectedPath), "Should use default filename when sanitized name is empty");
+    }
+
+    @Test
+    public void execute_filenameWithOnlyInvalidChars_usesDefaultFilename() throws CommandException, IOException {
+        ExportCommand command = new ExportCommand("*?\\/:");
+        command.execute(model);
+
+        Path expectedPath = Path.of("data/contacts.csv");
+        assertTrue(Files.exists(expectedPath), "Should use default filename when name has only invalid chars");
+    }
 }
