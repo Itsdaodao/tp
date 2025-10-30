@@ -18,6 +18,7 @@ import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PinStatus;
 import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
@@ -134,17 +135,15 @@ class JsonAdaptedPerson {
         }
         final PreferredCommunicationMode modelPreferredMode = PreferredCommunicationMode.of(preferredCommunicationMode);
 
-        final Boolean modelIsPinned = isPinned != null && isPinned;
-
         Instant modelPinnedAt;
         try {
             modelPinnedAt = pinnedAt == null ? null : Instant.parse(pinnedAt);
         } catch (DateTimeParseException e) {
-            throw new IllegalValueException(Person.PIN_DATE_MESSAGE_CONSTRAINT);
+            throw new IllegalValueException(PinStatus.PIN_DATE_MESSAGE_CONSTRAINT);
         }
 
         return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelGithub, modelPreferredMode,
-                modelTags, modelIsPinned, modelPinnedAt);
+                modelTags, modelPinnedAt);
     }
 
     /**

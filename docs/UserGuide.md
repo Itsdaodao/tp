@@ -28,7 +28,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n\John Doe p\98765432 e\johnd@example.com a\John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -47,19 +47,19 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 **:information_source: Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+  e.g. in `add n\NAME`, `NAME` is a parameter which can be used as `add n\John Doe`.
 
 * Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+  e.g `n\NAME [t\TAG]` can be used as `n\John Doe t\friend` or as `n\John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+  e.g. `[t\TAG]…​` can be used as ` ` (i.e. 0 times), `t\friend`, `t\friend t\family` etc.
 
 * Parameters can be in any order.<br>
-  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+  e.g. if the command specifies `n\NAME p\PHONE_NUMBER`, `p\PHONE_NUMBER n\NAME` is also acceptable.
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
-  e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+* Extraneous parameters for commands that do not take in parameters (such as `list`, `exit` and `clear`) will be ignored.<br>
+  e.g. if the command specifies `list 123`, it will be interpreted as `list`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
@@ -82,17 +82,18 @@ Format: `help add`
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [pm/PREFERRED_MODE] [t/TAG]…​`
+Format: `add n\NAME p\PHONE_NUMBER [e\EMAIL] [l\TELEGRAM] [g\GITHUB] [pm\PREFERRED_MODE] [t\TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
 </div>
 
 Examples:
-* `add n/Alice Chua p/90001231`
-* `add n/John Doe p/98765432 e/johnd@example.com`
-* `add n/Cheshire p/98112321 e/cheshire@example.com l/cheshire_02 g/cheshire-dev`
-* `add n/Betsy Crowe p/99998888 t/friend e/betsycrowe@example.com  t/criminal l/betsy001 g/betsy12 pm/telegram`
+* `add n\Alice Chua p\90001231`
+* `add n\John s/o Doe p\97449100`
+* `add n\John Doe p\98765432 e\johnd@example.com`
+* `add n\Cheshire p\98112321 e\cheshire@example.com l\cheshire_02 g\cheshire-dev`
+* `add n\Betsy Crowe p\99998888 t\friend e\betsycrowe@example.com  t\criminal l\betsy001 g\betsy12 pm\telegram`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 Parameters like Email, Telegram, GitHub, Preferred Contact and Tags are **optional**
@@ -120,28 +121,29 @@ Examples:
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [pm/PREFERRED_MODE] [t/TAG]…​  [r/TAG]…​`
+Format: `edit INDEX [n\NAME] [p\PHONE] [e\EMAIL] [l\TELEGRAM] [g\GITHUB] [pm\PREFERRED_MODE] [t\TAG]…​  [r\TAG]…​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * To clear a field, specify the prefix but leave the value empty.
+  * Only `Email`, `Telegram`, `Github`, `Preferred Mode` field can be cleared
 * Existing values will be updated to the input values.
 * When editing tags, you can add or remove tags.
-  * To add tags, use the prefix `t/` followed by the tags to be added.
-  * To remove tags, use the prefix `r/` followed by the tags to be removed.
+  * To add tags, use the prefix `t\` followed by the tags to be added.
+  * To remove tags, use the prefix `r\` followed by the tags to be removed.
     * User will be informed if any of the tags to be removed do not exist on the person.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com`
+*  `edit 1 p\91234567 e\johndoe@example.com`
    * Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-  *  `edit 2 n/Betsy Crower t/CS2103 t/CS2100 r/CS1101S l/`
-     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, removes the tag
+  *  `edit 2 n\Betsy Crower t\CS2103 t\CS2100 r\CS1101S l\`
+     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, removes the tag 
        `CS1101S` and clears the Telegram field.
        ```
        Edited Person: Betsy Crower; Phone: 91093122; Telegram: ; Github: BestyCrower; Tags: [CS2100][CS2103]
        ```
 
-### Locating persons by name or tag: `find`
+### Finding persons by name or tag: `find`
 
 Finds persons whose names or tags start with the given prefix keyword.
 
@@ -164,7 +166,7 @@ Examples:
 * `find n\alex t\friend`
   * Searches only by name `n\alex`, since the second prefix (`t\friends`) is ignored.
 * `find t\friend n\alex`
-  * Searches only by tag (`t\friend`), since the second prefix (`n/alex`) is ignored.
+  * Searches only by tag (`t\friend`), since the second prefix (`n\alex`) is ignored.
 * `find n\a`
   * Returns all persons whose names start with "A" e.g. `Alex yeoh`, `amy tan`
 * `find n\charlotte david`
@@ -183,7 +185,7 @@ Format: `delete INDEX`
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find n/Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `find n\Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
 ### Pinning a person : `pin`
 
@@ -197,7 +199,7 @@ Format: `pin INDEX`
 
 Examples:
 * `list` followed by `pin 4` pins the 4th person in the address book to the top.
-* `find n/Betsy` followed by `pin 2` pins the 2nd person in the results of the `find` command.
+* `find n\Betsy` followed by `pin 2` pins the 2nd person in the results of the `find` command.
 
 ### Unpinning a person : `unpin`
 
@@ -211,7 +213,7 @@ Format: `unpin INDEX`
 
 Examples:
 * `list` followed by `unpin 1` unpins the 1st person and removes them from the pinned list at the top.
-* `find n/Betsy` followed by `unpin 2` unpins the 2nd person in the results of the `find` command.
+* `find n\Betsy` followed by `unpin 2` unpins the 2nd person in the results of the `find` command.
 
 ### Clearing all entries : `clear`
 
@@ -307,7 +309,7 @@ Examples:
 ### Saving the data
 
 There is no need to save manually as the AddressBook data are saved in the hard disk automatically **ONLY after any command that changes the data**.
-* Commands that change the data include: `add`, `edit`, `delete`, and `clear`.
+* Commands that change the data include: `add`, `edit`, `delete`, `pin`, `unpin`, `tag` and `clear`.
 * Commands that do not change the data include: `help`, `list`, `find`, `launch`, and `exit`.
 
 ### Editing the data file
@@ -344,14 +346,14 @@ Enables ability to rename/delete tags detail for all users that contains the spe
 
 #### Renaming Tags for Multiple Contacts
 
-Format: `tag -r t/TAG r/TAG`
+Format: `tag -r t\TAG r\TAG`
 
 * Use `-r` flag to signify a rename tag command
-* `t/TAG` refers to the value of the target tag to be renamed
-* `r/TAG` refers to the renamed value
+* `t\TAG` refers to the value of the target tag to be renamed
+* `r\TAG` refers to the renamed value
 
 Example:
-- `tag -r t/CS1101 r/CS2103`
+- `tag -r t\CS1101 r\CS2103`
   - renames the existing tag `CS1101` for all contacts that has it with the new tag `CS2103`
   - Expected Output: (Assuming there are 2 people with this tag in the list)
     ```
@@ -364,21 +366,26 @@ Example:
 
 ### Deleting Tags for Multiple Contacts
 
-Format: `tag -d t/TAG…​`
+Format: `tag -d t\TAG…​`
 
 * Use `-d` to signify delete tag command
-* `t/TAG` refers to the target tags to be deleted for all users
+* `t\TAG` refers to the target tag to be deleted for all users
 
 Example:
-- `tag -d t/CS1101 t/CS2103`
+- `tag -d t\CS1101 t\CS2103`
     - deletes `CS1101` & `CS2103` tag for all contacts with the tag.
     - Expected Output: (Assuming there are 2 people with this tag in the list)
       ```
       Deleted tags: [[CS1101], [CS2103]]
       ```
-    - Expected Output: (Assuming no contact has the `CS1101` tag)
+    - Expected Output: (Assuming no contact has both the `CS1101` & `CS2103` tag)
       ```
-      No persons found with tag: [[CS1101]]
+      No persons found with tag: [[CS1101], [CS2103]]
+      ```
+    - Expected Output: (Assuming no contact has the `CS2103` tag but there are contacts with `CS1101` tag)
+      ```
+      Deleted tags: [[CS1101]]
+      Warning: No persons found with tag: [[CS2103]]. No operation performed on these tags.
       ```
 
 ### Exporting Contacts
@@ -419,15 +426,15 @@ Example:
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add** | `add n\NAME p\PHONE_NUMBER [e\EMAIL] [l\TELEGRAM] [g\GITHUB] [pm\PREFERRED_MODE] [t\TAG]…​` <br> e.g., `add n\James Ho p\22224444 e\jamesho@example.com l\james_ho23 g\james-dev10 pm\telegram t\friend t\colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [t/TAG]…​ [r/TAG]…​`<br> e.g., `edit 1 p/91234567`
+**Edit** | `edit INDEX [n\NAME] [p\PHONE_NUMBER] [e\EMAIL] [l\TELEGRAM] [g\GITHUB] [pm\PREFERRED_MODE] [t\TAG]…​ [r\TAG]…​`<br> e.g., `edit 1 p\91234567`
 **Find** | `find n\KEYWORD [MORE_KEYWORDS]` or `find t\KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n\James Jake`, `find t\friend`
 **List** | `list [-a (alphabetical)] [-r (recent)]`<br> e.g., `list -a`
 **Help** | `help`
 **Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
-**Tag** | Rename: `tag -r t/TAG r/TAG` <br> `tag -r t/CS1101 r/CS2103`
+**Tag** | Rename: `tag -r t\TAG r\TAG` <br> `tag -r t\CS1101 r\CS2103` <br><br> Delete: `tag -d t\TAG…` <br> `tag -d t\CS1101`
 **Export** | `export [NAME]` <br> e.g., `export phonebook`
 
 --------------------------------------------------------------------------------------------------------------------

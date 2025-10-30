@@ -61,7 +61,7 @@ public class TagCommand extends Command {
     public static final String MESSAGE_DELETE_SUCCESS = "Deleted tags: %s";
     public static final String MESSAGE_DELETE_SUCCESS_WITH_WARNING =
             "Deleted tags: %s\n"
-            + "Warning: " + MESSAGE_TAG_FAILURE + ". No operation performed on these tag.";
+            + "Warning: " + MESSAGE_TAG_FAILURE + ". No operation performed on these tags.";
 
     public static final String MESSAGE_INVALID_OPERATION = "Invalid tag command operation";
 
@@ -166,7 +166,6 @@ public class TagCommand extends Command {
                 personToEdit.getGithub(),
                 personToEdit.getPreferredMode(),
                 updatedTagSet,
-                personToEdit.isPinned(),
                 personToEdit.getPinnedAt().orElse(null)
         );
     }
@@ -229,7 +228,6 @@ public class TagCommand extends Command {
                 personToEdit.getGithub(),
                 personToEdit.getPreferredMode(),
                 tags,
-                personToEdit.isPinned(),
                 personToEdit.getPinnedAt().orElse(null)
         );
     }

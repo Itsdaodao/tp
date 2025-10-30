@@ -19,8 +19,8 @@ Person *--> Phone
 Person *--> Email
 Person *--> Telegram
 Person *-> Github
-Person *--> isPinned
-Person *--> pinnedAt
+Person *--> PinStatus
+Person *--> PreferredMode
 
 Name -[hidden]right-> Phone
 Phone -[hidden]right-> Email

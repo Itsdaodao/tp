@@ -209,6 +209,7 @@ public class ModelManager implements Model {
         logger.fine("Exporting address book to CSV: " + filePath);
         CsvAddressBookStorage.exportToCsv(addressBook, filePath);
     }
+
     /**
      * Creates a comparator that ensures pinned contacts appear first.
      * Within pinned contacts, they are sorted by pinnedAt (most recent first).
@@ -238,7 +239,6 @@ public class ModelManager implements Model {
             if (baseComparator != null) {
                 return baseComparator.compare(p1, p2);
             }
-
 
             List<Person> originalList = addressBook.getPersonList();
             int index1 = originalList.indexOf(p1);
