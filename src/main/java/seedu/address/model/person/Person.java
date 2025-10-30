@@ -148,7 +148,6 @@ public class Person {
             return this;
         }
 
-        Boolean isPinned = true;
         Instant pinnedAt = Instant.now();
         return new Person(name, phone, email, telegram, github, preferredMode, tags, pinnedAt);
     }
