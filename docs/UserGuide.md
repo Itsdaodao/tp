@@ -186,7 +186,7 @@ Format: `delete INDEX`
 Examples:
 * `list` followed by `delete 2` and a `y` deletes the 2nd person in the address book.
 * * `list` followed by `delete 2` and a `n` performs no operation.
-* `find n/Betsy` followed by `delete 1`  and a `y` deletes the 1st person in the results of the `find` command.
+* `find n\Betsy` followed by `delete 1`  and a `y` deletes the 1st person in the results of the `find` command.
 
 ### Pinning a person : `pin`
 
