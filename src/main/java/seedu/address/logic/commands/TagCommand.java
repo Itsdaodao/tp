@@ -148,36 +148,11 @@ public class TagCommand extends Command {
         Set<Tag> notFoundTags = new HashSet<>();
 
         for (Tag tagToDelete : targetTags) {
-            boolean noTagFoundAndDeleted = true;
-
-            for (Person personToEdit : lastShownList) {
-                Person personWithTagRemoved = removeTagFromPerson(personToEdit, tagToDelete);
-
-                if (personWithTagRemoved.equals(personToEdit)) {
-                    continue; // No change to Person, continue to next Person
-                }
-
-                model.setPerson(personToEdit, personWithTagRemoved);
-                noTagFoundAndDeleted = false;
-            }
-
-            if (noTagFoundAndDeleted) {
-                notFoundTags.add(tagToDelete);
-            } else {
-                deletedTags.add(tagToDelete);
-            }
+            boolean isTagFoundAndDeleted = processTagForDeletion(model, lastShownList, tagToDelete);
+            updateTagResultSets(deletedTags, notFoundTags, tagToDelete, isTagFoundAndDeleted);
         }
 
-        if (deletedTags.isEmpty()) {
-            throw new CommandException(String.format(MESSAGE_TAG_FAILURE, notFoundTags));
-        }
-
-        if (!notFoundTags.isEmpty()) {
-            return new CommandResult(
-                    String.format(MESSAGE_DELETE_SUCCESS_WITH_WARNING, deletedTags, notFoundTags));
-        }
-
-        return new CommandResult(String.format(MESSAGE_DELETE_SUCCESS, deletedTags));
+        return buildResult(deletedTags, notFoundTags);
     }
 
     private Person createPerson(Person personToEdit) {
@@ -209,7 +184,33 @@ public class TagCommand extends Command {
     }
 
     /**
-     * Returns a person with all target tags removed if target tag found
+     * Processes a single tag for deletion across all persons in the list.
+     *
+     * @param model The model to update.
+     * @param lastShownList The list of persons to process.
+     * @param tagToDelete The tag to be deleted.
+     * @return true if the tag was found and deleted from at least one person, false otherwise.
+     */
+    private boolean processTagForDeletion(Model model, List<Person> lastShownList, Tag tagToDelete) {
+        boolean isTagFoundAndDeleted = false;
+
+        for (Person personToEdit : lastShownList) {
+            Person personWithTagRemoved = removeTagFromPerson(personToEdit, tagToDelete);
+
+            if (!personWithTagRemoved.equals(personToEdit)) {
+                model.setPerson(personToEdit, personWithTagRemoved);
+                isTagFoundAndDeleted = true;
+            }
+        }
+        return isTagFoundAndDeleted;
+    }
+
+    /**
+     * Removes a {@code Tag} from the {@code Person} if found.
+     *
+     * @param personToEdit The Person to be updated.
+     * @param tagToDelete The tag to remove from the Person tag list.
+     * @return The Person with tag removed if tag found, personToEdit otherwise.
      */
     private Person removeTagFromPerson(Person personToEdit, Tag tagToDelete) {
         Set<Tag> tags = new HashSet<>(personToEdit.getTags());
@@ -231,6 +232,44 @@ public class TagCommand extends Command {
                 personToEdit.isPinned(),
                 personToEdit.getPinnedAt().orElse(null)
         );
+    }
+
+    /**
+     * Updates the sets of deleted and not found tags based on the operation result.
+     *
+     * @param deletedTags The set of tags that were successfully deleted.
+     * @param notFoundTags The set of tags that were not found.
+     * @param tagToDelete The tag that was processed.
+     * @param isTagFoundAndDeleted The result of the deletion attempt for the tag.
+     */
+    private void updateTagResultSets(
+            Set<Tag> deletedTags, Set<Tag> notFoundTags, Tag tagToDelete, boolean isTagFoundAndDeleted) {
+        if (isTagFoundAndDeleted) {
+            deletedTags.add(tagToDelete);
+        } else {
+            notFoundTags.add(tagToDelete);
+        }
+    }
+
+    /**
+     * Builds the final command result based on the sets of deleted and not found tags.
+     *
+     * @param deletedTags The set of tags that were successfully deleted.
+     * @param notFoundTags The set of tags that were not found.
+     * @return The command result to be returned.
+     * @throws CommandException if no tags were deleted.
+     */
+    private CommandResult buildResult(Set<Tag> deletedTags, Set<Tag> notFoundTags) throws CommandException {
+        if (deletedTags.isEmpty()) {
+            throw new CommandException(String.format(MESSAGE_TAG_FAILURE, notFoundTags));
+        }
+
+        if (!notFoundTags.isEmpty()) {
+            return new CommandResult(
+                    String.format(MESSAGE_DELETE_SUCCESS_WITH_WARNING, deletedTags, notFoundTags));
+        }
+
+        return new CommandResult(String.format(MESSAGE_DELETE_SUCCESS, deletedTags));
     }
 
     /**
