@@ -135,7 +135,7 @@ Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com`
    * Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
   *  `edit 2 n/Betsy Crower t/CS2103 t/CS2100 r/CS1101S l/`
-     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, removes the tag 
+     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, removes the tag
        `CS1101S` and clears the Telegram field.
        ```
        Edited Person: Betsy Crower; Phone: 91093122; Telegram: ; Github: BestyCrower; Tags: [CS2100][CS2103]
@@ -301,7 +301,7 @@ Examples:
     * MAC
     * LINUX (ARCH)
     * LINUX (FEDORA)
-* Your mileage with this feature might vary if your operating system is not one stated above. 
+* Your mileage with this feature might vary if your operating system is not one stated above.
 * Kindly refer to [Known Issues: 2](#known-issues) to see more about the limitations
 
 ### Saving the data
@@ -380,14 +380,14 @@ Example:
       ```
       No persons found with tag: [[CS1101]]
       ```
-      
+
 ### Exporting Contacts
 
-Exports contacts into a csv file in the data folder. 
+Exports contacts into a csv file in the data folder.
 
 Format: `export NAME`
 
-* `NAME` refers to the name of the file 
+* `NAME` refers to the name of the file
 * `NAME` is **optional**. Default file name is contacts.csv
 * Naming convention and rules follow default filename rules, including illegal characters
 
