@@ -8,8 +8,6 @@ title: Developer Guide
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Acknowledgements**
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
-
 Third party Libraries Used:
 * [JavaFX](https://openjfx.io/)
 * [Jackson](https://github.com/FasterXML/jackson)
@@ -519,7 +517,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 8.  Should not depend on a specific remote server.
 9.  Should be packaged into a single JAR file.
 10. Should be able to load within 5 seconds.
-*{More to be added}*
+11. Should be able to comfortably use the application without using a mouse.
+12. Should be less than 20 Megabytes.
+13. Should execute any command in less than 1 second.
 
 ### Glossary
 
@@ -542,9 +542,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Private contact detail**: A contact detail that is not meant to be shared with others
 * **Project mates/ Project group**: A project group is a team of students from the same module who work together on an assigned project. A project mate is a member of that group.
 * **Scroll Mode**: A mode that disables text input and allow users to navigate through the interface using keyboard
-  keys such as `k`/`l`. Enter scroll mode by pressing `<esc>`.
+  keys such as `j`/`k`. Enter scroll mode by pressing `<esc>`.
 * **Tag**: A Label assigned to contacts for easy grouping and searching
 * **Vim-like Modal Input**: An input system inspired by the Vim text editor, where different modes (e.g. input mode and scroll mode) change the behaviour of keyboard keys.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
@@ -562,7 +563,7 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimal.
 
 1. Saving window preferences
 
@@ -571,8 +572,14 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+1. Retaining data across launches
+   
+    1. Add a contact to the contact book. Close the application.
 
+    1. Launch the application.
+        Expected: The new contact should be in the application.
+        A folder `data/` should be created where the .jar file is stored.
+       
 ### Deleting a person
 
 1. Deleting a person while all persons are being shown
@@ -580,10 +587,13 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: A confirmation prompt is shown in the status bar before the contact is deleted. The to-be-deleted contact is shown in the status message. 
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+   1. Test case: `delete 1` followed by `y`<br>
+      Expected: After `y` is input into the confirmation prompt, The details of the deleted contact is shown. The contact is no longer shown in the list.
+
+   1. Test case: `delete dingus`<br>
+      Expected: The message "Invalid command format!" is shown to the user. Extra information on how to use delete is shown in the Result Display.   
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
