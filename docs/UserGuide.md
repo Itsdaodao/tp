@@ -427,7 +427,6 @@ Example:
 
 Action | Format, Examples
 --------|------------------
-
 **Add** | `add n\NAME p\PHONE_NUMBER [e\EMAIL] [l\TELEGRAM] [g\GITHUB] [pm\PREFERRED_MODE] [t\TAG]…​` <br> e.g., `add n\James Ho p\22224444 e\jamesho@example.com l\james_ho23 g\james-dev10 pm\telegram t\friend t\colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
