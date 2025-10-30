@@ -199,7 +199,7 @@ public class JsonAddressBookStorageTest {
         // Verify
         assertTrue(Files.exists(csvFilePath));
         String content = Files.readString(csvFilePath);
-        assertEquals("Name,Phone,Email,Telegram,GitHub,Tags", content.trim());
+        assertEquals("Name,Phone,Email,Telegram,GitHub,Tags,Preferred Mode,Pinned,PinnedAt", content.trim());
     }
 
     @Test
