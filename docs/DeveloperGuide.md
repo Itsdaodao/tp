@@ -92,7 +92,7 @@ The `UI` component,
 * executes user commands using the `Logic` component.
 * listens for changes to `Model` data so that the UI can be updated with the modified data.
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
-* depends on some classes in the `Logic` component, because launching communication mode application through `UI` relies `ApplicationLinkLauncher` to execute action.
+* depends on some classes in the `Logic` component, because launching communication mode application through `UI` relies on `ApplicationLinkLauncher` to execute action.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
 * initializes with a list of commands from the `Logic` component to use for autocompletion.
 
@@ -106,7 +106,7 @@ Here's a (partial) class diagram of the `Logic` component:
 
 The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("edit 1 n/Adam")` API call as an example.
 
-![Interactions Inside the Logic Component for the `edit 1 n/Adam` Command](images/EditSequenceDiagram.png)
+![Interactions Inside the Logic Component for the `edit 1 n\Adam` Command](images/EditSequenceDiagram.png)
 
 The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("find 
 n\John Alex")` API call as an example.
@@ -203,6 +203,40 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+
+### Pin/unpin feature
+
+#### Overview
+
+The Pin and Unpin feature allows users to prioritize important contacts by pinning them to the top of the contact list. 
+Pinned contacts remain visible at the top regardless of the current sort order (e.g., by name or by recency). 
+This feature enhances usability by making key contacts more accessible.
+
+#### Rationale
+
+In a large address book, users may need to frequently access certain contacts. 
+Instead of repeatedly searching for them, the pin feature provides a simple way to mark and elevate these contacts for quick access. 
+The unpin command restores a contact to its normal position in the list.
+
+#### Design Considerations
+- **Pinning Behavior**: When a contact is pinned, it should appear above all unpinned contacts in the displayed list.
+- **Unpinning Behavior**: When a contact is unpinned, it returns to its original position relative to other unpinned contacts, based on the current sorting method.
+- **Multiple Pins**: If multiple contacts are pinned, they are ordered among themselves based on their pin time (most recent first).
+- **Persistence**: The pinned state (`isPinned` and `pinnedAt`) is stored in the address book data file so that it is retained across sessions.
+- **Sorting Integration**: The feature is compatible with existing sorting options (e.g., name sort or recency sort). When the user applies any sort, the pin order is reapplied afterward to maintain consistency.
+
+#### Implementation Details
+- Each contact has an additional field indicating whether it is pinned, along with a timestamp representing when it was pinned.
+- When the list is displayed, a sorting mechanism ensures that all pinned contacts are moved to the top, preserving the order of all other entries.
+- The pin and unpin commands update the relevant contact and trigger a list refresh to reflect the new state immediately.
+- The UI displays a visual indicator (such as a pin icon) beside pinned contacts to distinguish them clearly from unpinned ones.
+
+#### Example Scenarios
+1. **User pins a contact**: The contact immediately appears at the top of the list, along with other pinned contacts.
+2. **User unpins a contact**: The contact moves back to its regular position according to the active sort order.
+3. **User applies a name sort**: Contacts are sorted alphabetically, but pinned contacts remain above the rest.
+4. **User exits and restarts the application**: Previously pinned contacts remain pinned as their state is saved in storage.
+
 
 ### \[Proposed\] Undo/redo feature
 
@@ -509,6 +543,91 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   Use case resumes from step 5.
 
 
+**Use case: UC17 - Pin Contact**
+
+**MSS**
+
+1. Devbooks prompts for command
+2. User inputs the pin command with a valid contact index
+3. Devbooks marks the contact as pinned and updates its position in the contact list
+4. Devbooks shows a success message and displays the updated list with pinned contact(s) at the top
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. User inputs pin command with an invalid contact index
+
+    * 2a1. Devbooks shows an error message
+    * 2a2. User inputs a new pin command with a valid contact index
+
+      Steps 2a1-2a2 are repeated until a valid contact index is entered.  
+      Use case resumes from step 3.
+
+* 2b. Selected contact is already pinned
+
+    * 2b1. Devbooks shows a message indicating that the contact is already pinned  
+      Use case ends.
+
+
+**Use case: UC18 - Unpin Contact**
+
+**MSS**
+
+1. Devbooks prompts for command
+2. User inputs the unpin command with a valid contact index
+3. Devbooks removes the pin from the selected contact and updates the contact list order
+4. Devbooks shows a success message and displays the updated list
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. User inputs unpin command with an invalid contact index
+
+    * 2a1. Devbooks shows an error message
+    * 2a2. User inputs a new unpin command with a valid contact index
+
+      Steps 2a1-2a2 are repeated until a valid contact index is entered.  
+      Use case resumes from step 3.
+
+* 2b. Selected contact is not pinned
+
+    * 2b1. Devbooks shows a message indicating that the contact is not pinned  
+      Use case ends.
+
+
+**Use case: UC35 - Delete Tag**
+
+**MSS**
+
+1. Devbooks prompts for command
+2. User inputs the delete tag command with one or more tags to delete
+3. Devbooks deletes all instances of the found tags from every contact
+4. Devbooks shows a success message indicating which tags were deleted
+5. Devbooks displays the updated contact list
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. User did not specify any tags to delete
+
+    * 2a1. Devbooks shows an error message indicating that no target tag was provided  
+      Use case ends.
+
+* 2b. None of the specified tags can be found in any contact
+
+    * 2b1. Devbooks shows an error message indicating that no tags were found for deletion  
+      Use case ends.
+
+* 2c. Some tags are found while others are not
+
+    * 2c1. Devbooks deletes all found tags
+    * 2c2. Devbooks shows a success message for tags deleted and a warning message for tags not found  
+      Use case resumes from step 5.
+
+      
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
@@ -547,6 +666,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   keys such as `k`/`l`. Enter scroll mode by pressing `<esc>`.
 * **Tag**: A Label assigned to contacts for easy grouping and searching
 * **Vim-like Modal Input**: An input system inspired by the Vim text editor, where different modes (e.g. input mode and scroll mode) change the behaviour of keyboard keys.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
