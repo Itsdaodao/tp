@@ -24,6 +24,7 @@ public class StatusBarNotificationDispatcher {
 
     /**
      * Sets the StatusBarFooter to be used for dispatching messages.
+     *
      * @param status The StatusBarFooter to be setting the messages on.
      */
     public void setStatusBar(StatusBarFooter status) {
@@ -37,6 +38,7 @@ public class StatusBarNotificationDispatcher {
     /**
      * Dispatch a message to the StatusBar. If the StatusBar
      * is not yet available, it enqueues the message to be shown later.
+     *
      * @param text The text to be shown
      */
     public void notify(String text) {
