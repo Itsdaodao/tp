@@ -143,7 +143,7 @@ Examples:
        Edited Person: Betsy Crower; Phone: 91093122; Telegram: ; Github: BestyCrower; Tags: [CS2100][CS2103]
        ```
 
-### Locating persons by name or tag: `find`
+### Finding persons by name or tag: `find`
 
 Finds persons whose names or tags start with the given prefix keyword.
 
