@@ -434,8 +434,7 @@ Action | Format, Examples
 **List** | `list [-a (alphabetical)] [-r (recent)]`<br> e.g., `list -a`
 **Help** | `help`
 **Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
-**Tag** | Rename: `tag -r t\TAG r\TAG` <br> `tag -r t\CS1101 r\CS2103`
-**Tag** | Delete: `tag -d t\TAG…` <br> `tag -d t\CS1101`
+**Tag** | Rename: `tag -r t\TAG r\TAG` <br> `tag -r t\CS1101 r\CS2103` <br><br> Delete: `tag -d t\TAG…` <br> `tag -d t\CS1101`
 **Export** | `export [NAME]` <br> e.g., `export phonebook`
 
 --------------------------------------------------------------------------------------------------------------------
