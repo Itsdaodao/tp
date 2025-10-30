@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
+import seedu.address.commons.core.LogsCenter;
 
 /**
  * A utility class to open files and browse URIs using the system's default applications.
@@ -47,12 +50,14 @@ public class DesktopApi {
     private static final String LOG_BROWSE_NOT_SUPPORTED = "BROWSE is not supported.";
     private static final String LOG_OPEN_NOT_SUPPORTED = "OPEN is not supported.";
     private static final String LOG_EDIT_NOT_SUPPORTED = "EDIT is not supported.";
+    private static final String LOG_ACTION_NOT_SUPPORTED = "ACTION %s is not supported";
     private static final String LOG_BROWSE_ERROR = "Error using desktop browse.";
     private static final String LOG_OPEN_ERROR = "Error using desktop open.";
     private static final String LOG_EDIT_ERROR = "Error using desktop edit.";
     private static final String LOG_PROCESS_ENDED = "Process ended immediately.";
     private static final String LOG_PROCESS_CRASHED = "Process crashed.";
     private static final String LOG_PROCESS_RUNNING = "Process is running.";
+    private static final String LOG_PROCESS_ALL_FAILED = "All Process failed to run";
     private static final String LOG_RUN_COMMAND_ERROR = "Error running command.";
     private static final String LOG_TRY_BROWSE = "Trying to use Desktop.getDesktop().browse() with ";
     private static final String LOG_TRY_OPEN = "Trying to use Desktop.getDesktop().open() with ";
@@ -66,6 +71,8 @@ public class DesktopApi {
     private static final String OS_SUNOS = "sunos";
     private static final String OS_LINUX = "linux";
     private static final String OS_UNIX = "unix";
+
+    private static Logger logger = LogsCenter.getLogger(DesktopApi.class);
 
     /**
      * Opens the default web browser to browse the given URI.
@@ -103,26 +110,22 @@ public class DesktopApi {
         if (os.isLinux()) {
             if (runCommand(KDE_OPEN, ARG_FORMAT, what)) {
                 return true;
-            }
-            if (runCommand(GNOME_OPEN, ARG_FORMAT, what)) {
+            } else if (runCommand(GNOME_OPEN, ARG_FORMAT, what)) {
                 return true;
-            }
-            if (runCommand(XDG_OPEN, ARG_FORMAT, what)) {
+            } else if (runCommand(XDG_OPEN, ARG_FORMAT, what)) {
                 return true;
             }
         }
 
         if (os.isMac()) {
-            if (runCommand(MAC_OPEN, ARG_FORMAT, what)) {
-                return true;
-            }
+            return runCommand(MAC_OPEN, ARG_FORMAT, what);
         }
 
         if (os.isWindows()) {
-            if (runCommand(WINDOWS_EXPLORER, ARG_FORMAT, what)) {
-                return true;
-            }
+            return runCommand(WINDOWS_EXPLORER, ARG_FORMAT, what);
         }
+
+        logger.info(LOG_PROCESS_ALL_FAILED);
 
         return false;
     }
@@ -137,13 +140,7 @@ public class DesktopApi {
 
         logOut(LOG_TRY_BROWSE + uri.toString());
         try {
-            if (!Desktop.isDesktopSupported()) {
-                logErr(LOG_PLATFORM_NOT_SUPPORTED);
-                return false;
-            }
-
-            if (!Desktop.getDesktop().isSupported(Action.BROWSE)) {
-                logErr(LOG_BROWSE_NOT_SUPPORTED);
+            if (!checkDesktopSupport(Action.BROWSE)) {
                 return false;
             }
 
@@ -169,13 +166,7 @@ public class DesktopApi {
 
         logOut(LOG_TRY_OPEN + file);
         try {
-            if (!Desktop.isDesktopSupported()) {
-                logErr(LOG_PLATFORM_NOT_SUPPORTED);
-                return false;
-            }
-
-            if (!Desktop.getDesktop().isSupported(Action.OPEN)) {
-                logErr(LOG_OPEN_NOT_SUPPORTED);
+            if (!checkDesktopSupport(Action.OPEN)) {
                 return false;
             }
 
@@ -198,13 +189,7 @@ public class DesktopApi {
 
         logOut(LOG_TRY_EDIT + file);
         try {
-            if (!Desktop.isDesktopSupported()) {
-                logErr(LOG_PLATFORM_NOT_SUPPORTED);
-                return false;
-            }
-
-            if (!Desktop.getDesktop().isSupported(Action.EDIT)) {
-                logErr(LOG_EDIT_NOT_SUPPORTED);
+            if (!checkDesktopSupport(Action.EDIT)) {
                 return false;
             }
 
@@ -215,6 +200,35 @@ public class DesktopApi {
             logErr(LOG_EDIT_ERROR, t);
             return false;
         }
+    }
+
+    private static boolean checkDesktopSupport(Action action) {
+        if (!Desktop.isDesktopSupported()) {
+            logErr(LOG_PLATFORM_NOT_SUPPORTED);
+            return false;
+        }
+
+        Desktop desktop = Desktop.getDesktop();
+
+        if (!desktop.isSupported(action)) {
+            switch (action) {
+            case EDIT: {
+                logErr(LOG_EDIT_NOT_SUPPORTED);
+            }
+            case BROWSE: {
+                logErr(LOG_BROWSE_NOT_SUPPORTED);
+            }
+            case OPEN: {
+                logErr(LOG_OPEN_NOT_SUPPORTED);
+            }
+            default: {
+                logErr(String.format(LOG_ACTION_NOT_SUPPORTED, action));
+            }
+            }
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -281,16 +295,19 @@ public class DesktopApi {
     }
 
     private static void logErr(String msg, Throwable t) {
-        System.err.println(msg);
+        logger.fine(msg);
+//        System.err.println(msg);
         t.printStackTrace();
     }
 
     private static void logErr(String msg) {
-        System.err.println(msg);
+        logger.fine(msg);
+//        System.err.println(msg);
     }
 
     private static void logOut(String msg) {
-        System.out.println(msg);
+        logger.fine(msg);
+//        System.out.println(msg);
     }
 
     /**

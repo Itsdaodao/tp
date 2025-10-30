@@ -408,5 +408,5 @@ Mode | Key Bind
 
 Scroll Action | Key Bind
 --------------|-----------------
-**Scroll Up**| **l**
-**Scroll Down**| **k**
+**Scroll Up**| **k** or **arrow up key**
+**Scroll Down**| **j** or **arrow down key**
