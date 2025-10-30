@@ -108,6 +108,11 @@ The sequence diagram below illustrates the typical interactions within the `Logi
 
 ![Interactions Inside the Logic Component for the `edit 1 n/Adam` Command](images/EditSequenceDiagram.png)
 
+The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("find 
+n\John Alex")` API call as an example.
+
+![Interactions Inside the Logic Component for the `find n\John Alex` Command](images/FindSequenceDiagram.png)
+
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser`, `DeleteCommand` and `ConfirmationPendingResult` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </div>
 
