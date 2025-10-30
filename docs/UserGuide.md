@@ -248,7 +248,7 @@ Cancel Command Format: `n` or `no`
 * `<Esc>` refers to the *escape key* on the keyboard.
 </div>
 
-#### Insert Mode: `j`
+#### Insert Mode: `i`
 
 Insert mode is the mode the application starts in. It allows you to send commands in the Command Box.
 
