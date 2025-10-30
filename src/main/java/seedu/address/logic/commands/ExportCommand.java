@@ -39,9 +39,6 @@ public class ExportCommand extends Command {
     private final String filename;
 
     /**
-     * Creates an ExportCommand with the default file path.
-     */
-    /**
      * Creates an ExportCommand with the default filename.
      */
     public ExportCommand() {
