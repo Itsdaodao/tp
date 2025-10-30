@@ -364,6 +364,24 @@ Example:
       ```
       No persons found with tag: [[CS1101]]
       ```
+      
+### Exporting Contacts
+
+Exports contacts into a csv file in the data folder. 
+
+Format: `export NAME`
+
+* `NAME` refers to the name of the file 
+* Default file name is contacts.csv
+* Naming convention and rules follow default filename rules, including illegal characters
+
+Example:
+
+* `export`
+    * data will be exported to a file called contacts.csv in data folder
+* `export phonebook`
+    * data will be exported to a file called phonebook.csv in data folder
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
