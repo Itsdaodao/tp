@@ -34,6 +34,7 @@ import seedu.address.storage.NewlineDelimitedCommandHistoryStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
 import seedu.address.storage.UserPrefsStorage;
+import seedu.address.ui.StatusBarNotificationDispatcher;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
 
@@ -96,8 +97,10 @@ public class MainApp extends Application {
             }
             initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
         } catch (DataLoadingException e) {
-            logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
-                    + " Will be starting with an empty AddressBook.");
+            String message = "Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
+                + " Will be starting with an empty AddressBook.";
+            logger.warning(message);
+            StatusBarNotificationDispatcher.getInstance().notify(message);
             initialData = new AddressBook();
         }
 

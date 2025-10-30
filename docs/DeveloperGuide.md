@@ -8,8 +8,6 @@ title: Developer Guide
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Acknowledgements**
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
-
 Third party Libraries Used:
 * [JavaFX](https://openjfx.io/)
 * [Jackson](https://github.com/FasterXML/jackson)
@@ -92,9 +90,10 @@ The `UI` component,
 * executes user commands using the `Logic` component.
 * listens for changes to `Model` data so that the UI can be updated with the modified data.
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
-* depends on some classes in the `Logic` component, because launching communication mode application through `UI` relies `ApplicationLinkLauncher` to execute action.
+* depends on some classes in the `Logic` component, because launching communication mode application through `UI` relies on `ApplicationLinkLauncher` to execute action.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
-* initializes with a list of commands from the `Logic` component to use for autocompletion.
+* depends on the `Autocompletor` in `Logic` to provide suggestions while the user is typing.
+* Keeps a reference to a `ReadOnlyCommandHistory` for use in accessing command history in the `CommandBox`
 
 ### Logic component
 
@@ -106,10 +105,15 @@ Here's a (partial) class diagram of the `Logic` component:
 
 The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("edit 1 n/Adam")` API call as an example.
 
-![Interactions Inside the Logic Component for the `edit 1 n/Adam` Command](images/EditSequenceDiagram.png)
+![Interactions Inside the Logic Component for the `edit 1 n\Adam` Command](images/EditSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser`, `DeleteCommand` and `ConfirmationPendingResult` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `EditCommandParser` and `EditCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </div>
+
+The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("find
+n\John Alex")` API call as an example.
+
+![Interactions Inside the Logic Component for the `find n\John Alex` Command](images/FindSequenceDiagram.png)
 
 How the `Logic` component works in a typical case:
 1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object.
@@ -130,13 +134,11 @@ The `Logic` component additionally relies on `State` to chiefly manage Confirmat
 </div>
 
 How Logic manages State:
-Before parsing a Command, LogicManager checks its `State` to see if there is an operation pending confirmation.
 
-If there is no pending operation, the Logic Manager parses the input as per normal.
-
-If there is a pending operation, `LogicManager` calls upon `AddressBookParser` to strictly parse the input as a `ConfirmCommand`. `ConfirmCommand` will clear `State` via a callback once satisfied.
-
-After execution of a command, if the command returns a `ConfirmationPendingResult`, the LogicManager sets the `State` to await for the user's confirmation
+* Before parsing a Command, LogicManager checks its `State` to see if there is an operation pending confirmation.
+* If there is no pending operation, the Logic Manager parses the input as per normal.
+* If there is a pending operation, `LogicManager` calls upon `AddressBookParser` to strictly parse the input as a `ConfirmCommand`. `ConfirmCommand` will clear `State` via a callback once satisfied.
+* After execution of a command, if the command returns a `ConfirmationPendingResult`, the LogicManager sets the `State` to await for the user's confirmation
 
 #### Parsing
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
@@ -198,6 +200,40 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+
+### Pin/unpin feature
+
+#### Overview
+
+The Pin and Unpin feature allows users to prioritize important contacts by pinning them to the top of the contact list.
+Pinned contacts remain visible at the top regardless of the current sort order (e.g., by name or by recency).
+This feature enhances usability by making key contacts more accessible.
+
+#### Rationale
+
+In a large address book, users may need to frequently access certain contacts.
+Instead of repeatedly searching for them, the pin feature provides a simple way to mark and elevate these contacts for quick access.
+The unpin command restores a contact to its normal position in the list.
+
+#### Design Considerations
+- **Pinning Behavior**: When a contact is pinned, it should appear above all unpinned contacts in the displayed list.
+- **Unpinning Behavior**: When a contact is unpinned, it returns to its original position relative to other unpinned contacts, based on the current sorting method.
+- **Multiple Pins**: If multiple contacts are pinned, they are ordered among themselves based on their pin time (most recent first).
+- **Persistence**: The pinned state (`isPinned` and `pinnedAt`) is stored in the address book data file so that it is retained across sessions.
+- **Sorting Integration**: The feature is compatible with existing sorting options (e.g., name sort or recency sort). When the user applies any sort, the pin order is reapplied afterward to maintain consistency.
+
+#### Implementation Details
+- Each contact has an additional field indicating whether it is pinned, along with a timestamp representing when it was pinned.
+- When the list is displayed, a sorting mechanism ensures that all pinned contacts are moved to the top, preserving the order of all other entries.
+- The pin and unpin commands update the relevant contact and trigger a list refresh to reflect the new state immediately.
+- The UI displays a visual indicator (such as a pin icon) beside pinned contacts to distinguish them clearly from unpinned ones.
+
+#### Example Scenarios
+1. **User pins a contact**: The contact immediately appears at the top of the list, along with other pinned contacts.
+2. **User unpins a contact**: The contact moves back to its regular position according to the active sort order.
+3. **User applies a name sort**: Contacts are sorted alphabetically, but pinned contacts remain above the rest.
+4. **User exits and restarts the application**: Previously pinned contacts remain pinned as their state is saved in storage.
+
 
 ### \[Proposed\] Undo/redo feature
 
@@ -322,51 +358,51 @@ same project group easily and view the development profile of their contact.
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                     | So that I can…​                                                        |
-| -------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------------------------------- |
-| `* * *` | beginner user                 |	add a contact	        | i can retrieve it when I want	|
-| `* * *` | beginner user                 |	add a phone number to a contact	        | I can easily message or call them when I need it	|
-| `* * *` | beginner user                 |	tag my contacts	        | I can easily group my contacts	|
-| `* * *` | beginner user                 |	list out all the contacts within my contact book	        | I can get an overview of everyone I've added so far	|
-| `* * *` | beginner user                 |	delete a contact	        | I can declutter my contacts list if necessary	|
-| `* * *` | beginner user                 |	look for list of available commands that I can use	        | I can know what commands I can use without memorizing	|
-| `* * `  | beginner user                 |	add a telegram handle to a contact	        | I can easily access my contact's telegram when i need it	|
-| `* * `  | beginner user                 |	update a contact	        | I can update the details of my contacts when they change	|
-| `* * `  | student                       |	search for a contact by name	        | i can quickly find their contact details	|
-| `* * `  | intermediate user             |	add all contact information all just with one line	        | I don't need to do so manually using mutiple updates	|
-| `* * `  | beginner user                 |	delete a tag	        | I can remove outdated tags	|
-| `* * `  | student                       |	quickly scroll through using arrow keys in an alphabetical list 	        | i find someone without typing.	|
-| `* * `  | impatient user                |	load my contacts within 2 seconds	        | I do not need to wait too long to access my contacts	|
-| `* * `  | beginner user                 |	see the recently accessed contacts	        | I can know who I recently contacted	|
-| `* * `  | beginner user                 |	add an email address to a contact	        | I can easily email them when I need it	|
-| `* * `  | beginner user                 |	set a preferred mode of communication to a contact	        | I can reach them at their preferred platform when |
-| `* * `  | beginner user                 |	add a contact to my favourites list	        | I can easily access them	|
-| `* * `  | beginner user                 |	see my favourites list	        | I can contact a favourite friend	|
-| `* * `  | student                       |	be able to group contacts by teams	        | i can access all members in one place.	|
-| `* * `  | advanced user                 |	be able to add multiple tags to a contact	        | i can find my groups quickly.	|
-| `* * `  | intermediate user             |	access the github page of a contact	        | I can easily view their user activity and repos	|
-| `* * `  | beginner user                 |	filter my contacts by tags and name	        | I can find my contact(s) easier	|
-| `* * `  | beginner user                 |	get more details with each commands and flags	        | I am able to learn how to properly use each command/flag	|
-| `* * `  | student                       |	back up my contacts to a CSV	        | i dont lose my contacts if the device fails.	|
-| `* * `  | student                       |	import a list of contacts from a CSV or file	        | I can quickly add contacts to another device.	|
-| `* * `  | advanced user                 |	create customizable shortcuts	        | I can increase the speed of using the application	|
-| `* * `  | advanced user                 |	view a list of my shortcuts	        | I can see an overview of my customizations	|
-| `* * `  | advanced user                 |	create my own shortcuts	        | I can quickly type out long commands instantly	|
-| `* * `  | intermediate user             |	access my command history through arrow keys	        | I can execute repeated operations quickly	|
-| `* * `  | intermediate user             |	press "Tab" to auto-complete the command that I am typing out	        | I can quickly finish the command that I am typing.	|
-| `* * `  | intermediate user             |	see hint text of what command would be autocompleted if I press "tab"	        | I have visual feedback before I autocomplete a command	|
-| `* * `  | intermediate user             |	revert the last command	        | I can undo any mistakes	|
-| `* * `  | beginner user                 |	be able to rename my tags	        | I mass edit contacts with the same tag	|
-| `* * `  | beginner user                 |	 add the github handle to a contact	        | I can easily access their github page in the future	|
-| `* * `  | beginner user                 |	delete all contacts associated with a tag	        | I can remove irrelevant contacts from my list	|
-| `*`     | beginner user                 |	go through a tutorial of the app	        | I can familiarize myself on how to use the app.|
-| `*`     | beginner user                 |	read the documentation	        | I can get started on using the app|
-| `*`     | beginner user                 |	import existing contacts from a .vcf file	        | I do not need to re-type all of my existing contacts|
-| `*`     | student                       |	launch my telegram chat with the contact person through the app	        | I can start chatting with my contacts on telegram quickly|
-| `*`     | student                       |	launch my email app quickly through the app	        | I can start writing email to my contacts quickly|
-| `*`     | student                       |	delete contacts by date time query	        | my address book is clean.|
-| `*`     | advanced user                 |	use DevBooks inside of my command console	        | I don't need to open the application to perform an operation|
-| `*`     | aesthetic-minded individual   |	customize the theme of the application	        | it's more personal to me|
+| Priority | As a …​                                    | I want to …​                                                               | So that I can…​                                                        |
+| -------- | ------------------------------------------ |----------------------------------------------------------------------------| ---------------------------------------------------------------------- |
+| `* * *` | beginner user                 | 	add a contact	                                                            | i can retrieve it when I want	|
+| `* * *` | beginner user                 | 	add a phone number to a contact	                                          | I can easily message or call them when I need it	|
+| `* * *` | beginner user                 | 	tag my contacts	                                                          | I can easily group my contacts	|
+| `* * *` | beginner user                 | 	list out all the contacts within my contact book	                         | I can get an overview of everyone I've added so far	|
+| `* * *` | beginner user                 | 	delete a contact	                                                         | I can declutter my contacts list if necessary	|
+| `* * *` | beginner user                 | 	look for list of available commands that I can use	                       | I can know what commands I can use without memorizing	|
+| `* * `  | beginner user                 | 	add a telegram handle to a contact	                                       | I can easily access my contact's telegram when i need it	|
+| `* * `  | beginner user                 | 	update a contact	                                                         | I can update the details of my contacts when they change	|
+| `* * `  | student                       | 	search for a contact by name	                                             | i can quickly find their contact details	|
+| `* * `  | intermediate user             | 	add all contact information all just with one line	                       | I don't need to do so manually using mutiple updates	|
+| `* * `  | beginner user                 | 	delete a tag	                                                             | I can remove outdated tags	|
+| `* * `  | student                       | 	quickly scroll through using arrow keys in an alphabetical list 	         | i find someone without typing.	|
+| `* * `  | impatient user                | 	load my contacts within 2 seconds	                                        | I do not need to wait too long to access my contacts	|
+| `* * `  | beginner user                 | 	see the recently accessed contacts	                                       | I can know who I recently contacted	|
+| `* * `  | beginner user                 | 	add an email address to a contact	                                        | I can easily email them when I need it	|
+| `* * `  | beginner user                 | 	set a preferred mode of communication to a contact	                       | I can reach them at their preferred platform when |
+| `* * `  | beginner user                 | 	add a contact to my favourites list	                                      | I can easily access them	|
+| `* * `  | beginner user                 | 	see my favourites list	                                                   | I can contact a favourite friend	|
+| `* * `  | student                       | 	be able to group contacts by teams	                                       | i can access all members in one place.	|
+| `* * `  | advanced user                 | 	be able to add multiple tags to a contact	                                | i can find my groups quickly.	|
+| `* * `  | intermediate user             | 	access the github page of a contact	                                      | I can easily view their user activity and repos	|
+| `* * `  | beginner user                 | 	filter my contacts by tags or name	                                 <br/> | I can find my contact(s) easier	|
+| `* * `  | beginner user                 | 	get more details with each commands and flags	                            | I am able to learn how to properly use each command/flag	|
+| `* * `  | student                       | 	back up my contacts to a CSV	                                             | i dont lose my contacts if the device fails.	|
+| `* * `  | student                       | 	import a list of contacts from a CSV or file	                             | I can quickly add contacts to another device.	|
+| `* * `  | advanced user                 | 	create customizable shortcuts	                                            | I can increase the speed of using the application	|
+| `* * `  | advanced user                 | 	view a list of my shortcuts	                                              | I can see an overview of my customizations	|
+| `* * `  | advanced user                 | 	create my own shortcuts	                                                  | I can quickly type out long commands instantly	|
+| `* * `  | intermediate user             | 	access my command history through arrow keys	                             | I can execute repeated operations quickly	|
+| `* * `  | intermediate user             | 	press "Tab" to auto-complete the command that I am typing out	            | I can quickly finish the command that I am typing.	|
+| `* * `  | intermediate user             | 	see hint text of what command would be autocompleted if I press "tab"	    | I have visual feedback before I autocomplete a command	|
+| `* * `  | intermediate user             | 	revert the last command	                                                  | I can undo any mistakes	|
+| `* * `  | beginner user                 | 	be able to rename my tags	                                                | I mass edit contacts with the same tag	|
+| `* * `  | beginner user                 | 	 add the github handle to a contact	                                      | I can easily access their github page in the future	|
+| `* * `  | beginner user                 | 	delete all contacts associated with a tag	                                | I can remove irrelevant contacts from my list	|
+| `*`     | beginner user                 | 	go through a tutorial of the app	                                         | I can familiarize myself on how to use the app.|
+| `*`     | beginner user                 | 	read the documentation	                                                   | I can get started on using the app|
+| `*`     | beginner user                 | 	import existing contacts from a .vcf file	                                | I do not need to re-type all of my existing contacts|
+| `*`     | student                       | 	launch my telegram chat with the contact person through the app	          | I can start chatting with my contacts on telegram quickly|
+| `*`     | student                       | 	launch my email app quickly through the app	                              | I can start writing email to my contacts quickly|
+| `*`     | student                       | 	delete contacts by date time query	                                       | my address book is clean.|
+| `*`     | advanced user                 | 	use DevBooks inside of my command console	                                | I don't need to open the application to perform an operation|
+| `*`     | aesthetic-minded individual   | 	customize the theme of the application	                                   | it's more personal to me|
 
 *{More to be added}*
 
@@ -456,7 +492,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Use case resumes from step 4.
 
 
-**Use case: UC09 – Find Contact by Name**
+**Use case: UC09 – Find Contact by Name or Tag**
 
 **MSS**
 
@@ -471,12 +507,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * 2a. User inputs an invalid search format
 
     * 2a1. Devbooks shows an error message
-    * 2a2. Devbooks prompts for keywords
-    * 2a3. User inputs find command with keyword(s) to search
 
-    Steps 2a1–2a3 are repeated until valid input is provided.
-
-    Use case resumes from step 3.
+        Use case ends.
 
 
 **Use case: UC06 – Show list of commands**
@@ -508,6 +540,91 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   Use case resumes from step 5.
 
 
+**Use case: UC17 - Pin Contact**
+
+**MSS**
+
+1. Devbooks prompts for command
+2. User inputs the pin command with a valid contact index
+3. Devbooks marks the contact as pinned and updates its position in the contact list
+4. Devbooks shows a success message and displays the updated list with pinned contact(s) at the top
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. User inputs pin command with an invalid contact index
+
+    * 2a1. Devbooks shows an error message
+    * 2a2. User inputs a new pin command with a valid contact index
+
+      Steps 2a1-2a2 are repeated until a valid contact index is entered.
+      Use case resumes from step 3.
+
+* 2b. Selected contact is already pinned
+
+    * 2b1. Devbooks shows a message indicating that the contact is already pinned
+      Use case ends.
+
+
+**Use case: UC18 - Unpin Contact**
+
+**MSS**
+
+1. Devbooks prompts for command
+2. User inputs the unpin command with a valid contact index
+3. Devbooks removes the pin from the selected contact and updates the contact list order
+4. Devbooks shows a success message and displays the updated list
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. User inputs unpin command with an invalid contact index
+
+    * 2a1. Devbooks shows an error message
+    * 2a2. User inputs a new unpin command with a valid contact index
+
+      Steps 2a1-2a2 are repeated until a valid contact index is entered.
+      Use case resumes from step 3.
+
+* 2b. Selected contact is not pinned
+
+    * 2b1. Devbooks shows a message indicating that the contact is not pinned
+      Use case ends.
+
+
+**Use case: UC35 - Delete Tag**
+
+**MSS**
+
+1. Devbooks prompts for command
+2. User inputs the delete tag command with one or more tags to delete
+3. Devbooks deletes all instances of the found tags from every contact
+4. Devbooks shows a success message indicating which tags were deleted
+5. Devbooks displays the updated contact list
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. User did not specify any tags to delete
+
+    * 2a1. Devbooks shows an error message indicating that no target tag was provided
+      Use case ends.
+
+* 2b. None of the specified tags can be found in any contact
+
+    * 2b1. Devbooks shows an error message indicating that no tags were found for deletion
+      Use case ends.
+
+* 2c. Some tags are found while others are not
+
+    * 2c1. Devbooks deletes all found tags
+    * 2c2. Devbooks shows a success message for tags deleted and a warning message for tags not found
+      Use case resumes from step 5.
+
+
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
@@ -519,8 +636,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 7.  Should work without requiring an installer.
 8.  Should not depend on a specific remote server.
 9.  Should be packaged into a single JAR file.
-10. Should be able to load within 5 seconds.
-*{More to be added}*
+10. Should be able to load 1000 contacts within 2 seconds.
+11. Should be able to comfortably use the application without using a mouse.
+12. Should be less than 20 Megabytes.
+13. Should execute any command except `launch` in less than 1 second.
 
 ### Glossary
 
@@ -543,9 +662,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Private contact detail**: A contact detail that is not meant to be shared with others
 * **Project mates/ Project group**: A project group is a team of students from the same module who work together on an assigned project. A project mate is a member of that group.
 * **Scroll Mode**: A mode that disables text input and allow users to navigate through the interface using keyboard
-  keys such as `k`/`l`. Enter scroll mode by pressing `<esc>`.
+  keys such as `j`/`k`. Enter scroll mode by pressing `<esc>`.
 * **Tag**: A Label assigned to contacts for easy grouping and searching
 * **Vim-like Modal Input**: An input system inspired by the Vim text editor, where different modes (e.g. input mode and scroll mode) change the behaviour of keyboard keys.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
@@ -563,7 +683,7 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimal.
 
 1. Saving window preferences
 
@@ -572,7 +692,13 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+1. Retaining data across launches
+
+    1. Add a contact to the contact book. Close the application.
+
+    1. Launch the application.
+        Expected: The new contact should be in the application.
+        A folder `data/` should be created where the .jar file is stored.
 
 ### Deleting a person
 
@@ -581,20 +707,55 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: A confirmation prompt is shown in the status bar before the contact is deleted. The to-be-deleted contact is shown in the status message.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+   1. Test case: `delete 1` followed by `y`<br>
+      Expected: After `y` is input into the confirmation prompt, The details of the deleted contact is shown. The contact is no longer shown in the list.
+
+   1. Test case: `delete dingus`<br>
+      Expected: The message "Invalid command format!" is shown to the user. Extra information on how to use delete is shown in the Result Display.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
+### Finding a person
+
+1. Finding a person by name or tag while all persons are being shown
+
+    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+
+    1. Test case: `find n\Alex`<br>
+       Expected: Persons whose names start with “Alex” are listed (e.g. Alex Yeoh). Details of the listed contacts shown
+       in the result display box. Status message shows the number of persons found.
+   2. Test case: `find t\friend`<br>
+       Expected: Persons with the tag “friend” are listed. Details of the listed contacts shown in the result display
+       box. Status message shows the number of persons found.
+   3. Test case: `find n\a`<br>
+      Expected: All persons whose names start with “A” are listed. The search is case-insensitive (e.g. “a” matches
+      “Alex”).
+   4. Test case: `find`<br>
+      Expected: No person is listed. Error details shown in the result display box.
+   5. Other incorrect find commands to try: `find`, `find n\`, `...`<br>
+       Expected: Similar to previous.
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+1. Dealing with missing data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. Ensure that in the directory that DevBooks is being run, a `data` folder is not present.
 
-1. _{ more test cases …​ }_
+   1. Run the application.
+
+   1. Perform a simple add command `add n\New p\91223124`<br>
+        Expected: `data/` folder is created, along with `.command_history` and `addressbook.json`
+
+
+
+1. Dealing with corrupted data files
+
+   1. Add a contact in the AddressBook to force a save to `data/addressbook.json`: `add n\Test p\912312311`
+
+   1. In an editor, edit the `data/addressbook.json` file. Corrupt the data by inputting a invalid value in a field.
+
+   1. Test case: `invalidGH%20__!$` in any contact's `github` field<br>
+        Expected: A warning message is shown in the bottom status bar indicating that the file failed to read.

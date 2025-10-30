@@ -132,7 +132,6 @@ public class EditCommand extends Command {
                 editPersonDescriptor.getTags().orElse(Collections.emptySet()),
                 editPersonDescriptor.getRemovedTags().orElse(Collections.emptySet())
         );
-        Boolean isPinned = personToEdit.isPinned();
         Instant pinnedAt = personToEdit.getPinnedAt().orElse(null);
         PreferredCommunicationMode updatedPreferredMode =
                 editPersonDescriptor.getPreferredMode().orElse(personToEdit.getPreferredMode());
@@ -145,8 +144,8 @@ public class EditCommand extends Command {
                 updatedGithub,
                 updatedPreferredMode,
                 tagUpdateResult.getUpdatedTags(),
-                isPinned,
-                pinnedAt);
+                pinnedAt
+        );
 
         validatePreferredMode(editedPerson, editPersonDescriptor);
 

@@ -29,6 +29,19 @@ public class ApplicationLinkLauncherTest {
     }
 
     @Test
+    void launchUserGuide_successfulLaunch_returnsSuccessResult() {
+        try (MockedStatic<DesktopApi> mockedDesktopApi = mockStatic(DesktopApi.class)) {
+            mockedDesktopApi.when(() -> DesktopApi.browse(any(URI.class))).thenReturn(true);
+
+            ApplicationLinkResult result = ApplicationLinkLauncher.launchUserGuide();
+
+            assertTrue(result.isSuccess());
+            assertTrue(result.getMessage().contains("Launched USERGUIDE successfully"));
+            mockedDesktopApi.verify(() -> DesktopApi.browse(any(URI.class)), times(1));
+        }
+    }
+
+    @Test
     void launchTelegram_fallbackFails_returnsFailureResult() {
         try (MockedStatic<DesktopApi> mockedDesktopApi = mockStatic(DesktopApi.class)) {
             mockedDesktopApi.when(() -> DesktopApi.browse(any(URI.class))).thenReturn(false);

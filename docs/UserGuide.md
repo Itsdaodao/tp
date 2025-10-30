@@ -28,7 +28,7 @@ DevBooks is a **desktop app for managing contacts, optimized for use via a Comma
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n\John Doe p\98765432 e\johnd@example.com a\John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -47,47 +47,53 @@ DevBooks is a **desktop app for managing contacts, optimized for use via a Comma
 **:information_source: Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+  e.g. in `add n\NAME`, `NAME` is a parameter which can be used as `add n\John Doe`.
 
 * Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+  e.g `n\NAME [t\TAG]` can be used as `n\John Doe t\friend` or as `n\John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+  e.g. `[t\TAG]…​` can be used as ` ` (i.e. 0 times), `t\friend`, `t\friend t\family` etc.
 
 * Parameters can be in any order.<br>
-  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+  e.g. if the command specifies `n\NAME p\PHONE_NUMBER`, `p\PHONE_NUMBER n\NAME` is also acceptable.
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
-  e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+* Extraneous parameters for commands that do not take in parameters (such as `list`, `exit` and `clear`) will be ignored.<br>
+  e.g. if the command specifies `list 123`, it will be interpreted as `list`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
 
 ### Viewing help : `help`
 
-Shows a message explaining how to access the help page.
+Shows help message in the GUI, explaining all commands.
 
 ![help message](images/helpMessage.png)
 
 Format: `help`
 
+* Use command name to look up detailed usage
+
+![detailed help message](images/detailedHelpMessage.png)
+
+Format: `help add`
 
 ### Adding a person: `add`
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [pm/PREFERRED_MODE] [t/TAG]…​`
+Format: `add n\NAME p\PHONE_NUMBER [e\EMAIL] [l\TELEGRAM] [g\GITHUB] [pm\PREFERRED_MODE] [t\TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
 </div>
 
 Examples:
-* `add n/Alice Chua p/90001231`
-* `add n/John Doe p/98765432 e/johnd@example.com`
-* `add n/Cheshire p/98112321 e/cheshire@example.com l/cheshire_02 g/cheshire-dev`
-* `add n/Betsy Crowe p/99998888 t/friend e/betsycrowe@example.com  t/criminal l/betsy001 g/betsy12 pm/telegram`
+* `add n\Alice Chua p\90001231`
+* `add n\John s/o Doe p\97449100`
+* `add n\John Doe p\98765432 e\johnd@example.com`
+* `add n\Cheshire p\98112321 e\cheshire@example.com l\cheshire_02 g\cheshire-dev`
+* `add n\Betsy Crowe p\99998888 t\friend e\betsycrowe@example.com  t\criminal l\betsy001 g\betsy12 pm\telegram`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 Parameters like Email, Telegram, GitHub, Preferred Contact and Tags are **optional**
@@ -115,48 +121,57 @@ Examples:
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [pm/PREFERRED_MODE] [t/TAG]…​  [r/TAG]…​`
+Format: `edit INDEX [n\NAME] [p\PHONE] [e\EMAIL] [l\TELEGRAM] [g\GITHUB] [pm\PREFERRED_MODE] [t\TAG]…​  [r\TAG]…​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
+* To clear a field, specify the prefix but leave the value empty.
+  * Only `Email`, `Telegram`, `Github`, `Preferred Mode` field can be cleared
 * Existing values will be updated to the input values.
 * When editing tags, you can add or remove tags.
-  * To add tags, use the prefix `t/` followed by the tags to be added.
-  * To remove tags, use the prefix `r/` followed by the tags to be removed.
+  * To add tags, use the prefix `t\` followed by the tags to be added.
+  * To remove tags, use the prefix `r\` followed by the tags to be removed.
     * User will be informed if any of the tags to be removed do not exist on the person.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com`
+*  `edit 1 p\91234567 e\johndoe@example.com`
    * Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-  *  `edit 2 n/Betsy Crower t/CS2103 t/CS2100 r/CS1101S`
-     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, and removes the tag `CS1101S`.
+  *  `edit 2 n\Betsy Crower t\CS2103 t\CS2100 r\CS1101S l\`
+     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, removes the tag 
+       `CS1101S` and clears the Telegram field.
        ```
-       Edited Person: Betsy Crower; Phone: 91093122; Telegram: BestyCrower; Github: BestyCrower; Tags: [CS2100][CS2103]
+       Edited Person: Betsy Crower; Phone: 91093122; Telegram: ; Github: BestyCrower; Tags: [CS2100][CS2103]
        ```
 
-### Locating persons by name: `find`
+### Finding persons by name or tag: `find`
 
 Finds persons whose names or tags start with the given prefix keyword.
 
-Format: `find [n/MORE_NAMES]` or `find [t/MORE_TAGS]`
+Format: `find [n\MORE_NAMES]` or `find [t\MORE_TAGS]`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Either name or tag is searched, depending on the prefix used.
-* Input must match the start of the word, not the full word. e.g. `Han` will match `Hans`, but not `Johann`.
-* When multiple prefixes are provided, only the first prefix is used; subsequent ones are ignored.
-* Only the specified field (name or tag) is searched.
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Keywords must match the **START** of the word.
+  * e.g. `Ha` will match `Hans`, but not `Johann`.
+* Only one prefix can be used at a time.
+* The search is case-insensitive.
+* Only the name field or tag field is searched.
+* Contacts matching at least one keyword will be displayed (i.e. `OR` search).
+* The order of the keywords does not matter.
+* If both prefixes are provided. Only the first prefix is used.
 
 Examples:
-* `find n/John` returns `johnny Tan` and `John Doe`
-* `find t/friend` returns all contacts tagged with "friend"
-* `find n/alex t/friend` searches only by name `n/alex`, since t/ is ignored
-* `find t/friend n/alex` searches only by tag `t/friend`, since n/ is ignored
-* `find n/a` returns all contacts whose names start with "A" e.g. `Alex yeoh`, `amy tan`
-* `find n/charlotte david` returns `Charlotte Oliveiro`, `David Li`<br>
-  ![result for 'find charlotte david'](images/findCharlotteDavidResult.png)
+* `find n\John`
+  * Returns persons whose names start with "John", such as `johnny Tan` and `John Doe`.
+* `find t\friend`
+  * Returns all contacts tagged with `friend`.
+* `find n\alex t\friend`
+  * Searches only by name `n\alex`, since the second prefix (`t\friends`) is ignored.
+* `find t\friend n\alex`
+  * Searches only by tag (`t\friend`), since the second prefix (`n\alex`) is ignored.
+* `find n\a`
+  * Returns all persons whose names start with "A" e.g. `Alex yeoh`, `amy tan`
+* `find n\charlotte david`
+  * Returns `Charlotte Oliveiro`, `David Li`<br>
+    ![result for 'find charlotte david'](images/findCharlotteDavidResult.png)
 
 ### Deleting a person : `delete`
 
@@ -185,7 +200,7 @@ Format: `pin INDEX`
 
 Examples:
 * `list` followed by `pin 4` pins the 4th person in the address book to the top.
-* `find n/Betsy` followed by `pin 2` pins the 2nd person in the results of the `find` command.
+* `find n\Betsy` followed by `pin 2` pins the 2nd person in the results of the `find` command.
 
 ### Unpinning a person : `unpin`
 
@@ -199,7 +214,7 @@ Format: `unpin INDEX`
 
 Examples:
 * `list` followed by `unpin 1` unpins the 1st person and removes them from the pinned list at the top.
-* `find n/Betsy` followed by `unpin 2` unpins the 2nd person in the results of the `find` command.
+* `find n\Betsy` followed by `unpin 2` unpins the 2nd person in the results of the `find` command.
 
 ### Clearing all entries : `clear`
 
@@ -290,12 +305,12 @@ Examples:
     * LINUX (ARCH)
     * LINUX (FEDORA)
 * Your mileage with this feature might vary if your operating system is not one stated above.
-* Kindly refer to [Known Issues: 3](#known-issues) to see more about the limitations
+* Kindly refer to [Known Issues: 2](#known-issues) to see more about the limitations
 
 ### Saving the data
 
 There is no need to save manually as the AddressBook data are saved in the hard disk automatically **ONLY after any command that changes the data**.
-* Commands that change the data include: `add`, `edit`, `delete`, and `clear`.
+* Commands that change the data include: `add`, `edit`, `delete`, `pin`, `unpin`, `tag` and `clear`.
 * Commands that do not change the data include: `help`, `list`, `find`, `launch`, and `exit`.
 
 ### Editing the data file
@@ -332,14 +347,14 @@ Enables ability to rename/delete tags detail for all users that contains the spe
 
 #### Renaming Tags for Multiple Contacts
 
-Format: `tag -r t/TAG r/TAG`
+Format: `tag -r t\TAG r\TAG`
 
 * Use `-r` flag to signify a rename tag command
-* `t/TAG` refers to the value of the target tag to be renamed
-* `r/TAG` refers to the renamed value
+* `t\TAG` refers to the value of the target tag to be renamed
+* `r\TAG` refers to the renamed value
 
 Example:
-- `tag -r t/CS1101 r/CS2103`
+- `tag -r t\CS1101 r\CS2103`
   - renames the existing tag `CS1101` for all contacts that has it with the new tag `CS2103`
   - Expected Output: (Assuming there are 2 people with this tag in the list)
     ```
@@ -352,22 +367,45 @@ Example:
 
 ### Deleting Tags for Multiple Contacts
 
-Format: `tag -d t/TAG…​`
+Format: `tag -d t\TAG…​`
 
 * Use `-d` to signify delete tag command
-* `t/TAG` refers to the target tags to be deleted for all users
+* `t\TAG` refers to the target tag to be deleted for all users
 
 Example:
-- `tag -d t/CS1101 t/CS2103`
+- `tag -d t\CS1101 t\CS2103`
     - deletes `CS1101` & `CS2103` tag for all contacts with the tag.
     - Expected Output: (Assuming there are 2 people with this tag in the list)
       ```
       Deleted tags: [[CS1101], [CS2103]]
       ```
-    - Expected Output: (Assuming no contact has the `CS1101` tag)
+    - Expected Output: (Assuming no contact has both the `CS1101` & `CS2103` tag)
       ```
-      No persons found with tag: [[CS1101]]
+      No persons found with tag: [[CS1101], [CS2103]]
       ```
+    - Expected Output: (Assuming no contact has the `CS2103` tag but there are contacts with `CS1101` tag)
+      ```
+      Deleted tags: [[CS1101]]
+      Warning: No persons found with tag: [[CS2103]]. No operation performed on these tags.
+      ```
+
+### Exporting Contacts
+
+Exports contacts into a csv file in the data folder.
+
+Format: `export NAME`
+
+* `NAME` refers to the name of the file
+* `NAME` is **optional**. Default file name is contacts.csv
+* Naming convention and rules follow default filename rules, including illegal characters
+
+Example:
+
+* `export`
+    * data will be exported to a file called contacts.csv in data folder
+* `export phonebook`
+    * data will be exported to a file called phonebook.csv in data folder
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
@@ -380,25 +418,27 @@ Example:
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
-3. **If you are not using one of listed Operating System(OS)**, then `launch` command may not work as expected. Whilst our implementation attempts to use system-specific command to launch the application first, its fallback mechanism uses the java.awt.Desktop api **IF AVAILABLE**. However, linux support with the java.awt libraries is already tenuous at best as it provides inconsistent behaviour between the different distros. Hence, kindly note that if your OS is not one stated in the list, the launch function may function inconsistently.
+2. **If you are not using one of listed Operating System(OS)**, then `launch` command may not work as expected. Whilst our implementation attempts to use system-specific command to launch the application first, its fallback mechanism uses the java.awt.Desktop api **IF AVAILABLE**. However, linux support with the java.awt libraries is already tenuous at best as it provides inconsistent behaviour between the different distros. Hence, kindly note that if your OS is not one stated in the list, the launch function may function inconsistently.
+3. **Unaccounted changes in the AddressBook if its addressbook.json file is edited whilst the application is running.** This is mainly as a result of how we handle when the reading and [saving of data](#saving-the-data) is triggered. As a result we are unable to detect changes to the addressbook.json file during the run time of the application and any direct changes made to this file whilst the application is running will be **OVERWRITTEN if [saving of data](#saving-the-data) is triggered.** Hence, the user should **NOT** edit the addressbook.json file while the application is in use.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Command summary
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add** | `add n\NAME p\PHONE_NUMBER [e\EMAIL] [l\TELEGRAM] [g\GITHUB] [pm\PREFERRED_MODE] [t\TAG]…​` <br> e.g., `add n\James Ho p\22224444 e\jamesho@example.com l\james_ho23 g\james-dev10 pm\telegram t\friend t\colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [t/TAG]…​ [r/TAG]…​`<br> e.g., `edit 1 p/91234567`
-**Find** | `find n/KEYWORD [MORE_KEYWORDS]` or `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n/James Jake`, `find t/friend`
+**Edit** | `edit INDEX [n\NAME] [p\PHONE_NUMBER] [e\EMAIL] [l\TELEGRAM] [g\GITHUB] [pm\PREFERRED_MODE] [t\TAG]…​ [r\TAG]…​`<br> e.g., `edit 1 p\91234567`
+**Find** | `find n\KEYWORD [MORE_KEYWORDS]` or `find t\KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n\James Jake`, `find t\friend`
 **List** | `list [-a (alphabetical)] [-r (recent)]`<br> e.g., `list -a`
 **Help** | `help COMMAND`
 **Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
-**Tag** | Rename: `tag -r t/TAG r/TAG` <br> `tag -r t/CS1101 r/CS2103`
+**Tag** | Rename: `tag -r t\TAG r\TAG` <br> `tag -r t\CS1101 r\CS2103` <br><br> Delete: `tag -d t\TAG…` <br> `tag -d t\CS1101`
 **Pin** | pin INDEX<br> e.g., pin 3
 **Unpin** | unpin INDEX<br> e.g., unpin 1
+**Export** | `export [NAME]` <br> e.g., `export phonebook`
 --------------------------------------------------------------------------------------------------------------------
 
 ## Navigation Summary

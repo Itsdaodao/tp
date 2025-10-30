@@ -7,10 +7,12 @@ skinparam classBackgroundColor MODEL_COLOR
 Package Model as ModelPackage <<Rectangle>>{
 Class "<<interface>>\nReadOnlyAddressBook" as ReadOnlyAddressBook
 Class "<<interface>>\nReadOnlyUserPrefs" as ReadOnlyUserPrefs
+Class "<<interface>>\nReadOnlyCommandHistory" as ReadOnlyCommandHistory
 Class "<<interface>>\nModel" as Model
 Class AddressBook
 Class ModelManager
 Class UserPrefs
+Class CommandHistory
 
 Class UniquePersonList
 Class Person
@@ -20,8 +22,10 @@ Class Email
 Class Name
 Class Phone
 Class Tag
-Class isPinned
-Class pinnedAt
+Class PinStatus
+Class PreferredMode
+
+Class HiddenElementToPushUserPrefs #FFFFFF
 
 Class I #FFFFFF
 }
@@ -29,14 +33,23 @@ Class I #FFFFFF
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> Model
 
+
+HiddenElementToPushUserPrefs -[hidden]right-> UserPrefs
+
 AddressBook .up.|> ReadOnlyAddressBook
 
 ModelManager .up.|> Model
 Model .right.> ReadOnlyUserPrefs
 Model .left.> ReadOnlyAddressBook
+
+Model .right.> ReadOnlyCommandHistory
+
 ModelManager -left-> "1" AddressBook
 ModelManager -right-> "1" UserPrefs
-UserPrefs .up.|> ReadOnlyUserPrefs
+UserPrefs .up..|> ReadOnlyUserPrefs
+
+CommandHistory .up.|> ReadOnlyCommandHistory
+ModelManager -> "1" CommandHistory
 
 AddressBook *--> "1" UniquePersonList
 UniquePersonList --> "~* all" Person
@@ -46,8 +59,8 @@ Person *--> Email
 Person *--> Telegram
 Person *--> Github
 Person *--> "*" Tag
-Person *--> isPinned
-Person *--> pinnedAt
+Person *--> PinStatus
+Person *--> PreferredMode
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I

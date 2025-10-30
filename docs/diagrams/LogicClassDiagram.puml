@@ -8,6 +8,8 @@ package Logic as LogicPackage {
 
 package "Parser Classes" as ParserClasses{
 }
+package "Autocomplete Classes" as AutocompleteClasses{
+}
 package "Utility Classes" as UtilityClasses{
 }
 Class XYZCommand
@@ -55,6 +57,8 @@ CommandRegistry *-down- "0..* " CommandFactory
 ParserClasses <..> CommandFactory
 ParserClasses <.down..> CommandRegistry
 ParserClasses ..> UtilityClasses
+
+HiddenOutsideUi ..> AutocompleteClasses
 
 CommandRegistry .[hidden]left.> UtilityClasses
 @enduml
