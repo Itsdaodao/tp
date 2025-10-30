@@ -20,8 +20,8 @@ Class Email
 Class Name
 Class Phone
 Class Tag
-Class isPinned
-Class pinnedAt
+Class PinStatus
+Class PreferredMode
 
 Class I #FFFFFF
 }
@@ -46,8 +46,8 @@ Person *--> Email
 Person *--> Telegram
 Person *--> Github
 Person *--> "*" Tag
-Person *--> isPinned
-Person *--> pinnedAt
+Person *--> PinStatus
+Person *--> PreferredMode
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
