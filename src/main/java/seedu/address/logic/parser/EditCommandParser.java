@@ -26,7 +26,7 @@ import seedu.address.model.tag.Tag;
  * Parses input arguments and creates a new EditCommand object
  */
 public class EditCommandParser implements Parser<EditCommand> {
-
+    private static final boolean IS_ACCEPT_EMPTY_STRING = true;
     /**
      * Parses the given {@code String} of arguments in the context of the EditCommand
      * and returns an EditCommand object for execution.
@@ -49,7 +49,6 @@ public class EditCommandParser implements Parser<EditCommand> {
                 );
 
         Index index;
-
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
@@ -59,8 +58,23 @@ public class EditCommandParser implements Parser<EditCommand> {
         argMultimap.verifyNoDuplicatePrefixesFor(
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_TELEGRAM, PREFIX_PREFERRED_MODE, PREFIX_GITHUB);
 
-        EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
+        EditPersonDescriptor editPersonDescriptor = createEditPersonDescriptor(argMultimap);
+        if (!editPersonDescriptor.isAnyFieldEdited()) {
+            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
+        }
 
+        return new EditCommand(index, editPersonDescriptor);
+    }
+
+    /**
+     * Helper method used to help parse and extract all values for present parameters
+     *
+     * @param argMultimap
+     * @return {@code EditPersonDescriptor} used for EditCommand
+     * @throws ParseException
+     */
+    private EditPersonDescriptor createEditPersonDescriptor(ArgumentMultimap argMultimap) throws ParseException {
+        EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
             editPersonDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get()));
         }
@@ -68,29 +82,28 @@ public class EditCommandParser implements Parser<EditCommand> {
             editPersonDescriptor.setPhone(ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get()));
         }
         if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
-            editPersonDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get()));
+            editPersonDescriptor.setEmail(ParserUtil
+                    .parseEmail(argMultimap.getValue(PREFIX_EMAIL).get(), IS_ACCEPT_EMPTY_STRING));
         }
         if (argMultimap.getValue(PREFIX_TELEGRAM).isPresent()) {
-            editPersonDescriptor.setTelegram(ParserUtil.parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get()));
+            editPersonDescriptor.setTelegram(ParserUtil
+                    .parseTelegram(argMultimap.getValue(PREFIX_TELEGRAM).get(), IS_ACCEPT_EMPTY_STRING));
         }
         if (argMultimap.getValue(PREFIX_GITHUB).isPresent()) {
-            editPersonDescriptor.setGithub(ParserUtil.parseGithub(argMultimap.getValue(PREFIX_GITHUB).get()));
+            editPersonDescriptor.setGithub(ParserUtil
+                    .parseGithub(argMultimap.getValue(PREFIX_GITHUB).get(), IS_ACCEPT_EMPTY_STRING));
         }
         if (argMultimap.getValue(PREFIX_PREFERRED_MODE).isPresent()) {
             Set<PreferredCommunicationMode> availableModes = null;
-            editPersonDescriptor.setPreferredMode(ParserUtil
-                    .parsePreferredMode(argMultimap.getValue(PREFIX_PREFERRED_MODE).get(), availableModes));
+            editPersonDescriptor.setPreferredMode(ParserUtil.parsePreferredMode(argMultimap
+                    .getValue(PREFIX_PREFERRED_MODE).get(), availableModes, IS_ACCEPT_EMPTY_STRING));
         }
         // Finds the tags to add if any
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
         // Finds the tags to remove if any
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_REMOVE_TAG)).ifPresent(editPersonDescriptor::setRemovedTags);
 
-        if (!editPersonDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
-        }
-
-        return new EditCommand(index, editPersonDescriptor);
+        return editPersonDescriptor;
     }
 
     /**

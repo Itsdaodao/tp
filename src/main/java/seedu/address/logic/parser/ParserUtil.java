@@ -74,9 +74,15 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code email} is invalid.
      */
-    public static Email parseEmail(String email) throws ParseException {
+    public static Email parseEmail(String email, boolean isAcceptEmptyString) throws ParseException {
         requireNonNull(email);
         String trimmedEmail = email.trim();
+
+        // Allow empty string if edit mode (for clearing email)
+        if (isAcceptEmptyString && trimmedEmail.isEmpty()) {
+            return new Email();
+        }
+
         if (!Email.isValidEmail(trimmedEmail)) {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
         }
@@ -89,9 +95,15 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code Telegram} is invalid.
      */
-    public static Telegram parseTelegram(String username) throws ParseException {
+    public static Telegram parseTelegram(String username, boolean isAcceptEmptyString) throws ParseException {
         requireNonNull(username);
         String trimmedUsername = username.trim();
+
+        // Allow empty string if edit mode (for clearing telegram)
+        if (isAcceptEmptyString && trimmedUsername.isEmpty()) {
+            return new Telegram();
+        }
+
         if (!Telegram.isValidTelegram(trimmedUsername)) {
             throw new ParseException(Telegram.MESSAGE_CONSTRAINTS);
         }
@@ -104,9 +116,15 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code Github} is invalid.
      */
-    public static Github parseGithub(String username) throws ParseException {
+    public static Github parseGithub(String username, boolean isAcceptEmptyString) throws ParseException {
         requireNonNull(username);
         String trimmedUsername = username.trim();
+
+        // Allow empty string if edit mode (for clearing github)
+        if (isAcceptEmptyString && trimmedUsername.isEmpty()) {
+            return new Github();
+        }
+
         if (!Github.isValidGithub(trimmedUsername)) {
             throw new ParseException(Github.MESSAGE_CONSTRAINTS);
         }
@@ -120,11 +138,17 @@ public class ParserUtil {
      * @throws ParseException if the given {@code PreferredCommunicationMode} is invalid.
      */
     public static PreferredCommunicationMode parsePreferredMode(
-            String preferredMode, Set<PreferredCommunicationMode> availableModes) throws ParseException {
+            String preferredMode, Set<PreferredCommunicationMode> availableModes, boolean isAcceptEmptyString)
+            throws ParseException {
         // available mode can be null
         requireNonNull(preferredMode);
         String trimmedMode = preferredMode.trim();
         boolean allowNone = false;
+
+        // Allow empty string if edit mode (for clearing preferred mode of communication)
+        if (isAcceptEmptyString && trimmedMode.isEmpty()) {
+            return PreferredCommunicationMode.NONE;
+        }
 
         // Check if the mode is a valid enum value (excluding NONE)
         boolean isRecognized = Arrays.stream(PreferredCommunicationMode.values())

@@ -95,6 +95,7 @@ public class StorageManager implements Storage {
 
     @Override
     public void saveCommandHistory(ReadOnlyCommandHistory commandHistory) throws IOException {
+        logger.fine("Attempting to write to data file: " + getCommandHistoryFilePath());
         commandHistoryStorage.saveCommandHistory(commandHistory);
     }
 

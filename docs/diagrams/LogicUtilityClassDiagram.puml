@@ -4,7 +4,7 @@ skinparam arrowThickness 1.1
 skinparam arrowColor LOGIC_COLOR_T4
 skinparam classBackgroundColor LOGIC_COLOR
 
-package "   Util" as UtilityPackage {
+package "                   Util Classes" as UtilityPackage {
 
 Class ApplicationLinkLauncher
 Class ApplicationLinkResult
@@ -12,19 +12,21 @@ Class DesktopApi
 Interface "<<interface>>\nDesktopWrapper" as DesktopWrapper
 Class DummyDesktopWrapper
 Class RealDesktopWrapper
-
+Class "<<enumeration>>\nApplicationType" as ApplicationType
 }
 
 Class HideOutside #FFFFFF
 Class HideOutside2 #FFFFFF
+Class HideOutside3 #FFFFFF
 HideOutside .down.> ApplicationLinkLauncher
 HideOutside2 .down.> ApplicationLinkResult
 ApplicationLinkLauncher .right.> ApplicationLinkResult
 ApplicationLinkLauncher -down-> DesktopWrapper
 ApplicationLinkLauncher .left.> DesktopApi : <<use>>
-ApplicationLinkLauncher -down-> DummyDesktopWrapper : <<create>>
-ApplicationLinkLauncher -down-> RealDesktopWrapper : <<create>>
+ApplicationLinkLauncher .down.> DummyDesktopWrapper : <<create>>
+ApplicationLinkLauncher .down.> RealDesktopWrapper
 DesktopWrapper <|.left. DummyDesktopWrapper
 DesktopWrapper <|.right. RealDesktopWrapper
-
+ApplicationType <.up. ApplicationLinkLauncher
+HideOutside3 .down.> ApplicationType
 @enduml

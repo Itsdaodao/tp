@@ -11,8 +11,8 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.util.ApplicationLinkLauncher;
-import seedu.address.logic.util.ApplicationLinkLauncher.ApplicationType;
 import seedu.address.logic.util.ApplicationLinkResult;
+import seedu.address.logic.util.ApplicationType;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
@@ -24,9 +24,9 @@ public class LaunchCommand extends Command {
 
     public static final String COMMAND_WORD = "launch";
 
-    protected static final String MESSAGE_MISSING_EMAIL = "%s This person does not have an email address.";
-    protected static final String MESSAGE_MISSING_TELEGRAM = "%s This person does not have a Telegram handle.";
-    protected static final String MESSAGE_MISSING_GITHUB = "%s This person does not have a GitHub profile.";
+    static final String MESSAGE_MISSING_EMAIL = "%s This person does not have an email address.";
+    static final String MESSAGE_MISSING_TELEGRAM = "%s This person does not have a Telegram handle.";
+    static final String MESSAGE_MISSING_GITHUB = "%s This person does not have a GitHub profile.";
 
     private static final String MESSAGE_DESCRIPTION =
             "Launches the specified application for a person in the address book";
@@ -75,14 +75,17 @@ public class LaunchCommand extends Command {
         Person personToLaunch = lastShownList.get(index.getZeroBased());
         ApplicationLinkResult result = launchApplicationLink(personToLaunch, type);
 
+        requireNonNull(result);
+        assert !result.getMessage().isEmpty();
+
         return new CommandResult(result.getMessage());
     }
 
     /**
      * Launches the specified application link for the given person.
      *
-     * @param person    The person whose application link is to be launched.
-     * @param type      The type of application to launch.
+     * @param person The person whose application link is to be launched.
+     * @param type   The type of application to launch.
      * @return The result of the application link launch.
      * @throws CommandException If the person does not have the required information
      *                          for the specified application type.
@@ -93,25 +96,25 @@ public class LaunchCommand extends Command {
 
         switch (type) {
         case EMAIL: {
-            if (person.getEmail().isEmpty()) {
-                throw new CommandException(String.format(MESSAGE_MISSING_EMAIL, person.getName().fullName));
-            }
+            isFieldEmpty(person.getEmail().isEmpty(), person.getName().fullName, MESSAGE_MISSING_EMAIL);
             return ApplicationLinkLauncher.launchEmail(person.getEmail().value);
         }
         case TELEGRAM: {
-            if (person.getTelegram().isEmpty()) {
-                throw new CommandException(String.format(MESSAGE_MISSING_TELEGRAM, person.getName().fullName));
-            }
+            isFieldEmpty(person.getTelegram().isEmpty(), person.getName().fullName, MESSAGE_MISSING_TELEGRAM);
             return ApplicationLinkLauncher.launchTelegram(person.getTelegram().value);
         }
         case GITHUB:
-            if (person.getGithub().isEmpty()) {
-                throw new CommandException(String.format(MESSAGE_MISSING_GITHUB, person.getName().fullName));
-            }
+            isFieldEmpty(person.getGithub().isEmpty(), person.getName().fullName, MESSAGE_MISSING_GITHUB);
             return ApplicationLinkLauncher.launchGithub(person.getGithub().value);
         default: {
             throw new CommandException(MESSAGE_UNRECOGNIZED_FLAG);
         }
+        }
+    }
+
+    private void isFieldEmpty(boolean isEmpty, String name, String errorMessage) throws CommandException {
+        if (isEmpty) {
+            throw new CommandException(String.format(errorMessage, name));
         }
     }
 

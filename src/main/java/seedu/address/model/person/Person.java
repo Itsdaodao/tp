@@ -142,9 +142,6 @@ public class Person {
         if (!telegram.isEmpty()) {
             availableModes.add(PreferredCommunicationMode.TELEGRAM);
         }
-        if (!github.isEmpty()) {
-            availableModes.add(PreferredCommunicationMode.GITHUB);
-        }
 
         return availableModes;
     }

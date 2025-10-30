@@ -16,9 +16,11 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.PreferredCommunicationMode;
+import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
@@ -35,6 +37,9 @@ public class ParserUtilTest {
     private static final String VALID_PREFERRED_MODE_2 = "phone";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
+
+    private static final boolean ACCEPT_EMPTY_STRING = true;
+    private static final boolean NOT_ACCEPT_EMPTY_STRING = false;
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -106,25 +111,58 @@ public class ParserUtilTest {
 
     @Test
     public void parseEmail_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseEmail((String) null));
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseEmail((String) null, ACCEPT_EMPTY_STRING));
     }
 
     @Test
     public void parseEmail_invalidValue_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseEmail(INVALID_EMAIL));
+        assertThrows(ParseException.class, () -> ParserUtil.parseEmail(INVALID_EMAIL, ACCEPT_EMPTY_STRING));
     }
 
     @Test
     public void parseEmail_validValueWithoutWhitespace_returnsEmail() throws Exception {
         Email expectedEmail = new Email(VALID_EMAIL);
-        assertEquals(expectedEmail, ParserUtil.parseEmail(VALID_EMAIL));
+        assertEquals(expectedEmail, ParserUtil.parseEmail(VALID_EMAIL, ACCEPT_EMPTY_STRING));
     }
 
     @Test
     public void parseEmail_validValueWithWhitespace_returnsTrimmedEmail() throws Exception {
         String emailWithWhitespace = WHITESPACE + VALID_EMAIL + WHITESPACE;
         Email expectedEmail = new Email(VALID_EMAIL);
-        assertEquals(expectedEmail, ParserUtil.parseEmail(emailWithWhitespace));
+        assertEquals(expectedEmail, ParserUtil.parseEmail(emailWithWhitespace, ACCEPT_EMPTY_STRING));
+    }
+
+    @Test
+    public void parseEmail_emptyStringDisallowed_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseEmail("", NOT_ACCEPT_EMPTY_STRING));
+    }
+
+    @Test
+    public void parseEmail_emptyStringAllowed_returnsEmptyEmail() throws Exception {
+        Email expectedEmail = new Email();
+        assertEquals(expectedEmail, ParserUtil.parseEmail("", ACCEPT_EMPTY_STRING));
+    }
+
+    @Test
+    public void parseTelegram_emptyStringDisallowed_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTelegram("", NOT_ACCEPT_EMPTY_STRING));
+    }
+
+    @Test
+    public void parseTelegram_emptyStringAllowed_returnsEmptyEmail() throws Exception {
+        Telegram expectedTelegram = new Telegram();
+        assertEquals(expectedTelegram, ParserUtil.parseTelegram("", ACCEPT_EMPTY_STRING));
+    }
+
+    @Test
+    public void parseGithub_emptyStringDisallowed_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseGithub("", NOT_ACCEPT_EMPTY_STRING));
+    }
+
+    @Test
+    public void parseGithub_emptyStringAllowed_returnsEmptyGithub() throws Exception {
+        Github expectedGithub = new Github();
+        assertEquals(expectedGithub, ParserUtil.parseGithub("", ACCEPT_EMPTY_STRING));
     }
 
     @Test
@@ -134,11 +172,29 @@ public class ParserUtilTest {
 
         // Invalid mode (not in availableModes)
         assertThrows(ParseException.class, () ->
-                ParserUtil.parsePreferredMode(VALID_PREFERRED_MODE_1, availableModes));
+                ParserUtil.parsePreferredMode(VALID_PREFERRED_MODE_1, availableModes, ACCEPT_EMPTY_STRING));
 
         // Explicitly disallowed NONE
         assertThrows(ParseException.class, () ->
-                ParserUtil.parsePreferredMode(INVALID_PREFERRED_MODE, availableModes));
+                ParserUtil.parsePreferredMode(INVALID_PREFERRED_MODE, availableModes, ACCEPT_EMPTY_STRING));
+    }
+
+    @Test
+    public void parsePreferredMode_emptyStringDisallowed_throwsParseException() {
+        Set<PreferredCommunicationMode> availableModes =
+                EnumSet.of(PreferredCommunicationMode.PHONE, PreferredCommunicationMode.EMAIL);
+
+        assertThrows(ParseException.class, () -> ParserUtil.parsePreferredMode("", availableModes,
+                NOT_ACCEPT_EMPTY_STRING));
+    }
+
+    @Test
+    public void parsePreferredMode_emptyStringAllowed_returnsPreferredModeNone() throws Exception {
+        Set<PreferredCommunicationMode> availableModes =
+                EnumSet.of(PreferredCommunicationMode.PHONE, PreferredCommunicationMode.EMAIL);
+
+        PreferredCommunicationMode expectedMode = PreferredCommunicationMode.NONE;
+        assertEquals(expectedMode, ParserUtil.parsePreferredMode("", availableModes, ACCEPT_EMPTY_STRING));
     }
 
     @Test
@@ -147,7 +203,7 @@ public class ParserUtilTest {
                 EnumSet.of(PreferredCommunicationMode.PHONE, PreferredCommunicationMode.EMAIL);
 
         assertEquals(PreferredCommunicationMode.PHONE,
-                ParserUtil.parsePreferredMode(VALID_PREFERRED_MODE_2, availableModes));
+                ParserUtil.parsePreferredMode(VALID_PREFERRED_MODE_2, availableModes, ACCEPT_EMPTY_STRING));
     }
 
     @Test

@@ -26,7 +26,6 @@ public class PreferredCommunicationModeTest {
         assertTrue(PreferredCommunicationMode.isValidMode("PHONE", allModes, false));
         assertTrue(PreferredCommunicationMode.isValidMode("email", allModes, false));
         assertTrue(PreferredCommunicationMode.isValidMode("TeLeGrAm", allModes, false));
-        assertTrue(PreferredCommunicationMode.isValidMode("github", allModes, false));
     }
 
     @Test
@@ -46,7 +45,6 @@ public class PreferredCommunicationModeTest {
         assertTrue(PreferredCommunicationMode.isValidMode("EMAIL", available, false));
         assertTrue(PreferredCommunicationMode.isValidMode("telegram", available, false));
         assertFalse(PreferredCommunicationMode.isValidMode("PHONE", available, false));
-        assertFalse(PreferredCommunicationMode.isValidMode("GITHUB", available, false));
     }
 
     @Test
@@ -80,7 +78,6 @@ public class PreferredCommunicationModeTest {
         assertEquals(PreferredCommunicationMode.PHONE, PreferredCommunicationMode.of("phone"));
         assertEquals(PreferredCommunicationMode.EMAIL, PreferredCommunicationMode.of("EMAIL"));
         assertEquals(PreferredCommunicationMode.TELEGRAM, PreferredCommunicationMode.of("telegram"));
-        assertEquals(PreferredCommunicationMode.GITHUB, PreferredCommunicationMode.of("GITHUB"));
     }
 
     @Test
