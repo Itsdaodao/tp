@@ -11,16 +11,22 @@ end box
 -> LogicManager #FFBBBB : execute("delete 1")
 activate LogicManager
 
+
+LogicManager -> LogicManager: buildCommand("delete 1")
+activate LogicManager
+
 LogicManager -> StateManager: isAwaitingUserConfirmation()
 activate StateManager
 
 StateManager --> LogicManager: false
 deactivate StateManager
 
+
 ref over LogicManager, DeleteCommand: parseGenericCommand
 
 create DeleteCommand
 LogicManager[hidden]-> DeleteCommand
+deactivate LogicManager
 
 
 
@@ -50,6 +56,10 @@ deactivate LogicManager
 -> LogicManager#FFBBBB: execute("y")
 activate LogicManager
 
+
+LogicManager -> LogicManager: buildCommand("y")
+activate LogicManager
+
 LogicManager -> StateManager: isAwaitingUserConfirmation()
 activate StateManager
 
@@ -65,6 +75,7 @@ deactivate StateManager
 ref over LogicManager, ConfirmCommand: parseConfirmCommand
 create ConfirmCommand
 LogicManager[hidden]-> ConfirmCommand
+deactivate LogicManager
 
 LogicManager -> ConfirmCommand: execute(m)
 activate ConfirmCommand

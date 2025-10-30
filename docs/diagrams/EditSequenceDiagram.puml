@@ -13,7 +13,7 @@ participant "r:CommandResult" as CommandResult LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
-participant "m:Model" as Model MODEL_COLOR
+participant "model:Model" as Model MODEL_COLOR
 end box
 
 [-> LogicManager : execute("edit 1 n/Adam")
@@ -38,7 +38,7 @@ activate EditCommandParser
 EditCommandParser --> CommandFactory
 deactivate EditCommandParser
 
-CommandFactory -> EditCommandParser : parse("adam")
+CommandFactory -> EditCommandParser : parse("n/Adam")
 activate EditCommandParser
 
 create EditCommand
@@ -59,7 +59,7 @@ CommandFactory --> AddressBookParser: e
 AddressBookParser --> LogicManager : e
 deactivate AddressBookParser
 
-LogicManager -> EditCommand : execute(m)
+LogicManager -> EditCommand : execute(model)
 activate EditCommand
 
 EditCommand -> Model : setPerson(old, updated)
