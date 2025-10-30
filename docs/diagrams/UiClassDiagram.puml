@@ -25,6 +25,7 @@ Class HiddenLogic #FFFFFF
 }
 
 Class HiddenOutside #FFFFFF
+Class HiddenOutside2 #FFFFFF
 HiddenOutside ..> Ui
 
 UiManager .left.|> Ui
@@ -53,4 +54,8 @@ CommandBox -[hidden]left- ResultDisplay
 ResultDisplay -[hidden]left- StatusBarFooter
 
 MainWindow -[hidden]-|> UiPart
+MainWindow .down.> Model
+UiPart .[hidden].> Model
+HiddenOutside2 .[hidden]down.> Model
+HiddenOutside2 .[hidden]up...> Logic
 @enduml
