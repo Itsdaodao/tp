@@ -3,7 +3,7 @@ layout: page
 title: User Guide
 ---
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+DevBooks is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, DevBooks can get your contact management tasks done faster than traditional GUI apps.
 
 * Table of Contents
 {:toc}
@@ -137,7 +137,7 @@ Examples:
 *  `edit 1 p\91234567 e\johndoe@example.com`
    * Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
   *  `edit 2 n\Betsy Crower t\CS2103 t\CS2100 r\CS1101S l\`
-     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, removes the tag 
+     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, removes the tag
        `CS1101S` and clears the Telegram field.
        ```
        Edited Person: Betsy Crower; Phone: 91093122; Telegram: ; Github: BestyCrower; Tags: [CS2100][CS2103]
@@ -175,7 +175,7 @@ Examples:
 
 ### Deleting a person : `delete`
 
-Deletes the specified person from the address book.
+Deletes the specified person from the address book. Command requires follow-up confirmation.
 
 Format: `delete INDEX`
 
@@ -184,8 +184,9 @@ Format: `delete INDEX`
 * The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find n\Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `list` followed by `delete 2` and a `y` deletes the 2nd person in the address book.
+* * `list` followed by `delete 2` and a `n` performs no operation.
+* `find n\Betsy` followed by `delete 1` and a `y` deletes the 1st person in the results of the `find` command.
 
 ### Pinning a person : `pin`
 
@@ -203,7 +204,7 @@ Examples:
 
 ### Unpinning a person : `unpin`
 
-Unpins the specified person from the address book.
+Unpins the specified person from the address book. Command requires a follow-up confirmation.
 
 Format: `unpin INDEX`
 
@@ -217,7 +218,7 @@ Examples:
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the address book.
+Clears all entries from the address book. Command requires a follow-up confirmation.
 
 Format: `clear`
 
@@ -227,15 +228,15 @@ Exits the program.
 
 Format: `exit`
 
-### Confirming commands : `y`/`n`
+### Confirming commands : `y`/`n`/`yes`/`no`
 
 The `delete` and `clear` commands require you to confirm the operation.
 
 If a previous command required a confirmation, a valid confirmation must be supplied before other commands can be run.
 
-Confirm Command Format: `y`
+Confirm Command Format: `y` or `yes`
 
-Cancel Command Format: `n`
+Cancel Command Format: `n` or `no`
 
 ### Switching Modes
 <div markdown="block" class="alert alert-info">
@@ -261,26 +262,26 @@ every time you enter scroll mode.
 
 Enter scroll mode by pressing `<Esc>`
 
-##### Navigating down: `k`
+##### Navigating down: `j`
 
-Press `k` to select the entry below the current entry.
+Press `j` to select the entry below the current entry.
 
-##### Navigating up: `l`
+##### Navigating up: `k`
 
-Press `l` to select the entry above the current entry.
+Press `k` to select the entry above the current entry.
 
 
 ### Launching external communication modes : `launch`
 
 Launches an external application to communicate with the specified person via the specified mode.
 
-Format: `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`
+Format: `launch INDEX [-e (Email)] [-l (Telegram)] [-g (GitHub)]`
 
 * The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * Use the flag to specify the communication mode:
     * `-e` launches the default email application to compose an email to the person's email address.
         * Depending on the user's system settings, the email may be composed in an email client or web browser.
-    * `-t` launches Telegram web browser that links to opening a chat with the person's Telegram handle.
+    * `-l` launches Telegram web browser that links to opening a chat with the person's Telegram handle.
         * To open the chat through web browser, the user is required to have Telegram application installed on their device.
         * Checking existence of Telegram user is outside the scope of this feature and is handled by Telegram application.
     * `-g` launches web browser that links to the person's GitHub profile.
@@ -292,7 +293,7 @@ Format: `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`
 
 Examples:
 * `launch 2 -e` launches the default email application to compose an email to the 2nd person in the displayed person list.
-* `launch 3 -t` launches Telegram web browser to open a chat with the 3rd person's Telegram handle in the displayed person list.
+* `launch 3 -l` launches Telegram web browser to open a chat with the 3rd person's Telegram handle in the displayed person list.
 * `launch 1 -g` launches web browser to the GitHub profile of the 1st person in the displayed person list.
 * Launching through CLI ![result for Launching CLI](gifs/LaunchCli.gif)
 * Launching through GUI ![result for Launching GUI](gifs/LaunchGui.gif)
@@ -432,11 +433,12 @@ Action | Format, Examples
 **Edit** | `edit INDEX [n\NAME] [p\PHONE_NUMBER] [e\EMAIL] [l\TELEGRAM] [g\GITHUB] [pm\PREFERRED_MODE] [t\TAG]…​ [r\TAG]…​`<br> e.g., `edit 1 p\91234567`
 **Find** | `find n\KEYWORD [MORE_KEYWORDS]` or `find t\KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n\James Jake`, `find t\friend`
 **List** | `list [-a (alphabetical)] [-r (recent)]`<br> e.g., `list -a`
-**Help** | `help`
-**Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
+**Help** | `help COMMAND`
+**Launch** | `launch INDEX [-e (Email)] [-l (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
 **Tag** | Rename: `tag -r t\TAG r\TAG` <br> `tag -r t\CS1101 r\CS2103` <br><br> Delete: `tag -d t\TAG…` <br> `tag -d t\CS1101`
+**Pin** | `pin INDEX` <br> e.g., `pin 3`
+**Unpin** | `unpin INDEX` <br> e.g., `unpin 1`
 **Export** | `export [NAME]` <br> e.g., `export phonebook`
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## Navigation Summary

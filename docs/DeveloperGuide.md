@@ -110,13 +110,6 @@ The sequence diagram below illustrates the typical interactions within the `Logi
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `EditCommandParser` and `EditCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </div>
 
-The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("find
-n\John Alex")` API call as an example.
-
-![Interactions Inside the Logic Component for the `find n\John Alex` Command](images/FindSequenceDiagram.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `EditCommandParser` and `EditCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
-</div>
 
 How the `Logic` component works in a typical case:
 1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object.
@@ -158,7 +151,7 @@ How the parsing works:
 ![How Logic Utility Classes Work](images/LogicUtilityClassDiagram.png)
 
 How the utility classes work:
-* Currently utility classes are only used by `PersonCard`, `LaunchCommand` and `LaunchCommandParser`
+* Currently utility classes are only used by `PersonCard`, `LaunchCommand`, `LaunchCommandParser` and `MainWindow`
 * `LaunchCommandParser` uses on `ApplicationType` to decide how it creates `LaunchCommand`
 * When called upon by either `LaunchCommand` or `PersonCard`, `ApplicationLinkLauncher` uses the `ApplicationType` and attempts to launch the communication mode through the use `DesktopApi`.
 * Based on the success of the `DesktopApi` launch attempt, `ApplicationLinkLauncher` will return with create and return the appropriate  `ApplicationLinkResult`.
@@ -243,96 +236,6 @@ The unpin command restores a contact to its normal position in the list.
 3. **User applies a name sort**: Contacts are sorted alphabetically, but pinned contacts remain above the rest.
 4. **User exits and restarts the application**: Previously pinned contacts remain pinned as their state is saved in storage.
 
-
-### \[Proposed\] Undo/redo feature
-
-#### Proposed Implementation
-
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
-
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
-
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
-
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
-
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
-
-![UndoRedoState0](images/UndoRedoState0.png)
-
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
-
-![UndoRedoState1](images/UndoRedoState1.png)
-
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
-
-![UndoRedoState2](images/UndoRedoState2.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
-
-</div>
-
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
-
-![UndoRedoState3](images/UndoRedoState3.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
-
-</div>
-
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</div>
-
-Similarly, how an undo operation goes through the `Model` component is shown below:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
-
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</div>
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
-
-![UndoRedoState4](images/UndoRedoState4.png)
-
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
-
-![UndoRedoState5](images/UndoRedoState5.png)
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-<img src="images/CommitActivityDiagram.png" width="250" />
-
-#### Design considerations:
-
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Documentation, logging, testing, configuration, dev-ops**
@@ -413,7 +316,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`     | advanced user                 | 	use DevBooks inside of my command console	                                | I don't need to open the application to perform an operation|
 | `*`     | aesthetic-minded individual   | 	customize the theme of the application	                                   | it's more personal to me|
 
-*{More to be added}*
 
 ### Use cases
 
@@ -772,7 +674,7 @@ testers are expected to do more *exploratory* testing.
 ### Listing all Contacts
 
 1. Listing all contacts in default order (first to last)
-   1. Prerequisites: Contact list is not already in default order  
+   1. Prerequisites: Contact list is not already in default order
    2. Test case: `list`<br>
       Expected Result Display:
         ```
@@ -783,7 +685,7 @@ testers are expected to do more *exploratory* testing.
 
 2. List all contacts in alphabetical order
    1. Prerequisites: Contact list is not already in alphabetical order
-   2. Test case: `list`<br> Expected Result Display: 
+   2. Test case: `list`<br> Expected Result Display:
        ```
        Listed all persons in alphabetical order
        ```
@@ -799,7 +701,7 @@ testers are expected to do more *exploratory* testing.
 
 ### Editing a single Contact
 
-1. Edit First Person's in the displayed list phone no. and email. 
+1. Edit First Person's in the displayed list phone no. and email.
     1. Prerequisites: There is at least 1 person in the displayed list
    2. `edit 1 p\91234567 e\johndoe@example.com`<br>
        Expected Result Display:
@@ -828,7 +730,7 @@ testers are expected to do more *exploratory* testing.
       Expected Result Display:
         ```
         Launched EMAIL successfully.
-      Note: You can only launch Telegram links from the browser if you have the Telegram application installed on your device.      
+      Note: You can only launch Telegram links from the browser if you have the Telegram application installed on your device.
         ```
       Expected Result: Email Draft to the selected email should launch and Result display show the success message above as well as a caveat about launching telegram
 
@@ -838,7 +740,7 @@ testers are expected to do more *exploratory* testing.
    2. Test: `launch 1 -l` <br>
       Expected Result Display:
        ```
-      Person Name This person does not have a Telegram handle. 
+      Person Name This person does not have a Telegram handle.
        ```
       Expected Result: Result display show the message of the contact's name followed by the error message above
 
@@ -864,9 +766,9 @@ testers are expected to do more *exploratory* testing.
 
 ### Renaming the Tags for Multiple Users
 
-1. Renaming Tags for all Users 
+1. Renaming Tags for all Users
    1. Prerequisites: The displayed list has at least 1 person with the target tag
-   
+
    2. Test: `tag -r t/CS1101 r/CS2103` <br>
       Expected Result Display:
         ```
@@ -874,7 +776,7 @@ testers are expected to do more *exploratory* testing.
       ```
    Expected Result: Renames the existing tag `CS1101` for all contacts that has it with the new tag `CS2103` and displays the number of person updated
 
-2. Renaming Tags for all Users 
+2. Renaming Tags for all Users
     1. Prerequisites: The displayed list has NO person with the target tag
 
    2. Test: `tag -r t/CS1101 r/CS2103` <br>
@@ -886,12 +788,10 @@ testers are expected to do more *exploratory* testing.
 
 3. Deleting Tags for all Users (Given the target tag **does exist**)
     1. Prerequisites: The displayed list has at least 1 person with the target tags
-   
+
    2. Test: `tag -d t/CS1101 t/CS2103` <br>
         Expected Result Display:
        ```
        Deleted tags: [[CS1101], [CS2103]]
        ```
        Expected Output deletes `CS1101` & `CS2103` tag for all contacts with the tag.
-
-
