@@ -80,9 +80,14 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_noFieldSpecifiedUnfilteredList_failure() {
+    public void execute_noFieldSpecifiedUnfilteredList_noChangeInModel() {
+        Person personToEdit = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Model expectedModel =
+            new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(), new CommandHistory());
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(personToEdit));
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, new EditPersonDescriptor());
-        assertThrows(AssertionError.class, () -> editCommand.execute(model));
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
