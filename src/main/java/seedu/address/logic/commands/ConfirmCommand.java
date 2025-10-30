@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -39,11 +40,16 @@ public class ConfirmCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        if (input.equals(USER_INPUT_CONFIRM) || input.equals(USER_INPUT_CONFIRM_ALT)) {
+        requireNonNull(model);
+
+        boolean inputIsConfirm = input.equals(USER_INPUT_CONFIRM) || input.equals(USER_INPUT_CONFIRM_ALT);
+        boolean inputIsCancel = input.equals(USER_INPUT_CANCEL) || input.equals(USER_INPUT_CANCEL_ALT);
+
+        if (inputIsConfirm) {
             CommandResult res = pendingOperation.executeOnConfirm();
             onComplete.run();
             return res;
-        } else if (input.equals(USER_INPUT_CANCEL) || input.equals(USER_INPUT_CANCEL_ALT)) {
+        } else if (inputIsCancel) {
             onComplete.run();
             return new CommandResult(MESSAGE_OPERATION_CANCELLED);
         } else {
