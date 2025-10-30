@@ -18,18 +18,18 @@ import seedu.address.commons.core.LogsCenter;
  * </p>
  *
  * <p>
- *     Credits:Adapted from
- *     <a
- *     href="https://stackoverflow.com/questions/18004150/desktop-api-is-not-supported-on-the-current-platform">
- *     StackOverflow: Desktop API is not supported on the current platform
- *     </a>
+ * Credits:Adapted from
+ * <a
+ * href="https://stackoverflow.com/questions/18004150/desktop-api-is-not-supported-on-the-current-platform">
+ * StackOverflow: Desktop API is not supported on the current platform
+ * </a>
  * </p>
  * <p>
- *     Note: These JavaDoc Headers were not provided by the original credited author, but by the developer
- *     <a href="https://github.com/MoshiMoshiMochi/">
- *         MoshiMoshiMochi
- *     </a>
- *     implementing this. Hence, these documentations may not be exactly what the original author envisioned
+ * Note: These JavaDoc Headers were not provided by the original credited author, but by the developer
+ * <a href="https://github.com/MoshiMoshiMochi/">
+ * MoshiMoshiMochi
+ * </a>
+ * implementing this. Hence, these documentations may not be exactly what the original author envisioned
  * </p>
  */
 public class DesktopApi {
@@ -77,8 +77,8 @@ public class DesktopApi {
     /**
      * Opens the default web browser to browse the given URI.
      * <p>
-     *     Attempts a system-specific command first, then falls back to using the Java {@link Desktop#browse(URI)} API
-     *     if available.
+     * Attempts a system-specific command first, then falls back to using the Java {@link Desktop#browse(URI)} API
+     * if available.
      * </p>
      *
      * @param uri The URI to be browsed.
@@ -214,12 +214,15 @@ public class DesktopApi {
             switch (action) {
             case EDIT: {
                 logErr(LOG_EDIT_NOT_SUPPORTED);
+                break;
             }
             case BROWSE: {
                 logErr(LOG_BROWSE_NOT_SUPPORTED);
+                break;
             }
             case OPEN: {
                 logErr(LOG_OPEN_NOT_SUPPORTED);
+                break;
             }
             default: {
                 logErr(String.format(LOG_ACTION_NOT_SUPPORTED, action));
@@ -296,18 +299,15 @@ public class DesktopApi {
 
     private static void logErr(String msg, Throwable t) {
         logger.fine(msg);
-//        System.err.println(msg);
         t.printStackTrace();
     }
 
     private static void logErr(String msg) {
         logger.fine(msg);
-//        System.err.println(msg);
     }
 
     private static void logOut(String msg) {
         logger.fine(msg);
-//        System.out.println(msg);
     }
 
     /**
