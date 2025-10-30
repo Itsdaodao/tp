@@ -91,6 +91,7 @@ The `UI` component,
 * depends on some classes in the `Logic` component, because launching communication mode application through `UI` relies `ApplicationLinkLauncher` to execute action.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
 * depends on the `Autocompletor` in `Logic` to provide suggestions while the user is typing.
+* Keeps a reference to a `ReadOnlyCommandHistory` for use in accessing command history in the `CommandBox` 
 
 ### Logic component
 
