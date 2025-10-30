@@ -66,7 +66,7 @@ The *Sequence Diagram* below shows how the components interact with each other f
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
-Each of the five main components (also shown in the diagram above),
+Each of the four main components (also shown in the diagram above),
 
 * defines its *API* in an `interface` with the same name as the Component.
 * implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point.
@@ -104,38 +104,51 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <img src="images/LogicClassDiagram.png" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("edit 1 n/Adam")` API call as an example.
 
-![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
+![Interactions Inside the Logic Component for the `edit 1 n/Adam` Command](images/EditSequenceDiagram.png)
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser`, `DeleteCommand` and `ConfirmationPendingResult` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </div>
 
-How the `Logic` component works:
+How the `Logic` component works in a typical case:
+1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object.
+1. The `AddressBookParser` calls upon the `CommandRegistry` to obtain a `CommandFactory` that creates a Command.
+1. The `AddressBookParser` supplies the parsed arguments to the `CommandFactory`, which in turn uses the `EditParser`.
+1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `EditCommand`) which is executed by the `LogicManager`.
+1. The command can communicate with the `Model` when it is executed (e.g. to edit a person).<br>
+   Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
+1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
-When `Logic` is called upon to execute a command, it checks its `state` to see if there is an operation that is pending confirmation
-* Case 1: There is no pending operation
-  1. The command word is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
-  1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-  1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
-     Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
-  1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
-     1. If the command requires a confirmation to be executed, a `ConfirmationPendingResult` object is created instead, which encapsulates the confirmation message to show to the user and the pending operation.
-* Case 2: There is a pending operation
-    1. The command word (e.g. `y`/`n`) is passed to an `AddressBookParser`, where it is parsed specifically as a `ConfirmCommand`
-    2. A `ConfirmCommand` object is created. The `ConfirmCommand` executes the pending operation if the user inputs a valid confirmation.
-    4. The `ConfirmCommand` executes a callback to manage State if the confirmation was successful, and the state needs to be cleared.
-    5. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
+#### State Management
+The `Logic` component additionally relies on `State` to chiefly manage Confirmation prompts for some commands. In these cases, the components interact like so:
 
+![State interactions Inside the Logic Component for the `delete 1` Command](images/DeleteAbstractedStateDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** `DeleteCommand` and `ConfirmCommand` are both created in the respective `ref` frames directly above them. PlantUML does not allow for the object to be created in the frame.
+
+</div>
+
+How Logic manages State:
+Before parsing a Command, LogicManager checks its `State` to see if there is an operation pending confirmation.
+
+If there is no pending operation, the Logic Manager parses the input as per normal.
+
+If there is a pending operation, `LogicManager` calls upon `AddressBookParser` to strictly parse the input as a `ConfirmCommand`. `ConfirmCommand` will clear `State` via a callback once satisfied.
+
+After execution of a command, if the command returns a `ConfirmationPendingResult`, the LogicManager sets the `State` to await for the user's confirmation
+
+#### Parsing
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
 <img src="images/ParserClasses.png" width="700"/>
-
 
 How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class queries `CommandRegistry` to find the appropriate `CommandFactory` instance that creates the corresponding `XYZCommandParser` class. (`XYZ`is a placeholder for the specific command name e.g., `AddCommandParser`) Once found, the `CommandFactory` instance creates the `XYZCommandParser` class which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
+
+#### Utility Classes
 
 ![How Logic Utility Classes Work](images/LogicUtilityClassDiagram.png)
 
@@ -515,12 +528,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **CLI (command line interface)**: A text-based interface where users type commands to interact with the system.
 * **Command History**: A feature that allows users to navigate through previously enter commands using the arrow key.
   Command history is saved and restored across sessions.
-* **CSV (Comma-Separated Values)**: A file format that stores tabular data in plain text, where each line represents 
-  a record and fields are separated by commas. Used to export contacts in a structured way.
+* **CSV (Comma-Separated Values)**: A file format that stores tabular data in plain text, where each line represents a record and fields are separated by commas. Used to export contacts in a structured way.
 * **Development profile**: A user's GitHub profile used to store, manage, and showcase software development projects.
 * **Digital access**: The ability to access DevBooks and retrieve information without needing any internet connection
-* **Field**: A specific category of information within a contact (Name, Phone, Email, Telegram, GitHub, Preferred 
-  mode of communication, Tag)
+* **Field**: A specific category of information within a contact (Name, Phone, Email, Telegram, GitHub, Preferred mode of communication, Tag)
 * **Flag/ Parameter**: A prefix in a command (e.g. n/, p/, t/) used to specify values for different fields.
 * **Input Mode**: The default mode in the application where users can type commands normally in the command box.
   Enter input mode by pressing `i`
@@ -534,8 +545,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Scroll Mode**: A mode that disables text input and allow users to navigate through the interface using keyboard
   keys such as `k`/`l`. Enter scroll mode by pressing `<esc>`.
 * **Tag**: A Label assigned to contacts for easy grouping and searching
-* **Vim-like Modal Input**: An input system inspired by the Vim text editor, where different modes (e.g. input mode 
-  and scroll mode) change the behaviour of keyboard keys.
+* **Vim-like Modal Input**: An input system inspired by the Vim text editor, where different modes (e.g. input mode and scroll mode) change the behaviour of keyboard keys.
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**

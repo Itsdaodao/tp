@@ -6,7 +6,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -25,6 +27,7 @@ public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
 
+    private static final Logger logger = LogsCenter.getLogger(ParserUtil.class);
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
      * trimmed.
@@ -156,10 +159,12 @@ public class ParserUtil {
                         && mode != PreferredCommunicationMode.NONE);
 
         if (!isRecognized) {
+            logger.warning("Unrecognized preferred mode:" + trimmedMode);
             throw new ParseException(PreferredCommunicationMode.MESSAGE_CONSTRAINTS);
         }
 
         if (!PreferredCommunicationMode.isValidMode(trimmedMode, availableModes, allowNone)) {
+            logger.warning("Invalid preferred mode: " + trimmedMode);
             throw new ParseException(String.format(
                     PreferredCommunicationMode.MESSAGE_INVALID_PREFERRED_MODE, preferredMode));
         }
@@ -170,6 +175,7 @@ public class ParserUtil {
                 .filter(mode -> mode.name().equalsIgnoreCase(trimmedMode))
                 .findFirst()
                 .orElse(PreferredCommunicationMode.NONE);
+        logger.fine(() -> "Successfully parsed preferred mode: " + matchedMode);
 
         return matchedMode;
     }

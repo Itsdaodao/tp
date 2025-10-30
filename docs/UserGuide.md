@@ -143,8 +143,7 @@ Format: `find [n/MORE_NAMES]` or `find [t/MORE_TAGS]`
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
 * Either name or tag is searched, depending on the prefix used.
-* Input must match the start of the word, not the full word. e.g. `Han` will match 
-  `Hans`, but not `Johann`.
+* Input must match the start of the word, not the full word. e.g. `Han` will match `Hans`, but not `Johann`.
 * When multiple prefixes are provided, only the first prefix is used; subsequent ones are ignored.
 * Only the specified field (name or tag) is searched.
 * Persons matching at least one keyword will be returned (i.e. `OR` search).

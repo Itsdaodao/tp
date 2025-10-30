@@ -33,9 +33,9 @@ public class DeleteCommandTest {
     public void execute_validIndexUnfilteredList_noChangeIfUnconfirmed() {
         Person personToDelete = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON);
-
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_CONFIRM,
+        String expectedDeleteText = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_CONFIRM,
                 Messages.format(personToDelete));
+        String expectedMessage = String.format(ConfirmationPendingResult.CONFIRMATION_TEXT_FORMAT, expectedDeleteText);
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
 
@@ -74,9 +74,9 @@ public class DeleteCommandTest {
 
         Person personToDelete = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON);
-
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_CONFIRM,
+        String expectedDeleteText = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_CONFIRM,
                 Messages.format(personToDelete));
+        String expectedMessage = String.format(ConfirmationPendingResult.CONFIRMATION_TEXT_FORMAT, expectedDeleteText);
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
         showPersonAtIndex(expectedModel, INDEX_FIRST_PERSON);

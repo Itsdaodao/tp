@@ -10,11 +10,10 @@ public enum PreferredCommunicationMode {
     PHONE,
     EMAIL,
     TELEGRAM,
-    GITHUB,
     NONE; // Represents empty/null preferred modes
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Preferred mode should be one of: phone, email, telegram or github.";
+            "Preferred mode should be one of: phone, email or telegram.";
     public static final String MESSAGE_INVALID_PREFERRED_MODE =
             "Invalid preferred mode: %s. The person does not have this contact method.";
 
@@ -34,10 +33,11 @@ public enum PreferredCommunicationMode {
         boolean isNull = test == null || test.isBlank();
         boolean isExplicitNone = !isNull && test.equalsIgnoreCase(PreferredCommunicationMode.NONE.name());
         boolean isValidMode;
+
         if (isNull) {
             return true;
         }
-        // Case 1: No restriction
+        // Case 1: No restriction, must match any defined enum
         if (availableModes == null) {
             boolean matchesAnyEnum = Arrays.stream(PreferredCommunicationMode.values())
                     .anyMatch(mode -> mode.name().equalsIgnoreCase(test));
@@ -71,12 +71,14 @@ public enum PreferredCommunicationMode {
 
         String trimmedMode = preferredMode.trim();
 
-        // Return the corresponding enum
-        return Arrays.stream(PreferredCommunicationMode.values())
+        // Find and return a matching enum, default to NONE if no match
+        PreferredCommunicationMode matchedMode = Arrays.stream(PreferredCommunicationMode.values())
                 .filter(mode -> mode != PreferredCommunicationMode.NONE)
                 .filter(mode -> mode.name().equalsIgnoreCase(trimmedMode))
                 .findFirst()
                 .orElse(PreferredCommunicationMode.NONE);
+
+        return matchedMode;
     }
 
     /**

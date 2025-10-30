@@ -12,9 +12,8 @@ public class ClearCommand extends Command {
 
     public static final String COMMAND_WORD = "clear";
     public static final String MESSAGE_SUCCESS = "Address book has been cleared!";
-    public static final String MESSAGE_CLEAR_CONFIRM =
-            String.format("Are you sure you want to clear the address book?"
-                            + " This action cannot be undone.\nConfirm with %s", ConfirmCommand.USER_INPUT_OPTIONS);
+    public static final String MESSAGE_CLEAR_CONFIRM = "Are you sure you want to clear the address book?"
+            + " This action cannot be undone.";
 
 
     @Override
@@ -22,10 +21,8 @@ public class ClearCommand extends Command {
         requireNonNull(model);
         return new ConfirmationPendingResult(
                 String.format(MESSAGE_CLEAR_CONFIRM),
-                false, false, () -> {
-                    model.setAddressBook(new AddressBook());
-                    return new CommandResult(MESSAGE_SUCCESS);
-                }
+                false, false, () -> model.setAddressBook(new AddressBook()),
+                new CommandResult(MESSAGE_SUCCESS)
         );
     }
 
@@ -44,7 +41,8 @@ public class ClearCommand extends Command {
                         + "Removes all contacts from the address book.\n\n"
                         + "Notes:\n"
                         + "  - This action cannot be undone\n"
-                        + "  - All contact data will be permanently deleted"
+                        + "  - All contact data will be permanently deleted\n"
+                        + "  - The program will prompt for confirmation before the clear is finalized"
         );
     }
 }

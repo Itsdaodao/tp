@@ -148,6 +148,18 @@ public class EditCommand extends Command {
                 isPinned,
                 pinnedAt);
 
+        validatePreferredMode(editedPerson, editPersonDescriptor);
+
+        return new Pair<>(editedPerson, tagUpdateResult);
+    }
+
+    /**
+     * Validates the preferred communication mode of the edited person against their available contact options.
+     * Throws a CommandException if the preferred mode is invalid.
+     */
+    private static void validatePreferredMode(Person editedPerson, EditPersonDescriptor editPersonDescriptor)
+            throws CommandException {
+
         // Validate preferred mode against available contact options
         Set<PreferredCommunicationMode> availableModes = editedPerson.getAvailableModes();
 
@@ -162,8 +174,6 @@ public class EditCommand extends Command {
         if (isInvalidPreferredMode) {
             throw new CommandException(String.format(MESSAGE_INVALID_PREFERRED_MODE, modeString));
         }
-
-        return new Pair<>(editedPerson, tagUpdateResult);
     }
 
     /**

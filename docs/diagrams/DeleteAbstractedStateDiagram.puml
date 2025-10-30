@@ -1,0 +1,99 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":ConfirmCommand" as ConfirmCommand LOGIC_COLOR
+participant ":DeleteCommand" as DeleteCommand LOGIC_COLOR
+participant ":StateManager" as StateManager LOGIC_COLOR
+end box
+-> LogicManager #FFBBBB : execute("delete 1")
+activate LogicManager
+
+
+LogicManager -> LogicManager: buildCommand("delete 1")
+activate LogicManager
+
+LogicManager -> StateManager: isAwaitingUserConfirmation()
+activate StateManager
+
+StateManager --> LogicManager: false
+deactivate StateManager
+
+
+ref over LogicManager, DeleteCommand: parseGenericCommand
+
+create DeleteCommand
+LogicManager[hidden]-> DeleteCommand
+deactivate LogicManager
+
+
+
+LogicManager -> DeleteCommand: execute(m)
+activate DeleteCommand
+
+
+
+DeleteCommand --> LogicManager: p: ConfirmationPendingResult
+deactivate DeleteCommand
+
+LogicManager -> StateManager: setAwaitingUserConfirmation(p)
+activate StateManager
+
+note left of StateManager
+Logic Manager detects that
+a Pending Result is returned
+and sets state to be `awaiting`
+end note
+
+StateManager --> LogicManager
+deactivate StateManager
+
+[<-- LogicManager
+deactivate LogicManager
+destroy DeleteCommand
+
+-> LogicManager#FFBBBB: execute("y")
+activate LogicManager
+
+
+LogicManager -> LogicManager: buildCommand("y")
+activate LogicManager
+
+LogicManager -> StateManager: isAwaitingUserConfirmation()
+activate StateManager
+
+StateManager --> LogicManager: true
+deactivate StateManager
+
+LogicManager -> StateManager: getPendingOperation()
+activate StateManager
+
+StateManager --> LogicManager: p
+deactivate StateManager
+
+ref over LogicManager, ConfirmCommand: parseConfirmCommand
+create ConfirmCommand
+LogicManager[hidden]-> ConfirmCommand
+deactivate LogicManager
+
+LogicManager -> ConfirmCommand: execute(m)
+activate ConfirmCommand
+
+ref over ConfirmCommand: executePendingOperation
+
+ConfirmCommand -> StateManager: clearAwaitingUserConfirmation()
+activate StateManager
+
+StateManager --> ConfirmCommand
+deactivate StateManager
+
+ConfirmCommand --> LogicManager
+deactivate ConfirmCommand
+
+[<--LogicManager
+destroy ConfirmCommand
+deactivate LogicManager
+
+@enduml
