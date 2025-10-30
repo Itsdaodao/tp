@@ -155,7 +155,7 @@ How the parsing works:
 How the utility classes work:
 * Currently utility classes are only used by `PersonCard`, `LaunchCommand` and `LaunchCommandParser`
 * `LaunchCommandParser` uses on `ApplicationType` to decide how it creates `LaunchCommand`
-* When called upon by either `LaunchCommand` or `PersonCard`, `ApplicationLinkLauncher` uses the `ApplicationType` and attempts to launch the communication mode through the use `DesktopApi`. 
+* When called upon by either `LaunchCommand` or `PersonCard`, `ApplicationLinkLauncher` uses the `ApplicationType` and attempts to launch the communication mode through the use `DesktopApi`.
 * Based on the success of the `DesktopApi` launch attempt, `ApplicationLinkLauncher` will return with create and return the appropriate  `ApplicationLinkResult`.
 
 ### Model component
