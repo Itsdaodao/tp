@@ -519,7 +519,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 10. Should be able to load 1000 contacts within 2 seconds.
 11. Should be able to comfortably use the application without using a mouse.
 12. Should be less than 20 Megabytes.
-13. Should execute any command in less than 1 second.
+13. Should execute any command except `launch` in less than 1 second.
 
 ### Glossary
 
@@ -598,12 +598,24 @@ testers are expected to do more *exploratory* testing.
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
-
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+1. Dealing with missing data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. Ensure that in the directory that DevBooks is being run, a `data` folder is not present.
 
-1. _{ more test cases …​ }_
+   1. Run the application.
+
+   1. Perform a simple add command `add n\New p\91223124`
+        Expected: `data/` folder is created, along with `.command_history` and `addressbook.json`
+
+
+
+1. Dealing with corrupted data files
+
+   1. Add a contact in the AddressBook to force a save to `data/addressbook.json`: `add n\Test p\912312311`
+
+   1. In an editor, edit the `data/addressbook.json` file. Corrupt the data by inputting a invalid value in a field.
+   
+   1. Test case: `invalidGH%20__!$` in any contact's `github` field
+        Expected: A warning message is shown in the bottom status bar indicating that the file failed to read.
