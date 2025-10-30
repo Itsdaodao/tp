@@ -134,16 +134,15 @@ public class TagCommandTest {
 
         // Set up valid and invalid tags
         Set<Tag> validTags = Set.of(new Tag("stranger"), new Tag("enemy"));
+        Set<Tag> invalidTags = Set.of(new Tag("nonexistent"));
         Set<Tag> target = new HashSet<>();
         target.addAll(validTags);
-        target.add(new Tag("nonexistent"));
-        target.add(new Tag("notfound"));
+        target.addAll(invalidTags);
 
         TagCommand command = new TagCommand(target, Collections.emptySet(), TagOperation.DELETE);
 
-        Set<Tag> expectedInvalidTags = Set.of(new Tag("notfound"), new Tag("nonexistent"));
         String expectedMessage = String.format(
-                TagCommand.MESSAGE_DELETE_SUCCESS_WITH_WARNING, validTags, expectedInvalidTags);
+                TagCommand.MESSAGE_DELETE_SUCCESS_WITH_WARNING, validTags, invalidTags);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(),
                 new CommandHistory());
