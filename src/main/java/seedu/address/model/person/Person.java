@@ -55,8 +55,8 @@ public class Person {
      */
     public Person(Name name, Phone phone, Email email, Telegram telegram, Github github,
                   PreferredCommunicationMode preferredMode,
-                  Set<Tag> tags, Boolean isPinned, Instant pinnedAt) {
-        requireAllNonNull(name, phone, email, telegram, github, tags, isPinned);
+                  Set<Tag> tags, Instant pinnedAt) {
+        requireAllNonNull(name, phone, email, telegram, github, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -150,7 +150,7 @@ public class Person {
 
         Boolean isPinned = true;
         Instant pinnedAt = Instant.now();
-        return new Person(name, phone, email, telegram, github, preferredMode, tags, isPinned, pinnedAt);
+        return new Person(name, phone, email, telegram, github, preferredMode, tags, pinnedAt);
     }
 
     /**

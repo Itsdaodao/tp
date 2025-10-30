@@ -135,8 +135,6 @@ class JsonAdaptedPerson {
         }
         final PreferredCommunicationMode modelPreferredMode = PreferredCommunicationMode.of(preferredCommunicationMode);
 
-        final Boolean modelIsPinned = isPinned != null && isPinned;
-
         Instant modelPinnedAt;
         try {
             modelPinnedAt = pinnedAt == null ? null : Instant.parse(pinnedAt);
@@ -145,7 +143,7 @@ class JsonAdaptedPerson {
         }
 
         return new Person(modelName, modelPhone, modelEmail, modelTelegram, modelGithub, modelPreferredMode,
-                modelTags, modelIsPinned, modelPinnedAt);
+                modelTags, modelPinnedAt);
     }
 
     /**
