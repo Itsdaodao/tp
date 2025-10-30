@@ -7,5 +7,6 @@ public enum ApplicationType {
     EMAIL,
     TELEGRAM,
     GITHUB,
+    USERGUIDE,
     UNKOWNN
 }

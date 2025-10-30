@@ -18,6 +18,8 @@ import seedu.address.logic.autocomplete.Autocompletor;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.logic.util.ApplicationLinkLauncher;
+import seedu.address.logic.util.ApplicationLinkResult;
 import seedu.address.model.ReadOnlyCommandHistory;
 
 /**
@@ -52,7 +54,6 @@ public class MainWindow extends UiPart<Stage> {
     private PersonListPanel personListPanel;
     private ResultDisplay resultDisplay;
     private CommandBox commandBox;
-    private HelpWindow helpWindow;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -86,8 +87,6 @@ public class MainWindow extends UiPart<Stage> {
         setAccelerators();
 
         setModeListeners();
-
-        helpWindow = new HelpWindow();
     }
 
     public Stage getPrimaryStage() {
@@ -235,11 +234,8 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     public void handleHelp() {
-        if (!helpWindow.isShowing()) {
-            helpWindow.show();
-        } else {
-            helpWindow.focus();
-        }
+        ApplicationLinkResult result = ApplicationLinkLauncher.launchUserGuide();
+        resultDisplay.setFeedbackToUser(result.getMessage());
     }
 
     void show() {
@@ -254,7 +250,6 @@ public class MainWindow extends UiPart<Stage> {
         GuiSettings guiSettings = new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
                 (int) primaryStage.getX(), (int) primaryStage.getY());
         logic.setGuiSettings(guiSettings);
-        helpWindow.hide();
         primaryStage.hide();
     }
 
