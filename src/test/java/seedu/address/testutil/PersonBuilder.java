@@ -9,6 +9,7 @@ import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PinStatus;
 import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
@@ -176,7 +177,7 @@ public class PersonBuilder {
             this.isPinned = false;
             this.pinnedAt = null;
 
-            throw new IllegalArgumentException(Person.PIN_DATE_MESSAGE_CONSTRAINT);
+            throw new IllegalArgumentException(PinStatus.PIN_DATE_MESSAGE_CONSTRAINT);
         }
         return this;
     }
