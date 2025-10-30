@@ -59,6 +59,9 @@ public class TagCommand extends Command {
             "Operation not suitable with renamed tag, try command without the renamed tag";
 
     public static final String MESSAGE_DELETE_SUCCESS = "Deleted tags: %s";
+    public static final String MESSAGE_DELETE_SUCCESS_WITH_WARNING =
+            "Deleted tags: %s\n"
+            + "Warning: " + MESSAGE_TAG_FAILURE + ". No operation performed on these tag.";
 
     public static final String MESSAGE_INVALID_OPERATION = "Invalid tag command operation";
 
@@ -141,24 +144,40 @@ public class TagCommand extends Command {
         assert tagOperation == TagOperation.DELETE;
         assert !targetTags.isEmpty();
 
-        boolean noTagsFoundAndDeleted = true;
+        Set<Tag> deletedTags = new HashSet<>();
+        Set<Tag> notFoundTags = new HashSet<>();
 
-        for (Person personToEdit : lastShownList) {
-            Person personWithTagsRemoved = removeTagsFromPerson(personToEdit);
+        for (Tag tagToDelete : targetTags) {
+            boolean noTagFoundAndDeleted = true;
 
-            if (personWithTagsRemoved.equals(personToEdit)) {
-                continue; // No change to Person, continue to next Person
+            for (Person personToEdit : lastShownList) {
+                Person personWithTagRemoved = removeTagFromPerson(personToEdit, tagToDelete);
+
+                if (personWithTagRemoved.equals(personToEdit)) {
+                    continue; // No change to Person, continue to next Person
+                }
+
+                model.setPerson(personToEdit, personWithTagRemoved);
+                noTagFoundAndDeleted = false;
             }
 
-            model.setPerson(personToEdit, personWithTagsRemoved);
-            noTagsFoundAndDeleted = false;
+            if (noTagFoundAndDeleted) {
+                notFoundTags.add(tagToDelete);
+            } else {
+                deletedTags.add(tagToDelete);
+            }
         }
 
-        if (noTagsFoundAndDeleted) {
-            throw new CommandException(String.format(MESSAGE_TAG_FAILURE, targetTags));
+        if (deletedTags.isEmpty()) {
+            throw new CommandException(String.format(MESSAGE_TAG_FAILURE, notFoundTags));
         }
 
-        return new CommandResult(String.format(MESSAGE_DELETE_SUCCESS, targetTags));
+        if (!notFoundTags.isEmpty()) {
+            return new CommandResult(
+                    String.format(MESSAGE_DELETE_SUCCESS_WITH_WARNING, deletedTags, notFoundTags));
+        }
+
+        return new CommandResult(String.format(MESSAGE_DELETE_SUCCESS, deletedTags));
     }
 
     private Person createPerson(Person personToEdit) {
@@ -192,10 +211,14 @@ public class TagCommand extends Command {
     /**
      * Returns a person with all target tags removed if target tag found
      */
-    private Person removeTagsFromPerson(Person personToEdit) {
+    private Person removeTagFromPerson(Person personToEdit, Tag tagToDelete) {
         Set<Tag> tags = new HashSet<>(personToEdit.getTags());
 
-        tags.removeAll(targetTags);
+        boolean isTagFound = tags.remove(tagToDelete);
+
+        if (!isTagFound) {
+            return personToEdit;
+        }
 
         return new Person(
                 personToEdit.getName(),

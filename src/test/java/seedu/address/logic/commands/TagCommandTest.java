@@ -7,6 +7,7 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -106,6 +107,43 @@ public class TagCommandTest {
         TagCommand command = new TagCommand(target, Collections.emptySet(), TagOperation.DELETE);
 
         String expectedMessage = String.format(TagCommand.MESSAGE_DELETE_SUCCESS, target);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(),
+                new CommandHistory());
+        expectedModel.setPerson(updatedFirst, new PersonBuilder(first).withTags("colleagues").build());
+        expectedModel.setPerson(updatedSecond, new PersonBuilder(second).withTags().build()); // no tags
+        expectedModel.setPerson(updatedThird, new PersonBuilder(third).withTags("friend").build());
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_deleteTagsWithInvalidAndValidTag_success() {
+        // Give multiple people the target tag
+        Person first = model.getSortedAndFilteredPersonList().get(0);
+        Person second = model.getSortedAndFilteredPersonList().get(1);
+        Person third = model.getSortedAndFilteredPersonList().get(2);
+
+        Person updatedFirst = new PersonBuilder(first).withTags("enemy", "colleagues").build();
+        Person updatedSecond = new PersonBuilder(second).withTags("stranger").build();
+        Person updatedThird = new PersonBuilder(third).withTags("stranger", "enemy", "friend").build();
+
+        model.setPerson(first, updatedFirst);
+        model.setPerson(second, updatedSecond);
+        model.setPerson(third, updatedThird);
+
+        // Set up valid and invalid tags
+        Set<Tag> validTags = Set.of(new Tag("stranger"), new Tag("enemy"));
+        Set<Tag> target = new HashSet<>();
+        target.addAll(validTags);
+        target.add(new Tag("nonexistent"));
+        target.add(new Tag("notfound"));
+
+        TagCommand command = new TagCommand(target, Collections.emptySet(), TagOperation.DELETE);
+
+        Set<Tag> expectedInvalidTags = Set.of(new Tag("notfound"), new Tag("nonexistent"));
+        String expectedMessage = String.format(
+                TagCommand.MESSAGE_DELETE_SUCCESS_WITH_WARNING, validTags, expectedInvalidTags);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs(),
                 new CommandHistory());
