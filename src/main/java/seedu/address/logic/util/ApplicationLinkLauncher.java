@@ -2,11 +2,12 @@ package seedu.address.logic.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.awt.Desktop;
-import java.awt.Desktop.Action;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Logger;
+
+import seedu.address.commons.core.LogsCenter;
 
 /**
  * Utility class to launch external application links such as email, Telegram, and GitHub.
@@ -19,14 +20,17 @@ public class ApplicationLinkLauncher {
     public static final String MESSAGE_SUCCESS = "Launched %s successfully.\n" + MESSAGE_TELEGRAM_NOTE;
     public static final String MESSAGE_FAILURE = "Failed to launch %s.";
 
+    private static final String MESSAGE_DESKTOP_API_LAUNCH_FAIL = "DesktopAPI failed to open link: %s";
+
 
     private static final String LAUNCH_EMAIL_PREFIX = "mailto:";
     private static final String LAUNCH_TELEGRAM_PREFIX = "https://t.me/";
     private static final String LAUNCH_GITHUB_PREFIX = "http://github.com/";
 
-    private static DesktopWrapper desktopWrapper;
+    private static Logger logger = LogsCenter.getLogger(ApplicationLinkLauncher.class);
 
     private static ApplicationLinkResult launchApp(String prefix, String value, ApplicationType type) {
+        requireNonNull(value);
         return launchApplicationLink(prefix + value, type);
     }
 
@@ -85,47 +89,10 @@ public class ApplicationLinkLauncher {
      * Opens the given URI using the Desktop API, with a fallback for unsupported systems.
      *
      * @param uri The URI to be opened.
-     * @throws IOException if both Desktop and fallback methods fail to open the link.
      */
     private static void openLink(URI uri) throws IOException {
         requireNonNull(uri);
-
-        boolean success = attemptOpenWithDesktop(uri);
-        if (!success) {
-            System.err.println("Desktop browse/mail failed, attempting fallback...");
-            success = tryOpenWithFallback(uri);
-            if (!success) {
-                throw new IOException("Failed to open link via both Desktop and DesktopAPI.");
-            }
-        }
-    }
-
-    /**
-     * Attempts to open the link using the java.awt.Desktop API.
-     *
-     * @return <code>true</code> if the link was successfully opened.
-     */
-    protected static boolean attemptOpenWithDesktop(URI uri) throws IOException, UnsupportedOperationException {
-        if (getDesktopWrapper() == null && !Desktop.isDesktopSupported()) {
-            return false;
-        }
-        try {
-            // Use wrapper if set
-            String scheme = uri.getScheme();
-            if ("mailto".equalsIgnoreCase(scheme) && getDesktopWrapper().isSupported(Action.MAIL)) {
-                getDesktopWrapper().mail(uri);
-                return true;
-            } else if (getDesktopWrapper().isSupported(Action.BROWSE)) {
-                getDesktopWrapper().browse(uri);
-                return true;
-            }
-            System.err.println("Desktop action not supported for: " + scheme);
-            return false;
-        } catch (IOException | UnsupportedOperationException e) {
-            System.err.println("Desktop API failed: " + e.getMessage());
-        }
-
-        return false;
+        tryOpenWithDesktopApi(uri);
     }
 
     /**
@@ -133,54 +100,15 @@ public class ApplicationLinkLauncher {
      * Relying on custom DesktopAPI class to handle link opening.
      *
      * @return <code>true</code> if the link was successfully opened.
+     * @throws IOException if both DesktopApi fails to open the link.
      */
-    private static boolean tryOpenWithFallback(URI uri) {
+    private static void tryOpenWithDesktopApi(URI uri) throws IOException {
         boolean success = DesktopApi.browse(uri);
         if (!success) {
-            System.err.println("Fallback DesktopAPI failed to open link: " + uri);
+            String errorMessage = String.format(MESSAGE_DESKTOP_API_LAUNCH_FAIL, uri);
+            logger.info(errorMessage);
+            throw new IOException(errorMessage);
         }
-        return success;
-    }
-
-    /**
-     * Helper method to find out if the current {@code desktopWrapper} instance supports the specified action
-     *
-     * @param action to be checked
-     * @return {@code true} if {@code action} is supported, else it returns {@code false}
-     */
-    protected static boolean isActionSupported(Action action) {
-        requireNonNull(getDesktopWrapper());
-        requireNonNull(action);
-
-        return desktopWrapper.isSupported(action);
-
-    }
-
-    /**
-     * Helps to set the desktopWrapper. Used mainly for testing purposes
-     *
-     * @param wrapper
-     */
-    public static void setDesktopWrapper(DesktopWrapper wrapper) {
-        desktopWrapper = wrapper; // assign to the static field
-    }
-
-    /**
-     * Sets the instance of desktop wrapper if it is {@code null}.
-     * Tries to create a {@code RealDesktopWrapper}, if it fails to do so, it will create a DummyDesktopWrapper
-     *
-     * @return {@code DesktopWrapper} instance
-     */
-    protected static DesktopWrapper getDesktopWrapper() {
-        if (desktopWrapper == null) {
-            try {
-                desktopWrapper = new RealDesktopWrapper();
-            } catch (Exception e) {
-                // CI or headless mode — fall back to a dummy wrapper
-                desktopWrapper = new DummyDesktopWrapper();
-            }
-        }
-        return desktopWrapper;
     }
 
 }
