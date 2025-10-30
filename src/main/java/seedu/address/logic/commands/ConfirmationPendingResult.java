@@ -56,9 +56,11 @@ public class ConfirmationPendingResult extends CommandResult {
          */
         public void run() {
             assert !hasRun : "Pending Result should only be ran once!";
-            if (hasRun) {
+
+            if (hasRun || r == null) {
                 return;
             }
+
             this.r.run();
             hasRun = true;
         }
