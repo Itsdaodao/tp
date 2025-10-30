@@ -9,6 +9,7 @@ import seedu.address.model.person.Github;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PinStatus;
 import seedu.address.model.person.PreferredCommunicationMode;
 import seedu.address.model.person.Telegram;
 import seedu.address.model.tag.Tag;
@@ -35,7 +36,6 @@ public class PersonBuilder {
     private Github github;
     private PreferredCommunicationMode preferredMode;
     private Set<Tag> tags;
-    private Boolean isPinned;
     private Instant pinnedAt;
 
     /**
@@ -49,7 +49,6 @@ public class PersonBuilder {
         github = new Github();
         preferredMode = PreferredCommunicationMode.of(null);
         tags = new HashSet<>();
-        isPinned = false;
         pinnedAt = null;
     }
 
@@ -64,7 +63,6 @@ public class PersonBuilder {
         github = personToCopy.getGithub();
         preferredMode = personToCopy.getPreferredMode();
         tags = new HashSet<>(personToCopy.getTags());
-        isPinned = personToCopy.isPinned();
         pinnedAt = personToCopy.getPinnedAt().orElse(null);
     }
 
@@ -160,7 +158,6 @@ public class PersonBuilder {
      * Sets a default {@code pinnedAt} of the {@code Person} that we are building.
      */
     public PersonBuilder withPinnedAt() {
-        this.isPinned = true;
         this.pinnedAt = Instant.parse(DEFAULT_PINNEDAT);
         return this;
     }
@@ -169,20 +166,17 @@ public class PersonBuilder {
      * Sets the {@code pinnedAt} of the {@code Person} that we are building.
      */
     public PersonBuilder withPinnedAt(String pinnedAt) {
-        this.isPinned = true;
         try {
             this.pinnedAt = Instant.parse(pinnedAt);
         } catch (Exception e) {
-            this.isPinned = false;
             this.pinnedAt = null;
-
-            throw new IllegalArgumentException(Person.PIN_DATE_MESSAGE_CONSTRAINT);
+            throw new IllegalArgumentException(PinStatus.PIN_DATE_MESSAGE_CONSTRAINT);
         }
         return this;
     }
 
     public Person build() {
-        return new Person(name, phone, email, telegram, github, preferredMode, tags, isPinned, pinnedAt);
+        return new Person(name, phone, email, telegram, github, preferredMode, tags, pinnedAt);
     }
 
 }

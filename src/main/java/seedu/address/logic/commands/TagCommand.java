@@ -166,7 +166,6 @@ public class TagCommand extends Command {
                 personToEdit.getGithub(),
                 personToEdit.getPreferredMode(),
                 updatedTagSet,
-                personToEdit.isPinned(),
                 personToEdit.getPinnedAt().orElse(null)
         );
     }
@@ -229,7 +228,6 @@ public class TagCommand extends Command {
                 personToEdit.getGithub(),
                 personToEdit.getPreferredMode(),
                 tags,
-                personToEdit.isPinned(),
                 personToEdit.getPinnedAt().orElse(null)
         );
     }
