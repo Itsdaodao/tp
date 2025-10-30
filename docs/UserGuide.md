@@ -119,6 +119,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [pm/PRE
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
+* To clear a field, specify the prefix but leave the value empty.
 * Existing values will be updated to the input values.
 * When editing tags, you can add or remove tags.
   * To add tags, use the prefix `t/` followed by the tags to be added.
@@ -128,17 +129,18 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [pm/PRE
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com`
    * Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-  *  `edit 2 n/Betsy Crower t/CS2103 t/CS2100 r/CS1101S`
-     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, and removes the tag `CS1101S`.
+  *  `edit 2 n/Betsy Crower t/CS2103 t/CS2100 r/CS1101S l/`
+     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, removes the tag 
+       `CS1101S` and clears the Telegram field.
        ```
-       Edited Person: Betsy Crower; Phone: 91093122; Telegram: BestyCrower; Github: BestyCrower; Tags: [CS2100][CS2103]
+       Edited Person: Betsy Crower; Phone: 91093122; Telegram: ; Github: BestyCrower; Tags: [CS2100][CS2103]
        ```
 
 ### Locating persons by name: `find`
 
 Finds persons whose names or tags start with the given prefix keyword.
 
-Format: `find [n/MORE_NAMES]` or `find [t/MORE_TAGS]`
+Format: `find [n\MORE_NAMES]` or `find [t\MORE_TAGS]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
@@ -150,12 +152,12 @@ Format: `find [n/MORE_NAMES]` or `find [t/MORE_TAGS]`
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
 Examples:
-* `find n/John` returns `johnny Tan` and `John Doe`
-* `find t/friend` returns all contacts tagged with "friend"
-* `find n/alex t/friend` searches only by name `n/alex`, since t/ is ignored
-* `find t/friend n/alex` searches only by tag `t/friend`, since n/ is ignored
-* `find n/a` returns all contacts whose names start with "A" e.g. `Alex yeoh`, `amy tan`
-* `find n/charlotte david` returns `Charlotte Oliveiro`, `David Li`<br>
+* `find n\John` returns `johnny Tan` and `John Doe`
+* `find t\friend` returns all contacts tagged with "friend"
+* `find n\alex t\friend` searches only by name `n\alex`, since t\ is ignored
+* `find t\friend n\alex` searches only by tag `t\friend`, since n/ is ignored
+* `find n\a` returns all contacts whose names start with "A" e.g. `Alex yeoh`, `amy tan`
+* `find n\charlotte david` returns `Charlotte Oliveiro`, `David Li`<br>
   ![result for 'find charlotte david'](images/findCharlotteDavidResult.png)
 
 ### Deleting a person : `delete`
@@ -391,7 +393,7 @@ Action | Format, Examples
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [l/TELEGRAM] [g/GITHUB] [t/TAG]…​ [r/TAG]…​`<br> e.g., `edit 1 p/91234567`
-**Find** | `find n/KEYWORD [MORE_KEYWORDS]` or `find t/KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n/James Jake`, `find t/friend`
+**Find** | `find n\KEYWORD [MORE_KEYWORDS]` or `find t\KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n\James Jake`, `find t\friend`
 **List** | `list [-a (alphabetical)] [-r (recent)]`<br> e.g., `list -a`
 **Help** | `help`
 **Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
