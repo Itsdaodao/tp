@@ -22,10 +22,12 @@ public class ApplicationLinkLauncher {
 
     private static final String MESSAGE_DESKTOP_API_LAUNCH_FAIL = "DesktopAPI failed to open link: %s";
 
-
+    private static final String LAUNCH_NO_PREFIX = "";
     private static final String LAUNCH_EMAIL_PREFIX = "mailto:";
     private static final String LAUNCH_TELEGRAM_PREFIX = "https://t.me/";
     private static final String LAUNCH_GITHUB_PREFIX = "http://github.com/";
+
+    private static final String USERGUIDE_URL = "https://ay2526s1-cs2103-f12-2.github.io/tp/UserGuide.html";
 
     private static Logger logger = LogsCenter.getLogger(ApplicationLinkLauncher.class);
 
@@ -55,13 +57,22 @@ public class ApplicationLinkLauncher {
     }
 
     /**
-     * Launches the telegram web with the specified handle.
+     * Launches the GitHub page of the specified username.
      *
-     * @param username The telegram handle to launch.
+     * @param username of the GitHub page to launch.
      * @return The result of the launch attempt.
      */
     public static ApplicationLinkResult launchGithub(String username) {
         return launchApp(LAUNCH_GITHUB_PREFIX, username, ApplicationType.GITHUB);
+    }
+
+    /**
+     * Launches the user guide of Devbooks.
+     *
+     * @return The result of the launch attempt.
+     */
+    public static ApplicationLinkResult launchUserGuide() {
+        return launchApp(LAUNCH_NO_PREFIX, USERGUIDE_URL, ApplicationType.USERGUIDE);
     }
 
     /**

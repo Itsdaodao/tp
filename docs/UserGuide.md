@@ -289,7 +289,7 @@ Examples:
     * LINUX (ARCH)
     * LINUX (FEDORA)
 * Your mileage with this feature might vary if your operating system is not one stated above. 
-* Kindly refer to [Known Issues: 3](#known-issues) to see more about the limitations
+* Kindly refer to [Known Issues: 2](#known-issues) to see more about the limitations
 
 ### Saving the data
 
@@ -379,8 +379,8 @@ Example:
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
-3. **If you are not using one of listed Operating System(OS)**, then `launch` command may not work as expected. Whilst our implementation attempts to use system-specific command to launch the application first, its fallback mechanism uses the java.awt.Desktop api **IF AVAILABLE**. However, linux support with the java.awt libraries is already tenuous at best as it provides inconsistent behaviour between the different distros. Hence, kindly note that if your OS is not one stated in the list, the launch function may function inconsistently.
+2. **If you are not using one of listed Operating System(OS)**, then `launch` command may not work as expected. Whilst our implementation attempts to use system-specific command to launch the application first, its fallback mechanism uses the java.awt.Desktop api **IF AVAILABLE**. However, linux support with the java.awt libraries is already tenuous at best as it provides inconsistent behaviour between the different distros. Hence, kindly note that if your OS is not one stated in the list, the launch function may function inconsistently.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Command summary
