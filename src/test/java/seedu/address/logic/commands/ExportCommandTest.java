@@ -196,6 +196,66 @@ public class ExportCommandTest {
     }
 
     @Test
+    public void execute_filenameWithExtension_removesExtensionForIncrementing() throws CommandException, IOException {
+        ExportCommand command1 = new ExportCommand("file.csv");
+        command1.execute(model);
+
+        ExportCommand command2 = new ExportCommand("file.csv");
+        command2.execute(model);
+
+        Path firstFile = Path.of("data/file.csv");
+        Path secondFile = Path.of("data/file-1.csv");
+
+        assertTrue(Files.exists(firstFile));
+        assertTrue(Files.exists(secondFile));
+    }
+
+    @Test
+    public void execute_filenameWithMultipleDots_removesOnlyLastExtension() throws CommandException, IOException {
+        ExportCommand command1 = new ExportCommand("file.backup.csv");
+        command1.execute(model);
+
+        ExportCommand command2 = new ExportCommand("file.backup.csv");
+        command2.execute(model);
+
+        Path firstFile = Path.of("data/file.backup.csv");
+        Path secondFile = Path.of("data/file.backup-1.csv");
+
+        assertTrue(Files.exists(firstFile));
+        assertTrue(Files.exists(secondFile));
+    }
+
+    @Test
+    public void execute_filenameNoExtension_keepsWholeName() throws CommandException, IOException {
+        ExportCommand command1 = new ExportCommand("myfile");
+        command1.execute(model);
+
+        ExportCommand command2 = new ExportCommand("myfile");
+        command2.execute(model);
+
+        Path firstFile = Path.of("data/myfile.csv");
+        Path secondFile = Path.of("data/myfile-1.csv");
+
+        assertTrue(Files.exists(firstFile));
+        assertTrue(Files.exists(secondFile));
+    }
+
+    @Test
+    public void execute_filenameWithDotAtStart_removesExtensionCorrectly() throws CommandException, IOException {
+        ExportCommand command1 = new ExportCommand(".hidden.csv");
+        command1.execute(model);
+
+        ExportCommand command2 = new ExportCommand(".hidden.csv");
+        command2.execute(model);
+
+        Path firstFile = Path.of("data/hidden.csv");
+        Path secondFile = Path.of("data/hidden-1.csv");
+
+        assertTrue(Files.exists(firstFile));
+        assertTrue(Files.exists(secondFile));
+    }
+
+    @Test
     public void execute_fileAlreadyExists_createsIncrementedFilename() throws CommandException, IOException {
         // Create first file
         ExportCommand command1 = new ExportCommand("testfile");
