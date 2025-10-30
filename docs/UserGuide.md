@@ -66,12 +66,17 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ### Viewing help : `help`
 
-Shows a message explaining how to access the help page.
+Shows help message in the GUI, explaining all commands.
 
 ![help message](images/helpMessage.png)
 
 Format: `help`
 
+* Use command name to look up detailed usage
+
+![detailed help message](images/detailedHelpMessage.png)
+
+Format: `help add`
 
 ### Adding a person: `add`
 
@@ -367,6 +372,24 @@ Example:
       ```
       No persons found with tag: [[CS1101]]
       ```
+      
+### Exporting Contacts
+
+Exports contacts into a csv file in the data folder. 
+
+Format: `export NAME`
+
+* `NAME` refers to the name of the file 
+* `NAME` is **optional**. Default file name is contacts.csv
+* Naming convention and rules follow default filename rules, including illegal characters
+
+Example:
+
+* `export`
+    * data will be exported to a file called contacts.csv in data folder
+* `export phonebook`
+    * data will be exported to a file called phonebook.csv in data folder
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
@@ -396,6 +419,7 @@ Action | Format, Examples
 **Help** | `help`
 **Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
 **Tag** | Rename: `tag -r t/TAG r/TAG` <br> `tag -r t/CS1101 r/CS2103`
+**Export** | `export [NAME]` <br> e.g., `export phonebook`
 --------------------------------------------------------------------------------------------------------------------
 
 ## Navigation Summary
