@@ -80,7 +80,7 @@ FindCommandParser --> CommandFactory : f
 destroy FindCommandParser
 
 CommandFactory --> AddressBookParser : f
-destroy CommandFactory
+deactivate CommandFactory
 
 AddressBookParser --> LogicManager : f
 deactivate AddressBookParser
@@ -105,7 +105,7 @@ CommandResult --> FindCommand : r
 deactivate CommandResult
 
 FindCommand --> LogicManager : r
-deactivate FindCommand
+destroy FindCommand
 
 [<--LogicManager
 deactivate LogicManager

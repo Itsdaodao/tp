@@ -111,7 +111,7 @@ public class FindCommand extends Command {
                         + "  - The search is case-insensitive (e.g., 'alice' matches 'Alice')\n"
                         + "  - Only the name field or tag field is searched\n"
                         + "  - Contacts matching at least one keyword will be displayed\n"
-                        + "  - If both prefixes provided. Only the first prefix is used.\n",
+                        + "  - If both prefixes are provided. Only the first prefix is used.\n",
                 PREFIX_NAME,
                 PREFIX_TAG,
                 PREFIX_NAME,

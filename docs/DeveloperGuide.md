@@ -108,6 +108,11 @@ The sequence diagram below illustrates the typical interactions within the `Logi
 
 ![Interactions Inside the Logic Component for the `edit 1 n/Adam` Command](images/EditSequenceDiagram.png)
 
+The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("find 
+n\John Alex")` API call as an example.
+
+![Interactions Inside the Logic Component for the `find n\John Alex` Command](images/FindSequenceDiagram.png)
+
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser`, `DeleteCommand` and `ConfirmationPendingResult` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </div>
 
@@ -322,51 +327,51 @@ same project group easily and view the development profile of their contact.
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                     | So that I can…​                                                        |
-| -------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------------------------------- |
-| `* * *` | beginner user                 |	add a contact	        | i can retrieve it when I want	|
-| `* * *` | beginner user                 |	add a phone number to a contact	        | I can easily message or call them when I need it	|
-| `* * *` | beginner user                 |	tag my contacts	        | I can easily group my contacts	|
-| `* * *` | beginner user                 |	list out all the contacts within my contact book	        | I can get an overview of everyone I've added so far	|
-| `* * *` | beginner user                 |	delete a contact	        | I can declutter my contacts list if necessary	|
-| `* * *` | beginner user                 |	look for list of available commands that I can use	        | I can know what commands I can use without memorizing	|
-| `* * `  | beginner user                 |	add a telegram handle to a contact	        | I can easily access my contact's telegram when i need it	|
-| `* * `  | beginner user                 |	update a contact	        | I can update the details of my contacts when they change	|
-| `* * `  | student                       |	search for a contact by name	        | i can quickly find their contact details	|
-| `* * `  | intermediate user             |	add all contact information all just with one line	        | I don't need to do so manually using mutiple updates	|
-| `* * `  | beginner user                 |	delete a tag	        | I can remove outdated tags	|
-| `* * `  | student                       |	quickly scroll through using arrow keys in an alphabetical list 	        | i find someone without typing.	|
-| `* * `  | impatient user                |	load my contacts within 2 seconds	        | I do not need to wait too long to access my contacts	|
-| `* * `  | beginner user                 |	see the recently accessed contacts	        | I can know who I recently contacted	|
-| `* * `  | beginner user                 |	add an email address to a contact	        | I can easily email them when I need it	|
-| `* * `  | beginner user                 |	set a preferred mode of communication to a contact	        | I can reach them at their preferred platform when |
-| `* * `  | beginner user                 |	add a contact to my favourites list	        | I can easily access them	|
-| `* * `  | beginner user                 |	see my favourites list	        | I can contact a favourite friend	|
-| `* * `  | student                       |	be able to group contacts by teams	        | i can access all members in one place.	|
-| `* * `  | advanced user                 |	be able to add multiple tags to a contact	        | i can find my groups quickly.	|
-| `* * `  | intermediate user             |	access the github page of a contact	        | I can easily view their user activity and repos	|
-| `* * `  | beginner user                 |	filter my contacts by tags and name	        | I can find my contact(s) easier	|
-| `* * `  | beginner user                 |	get more details with each commands and flags	        | I am able to learn how to properly use each command/flag	|
-| `* * `  | student                       |	back up my contacts to a CSV	        | i dont lose my contacts if the device fails.	|
-| `* * `  | student                       |	import a list of contacts from a CSV or file	        | I can quickly add contacts to another device.	|
-| `* * `  | advanced user                 |	create customizable shortcuts	        | I can increase the speed of using the application	|
-| `* * `  | advanced user                 |	view a list of my shortcuts	        | I can see an overview of my customizations	|
-| `* * `  | advanced user                 |	create my own shortcuts	        | I can quickly type out long commands instantly	|
-| `* * `  | intermediate user             |	access my command history through arrow keys	        | I can execute repeated operations quickly	|
-| `* * `  | intermediate user             |	press "Tab" to auto-complete the command that I am typing out	        | I can quickly finish the command that I am typing.	|
-| `* * `  | intermediate user             |	see hint text of what command would be autocompleted if I press "tab"	        | I have visual feedback before I autocomplete a command	|
-| `* * `  | intermediate user             |	revert the last command	        | I can undo any mistakes	|
-| `* * `  | beginner user                 |	be able to rename my tags	        | I mass edit contacts with the same tag	|
-| `* * `  | beginner user                 |	 add the github handle to a contact	        | I can easily access their github page in the future	|
-| `* * `  | beginner user                 |	delete all contacts associated with a tag	        | I can remove irrelevant contacts from my list	|
-| `*`     | beginner user                 |	go through a tutorial of the app	        | I can familiarize myself on how to use the app.|
-| `*`     | beginner user                 |	read the documentation	        | I can get started on using the app|
-| `*`     | beginner user                 |	import existing contacts from a .vcf file	        | I do not need to re-type all of my existing contacts|
-| `*`     | student                       |	launch my telegram chat with the contact person through the app	        | I can start chatting with my contacts on telegram quickly|
-| `*`     | student                       |	launch my email app quickly through the app	        | I can start writing email to my contacts quickly|
-| `*`     | student                       |	delete contacts by date time query	        | my address book is clean.|
-| `*`     | advanced user                 |	use DevBooks inside of my command console	        | I don't need to open the application to perform an operation|
-| `*`     | aesthetic-minded individual   |	customize the theme of the application	        | it's more personal to me|
+| Priority | As a …​                                    | I want to …​                                                               | So that I can…​                                                        |
+| -------- | ------------------------------------------ |----------------------------------------------------------------------------| ---------------------------------------------------------------------- |
+| `* * *` | beginner user                 | 	add a contact	                                                            | i can retrieve it when I want	|
+| `* * *` | beginner user                 | 	add a phone number to a contact	                                          | I can easily message or call them when I need it	|
+| `* * *` | beginner user                 | 	tag my contacts	                                                          | I can easily group my contacts	|
+| `* * *` | beginner user                 | 	list out all the contacts within my contact book	                         | I can get an overview of everyone I've added so far	|
+| `* * *` | beginner user                 | 	delete a contact	                                                         | I can declutter my contacts list if necessary	|
+| `* * *` | beginner user                 | 	look for list of available commands that I can use	                       | I can know what commands I can use without memorizing	|
+| `* * `  | beginner user                 | 	add a telegram handle to a contact	                                       | I can easily access my contact's telegram when i need it	|
+| `* * `  | beginner user                 | 	update a contact	                                                         | I can update the details of my contacts when they change	|
+| `* * `  | student                       | 	search for a contact by name	                                             | i can quickly find their contact details	|
+| `* * `  | intermediate user             | 	add all contact information all just with one line	                       | I don't need to do so manually using mutiple updates	|
+| `* * `  | beginner user                 | 	delete a tag	                                                             | I can remove outdated tags	|
+| `* * `  | student                       | 	quickly scroll through using arrow keys in an alphabetical list 	         | i find someone without typing.	|
+| `* * `  | impatient user                | 	load my contacts within 2 seconds	                                        | I do not need to wait too long to access my contacts	|
+| `* * `  | beginner user                 | 	see the recently accessed contacts	                                       | I can know who I recently contacted	|
+| `* * `  | beginner user                 | 	add an email address to a contact	                                        | I can easily email them when I need it	|
+| `* * `  | beginner user                 | 	set a preferred mode of communication to a contact	                       | I can reach them at their preferred platform when |
+| `* * `  | beginner user                 | 	add a contact to my favourites list	                                      | I can easily access them	|
+| `* * `  | beginner user                 | 	see my favourites list	                                                   | I can contact a favourite friend	|
+| `* * `  | student                       | 	be able to group contacts by teams	                                       | i can access all members in one place.	|
+| `* * `  | advanced user                 | 	be able to add multiple tags to a contact	                                | i can find my groups quickly.	|
+| `* * `  | intermediate user             | 	access the github page of a contact	                                      | I can easily view their user activity and repos	|
+| `* * `  | beginner user                 | 	filter my contacts by tags or name	                                 <br/> | I can find my contact(s) easier	|
+| `* * `  | beginner user                 | 	get more details with each commands and flags	                            | I am able to learn how to properly use each command/flag	|
+| `* * `  | student                       | 	back up my contacts to a CSV	                                             | i dont lose my contacts if the device fails.	|
+| `* * `  | student                       | 	import a list of contacts from a CSV or file	                             | I can quickly add contacts to another device.	|
+| `* * `  | advanced user                 | 	create customizable shortcuts	                                            | I can increase the speed of using the application	|
+| `* * `  | advanced user                 | 	view a list of my shortcuts	                                              | I can see an overview of my customizations	|
+| `* * `  | advanced user                 | 	create my own shortcuts	                                                  | I can quickly type out long commands instantly	|
+| `* * `  | intermediate user             | 	access my command history through arrow keys	                             | I can execute repeated operations quickly	|
+| `* * `  | intermediate user             | 	press "Tab" to auto-complete the command that I am typing out	            | I can quickly finish the command that I am typing.	|
+| `* * `  | intermediate user             | 	see hint text of what command would be autocompleted if I press "tab"	    | I have visual feedback before I autocomplete a command	|
+| `* * `  | intermediate user             | 	revert the last command	                                                  | I can undo any mistakes	|
+| `* * `  | beginner user                 | 	be able to rename my tags	                                                | I mass edit contacts with the same tag	|
+| `* * `  | beginner user                 | 	 add the github handle to a contact	                                      | I can easily access their github page in the future	|
+| `* * `  | beginner user                 | 	delete all contacts associated with a tag	                                | I can remove irrelevant contacts from my list	|
+| `*`     | beginner user                 | 	go through a tutorial of the app	                                         | I can familiarize myself on how to use the app.|
+| `*`     | beginner user                 | 	read the documentation	                                                   | I can get started on using the app|
+| `*`     | beginner user                 | 	import existing contacts from a .vcf file	                                | I do not need to re-type all of my existing contacts|
+| `*`     | student                       | 	launch my telegram chat with the contact person through the app	          | I can start chatting with my contacts on telegram quickly|
+| `*`     | student                       | 	launch my email app quickly through the app	                              | I can start writing email to my contacts quickly|
+| `*`     | student                       | 	delete contacts by date time query	                                       | my address book is clean.|
+| `*`     | advanced user                 | 	use DevBooks inside of my command console	                                | I don't need to open the application to perform an operation|
+| `*`     | aesthetic-minded individual   | 	customize the theme of the application	                                   | it's more personal to me|
 
 *{More to be added}*
 
@@ -456,7 +461,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Use case resumes from step 4.
 
 
-**Use case: UC09 – Find Contact by Name**
+**Use case: UC09 – Find Contact by Name or Tag**
 
 **MSS**
 
@@ -471,12 +476,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * 2a. User inputs an invalid search format
 
     * 2a1. Devbooks shows an error message
-    * 2a2. Devbooks prompts for keywords
-    * 2a3. User inputs find command with keyword(s) to search
 
-    Steps 2a1–2a3 are repeated until valid input is provided.
-
-    Use case resumes from step 3.
+        Use case ends.
 
 
 **Use case: UC06 – Show list of commands**
@@ -588,6 +589,28 @@ testers are expected to do more *exploratory* testing.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
+
+1. _{ more test cases …​ }_
+
+### Finding a person
+
+1. Finding a person by name or tag while all persons are being shown
+
+    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+
+    1. Test case: `find n\Alex`<br>
+       Expected: Persons whose names start with “Alex” are listed (e.g. Alex Yeoh). Details of the listed contacts shown
+       in the result display box. Status message shows the number of persons found.
+   2. Test case: `find t\friend`<br>
+       Expected: Persons with the tag “friend” are listed. Details of the listed contacts shown in the result display 
+       box. Status message shows the number of persons found.
+   3. Test case: `find n\a`<br>
+      Expected: All persons whose names start with “A” are listed. The search is case-insensitive (e.g. “a” matches 
+      “Alex”).
+   4. Test case: `find`<br>
+      Expected: No person is listed. Error details shown in the result display box.
+   5. Other incorrect find commands to try: `find`, `find n\`, `...`<br>
+       Expected: Similar to previous.
 
 1. _{ more test cases …​ }_
 
