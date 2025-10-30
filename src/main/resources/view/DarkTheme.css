@@ -159,7 +159,6 @@
      -fx-border-color: derive(#1d1d1d, 10%);
      -fx-border-top-width: 1px;
 }
-
 .status-bar {
     -fx-background-color: derive(#1d1d1d, 30%);
 }
@@ -369,3 +368,15 @@
     -fx-background-radius: 2;
     -fx-font-size: 11;
 }
+.preferred-tag {
+    -fx-fill: #daa520; /* GOLDENROD */;
+    -fx-font-weight: bold;
+}
+.cell_small_hyperlink:visited .preferred-tag {
+     -fx-fill: #c74ac7; /* set to purple for visited links */
+     -fx-underline: false;
+ }
+ .cell_small_hyperlink:hover .preferred-tag {
+     -fx-fill: #4077b3; /* light blue on hover */
+     -fx-underline: false;
+ }

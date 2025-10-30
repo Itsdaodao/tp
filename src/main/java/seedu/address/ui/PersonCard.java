@@ -152,8 +152,7 @@ public class PersonCard extends UiPart<Region> {
         mainText.fillProperty().bind(label.textFillProperty());
 
         // Preferred text: gold & bold
-        preferredText.setFill(Color.GOLDENROD);
-        preferredText.setStyle("-fx-font-weight: bold;");
+        preferredText.getStyleClass().add("preferred-tag");
 
         // Combine into a single flow and apply to the label
         TextFlow flow = new TextFlow(mainText, preferredText);
