@@ -5,6 +5,9 @@ import static java.util.Objects.requireNonNull;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Logger;
+
+import seedu.address.commons.core.LogsCenter;
 
 /**
  * Utility class to launch external application links such as email, Telegram, and GitHub.
@@ -17,11 +20,14 @@ public class ApplicationLinkLauncher {
     public static final String MESSAGE_SUCCESS = "Launched %s successfully.\n" + MESSAGE_TELEGRAM_NOTE;
     public static final String MESSAGE_FAILURE = "Failed to launch %s.";
 
+    private static final String MESSAGE_DESKTOP_API_LAUNCH_FAIL = "DesktopAPI failed to open link: %s";
+
 
     private static final String LAUNCH_EMAIL_PREFIX = "mailto:";
     private static final String LAUNCH_TELEGRAM_PREFIX = "https://t.me/";
     private static final String LAUNCH_GITHUB_PREFIX = "http://github.com/";
 
+    private static Logger logger = LogsCenter.getLogger(ApplicationLinkLauncher.class);
 
     private static ApplicationLinkResult launchApp(String prefix, String value, ApplicationType type) {
         requireNonNull(value);
@@ -83,16 +89,10 @@ public class ApplicationLinkLauncher {
      * Opens the given URI using the Desktop API, with a fallback for unsupported systems.
      *
      * @param uri The URI to be opened.
-     * @throws IOException if both Desktop and fallback methods fail to open the link.
      */
     private static void openLink(URI uri) throws IOException {
         requireNonNull(uri);
-
-        boolean success = tryOpenWithDesktopApi(uri);
-        if (!success) {
-            throw new IOException("Failed to open link via both Desktop and DesktopAPI.");
-        }
-
+        tryOpenWithDesktopApi(uri);
     }
 
     /**
@@ -100,13 +100,15 @@ public class ApplicationLinkLauncher {
      * Relying on custom DesktopAPI class to handle link opening.
      *
      * @return <code>true</code> if the link was successfully opened.
+     * @throws IOException if both DesktopApi fails to open the link.
      */
-    private static boolean tryOpenWithDesktopApi(URI uri) {
+    private static void tryOpenWithDesktopApi(URI uri) throws IOException {
         boolean success = DesktopApi.browse(uri);
         if (!success) {
-            System.err.println("Fallback DesktopAPI failed to open link: " + uri);
+            String errorMessage = String.format(MESSAGE_DESKTOP_API_LAUNCH_FAIL, uri);
+            logger.info(errorMessage);
+            throw new IOException(errorMessage);
         }
-        return success;
     }
 
 }

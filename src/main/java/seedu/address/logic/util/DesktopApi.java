@@ -151,7 +151,7 @@ public class DesktopApi {
             return true;
 
         } catch (Throwable t) {
-            logErr(LOG_BROWSE_ERROR, t);
+            logErr(LOG_BROWSE_ERROR);
             return false;
         }
     }
@@ -174,7 +174,7 @@ public class DesktopApi {
             return true;
 
         } catch (Throwable t) {
-            logErr(LOG_OPEN_ERROR, t);
+            logErr(LOG_OPEN_ERROR);
             return false;
         }
     }
@@ -197,7 +197,7 @@ public class DesktopApi {
             return true;
 
         } catch (Throwable t) {
-            logErr(LOG_EDIT_ERROR, t);
+            logErr(LOG_EDIT_ERROR);
             return false;
         }
     }
@@ -268,7 +268,7 @@ public class DesktopApi {
                 return true;
             }
         } catch (IOException e) {
-            logErr(LOG_RUN_COMMAND_ERROR, e);
+            logErr(LOG_RUN_COMMAND_ERROR);
             return false;
         }
     }
@@ -297,17 +297,12 @@ public class DesktopApi {
         return parts.toArray(new String[parts.size()]);
     }
 
-    private static void logErr(String msg, Throwable t) {
-        logger.fine(msg);
-        t.printStackTrace();
-    }
-
     private static void logErr(String msg) {
         logger.fine(msg);
     }
 
     private static void logOut(String msg) {
-        logger.fine(msg);
+        logger.info(msg);
     }
 
     /**
