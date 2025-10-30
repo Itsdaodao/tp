@@ -372,7 +372,7 @@ Exports contacts into a csv file in the data folder.
 Format: `export NAME`
 
 * `NAME` refers to the name of the file 
-* Default file name is contacts.csv
+* `NAME` is **optional**. Default file name is contacts.csv
 * Naming convention and rules follow default filename rules, including illegal characters
 
 Example:
@@ -411,6 +411,7 @@ Action | Format, Examples
 **Help** | `help`
 **Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
 **Tag** | Rename: `tag -r t/TAG r/TAG` <br> `tag -r t/CS1101 r/CS2103`
+**Export** | `export [NAME]` <br> e.g., `export phonebook`
 --------------------------------------------------------------------------------------------------------------------
 
 ## Navigation Summary
