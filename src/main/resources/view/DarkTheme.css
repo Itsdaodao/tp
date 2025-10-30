@@ -372,11 +372,4 @@
     -fx-fill: #daa520; /* GOLDENROD */;
     -fx-font-weight: bold;
 }
-.cell_small_hyperlink:visited .preferred-tag {
-     -fx-fill: #c74ac7; /* set to purple for visited links */
-     -fx-underline: false;
- }
- .cell_small_hyperlink:hover .preferred-tag {
-     -fx-fill: #4077b3; /* light blue on hover */
-     -fx-underline: false;
- }
+
