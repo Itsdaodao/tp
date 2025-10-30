@@ -104,7 +104,7 @@ The sequence diagram below illustrates the typical interactions within the `Logi
 
 ![Interactions Inside the Logic Component for the `edit 1 n/Adam` Command](images/EditSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser`, `DeleteCommand` and `ConfirmationPendingResult` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `EditCommandParser` and `EditCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </div>
 
 How the `Logic` component works in a typical case:
@@ -126,13 +126,11 @@ The `Logic` component additionally relies on `State` to chiefly manage Confirmat
 </div>
 
 How Logic manages State:
-Before parsing a Command, LogicManager checks its `State` to see if there is an operation pending confirmation.
 
-If there is no pending operation, the Logic Manager parses the input as per normal.
-
-If there is a pending operation, `LogicManager` calls upon `AddressBookParser` to strictly parse the input as a `ConfirmCommand`. `ConfirmCommand` will clear `State` via a callback once satisfied.
-
-After execution of a command, if the command returns a `ConfirmationPendingResult`, the LogicManager sets the `State` to await for the user's confirmation
+* Before parsing a Command, LogicManager checks its `State` to see if there is an operation pending confirmation.
+* If there is no pending operation, the Logic Manager parses the input as per normal.
+* If there is a pending operation, `LogicManager` calls upon `AddressBookParser` to strictly parse the input as a `ConfirmCommand`. `ConfirmCommand` will clear `State` via a callback once satisfied.
+* After execution of a command, if the command returns a `ConfirmationPendingResult`, the LogicManager sets the `State` to await for the user's confirmation
 
 #### Parsing
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
