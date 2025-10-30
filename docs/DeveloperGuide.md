@@ -18,6 +18,10 @@ Third party Libraries Used:
 * [Hamcrest](https://github.com/hamcrest/JavaHamcrest)
 * [Mockito](https://github.com/mockito/mockito)
 
+Credits Adapted ideas:
+* [Cross Platform Launching](https://stackoverflow.com/questions/18004150/desktop-api-is-not-supported-on-the-current-platform)
+    * Note: JavaDoc Headers were not provided by the original credited author, but by the developer ([MoshiMoshiMochi](https://github.com/MoshiMoshiMochi)) implementing this. Hence, these documentations may not be exactly what the original author envisioned.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Setting up, getting started**
