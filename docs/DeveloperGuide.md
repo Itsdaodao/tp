@@ -115,6 +115,9 @@ n\John Alex")` API call as an example.
 
 ![Interactions Inside the Logic Component for the `find n\John Alex` Command](images/FindSequenceDiagram.png)
 
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `EditCommandParser` and `EditCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+</div>
+
 How the `Logic` component works in a typical case:
 1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object.
 1. The `AddressBookParser` calls upon the `CommandRegistry` to obtain a `CommandFactory` that creates a Command.
@@ -159,6 +162,12 @@ How the utility classes work:
 * `LaunchCommandParser` uses on `ApplicationType` to decide how it creates `LaunchCommand`
 * When called upon by either `LaunchCommand` or `PersonCard`, `ApplicationLinkLauncher` uses the `ApplicationType` and attempts to launch the communication mode through the use `DesktopApi`.
 * Based on the success of the `DesktopApi` launch attempt, `ApplicationLinkLauncher` will return with create and return the appropriate  `ApplicationLinkResult`.
+
+#### How the Components work together (Find Command)
+
+The sequence diagram below shows the full execution of the `FindCommand` in the `Logic` component.
+
+![Interactions Inside the Logic Component for the `find n\John Alex` Command](images/FindSequenceDiagram.png)
 
 ### Model component
 **API** : [`Model.java`](https://github.com/AY2526S1-CS2103-F12-2/tp/blob/master/src/main/java/seedu/address/model/Model.java)
@@ -759,3 +768,130 @@ testers are expected to do more *exploratory* testing.
 
    1. Test case: `invalidGH%20__!$` in any contact's `github` field<br>
         Expected: A warning message is shown in the bottom status bar indicating that the file failed to read.
+
+### Listing all Contacts
+
+1. Listing all contacts in default order (first to last)
+   1. Prerequisites: Contact list is not already in default order  
+   2. Test case: `list`<br>
+      Expected Result Display:
+        ```
+        Listed all persons
+        ```
+      Expected Result: Contacts should be list in default order. **Pin priority takes precedences.**
+
+
+2. List all contacts in alphabetical order
+   1. Prerequisites: Contact list is not already in alphabetical order
+   2. Test case: `list`<br> Expected Result Display: 
+       ```
+       Listed all persons in alphabetical order
+       ```
+      Expected Result: Contacts should be list in alphabetical order. **Pin priority takes precedences.**
+
+3. List all contacts in recent order (latest to earliest)
+    1. Prerequisites: Contact list is not already in recent order
+    2. Test case: `list`<br> Expected Result Display:
+        ```
+        Listed all persons in recent order
+        ```
+       Expected Result: Contacts should be list in recent order (latest to earliest). **Pin priority takes precedences.**
+
+### Editing a single Contact
+
+1. Edit First Person's in the displayed list phone no. and email. 
+    1. Prerequisites: There is at least 1 person in the displayed list
+   2. `edit 1 p\91234567 e\johndoe@example.com`<br>
+       Expected Result Display:
+        ```
+        Edited Person: Bernice Yu; Phone: 91234567; Email: johndoe@example.com; Telegram: berinceyu88; Github: berniceyu88; Preferred mode: phone; Tags: [colleagues][friends]
+        ```
+        Expected Result: Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
+
+2. Edit Second Person in the displayed list, (NAME, ADD TAG, REMOVE TAG, CLEAR_TELEGRAM)
+   1. Prerequisites: There is at least 2 person in the displayed list and no other person with the name "Betsy Crower"
+   2. Test: `edit 2 n\Betsy Crower t\CS2103 t\CS2100 r\CS1101S l\` <br>
+      Expected Result Display:
+        ```
+        Edited Person: Betsy Crower; Phone: 91093122; Telegram: ; Github: BestyCrower; Tags: [CS2100][CS2103]
+        ```
+        Expected Result: Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, removes the tag
+      `CS1101S` and clears the Telegram field.
+
+
+### Launching Communication Mode
+
+1. Launch First Person's Email.
+   1. Prerequisites: The first person in the displayed list has an email
+
+   2. Test: `launch 1 -e` <br>
+      Expected Result Display:
+        ```
+        Launched EMAIL successfully.
+      Note: You can only launch Telegram links from the browser if you have the Telegram application installed on your device.      
+        ```
+      Expected Result: Email Draft to the selected email should launch and Result display show the success message above as well as a caveat about launching telegram
+
+2. Launch Second Person's without the specified communication mode.
+   1. Prerequisites: The second person in the displayed list does **NOT** have a telegram handle
+
+   2. Test: `launch 1 -l` <br>
+      Expected Result Display:
+       ```
+      Person Name This person does not have a Telegram handle. 
+       ```
+      Expected Result: Result display show the message of the contact's name followed by the error message above
+
+3. Launch Third Person's GitHub.
+    1. Prerequisites: The third person in the displayed list has a GitHub username and user has access to pointing device that can interact with the GUI.
+
+   2. Test: Click on the GitHub username of the third person in the list <br>
+       Expected Result Display: <br>
+        ```
+       Launched GitHub successfully.
+       Note: You can only launch Telegram links from the browser if you have the Telegram application installed on your device.
+       ```
+       Expected Result: GitHub page of the selected username should launch and Result display show the success message above as well as a caveat about launching telegram
+
+4. Launching the User Guide.
+   1. Test: Press the `F1` key <br>
+      Expected Result Display:
+        ```
+       Launched USERGUIDE successfully.
+       Note: You can only launch Telegram links from the browser if you have the Telegram application installed on your device.
+       ```
+      Expected Result: User Guide to Devbooks should launch and Result display show the success message above as well as a caveat about launching telegram
+
+### Renaming the Tags for Multiple Users
+
+1. Renaming Tags for all Users 
+   1. Prerequisites: The displayed list has at least 1 person with the target tag
+   
+   2. Test: `tag -r t/CS1101 r/CS2103` <br>
+      Expected Result Display:
+        ```
+      Renamed tag [CS1101] to [CS2103] for 2 person(s).
+      ```
+   Expected Result: Renames the existing tag `CS1101` for all contacts that has it with the new tag `CS2103` and displays the number of person updated
+
+2. Renaming Tags for all Users 
+    1. Prerequisites: The displayed list has NO person with the target tag
+
+   2. Test: `tag -r t/CS1101 r/CS2103` <br>
+       Expected Result Display:
+         ```
+       No persons found with tag: [[CS1101]]
+       ```
+   Expected Result: Error Message displaying that No Person is found using the target tag.
+
+3. Deleting Tags for all Users (Given the target tag **does exist**)
+    1. Prerequisites: The displayed list has at least 1 person with the target tags
+   
+   2. Test: `tag -d t/CS1101 t/CS2103` <br>
+        Expected Result Display:
+       ```
+       Deleted tags: [[CS1101], [CS2103]]
+       ```
+       Expected Output deletes `CS1101` & `CS2103` tag for all contacts with the tag.
+
+
