@@ -434,10 +434,10 @@ Action | Format, Examples
 **Find** | `find n\KEYWORD [MORE_KEYWORDS]` or `find t\KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n\James Jake`, `find t\friend`
 **List** | `list [-a (alphabetical)] [-r (recent)]`<br> e.g., `list -a`
 **Help** | `help COMMAND`
-**Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
+**Launch** | `launch INDEX [-e (Email)] [-l (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
 **Tag** | Rename: `tag -r t\TAG r\TAG` <br> `tag -r t\CS1101 r\CS2103` <br><br> Delete: `tag -d t\TAG…` <br> `tag -d t\CS1101`
-**Pin** | pin INDEX<br> e.g., pin 3
-**Unpin** | unpin INDEX<br> e.g., unpin 1
+**Pin** | `pin INDEX` <br> e.g., `pin 3`  
+**Unpin** | `unpin INDEX` <br> e.g., `unpin 1`  
 **Export** | `export [NAME]` <br> e.g., `export phonebook`
 --------------------------------------------------------------------------------------------------------------------
 

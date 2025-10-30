@@ -110,13 +110,6 @@ The sequence diagram below illustrates the typical interactions within the `Logi
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `EditCommandParser` and `EditCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </div>
 
-The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("find
-n\John Alex")` API call as an example.
-
-![Interactions Inside the Logic Component for the `find n\John Alex` Command](images/FindSequenceDiagram.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `EditCommandParser` and `EditCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
-</div>
 
 How the `Logic` component works in a typical case:
 1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object.
@@ -158,7 +151,7 @@ How the parsing works:
 ![How Logic Utility Classes Work](images/LogicUtilityClassDiagram.png)
 
 How the utility classes work:
-* Currently utility classes are only used by `PersonCard`, `LaunchCommand` and `LaunchCommandParser`
+* Currently utility classes are only used by `PersonCard`, `LaunchCommand`, `LaunchCommandParser` and `MainWindow`
 * `LaunchCommandParser` uses on `ApplicationType` to decide how it creates `LaunchCommand`
 * When called upon by either `LaunchCommand` or `PersonCard`, `ApplicationLinkLauncher` uses the `ApplicationType` and attempts to launch the communication mode through the use `DesktopApi`.
 * Based on the success of the `DesktopApi` launch attempt, `ApplicationLinkLauncher` will return with create and return the appropriate  `ApplicationLinkResult`.
@@ -893,5 +886,3 @@ testers are expected to do more *exploratory* testing.
        Deleted tags: [[CS1101], [CS2103]]
        ```
        Expected Output deletes `CS1101` & `CS2103` tag for all contacts with the tag.
-
-
