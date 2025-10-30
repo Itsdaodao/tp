@@ -118,12 +118,14 @@ The `Logic` component additionally relies on `State` to chiefly manage Confirmat
 
 </div>
 
-How logic manages state:
-On every execute call, LogicManager checks its `State` to see if there is an operation pending confirmation.
+How Logic manages State:
+Before parsing a Command, LogicManager checks its `State` to see if there is an operation pending confirmation.
 
-If there is no pending command, the operation carries on as per normal.
+If there is no pending operation, the Logic Manager parses the input as per normal.
 
-If there is a pending command, `LogicManager` calls upon `AddressBookParser` to strictly parse the command as a `ConfirmCommand`. `ConfirmCommand` will clear `State` via a callback once satisfied.
+If there is a pending operation, `LogicManager` calls upon `AddressBookParser` to strictly parse the input as a `ConfirmCommand`. `ConfirmCommand` will clear `State` via a callback once satisfied.
+
+After execution of a command, if the command returns a `ConfirmationPendingResult`, the LogicManager sets the `State` to await for the user's confirmation
 
 #### Parsing
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:

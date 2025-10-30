@@ -52,6 +52,7 @@ deactivate StateManager
 
 [<-- LogicManager
 deactivate LogicManager
+destroy DeleteCommand
 
 -> LogicManager#FFBBBB: execute("y")
 activate LogicManager
@@ -89,7 +90,10 @@ StateManager --> ConfirmCommand
 deactivate StateManager
 
 ConfirmCommand --> LogicManager
+deactivate ConfirmCommand
 
 [<--LogicManager
+destroy ConfirmCommand
+deactivate LogicManager
 
 @enduml
