@@ -309,7 +309,7 @@ Examples:
 ### Saving the data
 
 There is no need to save manually as the AddressBook data are saved in the hard disk automatically **ONLY after any command that changes the data**.
-* Commands that change the data include: `add`, `edit`, `delete`, and `clear`.
+* Commands that change the data include: `add`, `edit`, `delete`, `pin`, `unpin`, `tag` and `clear`.
 * Commands that do not change the data include: `help`, `list`, `find`, `launch`, and `exit`.
 
 ### Editing the data file
