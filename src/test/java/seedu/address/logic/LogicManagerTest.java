@@ -153,8 +153,9 @@ public class LogicManagerTest {
         expectedCommandHistory.addCommandToHistory(deleteCommand);
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), expectedCommandHistory);
 
-        String expected = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_CONFIRM, Messages.format(AMY));
-        assertCommandDoesNotTriggerWrite(deleteCommand, expected, expectedModel);
+        String expectedDeleteText = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_CONFIRM, Messages.format(AMY));
+        String expectedPrompt = String.format(ConfirmationPendingResult.CONFIRMATION_TEXT_FORMAT, expectedDeleteText);
+        assertCommandDoesNotTriggerWrite(deleteCommand, expectedPrompt, expectedModel);
     }
 
     @Test
@@ -205,7 +206,9 @@ public class LogicManagerTest {
         ModelManager expectedModel = new ModelManager(new AddressBook(), new UserPrefs(), expectedCommandHistory);
         expectedModel.addPerson(AMY);
 
-        assertCommandDoesNotTriggerWrite(clearCommand, ClearCommand.MESSAGE_CLEAR_CONFIRM, expectedModel);
+        String expectedPrompt = String.format(ConfirmationPendingResult.CONFIRMATION_TEXT_FORMAT,
+                ClearCommand.MESSAGE_CLEAR_CONFIRM);
+        assertCommandDoesNotTriggerWrite(clearCommand, expectedPrompt, expectedModel);
     }
 
     @Test
@@ -440,12 +443,10 @@ public class LogicManagerTest {
         State state = new StateManager();
         state.setAwaitingUserConfirmation(new ConfirmationPendingResult(
                 "Confirm deletion [y/n] of:\n" + Messages.format(person) + "?",
-                false, false, () -> {
-                    model.deletePerson(person);
-                    return new CommandResult(
+                false, false, () -> model.deletePerson(person),
+                    new CommandResult(
                             String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(person))
-                    );
-                }
+                    )
         ));
         return state;
     }

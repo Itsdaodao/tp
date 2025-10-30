@@ -25,8 +25,7 @@ public class DeleteCommand extends Command {
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
 
-    public static final String MESSAGE_DELETE_PERSON_CONFIRM = "Confirm deletion "
-            + ConfirmCommand.USER_INPUT_OPTIONS + " of:\n%1$s?";
+    public static final String MESSAGE_DELETE_PERSON_CONFIRM = "Confirm deletion of:\n%1$s";
 
     private final Index targetIndex;
 
@@ -48,12 +47,9 @@ public class DeleteCommand extends Command {
         return new ConfirmationPendingResult(
                 String.format(MESSAGE_DELETE_PERSON_CONFIRM, Messages.format(personToDelete)),
                 false,
-                false, () -> {
-                    model.deletePerson(personToDelete);
-                    return new CommandResult(
+                false, () -> model.deletePerson(personToDelete), new CommandResult(
                             String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete))
-                    );
-                }
+                    )
         );
     }
 
@@ -96,7 +92,8 @@ public class DeleteCommand extends Command {
                         + "  INDEX - The index number shown in the displayed contact list (required)\n\n"
                         + "Notes:\n"
                         + "  - The index must be a positive integer (1, 2, 3, ...)\n"
-                        + "  - The index refers to the contact's position in the currently displayed list"
+                        + "  - The index refers to the contact's position in the currently displayed list\n"
+                        + "  - The program will prompt for confirmation before the deletion is finalized"
         );
     }
 }

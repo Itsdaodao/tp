@@ -21,7 +21,7 @@ public class StateManagerTest {
     public void getPendingOperation_awaitingConfirmation_returnsPendingOperation() {
         StateManager stateManager = new StateManager();
         ConfirmationPendingResult mockPendingOperation = new ConfirmationPendingResult(
-                "Confirm?", false, false, () -> new CommandResult("Done!")
+                "Confirm?", false, false, () -> {}, new CommandResult("Done!")
         );
         stateManager.setAwaitingUserConfirmation(mockPendingOperation);
 
@@ -38,7 +38,7 @@ public class StateManagerTest {
     public void isAwaitingUserConfirmation_afterSettingPendingOperation_returnsTrue() {
         StateManager stateManager = new StateManager();
         ConfirmationPendingResult mockPendingOperation = new ConfirmationPendingResult(
-                "Confirm?", false, false, () -> new CommandResult("Done!")
+                "Confirm?", false, false, () -> {}, new CommandResult("Done!")
         );
         stateManager.setAwaitingUserConfirmation(mockPendingOperation);
         assertTrue(stateManager.isAwaitingUserConfirmation());
@@ -48,7 +48,7 @@ public class StateManagerTest {
     public void clearAwaitingUserConfirmation_afterSettingPendingOperation_resetsState() {
         StateManager stateManager = new StateManager();
         ConfirmationPendingResult mockPendingOperation = new ConfirmationPendingResult(
-                "Confirm?", false, false, () -> new CommandResult("Done!")
+                "Confirm?", false, false, () -> {}, new CommandResult("Done!")
         );
         stateManager.setAwaitingUserConfirmation(mockPendingOperation);
         stateManager.clearAwaitingUserConfirmation();

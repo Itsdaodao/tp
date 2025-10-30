@@ -27,7 +27,9 @@ public class ClearCommandTest {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
 
-        assertCommandSuccess(new ClearCommand(), model, ClearCommand.MESSAGE_CLEAR_CONFIRM, expectedModel);
+        String expectedPrompt = String.format(ConfirmationPendingResult.CONFIRMATION_TEXT_FORMAT,
+                ClearCommand.MESSAGE_CLEAR_CONFIRM);
+        assertCommandSuccess(new ClearCommand(), model, expectedPrompt, expectedModel);
     }
 
     @Test
