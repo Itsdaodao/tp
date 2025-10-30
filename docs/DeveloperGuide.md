@@ -90,7 +90,7 @@ The `UI` component,
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
 * depends on some classes in the `Logic` component, because launching communication mode application through `UI` relies `ApplicationLinkLauncher` to execute action.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
-* initializes with a list of commands from the `Logic` component to use for autocompletion.
+* depends on the `Autocompletor` in `Logic` to provide suggestions while the user is typing.
 
 ### Logic component
 
