@@ -303,7 +303,7 @@ Examples:
     * MAC
     * LINUX (ARCH)
     * LINUX (FEDORA)
-* Your mileage with this feature might vary if your operating system is not one stated above. 
+* Your mileage with this feature might vary if your operating system is not one stated above.
 * Kindly refer to [Known Issues: 2](#known-issues) to see more about the limitations
 
 ### Saving the data
@@ -387,14 +387,14 @@ Example:
       Deleted tags: [[CS1101]]
       Warning: No persons found with tag: [[CS2103]]. No operation performed on these tags.
       ```
-      
+
 ### Exporting Contacts
 
-Exports contacts into a csv file in the data folder. 
+Exports contacts into a csv file in the data folder.
 
 Format: `export NAME`
 
-* `NAME` refers to the name of the file 
+* `NAME` refers to the name of the file
 * `NAME` is **optional**. Default file name is contacts.csv
 * Naming convention and rules follow default filename rules, including illegal characters
 

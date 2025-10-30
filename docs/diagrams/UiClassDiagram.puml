@@ -28,34 +28,29 @@ Class HiddenOutside #FFFFFF
 Class HiddenOutside2 #FFFFFF
 HiddenOutside ..> Ui
 
-UiManager .left.|> Ui
-UiManager -down-> "1" MainWindow
-MainWindow *-down->  "1" CommandBox
-MainWindow *-down-> "1" ResultDisplay
-MainWindow *-down-> "1" PersonListPanel
-MainWindow *-down-> "1" StatusBarFooter
+UiManager ..|> Ui
+UiManager --> "1" MainWindow
+MainWindow *-->  "1" CommandBox
+MainWindow *--> "1" ResultDisplay
+MainWindow *--> "1" PersonListPanel
+MainWindow *--> "1" StatusBarFooter
 
-PersonListPanel -down-> "*" PersonCard
+PersonListPanel --> "*" PersonCard
 
-MainWindow -left-|> UiPart
+MainWindow --|> UiPart
 
 ResultDisplay --|> UiPart
-CommandBox --|> UiPart
 PersonListPanel --|> UiPart
 PersonCard --|> UiPart
 StatusBarFooter --|> UiPart
+CommandBox --|> UiPart
 
 PersonCard ..> Model
 PersonCard ..> Logic
-UiManager -right-> Logic
-MainWindow -left-> Logic
+UiManager --> Logic
+MainWindow --> Logic
 
-CommandBox -[hidden]left- ResultDisplay
-ResultDisplay -[hidden]left- StatusBarFooter
 
-MainWindow -[hidden]-|> UiPart
-MainWindow .down.> Model
-UiPart .[hidden].> Model
-HiddenOutside2 .[hidden]down.> Model
-HiddenOutside2 .[hidden]up...> Logic
+UiManager -> Model
+CommandBox -> Model
 @enduml
