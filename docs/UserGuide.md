@@ -218,7 +218,7 @@ Examples:
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the address book. This
+Clears all entries from the address book. This command requires a follow-up confirmation.
 
 Format: `clear`
 
