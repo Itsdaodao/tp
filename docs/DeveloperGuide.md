@@ -97,12 +97,13 @@ The `UI` component,
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/AY2526S1-CS2103-F12-2/tp/blob/master/src/main/java/seedu/address/logic/Logic.java)
+**API** : [`Logic.java`](https://github.com/AY2526S1-CS2103-F12-2/tp/blob/master/src/main/java/seedu/address/logic/Logic.java) 
 
 Here's a (partial) class diagram of the `Logic` component:
 
 <img src="images/LogicClassDiagram.png" width="550"/>
 
+<div style = "page-break-after:always;"></div>
 The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("edit 1 n/Adam")` API call as an example.
 
 ![Interactions Inside the Logic Component for the `edit 1 n\Adam` Command](images/EditSequenceDiagram.png)
@@ -155,6 +156,8 @@ How the utility classes work:
 * `LaunchCommandParser` uses on `ApplicationType` to decide how it creates `LaunchCommand`
 * When called upon by either `LaunchCommand` or `PersonCard`, `ApplicationLinkLauncher` uses the `ApplicationType` and attempts to launch the communication mode through the use `DesktopApi`.
 * Based on the success of the `DesktopApi` launch attempt, `ApplicationLinkLauncher` will return with create and return the appropriate  `ApplicationLinkResult`.
+
+<div style = "page-break-after:always;"></div>
 
 #### How the Components work together (Find Command)
 
