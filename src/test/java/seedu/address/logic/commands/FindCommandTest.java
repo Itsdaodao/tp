@@ -12,6 +12,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +28,8 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
 public class FindCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
     private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs(), new CommandHistory());
+
+    private final Logger logger = Logger.getLogger(FindCommandTest.class.getName());
 
     @Test
     public void equals() {
@@ -57,9 +60,11 @@ public class FindCommandTest {
 
     @Test
     public void execute_zeroKeywords_noPersonFound() {
+        logger.info("Testing zero-keyword search (expect 0 results)");
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
         NameContainsKeywordsPredicate predicate = preparePredicate(" ");
         FindCommand command = new FindCommand(predicate, false);
+
         expectedModel.updateFilteredPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Collections.emptyList(), model.getSortedAndFilteredPersonList());
@@ -67,9 +72,11 @@ public class FindCommandTest {
 
     @Test
     public void execute_multipleKeywords_multiplePersonsFound() {
+        logger.info("Testing multi-keyword search (expect CARL, ELLE, FIONA)");
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
         NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
         FindCommand command = new FindCommand(predicate, false);
+
         expectedModel.updateFilteredPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(CARL, ELLE, FIONA), model.getSortedAndFilteredPersonList());
@@ -77,11 +84,14 @@ public class FindCommandTest {
 
     @Test
     public void execute_multiplePrefixes_showsWarningMessage() {
+        logger.info("Testing multi-prefix warning message");
         String expectedMessage = FindCommand.MESSAGE_MULTIPLE_PREFIXES_NOT_ALLOWED
                 + String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
         boolean showWarning = true;
+
         NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
         FindCommand command = new FindCommand(predicate, showWarning);
+
         expectedModel.updateFilteredPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(CARL, ELLE, FIONA), model.getSortedAndFilteredPersonList());
@@ -89,9 +99,12 @@ public class FindCommandTest {
 
     @Test
     public void toStringMethod() {
+        boolean showWarning = false;
         NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Arrays.asList("keyword"));
-        FindCommand findCommand = new FindCommand(predicate, false);
-        String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
+        FindCommand findCommand = new FindCommand(predicate, showWarning);
+        String expected =
+                FindCommand.class.getCanonicalName() + "{predicate=" + predicate
+                        + ", showWarning=" + showWarning + "}";
         assertEquals(expected, findCommand.toString());
     }
 

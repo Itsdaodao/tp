@@ -1,5 +1,7 @@
 package seedu.address.logic.parser;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_POPPY;
@@ -12,13 +14,17 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.testutil.Assert.assertThrows;
 
 import java.util.Arrays;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.TagContainsKeywordsPredicate;
 
 public class FindCommandParserTest {
@@ -45,7 +51,7 @@ public class FindCommandParserTest {
     @Test
     public void parse_invalidPrefix_throwsParseException() {
         // Invalid prefix (like p/)
-        String userInput = " p/12345 " + NAME_DESC_AMY + TAG_DESC_FRIEND;
+        String userInput = " p'\'12345 " + NAME_DESC_AMY + TAG_DESC_FRIEND;
         assertParseFailure(parser, userInput, String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 
@@ -54,6 +60,44 @@ public class FindCommandParserTest {
         // Non-empty preamble before prefix
         String userInput = " someText " + NAME_DESC_AMY;
         assertParseFailure(parser, userInput, String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_emptyKeywordList_throwsParseException() {
+        String input = " n'\' "; // empty name prefix argument
+        assertThrows(ParseException.class, () -> parser.parse(input));
+    }
+
+    @Test
+    public void extractKeywords_emptyKeyword_throwsParseException() {
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize("n/   ", CliSyntax.PREFIX_NAME);
+        String args = "n/   ";
+
+        assertThrows(ParseException.class, () ->
+                parser.extractKeywords(argMultimap, PREFIX_NAME, args)
+        );
+    }
+
+    @Test
+    public void buildPredicate_namePrefix_returnsNamePredicate() {
+        String[] keywords = {"Alice", "Bob"};
+        Predicate<Person> predicate = parser.buildPredicate(PREFIX_NAME, keywords);
+        assertTrue(predicate instanceof NameContainsKeywordsPredicate);
+    }
+
+    @Test
+    public void buildPredicate_tagPrefix_returnsTagPredicate() {
+        String[] keywords = {"friends", "colleagues"};
+        Predicate<Person> predicate = parser.buildPredicate(PREFIX_TAG, keywords);
+        assertTrue(predicate instanceof TagContainsKeywordsPredicate);
+    }
+
+    @Test
+    public void buildPredicate_unknownPrefix_returnsNull() {
+        Prefix unknownPrefix = new Prefix("x/");
+        String[] keywords = {"irrelevant"};
+        Predicate<Person> predicate = parser.buildPredicate(unknownPrefix, keywords);
+        assertNull(predicate);
     }
 
     @Test
@@ -76,7 +120,6 @@ public class FindCommandParserTest {
         // with leading/trailing/multiple whitespace
         assertParseSuccess(parser, "  \n  " + TAG_DESC_FRIEND + "   \t ", expectedFindCommand);
     }
-
 
     @Test
     public void parse_validNameArgs_returnsFindCommand() {

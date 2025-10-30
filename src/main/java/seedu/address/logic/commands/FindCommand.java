@@ -16,7 +16,6 @@ import seedu.address.model.person.Person;
  * Keyword matching is case insensitive.
  */
 public class FindCommand extends Command {
-
     public static final String COMMAND_WORD = "find";
 
     public static final String EXAMPLE_MESSAGE =
@@ -45,6 +44,8 @@ public class FindCommand extends Command {
      * @param showWarning whether to show warning if no person match
      */
     public FindCommand(Predicate<Person> predicate, Boolean showWarning) {
+        requireNonNull(predicate);
+        requireNonNull(showWarning);
         this.predicate = predicate;
         this.showWarning = showWarning;
     }
@@ -52,6 +53,9 @@ public class FindCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+
+        assert predicate != null : "Predicate must not be null before filtering.";
+
         model.updateFilteredPersonList(predicate);
         String combinedMessage = showWarning
                 ? MESSAGE_MULTIPLE_PREFIXES_NOT_ALLOWED + Messages.MESSAGE_PERSONS_LISTED_OVERVIEW
@@ -80,6 +84,7 @@ public class FindCommand extends Command {
     public String toString() {
         return new ToStringBuilder(this)
                 .add("predicate", predicate)
+                .add("showWarning", showWarning)
                 .toString();
     }
 
@@ -93,7 +98,8 @@ public class FindCommand extends Command {
         String detailedUsage = String.format(
                 "Usage: find %sKEYWORD [MORE_KEYWORDS]... find %sKEYWORD [MORE_KEYWORDS]...\n"
                         + "\n"
-                        + "Finds all contacts whose names contain any of the specified keywords (case-insensitive).\n"
+                        + "Finds all contacts whose names or tags contain any of the specified keywords "
+                        + "(case-insensitive).\n"
                         + "\n"
                         + "Parameters:\n"
                         + "  PREFIX - Either '%s' to search by name or '%s' to search by tag\n"
