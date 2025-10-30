@@ -66,12 +66,17 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ### Viewing help : `help`
 
-Shows a message explaining how to access the help page.
+Shows help message in the GUI, explaining all commands.
 
 ![help message](images/helpMessage.png)
 
 Format: `help`
 
+* Use command name to look up detailed usage
+
+![detailed help message](images/detailedHelpMessage.png)
+
+Format: `help add`
 
 ### Adding a person: `add`
 
@@ -289,7 +294,7 @@ Examples:
     * LINUX (ARCH)
     * LINUX (FEDORA)
 * Your mileage with this feature might vary if your operating system is not one stated above. 
-* Kindly refer to [Known Issues: 3](#known-issues) to see more about the limitations
+* Kindly refer to [Known Issues: 2](#known-issues) to see more about the limitations
 
 ### Saving the data
 
@@ -367,6 +372,24 @@ Example:
       ```
       No persons found with tag: [[CS1101]]
       ```
+      
+### Exporting Contacts
+
+Exports contacts into a csv file in the data folder. 
+
+Format: `export NAME`
+
+* `NAME` refers to the name of the file 
+* `NAME` is **optional**. Default file name is contacts.csv
+* Naming convention and rules follow default filename rules, including illegal characters
+
+Example:
+
+* `export`
+    * data will be exported to a file called contacts.csv in data folder
+* `export phonebook`
+    * data will be exported to a file called phonebook.csv in data folder
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
@@ -379,8 +402,9 @@ Example:
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
-3. **If you are not using one of listed Operating System(OS)**, then `launch` command may not work as expected. Whilst our implementation attempts to use system-specific command to launch the application first, its fallback mechanism uses the java.awt.Desktop api **IF AVAILABLE**. However, linux support with the java.awt libraries is already tenuous at best as it provides inconsistent behaviour between the different distros. Hence, kindly note that if your OS is not one stated in the list, the launch function may function inconsistently.
+2. **If you are not using one of listed Operating System(OS)**, then `launch` command may not work as expected. Whilst our implementation attempts to use system-specific command to launch the application first, its fallback mechanism uses the java.awt.Desktop api **IF AVAILABLE**. However, linux support with the java.awt libraries is already tenuous at best as it provides inconsistent behaviour between the different distros. Hence, kindly note that if your OS is not one stated in the list, the launch function may function inconsistently.
+3. **Unaccounted changes in the AddressBook if its addressbook.json file is edited whilst the application is running.** This is mainly as a result of how we handle when the reading and [saving of data](#saving-the-data) is triggered. As a result we are unable to detect changes to the addressbook.json file during the run time of the application and any direct changes made to this file whilst the application is running will be **OVERWRITTEN if [saving of data](#saving-the-data) is triggered.** Hence, the user should **NOT** edit the addressbook.json file while the application is in use.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Command summary
@@ -396,6 +420,8 @@ Action | Format, Examples
 **Help** | `help`
 **Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
 **Tag** | Rename: `tag -r t/TAG r/TAG` <br> `tag -r t/CS1101 r/CS2103`
+**Export** | `export [NAME]` <br> e.g., `export phonebook`
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Navigation Summary

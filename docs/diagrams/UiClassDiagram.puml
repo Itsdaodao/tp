@@ -9,7 +9,6 @@ Class "<<interface>>\nUi" as Ui
 Class "{abstract}\nUiPart" as UiPart
 Class UiManager
 Class MainWindow
-Class HelpWindow
 Class ResultDisplay
 Class PersonListPanel
 Class PersonCard
@@ -26,6 +25,7 @@ Class HiddenLogic #FFFFFF
 }
 
 Class HiddenOutside #FFFFFF
+Class HiddenOutside2 #FFFFFF
 HiddenOutside ..> Ui
 
 UiManager ..|> Ui
@@ -34,7 +34,6 @@ MainWindow *-->  "1" CommandBox
 MainWindow *--> "1" ResultDisplay
 MainWindow *--> "1" PersonListPanel
 MainWindow *--> "1" StatusBarFooter
-MainWindow --> "0..1" HelpWindow
 
 PersonListPanel --> "*" PersonCard
 
@@ -44,13 +43,13 @@ ResultDisplay --|> UiPart
 PersonListPanel --|> UiPart
 PersonCard --|> UiPart
 StatusBarFooter --|> UiPart
-HelpWindow --|> UiPart
 CommandBox --|> UiPart
 
 PersonCard ..> Model
 PersonCard ..> Logic
 UiManager --> Logic
 MainWindow --> Logic
+
 
 UiManager -> Model
 CommandBox -> Model
