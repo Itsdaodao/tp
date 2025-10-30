@@ -40,23 +40,23 @@ public class StringUtil {
     }
 
     /**
-     * Returns true if the {@code sentence} starts with the {@code word}.
-     *   Ignores case, but a prefix match is required.
+     * Returns true if any word in the given {@code sentence} starts with the specific {@code keyword},
+     * ignoring case differences.
      *   <br>examples:<pre>
-     *       containsPrefixIgnoreCase("Hans Tho, "Hans") == true
-     *       containsPrefixIgnoreCase("Hans Tho", "THO") == true
-     *       containsPrefixIgnoreCase("Hans Tho", "hans") == true
-     *       containsPrefixIgnoreCase("Hans Tho", "ha") == true
-     *       containsPrefixIgnoreCase("Hans Tho", "s") == false
+     *       containsWordStartingWithIgnoreCase("Hans Tho, "Hans") == true
+     *       containsWordStartingWithIgnoreCase("Hans Tho", "THO") == true
+     *       containsWordStartingWithIgnoreCase("Hans Tho", "hans") == true
+     *       containsWordStartingWithIgnoreCase("Hans Tho", "ha") == true
+     *       containsWordStartingWithIgnoreCase("Hans Tho", "s") == false
      *       </pre>
      *
      * @param sentence sentence to search in
-     * @param keyword keyword to match as prefix
-     * @return {@code true} if the sentence contains a word that starts with the keyword; {@code false} otherwise
+     * @param keyword keyword to match at the start of any word
+     * @return {@code true} if any word in the sentence starts with the keyword; {@code false} otherwise
      * @throws NullPointerException If {@code sentence} or {@code keyword} is {@code null}.
      * @throws IllegalArgumentException If {@code keyword} is empty or contains multiple words.
      */
-    public static boolean containsPrefixIgnoreCase(String sentence, String keyword) {
+    public static boolean hasWordStartingWithIgnoreCase(String sentence, String keyword) {
         requireNonNull(sentence);
         requireNonNull(keyword);
 
@@ -67,12 +67,14 @@ public class StringUtil {
         String preppedSentence = sentence;
         String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
 
-        return Arrays.stream(wordsInPreppedSentence)
+        boolean hasWordStartingWithKeyword = Arrays.stream(wordsInPreppedSentence)
                 .anyMatch(word -> startsWithIgnoreCase(word, preppedWord));
+
+        return hasWordStartingWithKeyword;
     }
 
     /**
-     * Checks if the given text starts with the specified prefix, ignoring case differences.
+     * Checks if the given text starts with the specified keyword, ignoring case differences.
      *
      * <p>Examples:
      * <pre>
@@ -84,17 +86,19 @@ public class StringUtil {
      * </pre>
      *
      * @param text   the full text to check; must not be null
-     * @param prefix the prefix to test for; must not be null or empty
+     * @param keyword the text to check against the start of {@code text}; must not be null or empty
      * @return true if the text starts with the prefix (case-insensitive), false otherwise
      */
-    public static boolean startsWithIgnoreCase(String text, String prefix) {
+    public static boolean startsWithIgnoreCase(String text, String keyword) {
         requireNonNull(text);
-        requireNonNull(prefix);
+        requireNonNull(keyword);
 
         String trimmedText = text.trim();
-        String trimmedPrefix = prefix.trim();
+        String trimmedPrefix = keyword.trim();
 
-        return trimmedText.toLowerCase().startsWith(trimmedPrefix.toLowerCase());
+        boolean isTextStartingWithKeyword = trimmedText.toLowerCase().startsWith(trimmedPrefix.toLowerCase());
+
+        return isTextStartingWithKeyword;
     }
 
     /**
