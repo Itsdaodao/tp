@@ -137,7 +137,7 @@ Examples:
 *  `edit 1 p\91234567 e\johndoe@example.com`
    * Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
   *  `edit 2 n\Betsy Crower t\CS2103 t\CS2100 r\CS1101S l\`
-     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, removes the tag 
+     * Edits the name of the 2nd person to be `Betsy Crower`, adds the tag `CS2103` & `CS2100`, removes the tag
        `CS1101S` and clears the Telegram field.
        ```
        Edited Person: Betsy Crower; Phone: 91093122; Telegram: ; Github: BestyCrower; Tags: [CS2100][CS2103]
@@ -436,8 +436,8 @@ Action | Format, Examples
 **Help** | `help COMMAND`
 **Launch** | `launch INDEX [-e (Email)] [-l (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
 **Tag** | Rename: `tag -r t\TAG r\TAG` <br> `tag -r t\CS1101 r\CS2103` <br><br> Delete: `tag -d t\TAG…` <br> `tag -d t\CS1101`
-**Pin** | `pin INDEX` <br> e.g., `pin 3`  
-**Unpin** | `unpin INDEX` <br> e.g., `unpin 1`  
+**Pin** | `pin INDEX` <br> e.g., `pin 3`
+**Unpin** | `unpin INDEX` <br> e.g., `unpin 1`
 **Export** | `export [NAME]` <br> e.g., `export phonebook`
 --------------------------------------------------------------------------------------------------------------------
 

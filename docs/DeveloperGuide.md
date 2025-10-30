@@ -765,7 +765,7 @@ testers are expected to do more *exploratory* testing.
 ### Listing all Contacts
 
 1. Listing all contacts in default order (first to last)
-   1. Prerequisites: Contact list is not already in default order  
+   1. Prerequisites: Contact list is not already in default order
    2. Test case: `list`<br>
       Expected Result Display:
         ```
@@ -776,7 +776,7 @@ testers are expected to do more *exploratory* testing.
 
 2. List all contacts in alphabetical order
    1. Prerequisites: Contact list is not already in alphabetical order
-   2. Test case: `list`<br> Expected Result Display: 
+   2. Test case: `list`<br> Expected Result Display:
        ```
        Listed all persons in alphabetical order
        ```
@@ -792,7 +792,7 @@ testers are expected to do more *exploratory* testing.
 
 ### Editing a single Contact
 
-1. Edit First Person's in the displayed list phone no. and email. 
+1. Edit First Person's in the displayed list phone no. and email.
     1. Prerequisites: There is at least 1 person in the displayed list
    2. `edit 1 p\91234567 e\johndoe@example.com`<br>
        Expected Result Display:
@@ -821,7 +821,7 @@ testers are expected to do more *exploratory* testing.
       Expected Result Display:
         ```
         Launched EMAIL successfully.
-      Note: You can only launch Telegram links from the browser if you have the Telegram application installed on your device.      
+      Note: You can only launch Telegram links from the browser if you have the Telegram application installed on your device.
         ```
       Expected Result: Email Draft to the selected email should launch and Result display show the success message above as well as a caveat about launching telegram
 
@@ -831,7 +831,7 @@ testers are expected to do more *exploratory* testing.
    2. Test: `launch 1 -l` <br>
       Expected Result Display:
        ```
-      Person Name This person does not have a Telegram handle. 
+      Person Name This person does not have a Telegram handle.
        ```
       Expected Result: Result display show the message of the contact's name followed by the error message above
 
@@ -857,9 +857,9 @@ testers are expected to do more *exploratory* testing.
 
 ### Renaming the Tags for Multiple Users
 
-1. Renaming Tags for all Users 
+1. Renaming Tags for all Users
    1. Prerequisites: The displayed list has at least 1 person with the target tag
-   
+
    2. Test: `tag -r t/CS1101 r/CS2103` <br>
       Expected Result Display:
         ```
@@ -867,7 +867,7 @@ testers are expected to do more *exploratory* testing.
       ```
    Expected Result: Renames the existing tag `CS1101` for all contacts that has it with the new tag `CS2103` and displays the number of person updated
 
-2. Renaming Tags for all Users 
+2. Renaming Tags for all Users
     1. Prerequisites: The displayed list has NO person with the target tag
 
    2. Test: `tag -r t/CS1101 r/CS2103` <br>
@@ -879,7 +879,7 @@ testers are expected to do more *exploratory* testing.
 
 3. Deleting Tags for all Users (Given the target tag **does exist**)
     1. Prerequisites: The displayed list has at least 1 person with the target tags
-   
+
    2. Test: `tag -d t/CS1101 t/CS2103` <br>
         Expected Result Display:
        ```
