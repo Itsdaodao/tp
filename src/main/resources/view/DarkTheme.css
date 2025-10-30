@@ -159,7 +159,6 @@
      -fx-border-color: derive(#1d1d1d, 10%);
      -fx-border-top-width: 1px;
 }
-
 .status-bar {
     -fx-background-color: derive(#1d1d1d, 30%);
 }
@@ -369,3 +368,8 @@
     -fx-background-radius: 2;
     -fx-font-size: 11;
 }
+.preferred-tag {
+    -fx-fill: #daa520; /* GOLDENROD */;
+    -fx-font-weight: bold;
+}
+
