@@ -136,29 +136,35 @@ Examples:
        Edited Person: Betsy Crower; Phone: 91093122; Telegram: ; Github: BestyCrower; Tags: [CS2100][CS2103]
        ```
 
-### Locating persons by name: `find`
+### Locating persons by name or tag: `find`
 
 Finds persons whose names or tags start with the given prefix keyword.
 
 Format: `find [n\MORE_NAMES]` or `find [t\MORE_TAGS]`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Either name or tag is searched, depending on the prefix used.
-* Input must match the start of the word, not the full word. e.g. `Han` will match `Hans`, but not `Johann`.
-* When multiple prefixes are provided, only the first prefix is used; subsequent ones are ignored.
-* Only the specified field (name or tag) is searched.
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Keywords must match the **START** of the word.
+  * e.g. `Ha` will match `Hans`, but not `Johann`.
+* Only one prefix can be used at a time.
+* The search is case-insensitive.
+* Only the name field or tag field is searched.
+* Contacts matching at least one keyword will be displayed (i.e. `OR` search).
+* The order of the keywords does not matter.
+* If both prefixes are provided. Only the first prefix is used.
 
 Examples:
-* `find n\John` returns `johnny Tan` and `John Doe`
-* `find t\friend` returns all contacts tagged with "friend"
-* `find n\alex t\friend` searches only by name `n\alex`, since t\ is ignored
-* `find t\friend n\alex` searches only by tag `t\friend`, since n/ is ignored
-* `find n\a` returns all contacts whose names start with "A" e.g. `Alex yeoh`, `amy tan`
-* `find n\charlotte david` returns `Charlotte Oliveiro`, `David Li`<br>
-  ![result for 'find charlotte david'](images/findCharlotteDavidResult.png)
+* `find n\John`
+  * Returns persons whose names start with "John", such as `johnny Tan` and `John Doe`.
+* `find t\friend`
+  * Returns all contacts tagged with `friend`.
+* `find n\alex t\friend`
+  * Searches only by name `n\alex`, since the second prefix (`t\friends`) is ignored.
+* `find t\friend n\alex`
+  * Searches only by tag (`t\friend`), since the second prefix (`n/alex`) is ignored.
+* `find n\a`
+  * Returns all persons whose names start with "A" e.g. `Alex yeoh`, `amy tan`
+* `find n\charlotte david`
+  * Returns `Charlotte Oliveiro`, `David Li`<br>
+    ![result for 'find charlotte david'](images/findCharlotteDavidResult.png)
 
 ### Deleting a person : `delete`
 
