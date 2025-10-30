@@ -367,6 +367,7 @@ Example:
       ```
       No persons found with tag: [[CS1101]]
       ```
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
@@ -380,6 +381,7 @@ Example:
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you are not using one of listed Operating System(OS)**, then `launch` command may not work as expected. Whilst our implementation attempts to use system-specific command to launch the application first, its fallback mechanism uses the java.awt.Desktop api **IF AVAILABLE**. However, linux support with the java.awt libraries is already tenuous at best as it provides inconsistent behaviour between the different distros. Hence, kindly note that if your OS is not one stated in the list, the launch function may function inconsistently.
+3. **Unaccounted changes in the AddressBook if its addressbook.json file is edited whilst the application is running.** This is mainly as a result of how we handle when the reading and [saving of data](#saving-the-data) is triggered. As a result we are unable to detect changes to the addressbook.json file during the run time of the application and any direct changes made to this file whilst the application is running will be **OVERWRITTEN if [saving of data](#saving-the-data) is triggered.** Hence, the user should **NOT** edit the addressbook.json file while the application is in use.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -396,6 +398,7 @@ Action | Format, Examples
 **Help** | `help`
 **Launch** | `launch INDEX [-e (Email)] [-t (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
 **Tag** | Rename: `tag -r t/TAG r/TAG` <br> `tag -r t/CS1101 r/CS2103`
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Navigation Summary
