@@ -93,7 +93,7 @@ The `UI` component,
 * depends on some classes in the `Logic` component, because launching communication mode application through `UI` relies on `ApplicationLinkLauncher` to execute action.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
 * depends on the `Autocompletor` in `Logic` to provide suggestions while the user is typing.
-* Keeps a reference to a `ReadOnlyCommandHistory` for use in accessing command history in the `CommandBox` 
+* Keeps a reference to a `ReadOnlyCommandHistory` for use in accessing command history in the `CommandBox`
 
 ### Logic component
 
@@ -107,7 +107,7 @@ The sequence diagram below illustrates the typical interactions within the `Logi
 
 ![Interactions Inside the Logic Component for the `edit 1 n\Adam` Command](images/EditSequenceDiagram.png)
 
-The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("find 
+The sequence diagram below illustrates the typical interactions within the `Logic` component, taking `execute("find
 n\John Alex")` API call as an example.
 
 ![Interactions Inside the Logic Component for the `find n\John Alex` Command](images/FindSequenceDiagram.png)
@@ -157,7 +157,7 @@ How the parsing works:
 How the utility classes work:
 * Currently utility classes are only used by `PersonCard`, `LaunchCommand` and `LaunchCommandParser`
 * `LaunchCommandParser` uses on `ApplicationType` to decide how it creates `LaunchCommand`
-* When called upon by either `LaunchCommand` or `PersonCard`, `ApplicationLinkLauncher` uses the `ApplicationType` and attempts to launch the communication mode through the use `DesktopApi`. 
+* When called upon by either `LaunchCommand` or `PersonCard`, `ApplicationLinkLauncher` uses the `ApplicationType` and attempts to launch the communication mode through the use `DesktopApi`.
 * Based on the success of the `DesktopApi` launch attempt, `ApplicationLinkLauncher` will return with create and return the appropriate  `ApplicationLinkResult`.
 
 ### Model component
@@ -205,14 +205,14 @@ This section describes some noteworthy details on how certain features are imple
 
 #### Overview
 
-The Pin and Unpin feature allows users to prioritize important contacts by pinning them to the top of the contact list. 
-Pinned contacts remain visible at the top regardless of the current sort order (e.g., by name or by recency). 
+The Pin and Unpin feature allows users to prioritize important contacts by pinning them to the top of the contact list.
+Pinned contacts remain visible at the top regardless of the current sort order (e.g., by name or by recency).
 This feature enhances usability by making key contacts more accessible.
 
 #### Rationale
 
-In a large address book, users may need to frequently access certain contacts. 
-Instead of repeatedly searching for them, the pin feature provides a simple way to mark and elevate these contacts for quick access. 
+In a large address book, users may need to frequently access certain contacts.
+Instead of repeatedly searching for them, the pin feature provides a simple way to mark and elevate these contacts for quick access.
 The unpin command restores a contact to its normal position in the list.
 
 #### Design Considerations
@@ -558,12 +558,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2a1. Devbooks shows an error message
     * 2a2. User inputs a new pin command with a valid contact index
 
-      Steps 2a1-2a2 are repeated until a valid contact index is entered.  
+      Steps 2a1-2a2 are repeated until a valid contact index is entered.
       Use case resumes from step 3.
 
 * 2b. Selected contact is already pinned
 
-    * 2b1. Devbooks shows a message indicating that the contact is already pinned  
+    * 2b1. Devbooks shows a message indicating that the contact is already pinned
       Use case ends.
 
 
@@ -585,12 +585,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2a1. Devbooks shows an error message
     * 2a2. User inputs a new unpin command with a valid contact index
 
-      Steps 2a1-2a2 are repeated until a valid contact index is entered.  
+      Steps 2a1-2a2 are repeated until a valid contact index is entered.
       Use case resumes from step 3.
 
 * 2b. Selected contact is not pinned
 
-    * 2b1. Devbooks shows a message indicating that the contact is not pinned  
+    * 2b1. Devbooks shows a message indicating that the contact is not pinned
       Use case ends.
 
 
@@ -610,21 +610,21 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 2a. User did not specify any tags to delete
 
-    * 2a1. Devbooks shows an error message indicating that no target tag was provided  
+    * 2a1. Devbooks shows an error message indicating that no target tag was provided
       Use case ends.
 
 * 2b. None of the specified tags can be found in any contact
 
-    * 2b1. Devbooks shows an error message indicating that no tags were found for deletion  
+    * 2b1. Devbooks shows an error message indicating that no tags were found for deletion
       Use case ends.
 
 * 2c. Some tags are found while others are not
 
     * 2c1. Devbooks deletes all found tags
-    * 2c2. Devbooks shows a success message for tags deleted and a warning message for tags not found  
+    * 2c2. Devbooks shows a success message for tags deleted and a warning message for tags not found
       Use case resumes from step 5.
 
-      
+
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
@@ -693,13 +693,13 @@ testers are expected to do more *exploratory* testing.
        Expected: The most recent window size and location is retained.
 
 1. Retaining data across launches
-   
+
     1. Add a contact to the contact book. Close the application.
 
     1. Launch the application.
         Expected: The new contact should be in the application.
         A folder `data/` should be created where the .jar file is stored.
-       
+
 ### Deleting a person
 
 1. Deleting a person while all persons are being shown
@@ -707,13 +707,13 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    1. Test case: `delete 1`<br>
-      Expected: A confirmation prompt is shown in the status bar before the contact is deleted. The to-be-deleted contact is shown in the status message. 
+      Expected: A confirmation prompt is shown in the status bar before the contact is deleted. The to-be-deleted contact is shown in the status message.
 
    1. Test case: `delete 1` followed by `y`<br>
       Expected: After `y` is input into the confirmation prompt, The details of the deleted contact is shown. The contact is no longer shown in the list.
 
    1. Test case: `delete dingus`<br>
-      Expected: The message "Invalid command format!" is shown to the user. Extra information on how to use delete is shown in the Result Display.   
+      Expected: The message "Invalid command format!" is shown to the user. Extra information on how to use delete is shown in the Result Display.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
@@ -728,10 +728,10 @@ testers are expected to do more *exploratory* testing.
        Expected: Persons whose names start with “Alex” are listed (e.g. Alex Yeoh). Details of the listed contacts shown
        in the result display box. Status message shows the number of persons found.
    2. Test case: `find t\friend`<br>
-       Expected: Persons with the tag “friend” are listed. Details of the listed contacts shown in the result display 
+       Expected: Persons with the tag “friend” are listed. Details of the listed contacts shown in the result display
        box. Status message shows the number of persons found.
    3. Test case: `find n\a`<br>
-      Expected: All persons whose names start with “A” are listed. The search is case-insensitive (e.g. “a” matches 
+      Expected: All persons whose names start with “A” are listed. The search is case-insensitive (e.g. “a” matches
       “Alex”).
    4. Test case: `find`<br>
       Expected: No person is listed. Error details shown in the result display box.
@@ -746,7 +746,7 @@ testers are expected to do more *exploratory* testing.
 
    1. Run the application.
 
-   1. Perform a simple add command `add n\New p\91223124`
+   1. Perform a simple add command `add n\New p\91223124`<br>
         Expected: `data/` folder is created, along with `.command_history` and `addressbook.json`
 
 
@@ -756,6 +756,6 @@ testers are expected to do more *exploratory* testing.
    1. Add a contact in the AddressBook to force a save to `data/addressbook.json`: `add n\Test p\912312311`
 
    1. In an editor, edit the `data/addressbook.json` file. Corrupt the data by inputting a invalid value in a field.
-   
-   1. Test case: `invalidGH%20__!$` in any contact's `github` field
+
+   1. Test case: `invalidGH%20__!$` in any contact's `github` field<br>
         Expected: A warning message is shown in the bottom status bar indicating that the file failed to read.
