@@ -27,7 +27,7 @@ public class ApplicationLinkLauncher {
     private static final String LAUNCH_TELEGRAM_PREFIX = "https://t.me/";
     private static final String LAUNCH_GITHUB_PREFIX = "http://github.com/";
 
-    public static final String USERGUIDE_URL = "https://ay2526s1-cs2103-f12-2.github.io/tp/UserGuide.html";
+    private static final String USERGUIDE_URL = "https://ay2526s1-cs2103-f12-2.github.io/tp/UserGuide.html";
 
     private static Logger logger = LogsCenter.getLogger(ApplicationLinkLauncher.class);
 
