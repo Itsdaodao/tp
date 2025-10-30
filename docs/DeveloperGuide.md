@@ -516,7 +516,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 7.  Should work without requiring an installer.
 8.  Should not depend on a specific remote server.
 9.  Should be packaged into a single JAR file.
-10. Should be able to load within 5 seconds.
+10. Should be able to load 1000 contacts within 2 seconds.
 11. Should be able to comfortably use the application without using a mouse.
 12. Should be less than 20 Megabytes.
 13. Should execute any command in less than 1 second.
