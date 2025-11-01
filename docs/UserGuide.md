@@ -273,7 +273,9 @@ Press `k` to select the entry above the current entry.
 
 ### Launching external communication modes : `launch`
 
-Launches an external application to communicate with the specified person via the specified mode.
+Launches a browser to communicate with the specified person via the specified mode.
+
+Scope: launching the browser with the correct link specified below.
 
 Format: `launch INDEX [-l (Telegram) | -g (GitHub)]`
 
@@ -290,9 +292,10 @@ Format: `launch INDEX [-l (Telegram) | -g (GitHub)]`
 * User's interaction with the launched application is outside the scope of this feature.
 * User's can also launch external application through the GUI by left-clicking the Telegram or GitHub links of a person in the person card.
 
+
 Examples:
-* `launch 3 -l` launches Telegram web browser to open a chat with the 3rd person's Telegram handle in the displayed person list.
-* `launch 1 -g` launches web browser to the GitHub profile of the 1st person in the displayed person list.
+* `launch 3 -l` launches browser with the formatted link `https://t.me/HANDLE`, with `HANDLE` as the  Telegram handle of the 3rd person's in the displayed person list (given they have a Telegram Handle).
+* `launch 1 -g` launches browser with the formatted link `https://github.com/USERNAME`, with the `USERNAME` as the GitHub username of the 1st person in the displayed person list (given they have a GitHub username).
 
 **Important Notes:**
 * The launch command has only been tested on the following operating systems.
