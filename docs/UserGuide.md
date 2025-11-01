@@ -273,30 +273,29 @@ Press `k` to select the entry above the current entry.
 
 ### Launching external communication modes : `launch`
 
-Launches an external application to communicate with the specified person via the specified mode.
+Launches a browser to communicate with the specified person via the specified mode.
 
-Format: `launch INDEX [-e (Email)] [-l (Telegram)] [-g (GitHub)]`
+Scope: launching the browser with the correct link specified below.
+
+Format: `launch INDEX [-l (Telegram) | -g (GitHub)]`
 
 * The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * Use the flag to specify the communication mode:
-    * `-e` launches the default email application to compose an email to the person's email address.
-        * Depending on the user's system settings, the email may be composed in an email client or web browser.
-    * `-l` launches Telegram web browser that links to opening a chat with the person's Telegram handle.
-        * To open the chat through web browser, the user is required to have Telegram application installed on their device.
-        * Checking existence of Telegram user is outside the scope of this feature and is handled by Telegram application.
-    * `-g` launches web browser that links to the person's GitHub profile.
+    * `-l` launches browser with the formatted link `https://t.me/HANDLE`, whereby handle should be the specified contact's Telegram handle,
+        * Do note, to open the chat through web browser, the user is required to have Telegram application installed on their device. (i.e. send button does not allow redirecting Telegram web)
+          * However, the ability to check with is also beyond the scope of this feature.
+        * Additionally, checking existence of Telegram user is outside the scope of this feature and is handled by Telegram application.
+    * `-g` launches browser with the formatted link `https://github.com/USERNAME`, whereby username should be the specified contact's GitHub username,
         * Checking existence of GitHub user is outside the scope of this feature and is handled by GitHub.
 * User must specify **exactly one flag**.
 * If the person does not have the specified communication mode, an error message is shown.
 * User's interaction with the launched application is outside the scope of this feature.
-* User's can launch external application through the GUI by left-clicking the email, telegram or github icon of a person in the person card.
+* User's can also launch external application through the GUI by left-clicking the Telegram or GitHub links of a person in the person card.
+
 
 Examples:
-* `launch 2 -e` launches the default email application to compose an email to the 2nd person in the displayed person list.
-* `launch 3 -l` launches Telegram web browser to open a chat with the 3rd person's Telegram handle in the displayed person list.
-* `launch 1 -g` launches web browser to the GitHub profile of the 1st person in the displayed person list.
-* Launching through CLI ![result for Launching CLI](gifs/LaunchCli.gif)
-* Launching through GUI ![result for Launching GUI](gifs/LaunchGui.gif)
+* `launch 3 -l` launches browser with the formatted link `https://t.me/HANDLE`, with `HANDLE` as the  Telegram handle of the 3rd person's in the displayed person list (given they have a Telegram Handle).
+* `launch 1 -g` launches browser with the formatted link `https://github.com/USERNAME`, with the `USERNAME` as the GitHub username of the 1st person in the displayed person list (given they have a GitHub username).
 
 **Important Notes:**
 * The launch command has only been tested on the following operating systems.
@@ -434,7 +433,7 @@ Action | Format, Examples
 **Find** | `find n\KEYWORD [MORE_KEYWORDS]` or `find t\KEYWORD [MORE_KEYWORDS]`<br> e.g., `find n\James Jake`, `find t\friend`
 **List** | `list [-a (alphabetical)] [-r (recent)]`<br> e.g., `list -a`
 **Help** | `help COMMAND`
-**Launch** | `launch INDEX [-e (Email)] [-l (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -e`
+**Launch** | `launch INDEX [-l (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -l`
 **Tag** | Rename: `tag -r t\TAG r\TAG` <br> `tag -r t\CS1101 r\CS2103` <br><br> Delete: `tag -d t\TAG…` <br> `tag -d t\CS1101`
 **Pin** | `pin INDEX` <br> e.g., `pin 3`
 **Unpin** | `unpin INDEX` <br> e.g., `unpin 1`

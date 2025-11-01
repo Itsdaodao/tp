@@ -20,7 +20,6 @@ public class CliSyntax {
     public static final Prefix FLAG_RECENT_ORDER = new Prefix("-r");
 
     /* Flag definitions (for Launch Command) */
-    public static final Prefix FLAG_EMAIL_LAUNCH = new Prefix("-e");
     public static final Prefix FLAG_TELEGRAM_LAUNCH = new Prefix("-l");
     public static final Prefix FLAG_GITHUB_LAUNCH = new Prefix("-g");
 

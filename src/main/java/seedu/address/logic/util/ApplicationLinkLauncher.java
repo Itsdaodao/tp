@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import seedu.address.commons.core.LogsCenter;
 
 /**
- * Utility class to launch external application links such as email, Telegram, and GitHub.
+ * Utility class to launch external application links such as User Guide, Telegram and GitHub.
  */
 public class ApplicationLinkLauncher {
 
@@ -23,7 +23,6 @@ public class ApplicationLinkLauncher {
     private static final String MESSAGE_DESKTOP_API_LAUNCH_FAIL = "DesktopAPI failed to open link: %s";
 
     private static final String LAUNCH_NO_PREFIX = "";
-    private static final String LAUNCH_EMAIL_PREFIX = "mailto:";
     private static final String LAUNCH_TELEGRAM_PREFIX = "https://t.me/";
     private static final String LAUNCH_GITHUB_PREFIX = "http://github.com/";
 
@@ -34,16 +33,6 @@ public class ApplicationLinkLauncher {
     private static ApplicationLinkResult launchApp(String prefix, String value, ApplicationType type) {
         requireNonNull(value);
         return launchApplicationLink(prefix + value, type);
-    }
-
-    /**
-     * Launches the email application with the specified email address.
-     *
-     * @param email The email address to launch.
-     * @return The result of the launch attempt.
-     */
-    public static ApplicationLinkResult launchEmail(String email) {
-        return launchApp(LAUNCH_EMAIL_PREFIX, email, ApplicationType.EMAIL);
     }
 
     /**

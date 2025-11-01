@@ -1,7 +1,6 @@
 package seedu.address.logic.util;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockStatic;
@@ -14,19 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
 public class ApplicationLinkLauncherTest {
-
-    @Test
-    void launchEmail_successfulLaunch_returnsSuccessResult() {
-        try (MockedStatic<DesktopApi> mockedDesktopApi = mockStatic(DesktopApi.class)) {
-            mockedDesktopApi.when(() -> DesktopApi.browse(any(URI.class))).thenReturn(true);
-
-            ApplicationLinkResult result = ApplicationLinkLauncher.launchEmail("test@example.com");
-
-            assertTrue(result.isSuccess());
-            assertTrue(result.getMessage().contains("Launched EMAIL successfully"));
-            mockedDesktopApi.verify(() -> DesktopApi.browse(any(URI.class)), times(1));
-        }
-    }
 
     @Test
     void launchUserGuide_successfulLaunch_returnsSuccessResult() {
@@ -67,11 +53,6 @@ public class ApplicationLinkLauncherTest {
     }
 
     @Test
-    void launchEmail_nullEmail_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ApplicationLinkLauncher.launchEmail(null));
-    }
-
-    @Test
     void launchTelegram_correctUriIsBuilt() throws URISyntaxException {
         try (MockedStatic<DesktopApi> mockedDesktopApi = mockStatic(DesktopApi.class)) {
             mockedDesktopApi.when(() -> DesktopApi.browse(any(URI.class))).thenReturn(true);
@@ -96,15 +77,15 @@ public class ApplicationLinkLauncherTest {
     }
 
     @Test
-    void launchEmail_desktopApiThrowsException_returnsFailureResult() {
+    void launchGitHub_desktopApiThrowsException_returnsFailureResult() {
         try (MockedStatic<DesktopApi> mockedDesktopApi = mockStatic(DesktopApi.class)) {
             mockedDesktopApi.when(() -> DesktopApi.browse(any(URI.class)))
                     .thenReturn(false); // simulate failure instead of throwing
 
-            ApplicationLinkResult result = ApplicationLinkLauncher.launchEmail("test@example.com");
+            ApplicationLinkResult result = ApplicationLinkLauncher.launchGithub("octocat");
 
             assertFalse(result.isSuccess());
-            assertTrue(result.getMessage().contains("Failed to launch EMAIL"));
+            assertTrue(result.getMessage().contains("Failed to launch GITHUB"));
         }
     }
 }

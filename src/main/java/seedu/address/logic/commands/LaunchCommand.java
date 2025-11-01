@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.FLAG_EMAIL_LAUNCH;
 import static seedu.address.logic.parser.CliSyntax.FLAG_GITHUB_LAUNCH;
 import static seedu.address.logic.parser.CliSyntax.FLAG_TELEGRAM_LAUNCH;
 
@@ -24,14 +23,12 @@ public class LaunchCommand extends Command {
 
     public static final String COMMAND_WORD = "launch";
 
-    static final String MESSAGE_MISSING_EMAIL = "%s This person does not have an email address.";
     static final String MESSAGE_MISSING_TELEGRAM = "%s This person does not have a Telegram handle.";
     static final String MESSAGE_MISSING_GITHUB = "%s This person does not have a GitHub profile.";
 
     private static final String MESSAGE_DESCRIPTION =
             "Launches the specified application for a person in the address book";
     private static final String MESSAGE_PARAMETERS = "Parameters: INDEX (must be a positive integer)"
-            + "[" + FLAG_EMAIL_LAUNCH + " (email) | "
             + FLAG_TELEGRAM_LAUNCH + " (telegram) | "
             + FLAG_GITHUB_LAUNCH + " (github)]"
             + "\n\nNotes:\n"
@@ -39,8 +36,7 @@ public class LaunchCommand extends Command {
             + "  - Exactly one application flag must be specified.\n"
             + "  - Email launch application/browser must be configured on your system.\n"
             + "  - Telegram and GitHub links will be launched in your default web browser.\n";
-    private static final String MESSAGE_EXAMPLE = "Example: " + COMMAND_WORD + " 1 " + FLAG_EMAIL_LAUNCH
-            + " (Launches the email application/browser for the person at index 1 in the address book.)";
+    private static final String MESSAGE_EXAMPLE = "Example: " + COMMAND_WORD + " 1 " + FLAG_TELEGRAM_LAUNCH;
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": " + MESSAGE_DESCRIPTION + "\n\n"
             + MESSAGE_PARAMETERS + "\n" + MESSAGE_EXAMPLE;
     public static final String MESSAGE_UNRECOGNIZED_FLAG = "Unrecognized application flag provided.\n" + MESSAGE_USAGE;
@@ -95,10 +91,6 @@ public class LaunchCommand extends Command {
         requireNonNull(type);
 
         switch (type) {
-        case EMAIL: {
-            isFieldEmpty(person.getEmail().isEmpty(), person.getName().fullName, MESSAGE_MISSING_EMAIL);
-            return ApplicationLinkLauncher.launchEmail(person.getEmail().value);
-        }
         case TELEGRAM: {
             isFieldEmpty(person.getTelegram().isEmpty(), person.getName().fullName, MESSAGE_MISSING_TELEGRAM);
             return ApplicationLinkLauncher.launchTelegram(person.getTelegram().value);
