@@ -17,7 +17,7 @@ public class LaunchCommandParser implements Parser<LaunchCommand> {
     public static final String MESSAGE_USAGE = LaunchCommand.COMMAND_WORD + ": Launches the specified application "
             + "for the person identified by the index number used in the displayed person list.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + FLAG_TELEGRAM_LAUNCH + " | " + FLAG_GITHUB_LAUNCH + "]\n"
+            + "[" + FLAG_TELEGRAM_LAUNCH + " | " + FLAG_GITHUB_LAUNCH + "]\n"
             + "Example: " + LaunchCommand.COMMAND_WORD + " 1 " + FLAG_GITHUB_LAUNCH;
 
     /**

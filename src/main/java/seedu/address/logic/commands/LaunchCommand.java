@@ -23,7 +23,6 @@ public class LaunchCommand extends Command {
 
     public static final String COMMAND_WORD = "launch";
 
-    static final String MESSAGE_MISSING_EMAIL = "%s This person does not have an email address.";
     static final String MESSAGE_MISSING_TELEGRAM = "%s This person does not have a Telegram handle.";
     static final String MESSAGE_MISSING_GITHUB = "%s This person does not have a GitHub profile.";
 

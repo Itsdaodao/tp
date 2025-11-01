@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import seedu.address.commons.core.LogsCenter;
 
 /**
- * Utility class to launch external application links such as email, Telegram, and GitHub.
+ * Utility class to launch external application links such as User Guide, Telegram and GitHub.
  */
 public class ApplicationLinkLauncher {
 
