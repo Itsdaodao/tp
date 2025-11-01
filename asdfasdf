@@ -1,0 +1,57 @@
+## **🧾 Release Notes (v1.5 Beta)**
+
+### **🚀 What’s New**
+
+#### **🧑‍💻 New Features**
+
+* Update command format (prefix), replacing forward slash in old prefix with back slash (#195)
+  * Example: `add n\John Doe p\91234444 g\john-dev t\Friend`
+* Add support for slash in name field (#195)
+  * Example: `add n\John s/o Doe p\91234444`
+* More allowed values for Confirmation Prompt (#190)
+  * Users can now confirm commands with `yes/no` input, in addition to `y/n`
+  * Format updated for clarity
+* Export command improvements
+  * Input validation for invalid names (#204)
+  * Prevents overwriting of previous file (#215)
+* Help Toolbar
+  * Replace help window with a direct launch to the user guide (#214)
+
+#### **🧑‍💻 UI Enhancements**
+
+* Update pin icon for pinned contacts (#180)
+* Improved display of preferred mode of communication label (#196)
+* Improved colouring of visited communication mode for the user for better visibility (#186)
+
+#### **🛠️ Bug Fixes/Improvements**
+
+* Fix crash where program would not work if `data/` folder was missing (#192)
+* Enhance delete tag operation to display warning message when tags not found (#210)
+* Update command help info with new command usage
+* Show message in StatusBar if `data/addressbook.json` was corrupted, instead of silently clearing the address book (#218)
+* Fix issue with linux not able to render unicode pin icon (#180)
+* Improve code quality (#198, #203)
+* Fix issue where order of contacts shift after editing when there is a pinned contact (#179)
+* Fix issue where launch command was not working on some linux distributions (#202)
+* Remove github as a preferred mode of communication (#200)
+* Enhance edit command to support removing optional fields (email, github, telegram, preferred mode) (#91)
+* Includes preferred mode of communication and pinned at fields when exporting to csv file (#188)
+* Improved out of bound index error messages to be more descriptive. (#182)
+
+#### **📖 Documentation**
+
+* Update landing page (#193)
+* Update Developer Guide
+  * Update diagrams and descriptions to match current code state (#197)
+  * Update non-functional requirements (#212)
+  * Add section describing State management in Logic component with diagrams (#197)
+  * Add implementation details for Pin/Unpin feature
+  * Add use case for `Pin Contact`, `Unpin Contact`, `Delete Tag`,
+* Update User Guide
+  * Update all command usage examples with new command format
+  * Update command summary table
+  * Add warning message against editing the `addressbook.json` file while the application is running (#217)
+
+#### **🧪 Testing**
+
+* Turn off assertions in test suite (#206)
