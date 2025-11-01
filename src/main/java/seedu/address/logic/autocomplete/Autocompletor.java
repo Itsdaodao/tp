@@ -26,14 +26,17 @@ public class Autocompletor {
      * If there are no matches, returns an empty string.
      */
     public String getHint(String input) {
-        if (input.isEmpty()) {
+        if (input.isBlank()) {
             return "";
         }
-        List<String> matches = this.trie.keysWithPrefix(input);
+        String trimmed = input.replaceAll("^(\\s+)", "");
+        String leadingWhitespace = input.substring(0, input.length() - trimmed.length());
+        List<String> matches = this.trie.keysWithPrefix(trimmed);
         if (matches.isEmpty()) {
             return "";
         }
-        return matches.get(0);
+        // Preserve the original whitespace in the input
+        return leadingWhitespace + matches.get(0);
     }
 
 }
