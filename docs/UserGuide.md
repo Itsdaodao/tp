@@ -323,9 +323,12 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 </div>
 
 ### Accessing Command History
-
 Access your previously entered commands by pressing the `Up` and `Down` arrow keys when the Command Box is focused.
 Command history is saved and loaded every time.
+
+<div markdown="block" class="alert alert-info">
+Up to 15 of the latest valid commands are saved and preserved in the command history.
+</div>
 
 #### Previous Command: `Up` Arrow Key
 
