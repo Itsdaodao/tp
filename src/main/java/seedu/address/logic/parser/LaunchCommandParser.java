@@ -1,7 +1,6 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.FLAG_EMAIL_LAUNCH;
 import static seedu.address.logic.parser.CliSyntax.FLAG_GITHUB_LAUNCH;
 import static seedu.address.logic.parser.CliSyntax.FLAG_TELEGRAM_LAUNCH;
 
@@ -18,8 +17,8 @@ public class LaunchCommandParser implements Parser<LaunchCommand> {
     public static final String MESSAGE_USAGE = LaunchCommand.COMMAND_WORD + ": Launches the specified application "
             + "for the person identified by the index number used in the displayed person list.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + "[" + FLAG_EMAIL_LAUNCH + " | " + FLAG_TELEGRAM_LAUNCH + " | " + FLAG_GITHUB_LAUNCH + "]\n"
-            + "Example: " + LaunchCommand.COMMAND_WORD + " 1 " + FLAG_EMAIL_LAUNCH;
+            + FLAG_TELEGRAM_LAUNCH + " | " + FLAG_GITHUB_LAUNCH + "]\n"
+            + "Example: " + LaunchCommand.COMMAND_WORD + " 1 " + FLAG_GITHUB_LAUNCH;
 
     /**
      * Parses the given {@code String} of arguments in the context of the LaunchCommand
@@ -32,7 +31,7 @@ public class LaunchCommandParser implements Parser<LaunchCommand> {
         // Implementation for parsing launch command arguments
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(
-                        args, FLAG_EMAIL_LAUNCH, FLAG_TELEGRAM_LAUNCH, FLAG_GITHUB_LAUNCH
+                        args, FLAG_TELEGRAM_LAUNCH, FLAG_GITHUB_LAUNCH
                 );
 
         Index index;
@@ -43,15 +42,11 @@ public class LaunchCommandParser implements Parser<LaunchCommand> {
         }
 
         // Ensures that exactly one flag is provided
-        boolean emailFlag = argMultimap.getValue(FLAG_EMAIL_LAUNCH).isPresent();
         boolean telegramFlag = argMultimap.getValue(FLAG_TELEGRAM_LAUNCH).isPresent();
         boolean githubFlag = argMultimap.getValue(FLAG_GITHUB_LAUNCH).isPresent();
-        boolean isOnlyEmail = emailFlag && !telegramFlag && !githubFlag;
-        boolean isOnlyTelegram = !emailFlag && telegramFlag && !githubFlag;
-        boolean isOnlyGithub = !emailFlag && !telegramFlag && githubFlag;
-        if (isOnlyEmail) {
-            return new LaunchCommand(index, ApplicationType.EMAIL);
-        } else if (isOnlyTelegram) {
+        boolean isOnlyTelegram = telegramFlag && !githubFlag;
+        boolean isOnlyGithub = !telegramFlag && githubFlag;
+        if (isOnlyTelegram) {
             return new LaunchCommand(index, ApplicationType.TELEGRAM);
         } else if (isOnlyGithub) {
             return new LaunchCommand(index, ApplicationType.GITHUB);

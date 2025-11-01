@@ -11,10 +11,10 @@ public class ApplicationLinkResultTest {
     @Test
     public void constructor_andGetters_workCorrectly() {
         ApplicationLinkResult successResult =
-                new ApplicationLinkResult(true, "Email opened successfully.");
+                new ApplicationLinkResult(true, "Telegram opened successfully.");
 
         assertTrue(successResult.isSuccess());
-        assertEquals("Email opened successfully.", successResult.getMessage());
+        assertEquals("Telegram opened successfully.", successResult.getMessage());
 
         ApplicationLinkResult failResult =
                 new ApplicationLinkResult(false, "Failed to open link.");

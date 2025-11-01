@@ -32,28 +32,6 @@ public class LaunchCommandTest {
     private final Model model = new ModelManager();
 
     /**
-     * Tests that executing a LaunchCommand for Email on a person with an email address
-     * results in a successful launch.
-     */
-    @Test
-    public void excute_launchCommand_emailsuccess() {
-        Person person = new PersonBuilder().withEmail(VALID_EMAIL_AMY).build();
-        model.addPerson(person);
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
-
-        // Mock the static method ApplicationLinkLauncher.launchEmail
-        try (MockedStatic<ApplicationLinkLauncher> mocked = mockStatic(ApplicationLinkLauncher.class)) {
-            mocked.when(() -> ApplicationLinkLauncher.launchEmail(VALID_EMAIL_AMY))
-                    .thenReturn(new ApplicationLinkResult(true,
-                            String.format(ApplicationLinkLauncher.MESSAGE_SUCCESS, ApplicationType.EMAIL)));
-
-            LaunchCommand command = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.EMAIL);
-            String expectedMessage = String.format(ApplicationLinkLauncher.MESSAGE_SUCCESS, ApplicationType.EMAIL);
-            assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        }
-    }
-
-    /**
      * Tests that executing a LaunchCommand for Telegram on a person with a Telegram handle
      * results in a successful launch.
      */
@@ -104,26 +82,12 @@ public class LaunchCommandTest {
         Person person = new PersonBuilder().build();
         model.addPerson(person);
 
-        LaunchCommand command = new LaunchCommand(INDEX_SECOND_PERSON, ApplicationType.EMAIL);
+        LaunchCommand command = new LaunchCommand(INDEX_SECOND_PERSON, ApplicationType.TELEGRAM);
         assertCommandFailure(
                 command,
                 model,
                 Messages.getMessageInvalidPersonDisplayedIndex(INDEX_SECOND_PERSON.getOneBased(),
                         model.getSortedAndFilteredPersonList().size()));
-    }
-
-    /**
-     * Tests that executing a LaunchCommand for Email on a person without an email address
-     * results in a CommandException being thrown.
-     */
-    @Test
-    public void execute_missingEmail_throwsCommandException() {
-        Person person = new PersonBuilder().build();
-        model.addPerson(person);
-
-        LaunchCommand command = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.EMAIL);
-        assertCommandFailure(command, model,
-                String.format(MESSAGE_MISSING_EMAIL, person.getName().fullName));
     }
 
     /**
@@ -170,33 +134,33 @@ public class LaunchCommandTest {
     /* The following test cases checks if the equals methods works properly */
     @Test
     public void equals_sameObject_returnsTrue() {
-        LaunchCommand launchCommand = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.EMAIL);
+        LaunchCommand launchCommand = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.TELEGRAM);
         assert launchCommand.equals(launchCommand);
     }
 
     @Test
     public void equals_notInstanceOfLaunchCommand_returnsFalse() {
-        LaunchCommand launchCommand = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.EMAIL);
+        LaunchCommand launchCommand = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.TELEGRAM);
         assert !launchCommand.equals("Some String");
     }
 
     @Test
     public void equals_sameValues_returnsTrue() {
-        LaunchCommand launchCommand1 = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.EMAIL);
-        LaunchCommand launchCommand2 = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.EMAIL);
+        LaunchCommand launchCommand1 = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.TELEGRAM);
+        LaunchCommand launchCommand2 = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.TELEGRAM);
         assert launchCommand1.equals(launchCommand2);
     }
 
     @Test
     public void equals_differentIndex_returnsFalse() {
-        LaunchCommand launchCommand1 = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.EMAIL);
-        LaunchCommand launchCommand2 = new LaunchCommand(INDEX_SECOND_PERSON, ApplicationType.EMAIL);
+        LaunchCommand launchCommand1 = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.TELEGRAM);
+        LaunchCommand launchCommand2 = new LaunchCommand(INDEX_SECOND_PERSON, ApplicationType.TELEGRAM);
         assert !launchCommand1.equals(launchCommand2);
     }
 
     @Test
     public void equals_differentApplicationType_returnsFalse() {
-        LaunchCommand launchCommand1 = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.EMAIL);
+        LaunchCommand launchCommand1 = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.GITHUB);
         LaunchCommand launchCommand2 = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.TELEGRAM);
         assert !launchCommand1.equals(launchCommand2);
     }

@@ -34,7 +34,7 @@
         </HBox>
         <FlowPane fx:id="tags" />
         <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
-        <Hyperlink fx:id="email" styleClass="cell_small_hyperlink" onAction="#launchEmail" text="\$email" />
+        <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
         <Hyperlink fx:id="telegram" styleClass="cell_small_hyperlink" onAction="#launchTelegram" text="\$telegram" />
         <Hyperlink fx:id="github" styleClass="cell_small_hyperlink" onAction="#launchGithub" text="\$telegram" />
       </VBox>

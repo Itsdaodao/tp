@@ -3,7 +3,6 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_LAUNCH_APP_FLAG;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
-import static seedu.address.logic.parser.CliSyntax.FLAG_EMAIL_LAUNCH;
 import static seedu.address.logic.parser.CliSyntax.FLAG_GITHUB_LAUNCH;
 import static seedu.address.logic.parser.CliSyntax.FLAG_TELEGRAM_LAUNCH;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
@@ -41,10 +40,10 @@ public class LaunchCommandParserTest {
     @Test
     public void parse_invalidPreamble_failure() {
         // negative index
-        assertParseFailure(parser, "-5" + FLAG_EMAIL_LAUNCH, MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "-5" + FLAG_TELEGRAM_LAUNCH, MESSAGE_INVALID_FORMAT);
 
         // zero index
-        assertParseFailure(parser, "0" + FLAG_EMAIL_LAUNCH, MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "0" + FLAG_TELEGRAM_LAUNCH, MESSAGE_INVALID_FORMAT);
 
         // invalid arguments being parsed as preamble
         assertParseFailure(parser, "1 some random string", MESSAGE_INVALID_FORMAT);
@@ -57,16 +56,6 @@ public class LaunchCommandParserTest {
     public void parse_invalidFlag_failure() {
         // invalid launch application flag
         assertParseFailure(parser, "1" + INVALID_LAUNCH_APP_FLAG, MESSAGE_INVALID_FORMAT);
-    }
-
-    /**
-     * Tests that parsing is successful when a valid Email launch flag is provided.
-     */
-    @Test
-    public void parse_validEmail_success() {
-        // valid email launch flag
-        LaunchCommand expectedCommand = new LaunchCommand(INDEX_FIRST_PERSON, ApplicationType.EMAIL);
-        assertParseSuccess(parser, "1 " + FLAG_EMAIL_LAUNCH, expectedCommand);
     }
 
     /**
@@ -94,21 +83,10 @@ public class LaunchCommandParserTest {
      */
     @Test
     public void parse_multipleFlags_failure() {
-        // email and telegram
-        assertParseFailure(
-                parser, "1 " + FLAG_EMAIL_LAUNCH + " " + FLAG_TELEGRAM_LAUNCH, MESSAGE_INVALID_FORMAT);
 
         // telegram and github
         assertParseFailure(
-                parser, "1 " + FLAG_EMAIL_LAUNCH + " " + FLAG_GITHUB_LAUNCH, MESSAGE_INVALID_FORMAT);
-
-        // email and github
-        assertParseFailure(
                 parser, "1 " + FLAG_TELEGRAM_LAUNCH + " " + FLAG_GITHUB_LAUNCH, MESSAGE_INVALID_FORMAT);
 
-        // all three flags
-        assertParseFailure(
-                parser, "1 " + FLAG_EMAIL_LAUNCH + " " + FLAG_TELEGRAM_LAUNCH + " " + FLAG_GITHUB_LAUNCH,
-                MESSAGE_INVALID_FORMAT);
     }
 }

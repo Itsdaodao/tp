@@ -45,7 +45,7 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label phone;
     @FXML
-    private Hyperlink email;
+    private Label email;
     @FXML
     private Hyperlink telegram;
     @FXML
@@ -158,16 +158,6 @@ public class PersonCard extends UiPart<Region> {
         TextFlow flow = new TextFlow(mainText, preferredText);
         label.setGraphic(flow);
         label.setText(""); // clear plain text to prevent duplication
-    }
-
-    /**
-     * Launches the email application with the person's email address.
-     * FeedbackConsumer will set resultDisplay based on success/failure of launch.
-     */
-    @FXML
-    public void launchEmail() {
-        ApplicationLinkResult result = ApplicationLinkLauncher.launchEmail(person.getEmail().value);
-        feedbackConsumer.accept(result.getMessage());
     }
 
     /**
