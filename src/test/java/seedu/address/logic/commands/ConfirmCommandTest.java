@@ -86,6 +86,20 @@ public class ConfirmCommandTest {
         assertCommandFailure(confirmCommand, model, expected);
     }
 
+    @Test
+    public void execute_confirmCommandYesWithCapitalization_performsOperation() {
+        Person personToDelete = model.getSortedAndFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        String expectedMessage = "Done!";
+        ConfirmCommand confirmCommand = createConfirmCommandWithDeletePending(
+            model, personToDelete, "YES", expectedMessage, "Delete user?"
+        );
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs(), new CommandHistory());
+        expectedModel.deletePerson(personToDelete);
+
+        assertCommandSuccess(confirmCommand, model, "Done!", expectedModel);
+    }
+
 
     @Test
     public void toStringMethod() {

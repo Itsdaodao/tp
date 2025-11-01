@@ -38,7 +38,7 @@ public class AddressBookParser {
     public Command parseConfirmationCommand(
             String userInput, Runnable onComplete, ConfirmationPendingResult pendingOp
     ) {
-        return new ConfirmCommand(userInput, onComplete, pendingOp);
+        return new ConfirmCommand(userInput.trim(), onComplete, pendingOp);
     }
 
     /**

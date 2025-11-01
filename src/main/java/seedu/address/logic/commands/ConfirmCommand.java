@@ -34,6 +34,9 @@ public class ConfirmCommand extends Command {
     public ConfirmCommand(String input,
                           Runnable onComplete,
                           ConfirmationPendingResult pendingOperation) {
+        requireNonNull(onComplete);
+        requireNonNull(pendingOperation);
+
         this.input = input.toLowerCase();
         this.pendingOperation = pendingOperation;
         this.onComplete = onComplete;
