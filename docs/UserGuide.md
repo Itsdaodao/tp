@@ -243,7 +243,7 @@ Cancel Command Format: `n` or `no`
 
 **:information_source: Notes about switching modes:**<br>
 
-* Commands listed in this section are *global* - they don't need to be inserted into the Command Box.
+* Commands listed in the "Switching Modes" section are *global* - they don't need to be inserted into the Command Box.
 
 * `<Esc>` refers to the *escape key* on the keyboard.
 </div>
