@@ -6,7 +6,6 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_GITHUB_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TELEGRAM_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.logic.commands.LaunchCommand.MESSAGE_MISSING_EMAIL;
 import static seedu.address.logic.commands.LaunchCommand.MESSAGE_MISSING_GITHUB;
 import static seedu.address.logic.commands.LaunchCommand.MESSAGE_MISSING_TELEGRAM;
 import static seedu.address.logic.commands.LaunchCommand.MESSAGE_UNRECOGNIZED_FLAG;
