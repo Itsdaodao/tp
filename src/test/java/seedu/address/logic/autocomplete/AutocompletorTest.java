@@ -21,9 +21,21 @@ public class AutocompletorTest {
     }
 
     @Test
-    public void getHint_emptyCommand_returnsEmpty() {
+    public void getHint_partialCommandWithPrecedingWhiteSpace_returnsFullCommandWithWhiteSpace() {
+        CommandRegistry.register("add", "null", "null");
         Autocompletor completor = new Autocompletor();
-        String command = "";
+        String input = "       a";
+        String expected = "       add";
+
+        String hint = completor.getHint(input);
+
+        assertEquals(expected, hint);
+    }
+
+    @Test
+    public void getHint_blankCommand_returnsEmpty() {
+        Autocompletor completor = new Autocompletor();
+        String command = "   ";
 
         String hint = completor.getHint(command);
 
