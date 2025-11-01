@@ -727,15 +727,17 @@ testers are expected to do more *exploratory* testing.
 ### Launching Communication Mode
 
 1. Launch First Person's Email.
-   1. Prerequisites: The first person in the displayed list has an email
+   1. Prerequisites: The first person in the displayed list has a Telegram Handle
 
-   2. Test: `launch 1 -e` <br>
+   2. Test: `launch 1 -l` <br>
       Expected Result Display:
         ```
-        Launched EMAIL successfully.
+        Launched TELEGRAM successfully.
       Note: You can only launch Telegram links from the browser if you have the Telegram application installed on your device.
         ```
-      Expected Result: Email Draft to the selected email should launch and Result display show the success message above as well as a caveat about launching telegram
+      Expected Result (regardless of Internet Access): 
+      1. Verify that a browser opens with the URL formatted `https://t.me/HANDLE` whereby handle should be the specified contact's telegram handle, 
+      2. & Result display show the success message above.
 
 2. Launch Second Person's without the specified communication mode.
    1. Prerequisites: The second person in the displayed list does **NOT** have a telegram handle
@@ -745,7 +747,8 @@ testers are expected to do more *exploratory* testing.
        ```
       Person Name This person does not have a Telegram handle.
        ```
-      Expected Result: Result display show the message of the contact's name followed by the error message above
+      Expected Result: 
+      1. Result display show the message of the contact's name followed by the error message above
 
 3. Launch Third Person's GitHub.
     1. Prerequisites: The third person in the displayed list has a GitHub username and user has access to pointing device that can interact with the GUI.
@@ -756,7 +759,9 @@ testers are expected to do more *exploratory* testing.
        Launched GitHub successfully.
        Note: You can only launch Telegram links from the browser if you have the Telegram application installed on your device.
        ```
-       Expected Result: GitHub page of the selected username should launch and Result display show the success message above as well as a caveat about launching telegram
+       Expected Result (regardless of Internet Access):
+       1. Verify that a browser opens with the URL formatted `https://github.com/USERNAME` whereby username should be the specified contact's GitHub username,
+       2. & Result display shows the success message above.
 
 4. Launching the User Guide.
    1. Test: Press the `F1` key <br>
@@ -765,7 +770,9 @@ testers are expected to do more *exploratory* testing.
        Launched USERGUIDE successfully.
        Note: You can only launch Telegram links from the browser if you have the Telegram application installed on your device.
        ```
-      Expected Result: User Guide to Devbooks should launch and Result display show the success message above as well as a caveat about launching telegram
+      Expected Result: 
+      1. Verify that a browser opens with the specific URL `https://ay2526s1-cs2103-f12-2.github.io/tp/UserGuide.html`,
+      2. and Result display show the success message above as well as a caveat about launching telegram
 
 ### Renaming the Tags for Multiple Users
 
