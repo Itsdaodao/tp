@@ -204,7 +204,7 @@ Examples:
 
 ### Unpinning a person : `unpin`
 
-Unpins the specified person from the address book. Command requires a follow-up confirmation.
+Unpins the specified person from the address book.
 
 Format: `unpin INDEX`
 
