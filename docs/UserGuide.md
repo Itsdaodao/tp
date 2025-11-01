@@ -15,11 +15,11 @@ DevBooks is a **desktop app for managing contacts, optimized for use via a Comma
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+1. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103-F12-2/tp/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+1. Copy the file to the folder you want to use as the _home folder_ for DevBooks.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
+1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar devbooks.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
@@ -28,7 +28,7 @@ DevBooks is a **desktop app for managing contacts, optimized for use via a Comma
 
    * `list` : Lists all contacts.
 
-   * `add n\John Doe p\98765432 e\johnd@example.com a\John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n\Cheshire Doe p\98112321 e\cheshire@example.com l\cheshire_02 g\cheshire-dev` : Adds a contact named `Cheshire Doe` to the Address Book.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -204,7 +204,7 @@ Examples:
 
 ### Unpinning a person : `unpin`
 
-Unpins the specified person from the address book. Command requires a follow-up confirmation.
+Unpins the specified person from the address book.
 
 Format: `unpin INDEX`
 
@@ -238,12 +238,16 @@ Confirm Command Format: `y` or `yes`
 
 Cancel Command Format: `n` or `no`
 
+<div markdown="block" class="alert alert-info">
+These above confirmation inputs are case *insensitive*
+</div>
+
 ### Switching Modes
 <div markdown="block" class="alert alert-info">
 
 **:information_source: Notes about switching modes:**<br>
 
-* Commands listed in this section are *global* - they don't need to be inserted into the Command Box.
+* Commands listed in the "Switching Modes" section are *global* - they don't need to be inserted into the Command Box.
 
 * `<Esc>` refers to the *escape key* on the keyboard.
 </div>
@@ -252,12 +256,12 @@ Cancel Command Format: `n` or `no`
 
 Insert mode is the mode the application starts in. It allows you to send commands in the Command Box.
 
-Enter insert mode by pressing `i`.
+Switch back to insert mode by pressing `i`.
 
 #### Entering Scroll mode: `<Esc>`
 
 Scroll mode allows you to navigate entries in the application without leaving the home row. Scroll mode disables
-input to the Command Box, but don't worry about forgetting how to go back to input mode - a helpful hint is shown
+input to the Command Box, but don't worry about forgetting how to go back to insert mode - a helpful hint is shown
 every time you enter scroll mode.
 
 Enter scroll mode by pressing `<Esc>`
@@ -322,9 +326,12 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 </div>
 
 ### Accessing Command History
-
 Access your previously entered commands by pressing the `Up` and `Down` arrow keys when the Command Box is focused.
 Command history is saved and loaded every time.
+
+<div markdown="block" class="alert alert-info">
+Up to 15 of the latest valid commands are saved and preserved in the command history.
+</div>
 
 #### Previous Command: `Up` Arrow Key
 
