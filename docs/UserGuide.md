@@ -252,12 +252,12 @@ Cancel Command Format: `n` or `no`
 
 Insert mode is the mode the application starts in. It allows you to send commands in the Command Box.
 
-Enter insert mode by pressing `i`.
+Switch back to insert mode by pressing `i`.
 
 #### Entering Scroll mode: `<Esc>`
 
 Scroll mode allows you to navigate entries in the application without leaving the home row. Scroll mode disables
-input to the Command Box, but don't worry about forgetting how to go back to input mode - a helpful hint is shown
+input to the Command Box, but don't worry about forgetting how to go back to insert mode - a helpful hint is shown
 every time you enter scroll mode.
 
 Enter scroll mode by pressing `<Esc>`

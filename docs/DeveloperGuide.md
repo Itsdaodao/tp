@@ -566,8 +566,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Digital access**: The ability to access DevBooks and retrieve information without needing any internet connection
 * **Field**: A specific category of information within a contact (Name, Phone, Email, Telegram, GitHub, Preferred mode of communication, Tag)
 * **Flag/ Parameter**: A prefix in a command (e.g. n/, p/, t/) used to specify values for different fields.
-* **Input Mode**: The default mode in the application where users can type commands normally in the command box.
-  Enter input mode by pressing `i`
+* **Insert Mode**: The default mode in the application where users can type commands normally in the command box.
+  Switch to insert mode by pressing `i`
 * **Keyboard Navigation**: The ability to interact with the application using only keyboard keys instead of a mouse
   or touch input. Includes navigating lists, scrolling and switching modes.
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
