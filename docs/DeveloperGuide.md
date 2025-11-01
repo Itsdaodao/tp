@@ -688,7 +688,7 @@ testers are expected to do more *exploratory* testing.
 
 2. List all contacts in alphabetical order
    1. Prerequisites: Contact list is not already in alphabetical order
-   2. Test case: `list`<br> Expected Result Display:
+   2. Test case: `list -a`<br> Expected Result Display:
        ```
        Listed all persons in alphabetical order
        ```
@@ -696,7 +696,7 @@ testers are expected to do more *exploratory* testing.
 
 3. List all contacts in recent order (latest to earliest)
     1. Prerequisites: Contact list is not already in recent order
-    2. Test case: `list`<br> Expected Result Display:
+    2. Test case: `list -r`<br> Expected Result Display:
         ```
         Listed all persons in recent order
         ```
