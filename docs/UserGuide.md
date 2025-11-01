@@ -238,6 +238,10 @@ Confirm Command Format: `y` or `yes`
 
 Cancel Command Format: `n` or `no`
 
+<div markdown="block" class="alert alert-info">
+These above confirmation inputs are case *insensitive*
+</div>
+
 ### Switching Modes
 <div markdown="block" class="alert alert-info">
 
