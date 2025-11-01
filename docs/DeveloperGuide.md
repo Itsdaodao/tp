@@ -361,16 +361,16 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1.  User edits contact in list
-2.  Devbook detects correct data in the entered data
-3.  Devbook updates the contact and displays the newly updated contact
+2.  Devbooks detects correct data in the entered data
+3.  Devbooks updates the contact and displays the newly updated contact
 
     Use case ends.
 
 **Extensions**
 
-* 1a. Devbook detects an error in the entered data.
+* 1a. Devbooks detects an error in the entered data.
 
-    * 1a1. Devbook prompts the user for the correct data.
+    * 1a1. Devbooks prompts the user for the correct data.
     * 1a2. Beginner user enters new data.
 
       Steps 1a1-1a2 are repeated until the data entered are correct.
@@ -430,8 +430,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1.  User inputs a help command to look up all commands available
-2.  Devbook lists out all the commands with its uses
-3.  Devbook prompts the user to select an available command for more details
+2.  Devbooks lists out all the commands with its uses
+3.  Devbooks prompts the user to select an available command for more details
 4.  User chooses specific help commands to look up details of one specific command.
 5.  Devbooks shows the specific instructions and guide on how to use that command
 
