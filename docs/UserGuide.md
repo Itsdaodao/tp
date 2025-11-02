@@ -147,30 +147,30 @@ Examples:
 
 Finds persons whose names or tags start with the given prefix keyword.
 
-Format: `find [n\MORE_NAMES]` or `find [t\MORE_TAGS]`
+Format: `find n\KEYWORD [MORE_KEYWORDS]` or `find t\KEYWORD [MORE_KEYWORDS]`
 
-* Keywords must match the **START** of the word.
-  * e.g. `Ha` will match `Hans`, but not `Johann`.
-* Only one prefix can be used at a time.
-* The search is case-insensitive.
-* Only the name field or tag field is searched.
-* Contacts matching at least one keyword will be displayed (i.e. `OR` search).
-* The order of the keywords does not matter.
-* If both prefixes are provided. Only the first prefix is used.
+* Keywords must match the **START** of any word in the name or tag.
+  * e.g. `Ha` will match `Hans Zimmer` (first name) and `David Harris` (surname), but not `Johann`.
+* The search is **case-insensitive**.
+* Only one flag (`n\` for names or `t\` for tags) can be used at a time. If both are provided, **only the first flag 
+  and its keywords are used.**
+* Contacts matching **at least one keyword** will be displayed (i.e. `OR` search).
+* The order of keywords does not matter.
 
 Examples:
 * `find n\John`
-  * Returns persons whose names start with "John", such as `johnny Tan` and `John Doe`.
+  * Returns persons whose names contain any word starting with `John`, such as `johnny Tan` and `Mary Johnson`.
 * `find t\friend`
   * Returns all contacts tagged with `friend`.
 * `find n\alex t\friend`
-  * Searches only by name `n\alex`, since the second prefix (`t\friends`) is ignored.
+  * Searches by name only (`n\alex`), ignores the second flag.
 * `find t\friend n\alex`
-  * Searches only by tag (`t\friend`), since the second prefix (`n\alex`) is ignored.
+  * Searches by tag only (`t\friend`), ignores the second flag.
 * `find n\a`
-  * Returns all persons whose names start with "A" e.g. `Alex yeoh`, `amy tan`
+  * Finds all persons with names start with "A" e.g. `Alex yeoh`, `amy tan`
 * `find n\charlotte david`
-  * Returns `Charlotte Oliveiro`, `David Li`<br>
+  * Finds anyone whose **name has words starting with** `Charlotte` or `David`. (e.g.`Charlotte 
+    Oliveiro`, `David Li`)<br>
     ![result for 'find charlotte david'](images/findCharlotteDavidResult.png)
 
 ### Deleting a person : `delete`
