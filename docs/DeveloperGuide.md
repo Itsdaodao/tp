@@ -565,7 +565,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Development profile**: A user's GitHub profile used to store, manage, and showcase software development projects.
 * **Digital access**: The ability to access DevBooks and retrieve information without needing any internet connection
 * **Field**: A specific category of information within a contact (Name, Phone, Email, Telegram, GitHub, Preferred mode of communication, Tag)
-* **Flag/ Parameter**: A prefix in a command (e.g. n\, p\, t\) used to specify values for different fields.
+* **Flag**: An option that changes how a command behaves. (e.g.`-a` -> `list -a` lists contacts alphabetically)
 * **Insert Mode**: The default mode in the application where users can type commands normally in the command box.
   Switch to insert mode by pressing `i`
 * **Keyboard Navigation**: The ability to interact with the application using only keyboard keys instead of a mouse
@@ -573,6 +573,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **NUS SOC**: National University of Singapore, School of Computing
 * **Preferred Mode of communication**: Telegram, Email or Phone
+* **Prefix**: A marker used to specify a particular field or value in a command. (e.g. `n\` for names, `p\` for 
+  phone, `t\` for tag, etc).
 * **Private contact detail**: A contact detail that is not meant to be shared with others
 * **Scroll Mode**: A mode that disables text input and allow users to navigate through the interface using keyboard
   keys such as `j`/`k`. Enter scroll mode by pressing `<esc>`.

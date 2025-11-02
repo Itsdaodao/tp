@@ -152,8 +152,8 @@ Format: `find n\KEYWORD [MORE_KEYWORDS]` or `find t\KEYWORD [MORE_KEYWORDS]`
 * Keywords must match the **START** of any word in the name or tag.
   * e.g. `Ha` will match `Hans Zimmer` (first name) and `David Harris` (surname), but not `Johann`.
 * The search is **case-insensitive**.
-* Only one flag (`n\` for names or `t\` for tags) can be used at a time. If both are provided, **only the first flag 
-  and its keywords are used.**
+* Only one prefix (`n\` for names or `t\` for tags) can be used at a time. If both are provided, **only the first 
+  prefix and its keywords are used.**
 * Contacts matching **at least one keyword** will be displayed (i.e. `OR` search).
 * The order of keywords does not matter.
 
@@ -163,14 +163,14 @@ Examples:
 * `find t\friend`
   * Returns all contacts tagged with `friend`.
 * `find n\alex t\friend`
-  * Searches by name only (`n\alex`), ignores the second flag.
+  * Searches by name only (`n\alex`), ignores the second prefix.
 * `find t\friend n\alex`
-  * Searches by tag only (`t\friend`), ignores the second flag.
+  * Searches by tag only (`t\friend`), ignores the second prefix.
 * `find n\a`
   * Finds all persons with names start with "A" e.g. `Alex yeoh`, `amy tan`
 * `find n\charlotte david`
   * Finds anyone whose **name has words starting with** `Charlotte` or `David`. (e.g.`Charlotte 
-    Oliveiro`, `David Li`)<br>
+    Oliveiro`, `David Li`<br>
     ![result for 'find charlotte david'](images/findCharlotteDavidResult.png)
 
 ### Deleting a person : `delete`
