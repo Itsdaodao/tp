@@ -147,20 +147,32 @@ public class EditCommand extends Command {
                 pinnedAt
         );
 
-        validatePreferredMode(editedPerson, editPersonDescriptor);
+        editedPerson = validatePreferredMode(editedPerson, editPersonDescriptor);
 
         return new Pair<>(editedPerson, tagUpdateResult);
     }
 
     /**
      * Validates the preferred communication mode of the edited person against their available contact options.
+     * Returns a person with preferred mode set to NONE if it is no longer valid.
      * Throws a CommandException if the preferred mode is invalid.
      */
-    private static void validatePreferredMode(Person editedPerson, EditPersonDescriptor editPersonDescriptor)
+    private static Person validatePreferredMode(Person editedPerson, EditPersonDescriptor editPersonDescriptor)
             throws CommandException {
 
         // Validate preferred mode against available contact options
         Set<PreferredCommunicationMode> availableModes = editedPerson.getAvailableModes();
+
+        PreferredCommunicationMode currentMode = editedPerson.getPreferredMode();
+        boolean shouldClearPreferredMode = currentMode != null && !availableModes.contains(currentMode);
+
+        // If the preferred mode is no longer valid, create a new Person with NONE preferred mode
+        if (shouldClearPreferredMode) {
+            editedPerson = new Person(editedPerson.getName(), editedPerson.getPhone(), editedPerson.getEmail(),
+                    editedPerson.getTelegram(), editedPerson.getGithub(), PreferredCommunicationMode.NONE,
+                    editedPerson.getTags(), editedPerson.getPinnedAt().orElse(null)
+            );
+        }
 
         // Extract preferred mode name as string, or null if not set
         String modeString = editPersonDescriptor.getPreferredMode()
@@ -173,6 +185,8 @@ public class EditCommand extends Command {
         if (isInvalidPreferredMode) {
             throw new CommandException(String.format(MESSAGE_INVALID_PREFERRED_MODE, modeString));
         }
+
+        return editedPerson;
     }
 
     /**
