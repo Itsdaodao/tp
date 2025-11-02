@@ -145,7 +145,7 @@ Examples:
 
 ### Finding persons by name or tag: `find`
 
-Finds persons whose names or tags start with the given prefix keyword.
+Finds all contacts whose name or tag has any word starting with any of the given keywords.
 
 Format: `find n\KEYWORD [MORE_KEYWORDS]` or `find t\KEYWORD [MORE_KEYWORDS]`
 
