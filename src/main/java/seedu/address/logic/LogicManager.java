@@ -162,7 +162,6 @@ public class LogicManager implements Logic {
      * An interface used for Storage saving operations.
      * This interface is used so that the IOExceptions can be thrown, as Java's
      * standard `Callable` does not allow for that.
-     *
      */
     @FunctionalInterface
     public interface Savable {
