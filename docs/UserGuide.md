@@ -171,7 +171,7 @@ Examples:
 * `find n\charlotte david`
   * Finds anyone whose **name has words starting with** `Charlotte` or `David`. (e.g.`Charlotte 
     Oliveiro`, `David Li`<br>
-    ![result for 'find charlotte david'](images/findCharlotteDavidResult.png)
+    ![result for 'find n\charlotte david'](images/findCharlotteDavidResult.png)
 
 ### Deleting a person : `delete`
 

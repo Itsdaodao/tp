@@ -239,6 +239,45 @@ The unpin command restores a contact to its normal position in the list.
 3. **User applies a name sort**: Contacts are sorted alphabetically, but pinned contacts remain above the rest.
 4. **User exits and restarts the application**: Previously pinned contacts remain pinned as their state is saved in storage.
 
+### Find persons by name or tag
+
+#### Overview
+
+The `find` command helps user quickly locate specific contacts by searching for keywords in their names or tags. It 
+matches any contact where **at least one word** in the name or tag **begins with** a given keyword, making it easy 
+to filter a large address book for relevant entries.
+
+#### Rationale
+
+As your address books grows, it's common to search for people based on partial names, initials, or tags (like 
+`project` or `family`). Rather than scrolling and scanning, users can use the `find` command to instantly filter the 
+list by starting letters or words.
+
+#### Design Considerations
+- **Word-based matching**: The search checks every word in the name or tag: if any word begins with a keyword, that 
+  contact is returned.
+- **Multiple keywords**: When multiple keywords are provided, a contact is included in the results if any of the 
+  keywords matches the beginning of any word in the contacts's name or tag (an OR search).
+- **Case-insensitive**: The matching ignores letter case for convenience.
+- **Prefix flags**: Use `n\` for names or `t\` for tags. If both prefixes are provided, only the first prefix and 
+  its keywords are used.
+- **Sorting**: The results are displayed with index numbers for easy follow-up actions.
+
+#### Implementation Details
+- Each name or tag is split into words and checked against all supplied keywords.
+- The search logic determines whether to search names or tags based on the first prefix entered (`n\` for names or 
+  `t\` for tags). Only keywords following this prefix are considered, additional prefixes are ignored.
+- Matches are shown as a numbered list, allowing for follow-up actions like editing or pinning.
+- The command is compatible with all display sorting options: found contacts are listed in the current sorting mode.
+
+#### Example Scenarios
+1. **Find contacts by given name**: `find n\james` returns any contact whose name has a word starting with `james`, 
+   like `James Ho` or `John jameson`.
+2. **Find by tag**: `find t\friend` lists all contacts tagged with a word starting with "friend"
+3. **Multiple keywords**: `find n\Alex Ann` finds any contact whose name contains a word starting with "Alex" or "Ann".
+4. **Mixed prefixes**: `find n\Amy t\classmate` searches only for name matches with "Amy", ignoring the tag prefix.
+   ![result for find n\Amy t\classmate](images/findAmyClassmateResult.png)
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Documentation, logging, testing, configuration, dev-ops**
