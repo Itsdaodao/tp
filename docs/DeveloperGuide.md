@@ -249,7 +249,7 @@ to filter a large address book for relevant entries.
 
 #### Rationale
 
-As your address books grows, it's common to search for people based on partial names, initials, or tags (like 
+As the address books grows, it's common to search for people based on partial names, initials, or tags (like 
 `project` or `family`). Rather than scrolling and scanning, users can use the `find` command to instantly filter the 
 list by starting letters or words.
 
