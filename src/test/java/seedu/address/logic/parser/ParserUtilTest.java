@@ -31,6 +31,7 @@ public class ParserUtilTest {
     private static final String INVALID_PREFERRED_MODE = "none";
 
     private static final String VALID_NAME = "Rachel Walker";
+    private static final String VALID_NAME_WITH_ADDITIONAL_SPACES = "Rachel    Walker";
     private static final String VALID_PHONE = "123456";
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_PREFERRED_MODE_1 = "telegram";
@@ -82,6 +83,13 @@ public class ParserUtilTest {
     @Test
     public void parseName_validValueWithWhitespace_returnsTrimmedName() throws Exception {
         String nameWithWhitespace = WHITESPACE + VALID_NAME + WHITESPACE;
+        Name expectedName = new Name(VALID_NAME);
+        assertEquals(expectedName, ParserUtil.parseName(nameWithWhitespace));
+    }
+
+    @Test
+    public void parseName_validValueWithWhitespaceAndExtraSpaces_returnsTrimmedName() throws Exception {
+        String nameWithWhitespace = WHITESPACE + VALID_NAME_WITH_ADDITIONAL_SPACES + WHITESPACE;
         Name expectedName = new Name(VALID_NAME);
         assertEquals(expectedName, ParserUtil.parseName(nameWithWhitespace));
     }

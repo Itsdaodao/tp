@@ -50,10 +50,11 @@ public class ParserUtil {
     public static Name parseName(String name) throws ParseException {
         requireNonNull(name);
         String trimmedName = name.trim();
-        if (!Name.isValidName(trimmedName)) {
+        String nameWithoutAdditionalSpace = trimmedName.replaceAll("\\s+", " ");
+        if (!Name.isValidName(nameWithoutAdditionalSpace)) {
             throw new ParseException(Name.MESSAGE_CONSTRAINTS);
         }
-        return new Name(trimmedName);
+        return new Name(nameWithoutAdditionalSpace);
     }
 
     /**
