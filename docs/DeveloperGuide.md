@@ -884,7 +884,7 @@ testers are expected to do more *exploratory* testing.
       1. Verify that a browser opens with the specific URL `https://ay2526s1-cs2103-f12-2.github.io/tp/UserGuide.html`,
       2. and Result display show the success message above as well as a caveat about launching Telegram
 
-### Edit the Tags for Multiple Users
+### Renaming/Deleting the Tags for Multiple Users
 
 1. Renaming Tags for all Users
    1. Prerequisites: The displayed list has at least 1 person with the target tag
