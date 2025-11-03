@@ -312,51 +312,51 @@ same project group easily and view the development profile of their contact.
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                                                               | So that I can…​                                                        |
-| -------- | ------------------------------------------ |----------------------------------------------------------------------------| ---------------------------------------------------------------------- |
-| `* * *` | beginner user                 | 	add a contact	                                                            | i can retrieve it when I want	|
-| `* * *` | beginner user                 | 	add a phone number to a contact	                                          | I can easily message or call them when I need it	|
-| `* * *` | beginner user                 | 	tag my contacts	                                                          | I can easily group my contacts	|
-| `* * *` | beginner user                 | 	list out all the contacts within my contact book	                         | I can get an overview of everyone I've added so far	|
-| `* * *` | beginner user                 | 	delete a contact	                                                         | I can declutter my contacts list if necessary	|
-| `* * *` | beginner user                 | 	look for list of available commands that I can use	                       | I can know what commands I can use without memorizing	|
-| `* * `  | beginner user                 | 	add a telegram handle to a contact	                                       | I can easily access my contact's telegram when i need it	|
-| `* * `  | beginner user                 | 	update a contact	                                                         | I can update the details of my contacts when they change	|
-| `* * `  | student                       | 	search for a contact by name	                                             | i can quickly find their contact details	|
-| `* * `  | intermediate user             | 	add all contact information all just with one line	                       | I don't need to do so manually using mutiple updates	|
-| `* * `  | beginner user                 | 	delete a tag	                                                             | I can remove outdated tags	|
-| `* * `  | student                       | 	quickly scroll through using arrow keys in an alphabetical list 	         | i find someone without typing.	|
-| `* * `  | impatient user                | 	load my contacts within 2 seconds	                                        | I do not need to wait too long to access my contacts	|
-| `* * `  | beginner user                 | 	see the recently accessed contacts	                                       | I can know who I recently contacted	|
-| `* * `  | beginner user                 | 	add an email address to a contact	                                        | I can easily email them when I need it	|
-| `* * `  | beginner user                 | 	set a preferred mode of communication to a contact	                       | I can reach them at their preferred platform when |
-| `* * `  | beginner user                 | 	add a contact to my favourites list	                                      | I can easily access them	|
-| `* * `  | beginner user                 | 	see my favourites list	                                                   | I can contact a favourite friend	|
-| `* * `  | student                       | 	be able to group contacts by teams	                                       | i can access all members in one place.	|
-| `* * `  | advanced user                 | 	be able to add multiple tags to a contact	                                | i can find my groups quickly.	|
-| `* * `  | intermediate user             | 	access the github page of a contact	                                      | I can easily view their user activity and repos	|
-| `* * `  | beginner user                 | 	filter my contacts by tags or name	                                 <br/> | I can find my contact(s) easier	|
-| `* * `  | beginner user                 | 	get more details with each commands and flags	                            | I am able to learn how to properly use each command/flag	|
-| `* * `  | student                       | 	back up my contacts to a CSV	                                             | i dont lose my contacts if the device fails.	|
-| `* * `  | student                       | 	import a list of contacts from a CSV or file	                             | I can quickly add contacts to another device.	|
-| `* * `  | advanced user                 | 	create customizable shortcuts	                                            | I can increase the speed of using the application	|
-| `* * `  | advanced user                 | 	view a list of my shortcuts	                                              | I can see an overview of my customizations	|
-| `* * `  | advanced user                 | 	create my own shortcuts	                                                  | I can quickly type out long commands instantly	|
-| `* * `  | intermediate user             | 	access my command history through arrow keys	                             | I can execute repeated operations quickly	|
-| `* * `  | intermediate user             | 	press "Tab" to auto-complete the command that I am typing out	            | I can quickly finish the command that I am typing.	|
-| `* * `  | intermediate user             | 	see hint text of what command would be autocompleted if I press "tab"	    | I have visual feedback before I autocomplete a command	|
-| `* * `  | intermediate user             | 	revert the last command	                                                  | I can undo any mistakes	|
-| `* * `  | beginner user                 | 	be able to rename my tags	                                                | I mass edit contacts with the same tag	|
-| `* * `  | beginner user                 | 	 add the github handle to a contact	                                      | I can easily access their github page in the future	|
-| `* * `  | beginner user                 | 	delete all contacts associated with a tag	                                | I can remove irrelevant contacts from my list	|
-| `*`     | beginner user                 | 	go through a tutorial of the app	                                         | I can familiarize myself on how to use the app.|
-| `*`     | beginner user                 | 	read the documentation	                                                   | I can get started on using the app|
-| `*`     | beginner user                 | 	import existing contacts from a .vcf file	                                | I do not need to re-type all of my existing contacts|
-| `*`     | student                       | 	launch my telegram chat with the contact person through the app	          | I can start chatting with my contacts on telegram quickly|
-| `*`     | student                       | 	launch my email app quickly through the app	                              | I can start writing email to my contacts quickly|
-| `*`     | student                       | 	delete contacts by date time query	                                       | my address book is clean.|
-| `*`     | advanced user                 | 	use DevBooks inside of my command console	                                | I don't need to open the application to perform an operation|
-| `*`     | aesthetic-minded individual   | 	customize the theme of the application	                                   | it's more personal to me|
+| Priority | As a …​                           | I want to …​                                                                     | So that I can…​                                              |
+| -------- |-----------------------------------|----------------------------------------------------------------------------------|--------------------------------------------------------------|
+| `* * *` | As a beginner user                | I want to add a contact                                                          | so that I can retrieve it when I want |
+| `* * *` | As a beginner user                | I want to add a phone number to a contact                                        | so that I can easily message or call them when I need it |
+| `* * *` | As a beginner user                | I want to tag my contacts                                                        | so that I can easily group my contacts |
+| `* * *` | As a beginner user                | I want to list out all the contacts within my contact book                       | so that I can get an overview of everyone I've added so far |
+| `* * *` | As a beginner user                | I want to delete a contact                                                       | so that I can declutter my contacts list if necessary |
+| `* * *` | As a student                      | I want to search for a contact by name                                           | so that I can quickly find their contact details |
+| `* * *` | As a beginner user                | I want to look for a list of available commands that I can use                   | so that I can know what commands I can use without memorizing |
+| `* *` | As an intermediate user           | I want to access the GitHub page of a contact                                    | so that I can easily view their user activity and repos |
+| `* *` | As a user                         | I want to export my contacts to a CSV                                            | so that I don't lose my contacts if the device fails. |
+| `* *` | As an intermediate user           | I want to see hint text of what command would be auto-completed if I press "Tab" | so that I have visual feedback before I autocomplete a command |
+| `* *` | As a user                         | I want to launch my Telegram chat with the contact person through the app        | so that I can start chatting with my contacts on Telegram quickly |
+| `* *` | As an intermediate user           | I want to access my command history through arrow keys                           | so that I can execute repeated operations quickly |
+| `* *` | As a beginner user                | I want to pin my contacts to the top                                             | so that I can easily access them |
+| `* *` | As a beginner user                | I want to unpin my contacts from the pinned list                                 | so that I can remove contacts that I no longer access frequently |
+| `* *` | As an intermediate user           | I want to press "Tab" to auto-complete the command that I am typing out          | so that I can quickly finish the command that I am typing. |
+| `* *` | As a beginner user                | I want to be able to rename my tags                                              | so that I can mass-edit contacts with the same tag |
+| `* *` | As a beginner user                | I want to delete a tag                                                           | so that I can remove irrelevant tags from my contacts |
+| `* *` | As an impatient user              | I want the app to load 500 contacts within 2 seconds                             | so that I do not need to wait too long to access my contacts |
+| `* *` | As a beginner user                | I want to set a preferred mode of communication to a contact                     | so that I can reach them at their preferred platform when I want to |
+| `* *` | As a user                         | I want to quickly scroll through using arrow keys                                | so that I can find someone without typing. |
+| `* *` | As an intermediate user           | I want to add all contact information in just one line                           | so that I don't need to do so manually using multiple updates |
+| `* *` | As a beginner user                | I want to see the recently accessed contacts                                     | so that I can know who I recently contacted |
+| `* *` | As a beginner user                | I want to add an email address to a contact                                      | so that I can easily email them when I need it |
+| `* *` | As an advanced user               | I want to be able to add multiple tags to a contact                              | so that I can find my groups quickly. |
+| `* *` | As a beginner user                | I want to add a Telegram handle to a contact                                     | so that I can easily access my contact's Telegram when I need it |
+| `* *` | As a beginner user                | I want to update a contact                                                       | so that I can update the details of my contacts when they change |
+| `* *` | As a beginner user                | I want to delete a tag on a contact                                              | so that I can remove outdated tags |
+| `* *` | As a beginner user                | I want to get more details about each command and flag                           | so that I am able to learn how to properly use each command/flag |
+| `* *` | As a beginner user                | I want to add the GitHub handle to a contact                                     | so that I can easily access their GitHub page in the future |
+| `* *` | As a user                         | I want to view the list of contacts in alphabetical order                        | so that I can view the list in my preferred order |
+| `* *` | As a user                         | I want to view the list of contacts by order of most recently added              | so that I can view the list in my preferred order |
+| `* *` | As a beginner user                | I want to search for a contact by tag                                            | so that I can find my contact(s) more easily |
+| `*` | As an advanced user               | I want to use DevBooks inside of my command console                              | so that I don't need to open the application to perform an operation |
+| `*` | As a user                         | I want to be able to group contacts by teams                                     | so that I can access all members in one place. |
+| `*` | As a user                         | I want to import a list of contacts from a CSV                                   | so that I can quickly add contacts to another device. |
+| `*` | As an advanced user               | I want to view a list of my shortcuts                                            | so that I can see an overview of my customizations |
+| `*` | As an advanced user               | I want to create my own shortcuts                                                | so that I can quickly type out long commands instantly |
+| `*` | As an intermediate user           | I want to revert the last command                                                | so that I can undo any mistakes |
+| `*` | As a beginner user                | I want to go through a tutorial of the app                                       | so that I can familiarize myself with how to use the app. |
+| `*` | As a beginner user                | I want to read the documentation                                                 | so that I can get started with using the app |
+| `*` | As a beginner user                | I want to import existing contacts from a .vcf file                              | so that I do not need to re-type all of my existing contacts |
+| `*` | As a user                         | I want to delete contacts by a date/time query                                   | so that my address book stays clean. |
+| `*` | As an aesthetic-minded individual | I want to customize the theme of the application                                 | so that it's more personal to me |
 
 
 ### Use cases
@@ -417,7 +417,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Use case resumes from step 2.
 
 
-**Use case: UC05 - Delete Contact**
+**Use case: UC03 - Delete Contact**
 
 **MSS**
 
@@ -445,26 +445,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Use case resumes from step 4.
 
 
-**Use case: UC09 – Find Contact by Name or Tag**
-
-**MSS**
-
-1.  User inputs a find command with keyword(s) to search
-2.  Devbooks validates the input and searches for matching contacts
-3.  Devbooks displays the matching contacts
-
-    Use case ends.
-
-**Extensions**
-
-* 2a. User inputs an invalid search format
-
-    * 2a1. Devbooks shows an error message
-
-        Use case ends.
-
-
-**Use case: UC06 – Show list of commands**
+**Use case: UC04 – Show list of commands**
 
 **MSS**
 
@@ -493,7 +474,26 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   Use case resumes from step 5.
 
 
-**Use case: UC17 - Pin Contact**
+**Use case: UC05 – Find Contact by Name or Tag**
+
+**MSS**
+
+1.  User inputs a find command with keyword(s) to search
+2.  Devbooks validates the input and searches for matching contacts
+3.  Devbooks displays the matching contacts
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. User inputs an invalid search format
+
+    * 2a1. Devbooks shows an error message
+
+        Use case ends.
+
+
+**Use case: UC06 - Pin Contact**
 
 **MSS**
 
@@ -520,7 +520,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Use case ends.
 
 
-**Use case: UC18 - Unpin Contact**
+**Use case: UC07 - Unpin Contact**
 
 **MSS**
 
@@ -547,7 +547,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Use case ends.
 
 
-**Use case: UC35 - Delete Tag**
+**Use case: UC08 - Delete Tag**
 
 **MSS**
 
@@ -589,7 +589,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 7.  Should work without requiring an installer.
 8.  Should not depend on a specific remote server.
 9.  Should be packaged into a single JAR file.
-10. Should be able to load 1000 contacts within 2 seconds.
+10. Should be able to load 500 contacts within 2 seconds.
 11. Should be able to comfortably use the application without using a mouse.
 12. Should be less than 20 Megabytes.
 13. Should execute any command except `launch` in less than 1 second.
