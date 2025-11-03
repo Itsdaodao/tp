@@ -300,7 +300,7 @@ list by starting letters or words.
 * Need to find connections
 * Often needs to find students taking the same module for group work
 * Often need to contact groupmates
-* Loves using telegram for communication
+* Loves using Telegram for communication
 
 
 **Value proposition**:
@@ -711,7 +711,7 @@ testers are expected to do more *exploratory* testing.
 
    1. In an editor, edit the `data/addressbook.json` file. Corrupt the data by inputting a invalid value in a field.
 
-   1. Test case: `invalidGH%20__!$` in any contact's `github` field<br>
+   1. Test case: `invalidGH%20__!$` in any contact's `GitHub` field<br>
         Expected: A warning message is shown in the bottom status bar indicating that the file failed to read.
 
 ### Listing all Contacts
@@ -776,11 +776,11 @@ testers are expected to do more *exploratory* testing.
       Note: You can only launch Telegram links from the browser if you have the Telegram application installed on your device.
         ```
       Expected Result (regardless of Internet Access): 
-      1. Verify that a browser opens with the URL formatted `https://t.me/HANDLE` whereby handle should be the specified contact's telegram handle, 
+      1. Verify that a browser opens with the URL formatted `https://t.me/HANDLE` whereby handle should be the specified contact's Telegram handle, 
       2. & Result display show the success message above.
 
 2. Launch Second Person's without the specified communication mode.
-   1. Prerequisites: The second person in the displayed list does **NOT** have a telegram handle
+   1. Prerequisites: The second person in the displayed list does **NOT** have a Telegram handle
 
    2. Test: `launch 1 -l` <br>
       Expected Result Display:
@@ -812,7 +812,7 @@ testers are expected to do more *exploratory* testing.
        ```
       Expected Result: 
       1. Verify that a browser opens with the specific URL `https://ay2526s1-cs2103-f12-2.github.io/tp/UserGuide.html`,
-      2. and Result display show the success message above as well as a caveat about launching telegram
+      2. and Result display show the success message above as well as a caveat about launching Telegram
 
 ### Renaming the Tags for Multiple Users
 

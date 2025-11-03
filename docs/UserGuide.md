@@ -126,7 +126,7 @@ Format: `edit INDEX [n\NAME] [p\PHONE] [e\EMAIL] [l\TELEGRAM] [g\GITHUB] [pm\PRE
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * To clear a field, specify the prefix but leave the value empty.
-  * Only `Email`, `Telegram`, `Github`, `Preferred Mode` field can be cleared
+  * Only `Email`, `Telegram`, `GitHub`, `Preferred Mode` field can be cleared
 * Existing values will be updated to the input values.
 * When editing tags, you can add or remove tags.
   * To add tags, use the prefix `t\` followed by the tags to be added.
@@ -296,7 +296,7 @@ Format: `launch INDEX [-l (Telegram) | -g (GitHub)]`
 * User must specify **exactly one flag**.
 * If the person does not have the specified communication mode, an error message is shown.
 * User's interaction with the launched application is outside the scope of this feature.
-* User's can also launch external application through the GUI by left-clicking the Telegram or GitHub links of a person in the person card.
+* User can also launch external application through the GUI by left-clicking the Telegram or GitHub links of a person in the person card.
 
 
 Examples:
@@ -306,7 +306,7 @@ Examples:
 **Important Notes:**
 * The launch command has only been tested on the following operating systems.
     * Windows
-    * MAC
+    * MACOS
     * LINUX (ARCH)
     * LINUX (FEDORA)
 * Your mileage with this feature might vary if your operating system is not one stated above.
