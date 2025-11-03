@@ -95,6 +95,8 @@ Examples:
 * `add n\Cheshire p\98112321 e\cheshire@example.com l\cheshire_02 g\cheshire-dev`
 * `add n\Betsy Crowe p\99998888 t\friend e\betsycrowe@example.com  t\criminal l\betsy001 g\betsy12 pm\telegram`
 
+![add contact example](images/addContactExample.png)
+
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 Parameters like Email, Telegram, GitHub, Preferred Contact and Tags are **optional**
 </div>
@@ -202,6 +204,8 @@ Examples:
 * `list` followed by `pin 4` pins the 4th person in the address book to the top.
 * `find n\Betsy` followed by `pin 2` pins the 2nd person in the results of the `find` command.
 
+![pin contact example](images/pinContactExample.png)
+
 ### Unpinning a person : `unpin`
 
 Unpins the specified person from the address book.
@@ -215,6 +219,8 @@ Format: `unpin INDEX`
 Examples:
 * `list` followed by `unpin 1` unpins the 1st person and removes them from the pinned list at the top.
 * `find n\Betsy` followed by `unpin 2` unpins the 2nd person in the results of the `find` command.
+
+![unpin contact example](images/unpinContactExample.png)
 
 ### Clearing all entries : `clear`
 
@@ -372,6 +378,7 @@ Example:
     ```
     No persons found with tag: [[CS1101]]
     ```
+![rename tag example](images/renameTagExample.png)
 
 ### Deleting Tags for Multiple Contacts
 
@@ -396,6 +403,8 @@ Example:
       Deleted tags: [[CS1101]]
       Warning: No persons found with tag: [[CS2103]]. No operation performed on these tags.
       ```
+
+![delete tag example](images/deleteTagExample.png)
 
 ### Exporting Contacts
 
