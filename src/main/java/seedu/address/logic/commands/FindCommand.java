@@ -22,8 +22,8 @@ public class FindCommand extends Command {
             "Example: " + COMMAND_WORD + " " + PREFIX_NAME + "alice bob charlie\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_TAG + "family";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names or tags contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all contacts whose name or tag has any word "
+            + "starting with any of the given keywords (case-insensitive) listing results with index numbers.\n"
             + "Parameters: "
             + PREFIX_NAME + "KEYWORD [MORE_KEYWORDS]... (to search by name)\n"
             + "            "
@@ -98,7 +98,7 @@ public class FindCommand extends Command {
         String detailedUsage = String.format(
                 "Usage: find %sKEYWORD [MORE_KEYWORDS]... find %sKEYWORD [MORE_KEYWORDS]...\n"
                         + "\n"
-                        + "Finds all contacts whose names or tags contain any of the specified keywords "
+                        + "Finds all contacts whose name or tag has any word starting with any of the given keywords "
                         + "(case-insensitive).\n"
                         + "\n"
                         + "Parameters:\n"
@@ -107,11 +107,10 @@ public class FindCommand extends Command {
                         + "\n"
                         + "Notes:\n"
                         + "  - Keywords must match the start of the word (e.g. 'De' matches 'Derek')"
-                        + "  - Only one prefix can be used at a time\n"
+                        + "\n  - Only one prefix (`n\\` for names or `t\\` for tags) can be used at a time."
+                        + " If both are provided, only the first prefix and its keywords are used.\n"
                         + "  - The search is case-insensitive (e.g., 'alice' matches 'Alice')\n"
-                        + "  - Only the name field or tag field is searched\n"
-                        + "  - Contacts matching at least one keyword will be displayed\n"
-                        + "  - If both prefixes are provided. Only the first prefix is used.\n",
+                        + "  - Contacts matching at least one keyword will be displayed\n",
                 PREFIX_NAME,
                 PREFIX_TAG,
                 PREFIX_NAME,
@@ -120,7 +119,7 @@ public class FindCommand extends Command {
 
         CommandRegistry.register(
                 COMMAND_WORD,
-                "Finds contacts whose names or tags contain any of the given keywords",
+                "Finds all contacts whose name or tag has any word starting with any of the given keywords",
                 EXAMPLE_MESSAGE,
                 detailedUsage
         );
