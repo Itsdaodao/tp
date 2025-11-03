@@ -469,7 +469,7 @@ Action | Format, Examples
 **List** | `list [-a (alphabetical)] [-r (recent)]`<br> e.g., `list -a`
 **Help** | `help COMMAND` <br> e.g., `help add`
 **Launch** | `launch INDEX [-l (Telegram)] [-g (GitHub)]`<br> e.g., `launch 2 -l`
-**Tag** | Rename: `tag -r t\TAG r\TAG` <br> `tag -r t\CS1101 r\CS2103` <br><br> Delete: `tag -d t\TAG…` <br> `tag -d t\CS1101`
+**Tag** | Rename: `tag -r t\TAG r\TAG` <br> e.g., `tag -r t\CS1101 r\CS2103` <br><br> Delete: `tag -d t\TAG…` <br> e.g., `tag -d t\CS1101`
 **Pin** | `pin INDEX` <br> e.g., `pin 3`
 **Unpin** | `unpin INDEX` <br> e.g., `unpin 1`
 **Export** | `export [NAME]` <br> e.g., `export phonebook`
