@@ -367,32 +367,31 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  Devbooks prompts for command
-2.  User input add command with required contact information
-3.  Devbooks saves contact and show success message
-4.  Devbooks shows the updated contact list
+1. User add contact with required contact information
+2. Devbooks saves contact and show success message
+3. Devbooks shows the updated contact list
 
     Use case ends.
 
 **Extensions**
 
-* 2a. User input add command with invalid contact information
+* 1a. User add contact with invalid contact information
 
-    * 2a1. Devbooks shows an error message
-    * 2a2. User input new add command with contact information
+    * 1a1. Devbooks shows an error message
+    * 1a2. User input new add command with contact information
 
-      Steps 2a1-2a2 are repeated until the add command and contact information entered are correct.
+      Steps 1a1-1a2 are repeated until the new contact information entered are correct.
 
-      Use case resumes from step 3.
+      Use case resumes from step 2.
 
-* 2b. Duplicated contact information found
+* 1b. Duplicated contact information found
 
-    * 2b1. Devbooks shows an error message
-    * 2b2. User input new add command with contact information
+    * 1b1. Devbooks shows an error message
+    * 1b2. User add a contact with different contact name
 
-      Steps 2b1-2b2 are repeated until the new contact information does not duplicate with existing contacts.
+      Steps 1b1-1b2 are repeated until the new contact information does not duplicate with existing contacts.
 
-      Use case resumes from step 3.
+      Use case resumes from step 2.
 
 
 **Use case: UC02 - Edit Contact**
@@ -497,26 +496,25 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1. Devbooks prompts for command
-2. User inputs the pin command with a valid contact index
-3. Devbooks marks the contact as pinned and updates its position in the contact list
-4. Devbooks shows a success message and displays the updated list with pinned contact(s) at the top
+1. User inputs the pin command with a valid contact index
+2. Devbooks marks the contact as pinned and updates its position in the contact list
+3. Devbooks shows a success message and displays the updated list with pinned contact(s) at the top
 
    Use case ends.
 
 **Extensions**
 
-* 2a. User inputs pin command with an invalid contact index
+* 1a. User inputs pin command with an invalid contact index
 
-    * 2a1. Devbooks shows an error message
-    * 2a2. User inputs a new pin command with a valid contact index
+    * 1a1. Devbooks shows an error message
+    * 1a2. User inputs a new pin command with a valid contact index
 
-      Steps 2a1-2a2 are repeated until a valid contact index is entered.
-      Use case resumes from step 3.
+      Steps 1a1-1a2 are repeated until a valid contact index is entered.
+      Use case resumes from step 2.
 
-* 2b. Selected contact is already pinned
+* 1b. Selected contact is already pinned
 
-    * 2b1. Devbooks shows a message indicating that the contact is already pinned
+    * 1b1. Devbooks shows a message indicating that the contact is already pinned
       Use case ends.
 
 
@@ -524,26 +522,25 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1. Devbooks prompts for command
-2. User inputs the unpin command with a valid contact index
-3. Devbooks removes the pin from the selected contact and updates the contact list order
-4. Devbooks shows a success message and displays the updated list
+1. User inputs the unpin command with a valid contact index
+2. Devbooks removes the pin from the selected contact and updates the contact list order
+3. Devbooks shows a success message and displays the updated list
 
    Use case ends.
 
 **Extensions**
 
-* 2a. User inputs unpin command with an invalid contact index
+* 1a. User inputs unpin command with an invalid contact index
 
-    * 2a1. Devbooks shows an error message
-    * 2a2. User inputs a new unpin command with a valid contact index
+    * 1a1. Devbooks shows an error message
+    * 1a2. User inputs a new unpin command with a valid contact index
 
-      Steps 2a1-2a2 are repeated until a valid contact index is entered.
-      Use case resumes from step 3.
+      Steps 1a1-1a2 are repeated until a valid contact index is entered.
+      Use case resumes from step 2.
 
-* 2b. Selected contact is not pinned
+* 1b. Selected contact is not pinned
 
-    * 2b1. Devbooks shows a message indicating that the contact is not pinned
+    * 1b1. Devbooks shows a message indicating that the contact is not pinned
       Use case ends.
 
 
@@ -551,37 +548,36 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1. Devbooks prompts for command
-2. User inputs the delete tag command with one or more tags to delete
-3. Devbooks deletes all instances of the found tags from every contact
-4. Devbooks shows a success message indicating which tags were deleted
-5. Devbooks displays the updated contact list
+1. User inputs the delete tag command with one or more tags to delete
+2. Devbooks deletes all instances of the found tags from every contact
+3. Devbooks shows a success message indicating which tags were deleted
+4. Devbooks displays the updated contact list
 
    Use case ends.
 
 **Extensions**
 
-* 2a. User did not specify any tags to delete
+* 1a. User did not specify any tags to delete
 
-    * 2a1. Devbooks shows an error message indicating that no target tag was provided
+    * 1a1. Devbooks shows an error message indicating that no target tag was provided
       Use case ends.
 
-* 2b. None of the specified tags can be found in any contact
+* 1b. None of the specified tags can be found in any contact
 
-    * 2b1. Devbooks shows an error message indicating that no tags were found for deletion
+    * 1b1. Devbooks shows an error message indicating that no tags were found for deletion
       Use case ends.
 
-* 2c. Some tags are found while others are not
+* 1c. Some tags are found while others are not
 
-    * 2c1. Devbooks deletes all found tags
-    * 2c2. Devbooks shows a success message for tags deleted and a warning message for tags not found
-      Use case resumes from step 5.
+    * 1c1. Devbooks deletes all found tags
+    * 1c2. Devbooks shows a success message for tags deleted and a warning message for tags not found
+      Use case resumes from step 4.
 
 
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+2.  Should be able to hold up to 500 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 4.  Should only be used by a single user (i.e. not a multi-user product).
 5.  Should store data locally and in a human editable text file.
