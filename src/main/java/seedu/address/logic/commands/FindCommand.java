@@ -20,7 +20,7 @@ public class FindCommand extends Command {
 
     public static final String EXAMPLE_MESSAGE =
             "Example: " + COMMAND_WORD + " " + PREFIX_NAME + "alice bob charlie\n"
-            + "            Example: " + COMMAND_WORD + " " + PREFIX_TAG + "family";
+            + "Example: " + COMMAND_WORD + " " + PREFIX_TAG + "family";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names or tags contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"

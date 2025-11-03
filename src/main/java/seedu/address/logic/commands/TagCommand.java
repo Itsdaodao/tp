@@ -39,7 +39,7 @@ public class TagCommand extends Command {
             + COMMAND_WORD + " " + FLAG_RENAME_TAG + " "
             + PREFIX_TARGET_TAG + "CS1101" + " " + PREFIX_RENAMED_TAG + "CS2100"
             + "\n"
-            + "            Example Delete Tag: "
+            + "Example Delete Tag: "
             + COMMAND_WORD + " " + FLAG_DELETE_TAG + " " + PREFIX_TARGET_TAG + "CS1101";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": "
