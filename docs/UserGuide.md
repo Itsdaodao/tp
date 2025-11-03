@@ -23,7 +23,7 @@ DevBooks is a **desktop app for managing contacts, optimized for use via a Comma
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will display all the commands with its function.<br>
    Some example commands you can try:
 
    * `list` : Lists all contacts.
@@ -432,6 +432,7 @@ Format: `export NAME`
 * `NAME` refers to the name of the file
 * `NAME` is **optional**. Default file name is contacts.csv
 * Naming convention and rules follow default filename rules, including illegal characters
+    * Common illegal characters include "<", ">", ":", "?"...
 
 Example:
 
@@ -439,7 +440,9 @@ Example:
     * data will be exported to a file called contacts.csv in data folder
 * `export phonebook`
     * data will be exported to a file called phonebook.csv in data folder
-
+* `export ???ASDF`
+<br><br>
+  ![export fail](images/ExportFail.png)
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
