@@ -16,7 +16,8 @@ Third party Libraries Used:
 * [Hamcrest](https://github.com/hamcrest/JavaHamcrest)
 * [Mockito](https://github.com/mockito/mockito)
 
-OpenAI’s ChatGPT (GPT-5) was used by Derek Qua to help refine code quality, improve documentation clarity, and verify 
+OpenAI’s ChatGPT (GPT-5) was used by [Derek Qua](https://github.com/Derekqua) to help refine code quality, 
+improve documentation clarity, and verify 
 certain implementation details.
 All AI-generated suggestions were reviewed and adapted to ensure they align with the project’s requirements and coding standards.
 
