@@ -642,22 +642,56 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimal.
+   2. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimal.
 
-1. Saving window preferences
+2. Saving window preferences
 
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
+   2. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. Retaining data across launches
+3. Retaining data across launches
 
-    1. Add a contact to the contact book. Close the application.
+   1. Add a contact to the contact book. Close the application.
 
-    1. Launch the application.
-        Expected: The new contact should be in the application.
-        A folder `data/` should be created where the .jar file is stored.
+   2. Launch the application.
+       Expected: The new contact should be in the application.
+       A folder `data/` should be created where the .jar file is stored.
+
+### Adding a person
+
+1.  Adding a person with required fields only
+
+    1.  Test case: `add n\John Doe p\98765432`<br>
+        Expected: The contact `John Doe` is added to the contact list. The details of the new contact are shown in the Result Display.
+
+2.  Adding a person with all fields
+
+    1.  Test case: `add n\Jane Smith p\91234567 e\jane@example.com l\janesmith g\jane-s pm\telegram t\friend t\colleague`<br>
+        Expected: The contact `Jane Smith` is added to the contact list with all details (Email, Telegram, GitHub, Preferred Mode, and two tags) correctly stored. The details are shown in the Result Display.
+
+3.  Attempting to add a person with missing required fields
+
+    1.  Test case: `add n\Incomplete Contact`<br>
+        Expected: The message "Invalid command format!" is shown to the user. Extra information on how to use `add` is shown in the Result Display.
+
+    2.  Test case: `add p\99988877`<br>
+        Expected: The message "Invalid command format!" is shown to the user. Extra information on how to use `add` is shown in the Result Display.
+
+4.  Attempting to add a duplicate person
+
+    1.  Prerequisites: A person named `John Doe` with phone `98765432` already exists (added in step 1).
+    2.  Test case: `add n\John Doe p\98765432`<br>
+        Expected: The message "This person already exists in the address book." is shown to the user. The contact list remains unchanged.
+
+5.  Other incorrect add commands to try
+
+    1.  Test case: `add n\Test p\notaphonenumber`<br>
+        Expected: An error message "Phone numbers should only contain numbers, and it should be between 3 and 17 digits long" is shown indicating the phone number format is invalid.
+
+    2.  Test case: `add n\Test p\98765432 e\notanemail`<br>
+        Expected: An error message is shown indicating the email format is invalid.
 
 ### Deleting a person
 
@@ -665,17 +699,53 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
+   2. Test case: `delete 1`<br>
       Expected: A confirmation prompt is shown in the status bar before the contact is deleted. The to-be-deleted contact is shown in the status message.
 
-   1. Test case: `delete 1` followed by `y`<br>
+   3. Test case: `delete 1` followed by `y`<br>
       Expected: After `y` is input into the confirmation prompt, The details of the deleted contact is shown. The contact is no longer shown in the list.
 
-   1. Test case: `delete dingus`<br>
+   4. Test case: `delete dingus`<br>
       Expected: The message "Invalid command format!" is shown to the user. Extra information on how to use delete is shown in the Result Display.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+   5. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
+
+### Pinning a person
+
+1. Pinning a person while all persons are being shown
+
+   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+
+   2. Test case: `pin 4`<br>
+      Expected: The details of the pinned contact is shown in the Result Display. The contact is moved to the top of the list with pin icon visible.
+
+   3. Test case: `pin John`<br>
+      Expected: The message "Invalid command format!" is shown to the user. Extra information on how to use pin is shown in the Result Display.
+   
+   4. Test case: `pin 3` followed by `pin 1` to pin an already pinned contact <br>
+      Expected: The message "Person is already pinned." is shown to the user.
+
+   5. Other incorrect pin commands to try: `pin`, `pin x`, `...` (where x is larger than the list size)<br>
+      Expected: Similar to expected in step 3.
+
+### Unpinning a person
+
+1. Unpinning a person while all persons are being shown
+
+    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+
+    2. Test case: `unpin 4`<br>
+       Expected: The details of the unpinned contact is shown in the Result Display. The contact is moved back to its original position in the list based on sorting order with pin icon removed.
+
+    3. Test case: `unpin John`<br>
+       Expected: The message "Invalid command format!" is shown to the user. Extra information on how to use unpin is shown in the Result Display.
+
+    4. Test case: Ensure that contact of index 3 is not pinned and enter `unpin 3` to unpin a not pinned contact <br>
+       Expected: The message "Person is currently not pinned." is shown to the user.
+
+    5. Other incorrect pin commands to try: `unpin`, `unpin x`, `...` (where x is larger than the list size)<br>
+       Expected: Similar to expected in step 3.
 
 ### Finding a person
 
@@ -819,12 +889,12 @@ testers are expected to do more *exploratory* testing.
       1. Verify that a browser opens with the specific URL `https://ay2526s1-cs2103-f12-2.github.io/tp/UserGuide.html`,
       2. and Result display show the success message above as well as a caveat about launching Telegram
 
-### Renaming the Tags for Multiple Users
+### Renaming/Deleting the Tags for Multiple Users
 
 1. Renaming Tags for all Users
    1. Prerequisites: The displayed list has at least 1 person with the target tag
 
-   2. Test: `tag -r t/CS1101 r/CS2103` <br>
+   2. Test: `tag -r t\CS1101 r\CS2103` <br>
       Expected Result Display:
         ```
       Renamed tag [CS1101] to [CS2103] for 2 person(s).
@@ -834,7 +904,7 @@ testers are expected to do more *exploratory* testing.
 2. Renaming Tags for all Users
     1. Prerequisites: The displayed list has NO person with the target tag
 
-   2. Test: `tag -r t/CS1101 r/CS2103` <br>
+   2. Test: `tag -r t\CS1101 r\CS2103` <br>
        Expected Result Display:
          ```
        No persons found with tag: [[CS1101]]
@@ -842,11 +912,11 @@ testers are expected to do more *exploratory* testing.
    Expected Result: Error Message displaying that No Person is found using the target tag.
 
 3. Deleting Tags for all Users (Given the target tag **does exist**)
-    1. Prerequisites: The displayed list has at least 1 person with the target tags
+   1. Prerequisites: The displayed list has at least 1 person with the target tags
 
-   2. Test: `tag -d t/CS1101 t/CS2103` <br>
-        Expected Result Display:
-       ```
-       Deleted tags: [[CS1101], [CS2103]]
-       ```
-       Expected Output deletes `CS1101` & `CS2103` tag for all contacts with the tag.
+   2. Test: `tag -d t\CS1101 t\CS2103` <br>
+       Expected Result Display:
+      ```
+      Deleted tags: [[CS1101], [CS2103]]
+      ```
+      Expected Output deletes `CS1101` & `CS2103` tag for all contacts with the tag.
