@@ -433,6 +433,10 @@ Format: `export NAME`
 * `NAME` is **optional**. Default file name is contacts.csv
 * Naming convention and rules follow default filename rules, including illegal characters
     * Common illegal characters include "<", ">", ":", "?"...
+* If `NAME` is already an existing filename in the data folder (export handles duplicate)
+  * Appending `-1` at the end of the filename
+  * If the contacts.csv is already in the data folder, and user runs `export`
+    * contacts-1.csv will be created
 
 Example:
 
