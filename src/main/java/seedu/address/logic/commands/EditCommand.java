@@ -147,7 +147,7 @@ public class EditCommand extends Command {
                 pinnedAt
         );
 
-        editedPerson = validatePreferredMode(editedPerson, editPersonDescriptor);
+        editedPerson = getUpdatedPreferredModePerson(editedPerson, editPersonDescriptor);
 
         return new Pair<>(editedPerson, tagUpdateResult);
     }
@@ -157,22 +157,11 @@ public class EditCommand extends Command {
      * Returns a person with preferred mode set to NONE if it is no longer valid.
      * Throws a CommandException if the preferred mode is invalid.
      */
-    private static Person validatePreferredMode(Person editedPerson, EditPersonDescriptor editPersonDescriptor)
+    private static Person getUpdatedPreferredModePerson(Person editedPerson, EditPersonDescriptor editPersonDescriptor)
             throws CommandException {
-
-        // Validate preferred mode against available contact options
+        // Ensure current preferred mode is valid
+        editedPerson = resetInvalidPreferredMode(editedPerson);
         Set<PreferredCommunicationMode> availableModes = editedPerson.getAvailableModes();
-
-        PreferredCommunicationMode currentMode = editedPerson.getPreferredMode();
-        boolean shouldClearPreferredMode = currentMode != null && !availableModes.contains(currentMode);
-
-        // If the preferred mode is no longer valid, create a new Person with NONE preferred mode
-        if (shouldClearPreferredMode) {
-            editedPerson = new Person(editedPerson.getName(), editedPerson.getPhone(), editedPerson.getEmail(),
-                    editedPerson.getTelegram(), editedPerson.getGithub(), PreferredCommunicationMode.NONE,
-                    editedPerson.getTags(), editedPerson.getPinnedAt().orElse(null)
-            );
-        }
 
         // Extract preferred mode name as string, or null if not set
         String modeString = editPersonDescriptor.getPreferredMode()
@@ -187,6 +176,25 @@ public class EditCommand extends Command {
         }
 
         return editedPerson;
+    }
+
+    /**
+     * Returns a new Person with preferred mode set to NONE if current mode is no longer available.
+     */
+    private static Person resetInvalidPreferredMode(Person person) {
+        Set<PreferredCommunicationMode> availableModes = person.getAvailableModes();
+
+        PreferredCommunicationMode currentMode = person.getPreferredMode();
+        boolean shouldClearPreferredMode = currentMode != null && !availableModes.contains(currentMode);
+
+        // If the preferred mode is no longer valid, create a new Person with NONE preferred mode
+        if (shouldClearPreferredMode) {
+            person = new Person(person.getName(), person.getPhone(), person.getEmail(),
+                    person.getTelegram(), person.getGithub(), PreferredCommunicationMode.NONE,
+                    person.getTags(), person.getPinnedAt().orElse(null)
+            );
+        }
+        return person;
     }
 
     /**
